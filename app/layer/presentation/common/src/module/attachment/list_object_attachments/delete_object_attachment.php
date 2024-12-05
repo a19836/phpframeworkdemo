@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (AttachmentUtil::deleteObjectAttachment($brokers, $_GET["attachment_id"], $_GET["object_type_id"], $_GET["object_id"])) {
+if (isset($_GET["attachment_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && AttachmentUtil::deleteObjectAttachment($brokers, $_GET["attachment_id"], $_GET["object_type_id"], $_GET["object_id"])) {
 	echo "1";
 }
 ?>

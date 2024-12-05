@@ -25,7 +25,7 @@ class ArticleService extends \soa\CommonService {
 	 * @param (name=data[allow_comments], type=bool, default="1")
 	 */
 	public function insertArticle($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if (empty($data["published"]))
@@ -41,28 +41,29 @@ class ArticleService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-			$data["summary"] = addcslashes($data["summary"], "\\'");
-			$data["content"] = addcslashes($data["content"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+			$data["summary"] = isset($data["summary"]) ? addcslashes($data["summary"], "\\'") : "";
+			$data["content"] = isset($data["content"]) ? addcslashes($data["content"], "\\'") : "";
 			
 			$status = $b->callInsert("module/article", "insert_article", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Article = $this->getArticleHbnObj($b, $options);
+			$ids = null;
 			$status = $Article->insert($data, $ids);
-			return $status ? $ids["article_id"] : $status;
+			return $status ? (isset($ids["article_id"]) ? $ids["article_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("ma_article", array(
-					"title" => $data["title"], 
-					"sub_title" => $data["sub_title"], 
-					"summary" => $data["summary"], 
-					"content" => $data["content"], 
-					"published" => $data["published"], 
-					"photo_id" => $data["photo_id"], 
-					"allow_comments" => $data["allow_comments"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+					"summary" => isset($data["summary"]) ? $data["summary"] : null, 
+					"content" => isset($data["content"]) ? $data["content"] : null, 
+					"published" => isset($data["published"]) ? $data["published"] : null, 
+					"photo_id" => isset($data["photo_id"]) ? $data["photo_id"] : null, 
+					"allow_comments" => isset($data["allow_comments"]) ? $data["allow_comments"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -83,7 +84,7 @@ class ArticleService extends \soa\CommonService {
 	 * @param (name=data[allow_comments], type=bool) 
 	 */
 	public function updateArticle($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if (empty($data["published"]))
@@ -98,10 +99,10 @@ class ArticleService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-			$data["summary"] = addcslashes($data["summary"], "\\'");
-			$data["content"] = addcslashes($data["content"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+			$data["summary"] = isset($data["summary"]) ? addcslashes($data["summary"], "\\'") : "";
+			$data["content"] = isset($data["content"]) ? addcslashes($data["content"], "\\'") : "";
 		
 			return $b->callUpdate("module/article", "update_article", $data, $options);
 		}
@@ -111,13 +112,13 @@ class ArticleService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			return $b->updateObject("ma_article", array(
-					"title" => $data["title"], 
-					"sub_title" => $data["sub_title"], 
-					"summary" => $data["summary"], 
-					"content" => $data["content"], 
-					"published" => $data["published"], 
-					"photo_id" => $data["photo_id"], 
-					"allow_comments" => $data["allow_comments"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+					"summary" => isset($data["summary"]) ? $data["summary"] : null, 
+					"content" => isset($data["content"]) ? $data["content"] : null, 
+					"published" => isset($data["published"]) ? $data["published"] : null, 
+					"photo_id" => isset($data["photo_id"]) ? $data["photo_id"] : null, 
+					"allow_comments" => isset($data["allow_comments"]) ? $data["allow_comments"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"article_id" => $data["article_id"]
@@ -132,7 +133,7 @@ class ArticleService extends \soa\CommonService {
 	 */
 	public function deleteArticle($data) {
 		$article_id = $data["article_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -154,13 +155,13 @@ class ArticleService extends \soa\CommonService {
 	 */
 	public function getArticle($data) {
 		$article_id = $data["article_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/article", "get_article", array("article_id" => $article_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Article = $this->getArticleHbnObj($b, $options);
@@ -168,7 +169,7 @@ class ArticleService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("ma_article", null, array("article_id" => $article_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/article", "ArticleService.getArticle", $data, $options);
@@ -179,22 +180,22 @@ class ArticleService extends \soa\CommonService {
 	 */
 	public function getArticleAllowComments($data) {
 		$article_id = $data["article_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/article", "get_article_allow_comments", array("article_id" => $article_id), $options);
-			return $result[0]["allow_comments"];
+			return isset($result[0]["allow_comments"]) ? $result[0]["allow_comments"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Article = $this->getArticleHbnObj($b, $options);
 			$result = $Article->findById($article_id, array("attributes" => array("allow_comments")));
-			return $result["allow_comments"];
+			return isset($result["allow_comments"]) ? $result["allow_comments"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("ma_article", array("allow_comments"), array("article_id" => $article_id), $options);
-			return $result[0]["allow_comments"];
+			return isset($result[0]["allow_comments"]) ? $result[0]["allow_comments"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/article", "ArticleService.getArticleAllowComments", $data, $options);
@@ -205,22 +206,22 @@ class ArticleService extends \soa\CommonService {
 	 */
 	public function getArticlePublished($data) {
 		$article_id = $data["article_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/article", "get_article_published", array("article_id" => $article_id), $options);
-			return $result[0]["published"];
+			return isset($result[0]["published"]) ? $result[0]["published"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Article = $this->getArticleHbnObj($b, $options);
 			$result = $Article->findById($article_id, array("attributes" => array("published")));
-			return $result["published"];
+			return isset($result["published"]) ? $result["published"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("ma_article", array("published"), array("article_id" => $article_id), $options);
-			return $result[0]["published"];
+			return isset($result[0]["published"]) ? $result[0]["published"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/article", "ArticleService.getArticlePublished", $data, $options);
@@ -237,14 +238,15 @@ class ArticleService extends \soa\CommonService {
 	 * @param (name=data[conditions][allow_comments], type=bool|array) 
 	 */
 	public function getArticlesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/article", "get_articles_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -254,7 +256,7 @@ class ArticleService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("ma_article", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -273,25 +275,26 @@ class ArticleService extends \soa\CommonService {
 	 * @param (name=data[conditions][allow_comments], type=bool|array)
 	 */
 	public function countArticlesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/article", "count_articles_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Article = $this->getArticleHbnObj($b, $options);
-				return $Article->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Article->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("ma_article", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -300,7 +303,7 @@ class ArticleService extends \soa\CommonService {
 	}
 	
 	public function getAllArticles($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -318,13 +321,13 @@ class ArticleService extends \soa\CommonService {
 	}
 	
 	public function countAllArticles($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/article", "count_all_articles", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Article = $this->getArticleHbnObj($b, $options);
@@ -342,7 +345,7 @@ class ArticleService extends \soa\CommonService {
 	 */
 	public function getArticlesByIds($data) {
 		$article_ids = $data["article_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($article_ids) {
@@ -382,7 +385,9 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -393,18 +398,18 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				return $b->callSelect("module/article", "get_articles_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				return $Article->callSelect("get_articles_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::get_articles_by_tags(array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -429,7 +434,9 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -440,24 +447,24 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$result = $b->callSelect("module/article", "count_articles_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				$result = $Article->callSelect("count_articles_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::count_articles_by_tags(array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByTags", $data, $options);
@@ -483,7 +490,9 @@ class ArticleService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -494,18 +503,18 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				return $b->callSelect("module/article", "get_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				return $Article->callSelect("get_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::get_articles_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -534,7 +543,9 @@ class ArticleService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -545,24 +556,24 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$result = $b->callSelect("module/article", "count_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				$result = $Article->callSelect("count_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::count_articles_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObjectAndTags", $data, $options);
@@ -587,10 +598,12 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -601,18 +614,18 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				return $b->callSelect("module/article", "get_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				return $Article->callSelect("get_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::get_articles_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -640,10 +653,12 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -654,24 +669,24 @@ class ArticleService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$result = $b->callSelect("module/article", "count_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 				$Article = $this->getArticleHbnObj($b, $options);
 				$result = $Article->callSelect("count_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				$sql = ArticleDBDAOServiceUtil::count_articles_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObjectGroupAndTags", $data, $options);
@@ -693,7 +708,9 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -707,18 +724,18 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					return $b->callSelect("module/article", "get_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					return $Article->callSelect("get_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::get_articles_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -744,7 +761,9 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -758,24 +777,24 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$result = $b->callSelect("module/article", "count_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					$result = $Article->callSelect("count_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::count_articles_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/article", "ArticleService.countArticlesWithAllTags", $data, $options);
@@ -802,7 +821,9 @@ class ArticleService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -816,18 +837,18 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					return $b->callSelect("module/article", "get_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					return $Article->callSelect("get_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::get_articles_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -857,7 +878,9 @@ class ArticleService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -871,24 +894,24 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$result = $b->callSelect("module/article", "count_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					$result = $Article->callSelect("count_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::count_articles_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObjectWithAllTags", $data, $options);
@@ -914,10 +937,12 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -931,18 +956,18 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					return $b->callSelect("module/article", "get_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					return $Article->callSelect("get_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::get_articles_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -971,10 +996,12 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$article_object_type_id = $data["article_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -988,24 +1015,24 @@ class ArticleService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$result = $b->callSelect("module/article", "count_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 					$Article = $this->getArticleHbnObj($b, $options);
 					$result = $Article->callSelect("count_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOServiceUtil::count_articles_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => $article_object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObjectGroupWithAllTags", $data, $options);
@@ -1028,23 +1055,25 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			return $b->callSelect("module/article", "get_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$Article = $this->getArticleHbnObj($b, $options);
 			return $Article->callSelect("get_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 			$sql = ArticleDBDAOServiceUtil::get_articles_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			return $b->getSQL($sql, $options);
@@ -1068,29 +1097,31 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$result = $b->callSelect("module/article", "count_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$Article = $this->getArticleHbnObj($b, $options);
 			$result = $Article->callSelect("count_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 			$sql = ArticleDBDAOServiceUtil::count_articles_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObject", $data, $options);
@@ -1112,24 +1143,26 @@ class ArticleService extends \soa\CommonService {
 	public function getArticlesByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			return $b->callSelect("module/article", "get_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$Article = $this->getArticleHbnObj($b, $options);
 			return $Article->callSelect("get_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 			$sql = ArticleDBDAOServiceUtil::get_articles_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			return $b->getSQL($sql, $options);
@@ -1154,30 +1187,32 @@ class ArticleService extends \soa\CommonService {
 	public function countArticlesByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$result = $b->callSelect("module/article", "count_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 				
 			$Article = $this->getArticleHbnObj($b, $options);
 			$result = $Article->callSelect("count_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "a");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 			$sql = ArticleDBDAOServiceUtil::count_articles_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/article", "ArticleService.countArticlesByObjectGroup", $data, $options);

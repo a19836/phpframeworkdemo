@@ -4,6 +4,7 @@ namespace CMSModule\quiz\show_question_users_answers;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,25 +15,30 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		//Getting Question Details
-		$question_type = $settings["question_type"];
+		$question_type = isset($settings["question_type"]) ? $settings["question_type"] : null;
+		$object_type_id = isset($settings["get_next_by_parent"]["object_type_id"]) ? $settings["get_next_by_parent"]["object_type_id"] : null;
+		$object_id = isset($settings["get_next_by_parent"]["object_id"]) ? $settings["get_next_by_parent"]["object_id"] : null;
+		$group = isset($settings["get_next_by_parent"]["group"]) ? $settings["get_next_by_parent"]["group"] : null;
+		$previous_order = isset($settings["get_next_by_parent"]["previous_order"]) ? $settings["get_next_by_parent"]["previous_order"] : null;
 		
 		switch ($question_type) {
 			case "get_next_by_parent":
-				$data = \QuizUtil::getQuestionsByObject($brokers, $settings["get_next_by_parent"]["object_type_id"], $settings["get_next_by_parent"]["object_id"]);
-				$data = self::getNextQuestion($data, $settings["get_next_by_parent"]["previous_order"]);
+				$data = \QuizUtil::getQuestionsByObject($brokers, $object_type_id, $object_id);
+				$data = self::getNextQuestion($data, $previous_order);
 				break;
 			case "get_next_by_parent_group":
-				$data = \QuizUtil::getQuestionsByObjectGroup($brokers, $settings["get_next_by_parent"]["object_type_id"], $settings["get_next_by_parent"]["object_id"], $settings["get_next_by_parent"]["group"]);
-				$data = self::getNextQuestion($data, $settings["get_next_by_parent"]["previous_order"]);
+				$data = \QuizUtil::getQuestionsByObjectGroup($brokers, $object_type_id, $object_id, $group);
+				$data = self::getNextQuestion($data, $previous_order);
 				break;
 			default:
-				$data = \QuizUtil::getQuestionsByConditions($brokers, array("question_id" => $settings["question_id"]), null);
-				$data = $data[0];
+				$data = \QuizUtil::getQuestionsByConditions($brokers, array("question_id" => isset($settings["question_id"]) ? $settings["question_id"] : null), null);
+				$data = isset($data[0]) ? $data[0] : null;
 		}
 		
 		if ($data) {
-			$data["answers"] = \QuizUtil::getAnswersByConditions($brokers, array("question_id" => $data["question_id"]), null);
-			$data["user_answers"] = \QuizUtil::getUserAnswersByQuestionIds($brokers, $data["question_id"]);
+			$question_id = isset($data["question_id"]) ? $data["question_id"] : null;
+			$data["answers"] = \QuizUtil::getAnswersByConditions($brokers, array("question_id" => $question_id), null);
+			$data["user_answers"] = \QuizUtil::getUserAnswersByQuestionIds($brokers, $question_id);
 			
 			//Add Join Point
 			$EVC->getCMSLayer()->getCMSJoinPointLayer()->includeJoinPoint("Preparing question data", array(
@@ -44,7 +50,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		//Preparing questions html
 		if ($data) {
-			if ($settings["ptl"]) {
+			if (!empty($settings["ptl"])) {
 				//prepare new settings field
 				$settings["fields"]["users_answers"] = array(
 					"field" => array(
@@ -75,14 +81,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	private static function getQuestionUsersAnswers($settings, $data) {
 		$html = "";
 		
-		if ($data["answers"]) {
+		if (!empty($data["answers"])) {
 			$user_answers_by_user_ids = array();
 			$user_answer_ids_by_user_ids = array();
 			
-			if ($data["user_answers"])
+			if (!empty($data["user_answers"]))
 				foreach ($data["user_answers"] as $ua) {
-					$user_answers_by_user_ids[ $ua["user_id"] ][] = $ua;
-					$user_answer_ids_by_user_ids[ $ua["user_id"] ][ $ua["answer_id"] ] = true;
+					$user_id = isset($ua["user_id"]) ? $ua["user_id"] : null;
+					$answer_id = isset($ua["answer_id"]) ? $ua["answer_id"] : null;
+					
+					$user_answers_by_user_ids[$user_id][] = $ua;
+					$user_answer_ids_by_user_ids[$user_id][$answer_id] = true;
 				}
 			
 			$html = '
@@ -95,8 +104,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			foreach ($data["answers"] as $answer)
 				$html .= '
 						<th class="answer">
-							<div class="answer_title">' . $answer["title"] . '</div>
-							<div class="answer_description">' . $answer["description"] . '</div>
+							<div class="answer_title">' . (isset($answer["title"]) ? $answer["title"] : null) . '</div>
+							<div class="answer_description">' . (isset($answer["description"]) ? $answer["description"] : null) . '</div>
 						</th>';
 			
 			$html .= '	</tr>
@@ -106,10 +115,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($user_answers_by_user_ids)
 				foreach ($user_answers_by_user_ids as $user_id => $uas) {
 					$html .= '<tr>
-							<td class="user">' . ($uas[0]["name"] ? $uas[0]["name"] : $uas[0]["username"]) . '</td>';
+							<td class="user">' . (!empty($uas[0]["name"]) ? $uas[0]["name"] : (isset($uas[0]["username"]) ? $uas[0]["username"] : null)) . '</td>';
 					
 					foreach ($data["answers"] as $answer) {
-						$selected = $user_answer_ids_by_user_ids[$user_id][ $answer["answer_id"] ];
+						$answer_id = isset($answer["answer_id"]) ? $answer["answer_id"] : null;
+						$selected = !empty($user_answer_ids_by_user_ids[$user_id][$answer_id]);
 						$html .= '<td class="answer' . ($selected ? ' selected' : '') . '">' . ($selected ? 'X' : "") . '</td>';
 					}
 					
@@ -127,14 +137,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	private static function getNextQuestion($questions, $previous_order) {
 		if ($questions) {
 			$idx = null;
-			foreach ($questions as $i => $item)
-				if ($item["order"] > $previous_order && ($item["order"] < $idx || !$idx))
+			foreach ($questions as $i => $item) {
+				$order = isset($item["order"]) ? $item["order"] : null;
+				
+				if ($order > $previous_order && ($order < $idx || !$idx))
 					$idx = $i;
+			}
 			
 			if (!is_numeric($idx)) 
 				$idx = 0;
 			
-			return $questions[$idx];
+			return isset($questions[$idx]) ? $questions[$idx] : null;
 		}
 	}
 }

@@ -40,5 +40,5 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include 
 					<li class="delete" data-title="Delete"><a onClick="submitForm(this, \'delete\')"><i class="icon delete"></i> Delete</a></li>
 				</ul>
 			</header>
-		</div>'; if ($username && $login_control_data) $main_content .= HtmlFormHandler::createHtmlForm($form_settings, $login_control_data); else $main_content .= '<div class="error">No username data to reset.</div>'; $main_content .= '</div>
+		</div>'; if ($username && !empty($login_control_data)) $main_content .= HtmlFormHandler::createHtmlForm($form_settings, $login_control_data); else $main_content .= '<div class="error">No username data to reset.</div>'; $main_content .= '</div>
 </div>'; ?>

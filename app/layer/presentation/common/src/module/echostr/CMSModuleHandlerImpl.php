@@ -4,7 +4,7 @@ namespace CMSModule\echostr;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
-		return $settings["str"];
+		return isset($settings["str"]) ? $settings["str"] : null;
 	}
 }
 ?>

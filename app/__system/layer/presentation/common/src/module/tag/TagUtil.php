@@ -7,7 +7,7 @@ class TagUtil {
 	/* TAG FUNCTIONS */
 	
 	public static function insertTag($brokers, $data) {
-		if (is_array($brokers) && $data["tag"]) {
+		if (is_array($brokers) && !empty($data["tag"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
@@ -26,6 +26,7 @@ class TagUtil {
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Tag = $broker->callObject("module/tag", "Tag");
+					$ids = null;
 					$status = $Tag->insert($data, $ids);
 					return $status ? $data["tag_id"] : $status;
 				}
@@ -115,7 +116,7 @@ class TagUtil {
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = TagDBDAOUtil::get_tags_by_objects(array("object_ids" => $object_ids_str, "object_type_id" => $object_type_id));
 					
-					return $b->getSQL($sql, $options);
+					return $broker->getSQL($sql, $options);
 				}
 			}
 		}
@@ -153,7 +154,7 @@ class TagUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/tag", "count_all_tags", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Tag = $broker->callObject("module/tag", "Tag");
@@ -207,7 +208,7 @@ class TagUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/tag", "count_tags_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Tag = $broker->callObject("module/tag", "Tag");
@@ -229,8 +230,12 @@ class TagUtil {
 		if ($tags) {
 			$t = count($tags);
 			for ($i = 0; $i < $t; $i++) {
-				$object_id = $tags[$i]["object_id"];
-				$objects_tags_str[$object_id] .= ($objects_tags_str[$object_id] ? ", " : "") . $tags[$i]["tag"];
+				$object_id = isset($tags[$i]["object_id"]) ? $tags[$i]["object_id"] : null;
+				
+				if (empty($objects_tags_str[$object_id]))
+					$objects_tags_str[$object_id] = "";
+				
+				$objects_tags_str[$object_id] .= ($objects_tags_str[$object_id] ? ", " : "") . (isset($tags[$i]["tag"]) ? $tags[$i]["tag"] : null);
 			}
 		}
 		
@@ -239,7 +244,7 @@ class TagUtil {
 	
 	public static function getObjectTagsString($brokers, $object_type_id, $object_id, $options = array(), $no_cache = false) {
 		$tags = self::getObjectsTagsString($brokers, $object_type_id, $object_id, $options, $no_cache);
-		return $tags[$object_id];
+		return isset($tags[$object_id]) ? $tags[$object_id] : null;
 	}
 	
 	/* OBJECT TAG FUNCTIONS */
@@ -251,26 +256,26 @@ class TagUtil {
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/tag", "ObjectTagService.insertObjectTag", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callInsert("module/tag", "insert_object_tag", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectTag = $broker->callObject("module/tag", "ObjectTag");
 					return $ObjectTag->insert($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->insertObject("mt_object_tag", array(
 							"tag_id" => $data["tag_id"], 
@@ -292,26 +297,26 @@ class TagUtil {
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/tag", "ObjectTagService.updateObjectTag", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/tag", "update_object_tag", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectTag = $broker->callObject("module/tag", "ObjectTag");
 					return $ObjectTag->update($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->updateObject("mt_object_tag", array(
 							"group" => $data["group"], 
@@ -405,7 +410,7 @@ class TagUtil {
 					
 					if ($obj_tags)
 						foreach ($obj_tags as $obj_tag)
-							if (!isset($tags[ $obj_tag["tag_id"] ]) && !self::deleteObjectTag($brokers, $obj_tag["tag_id"], $object_type_id, $object_id))
+							if (isset($obj_tag["tag_id"]) && !isset($tags[ $obj_tag["tag_id"] ]) && !self::deleteObjectTag($brokers, $obj_tag["tag_id"], $object_type_id, $object_id))
 								$status = false;
 					
 					foreach ($obj_tags_to_insert as $tag_id => $tag)
@@ -429,7 +434,7 @@ class TagUtil {
 			$exists = false;
 		
 			foreach ($inserted_tags as $t) {
-				if ($t["tag_id"] == $tag_id) {
+				if (isset($t["tag_id"]) && $t["tag_id"] == $tag_id) {
 					$exists = true;
 					break;
 				}
@@ -542,7 +547,7 @@ class TagUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/tag", "count_object_tag_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectTag = $broker->callObject("module/tag", "ObjectTag");
@@ -587,7 +592,7 @@ class TagUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/tag", "count_object_tags_by_tag_id", array("tag_id" => $tag_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectTag = $broker->callObject("module/tag", "ObjectTag");
@@ -632,7 +637,7 @@ class TagUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/tag", "count_all_object_tags", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectTag = $broker->callObject("module/tag", "ObjectTag");

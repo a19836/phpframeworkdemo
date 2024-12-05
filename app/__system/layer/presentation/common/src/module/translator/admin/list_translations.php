@@ -4,19 +4,19 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("translator/admin/TranslatorAdminUtil", $common_project_name);
 	
 	$TranslatorAdminUtil = new TranslatorAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
-	$category = $_GET["category"];
-	$language = $_GET["language"];
+	$category = isset($_GET["category"]) ? $_GET["category"] : null;
+	$language = isset($_GET["language"]) ? $_GET["language"] : null;
 	
-	if ($_POST["save"]) {
-		$texts = $_POST["texts"];
-		$translations = $_POST["translations"];
+	if (!empty($_POST["save"])) {
+		$texts = isset($_POST["texts"]) ? $_POST["texts"] : null;
+		$translations = isset($_POST["translations"]) ? $_POST["translations"] : null;
 		$texts_translations = array();
 		
 		if ($texts)
@@ -49,13 +49,13 @@ if ($PEVC) {
 			"text" => array("type" => "text", "label" => "Text/Key", "name" => "texts[]"), 
 			"translation" => array("type" => "text", "label" => "Translation", "name" => "translations[]"),
 		),
-		"data" => $data,
+		"data" => isset($data) ? $data : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'list_translations.css" type="text/css" charset="utf-8" />
 	<script type="text/javascript" src="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'list_translations.js"></script>';
 	$menu_settings = $TranslatorAdminUtil->getMenuSettings();
-	$main_content = $status . '
+	$main_content = (isset($status) ? $status : "") . '
 	<form class="module_edit" method="post">
 		' . $CommonModuleAdminUtil->getListContent($list_settings) . '
 		<div class="buttons">

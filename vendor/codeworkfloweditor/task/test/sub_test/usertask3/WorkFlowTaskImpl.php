@@ -46,7 +46,7 @@ class WorkFlowTaskImpl extends \WorkFlowTask {
 		$properties = $data["properties"];
 		$value = is_numeric($properties["value"]) ? " " . $properties["value"] : "";
 		
-		$code .= $prefix_tab . "xxx$value \"bla\";\n";
+		$code = $prefix_tab . "xxx$value \"bla\";\n";
 		
 		return $code; //xxx does not write the code after it-self. There are no tasks after!
 	}

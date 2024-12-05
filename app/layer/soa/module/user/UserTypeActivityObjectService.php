@@ -22,7 +22,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[object_id], type=bigint, not_null=1, length=19)
 	 */
 	public function insertUserTypeActivityObject($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -60,7 +60,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[old_object_id], type=bigint, not_null=1, length=19)
 	 */
 	public function updateUserTypeActivityObject($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -102,7 +102,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 		$activity_id = $data["activity_id"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -128,7 +128,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 		$activity_id = $data["activity_id"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -150,7 +150,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 */
 	public function deleteUserTypeActivityObjectsByUserTypeId($data) {
 		$user_type_id = $data["user_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -173,7 +173,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 */
 	public function deleteUserTypeActivityObjectsByActivityId($data) {
 		$activity_id = $data["activity_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -198,7 +198,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	public function deleteUserTypeActivityObjectsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -227,13 +227,13 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 		$activity_id = $data["activity_id"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "get_user_type_activity_object", array("user_type_id" => $user_type_id, "activity_id" => $activity_id, "object_type_id" => $object_type_id, "object_id" => $object_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserTypeActivityObject = $this->getUserTypeActivityObjectHbnObj($b, $options);
@@ -241,7 +241,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mu_user_type_activity_object", null, array("user_type_id" => $user_type_id, "activity_id" => $activity_id, "object_type_id" => $object_type_id, "object_id" => $object_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/user", "UserTypeActivityObjectService.getUserTypeActivityObject", $data, $options);
@@ -252,7 +252,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 */
 	public function getUserTypeActivityObjectsByUserTypeIds($data) {
 		$user_type_ids = $data["user_type_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($user_type_ids) {
@@ -284,7 +284,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 */
 	public function getUserTypeActivityObjectsByUserTypeId($data) {
 		$user_type_id = $data["user_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -307,7 +307,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 */
 	public function getUserTypeActivityObjectsByActivityId($data) {
 		$activity_id = $data["activity_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -332,7 +332,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	public function getUserTypeActivityObjectsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -357,14 +357,15 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[conditions][object_id], type=bigint|array, length=19)
 	 */
 	public function getUserTypeActivityObjectsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/user", "get_user_type_activity_objects_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -374,7 +375,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mu_user_type_activity_object", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -389,25 +390,26 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[conditions][object_id], type=bigint|array, length=19)
 	 */
 	public function countUserTypeActivityObjectsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "count_user_type_activity_objects_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$UserTypeActivityObject = $this->getUserTypeActivityObjectHbnObj($b, $options);
-				return $UserTypeActivityObject->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $UserTypeActivityObject->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mu_user_type_activity_object", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -423,25 +425,26 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[conditions][object_id], type=bigint|array, length=19)
 	 */
 	public function getUserTypeActivityObjectsByUserIdAndConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/user", "get_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $data["user_id"], "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$UserTypeActivityObject = $this->getUserTypeActivityObjectHbnObj($b, $options);
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				return $UserTypeActivityObject->callSelect("get_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $data["user_id"], "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				$sql = UserTypeActivityObjectDBDAOServiceUtil::get_user_type_activity_objects_by_user_id_and_conditions(array("user_id" => $data["user_id"], "conditions" => $cond));
 				
@@ -460,32 +463,33 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	 * @param (name=data[conditions][object_id], type=bigint|array, length=19)
 	 */
 	public function countUserTypeActivityObjectsByUserIdAndConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "count_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $data["user_id"], "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$UserTypeActivityObject = $this->getUserTypeActivityObjectHbnObj($b, $options);
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				$result = $UserTypeActivityObject->callSelect("count_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $data["user_id"], "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "utao");
+				$cond = \DB::getSQLConditions($conditions, $conditions_join, "utao");
 				$cond = $cond ? $cond : "1=1";
 				$sql = UserTypeActivityObjectDBDAOServiceUtil::count_user_type_activity_objects_by_user_id_and_conditions(array("user_id" => $data["user_id"], "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
 				return $b->callBusinessLogic("module/user", "UserTypeActivityObjectService.countUserTypeActivityObjectsByUserIdAndConditions", $data, $options);
@@ -493,7 +497,7 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	}
 	
 	public function getAllUserTypeActivityObjects($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -511,13 +515,13 @@ class UserTypeActivityObjectService extends \soa\CommonService {
 	}
 	
 	public function countAllUserTypeActivityObjects($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "count_all_user_type_activity_objects", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserTypeActivityObject = $this->getUserTypeActivityObjectHbnObj($b, $options);

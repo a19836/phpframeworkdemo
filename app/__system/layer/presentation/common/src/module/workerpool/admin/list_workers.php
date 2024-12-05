@@ -1,12 +1,12 @@
 <?php
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$path_to_filter = $_GET["path_to_filter"]; //this comes from the amin/admin_citizen.php UI.
+$path_to_filter = isset($_GET["path_to_filter"]) ? $_GET["path_to_filter"] : null; //this comes from the amin/admin_citizen.php UI.
 
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("workerpool/admin/WorkerPoolAdminUtil", $common_project_name);
 	
 	$WorkerPoolAdminUtil = new WorkerPoolAdminUtil($CommonModuleAdminUtil);
@@ -14,15 +14,17 @@ if ($PEVC) {
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
 	$pks = "worker_id=#[\$idx][worker_id]#";
+	$options = isset($options) ? $options : null;
+	
 	$data = WorkerPoolUtil::getAllWorkers($brokers, $options, true);
 	$worker_available_statuses = $WORKER_AVAILABLE_STATUSES = WorkerPoolUtil::getConstantVariable("WORKER_AVAILABLE_STATUSES");
 	
 	if ($data) 
 		foreach ($data as &$item) {
-			if ($item["begin_time"])
+			if (!empty($item["begin_time"]))
 				$item["begin_date"] = date("Y-m-d H:i:s", $item["begin_time"]);
 			
-			if ($item["end_time"])
+			if (!empty($item["end_time"]))
 				$item["end_date"] = date("Y-m-d H:i:s", $item["end_time"]);
 		}
 	

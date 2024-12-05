@@ -5,20 +5,20 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $top_bar_title = "Create new Project"; if (!$creation_step) { $call_edit_project_details = true; if ($refresh_page_without_creation_step) { $call_edit_project_details = false; $main_content = '<script>
+$get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $top_bar_title = "Create new Project"; $head = ""; $main_content = ""; if (!$creation_step) { $call_edit_project_details = true; if (!empty($refresh_page_without_creation_step)) { $call_edit_project_details = false; $main_content = '<script>
 			document.location = \'?' . $query_string . '\';
-		</script>'; } else if ($_POST && $status) { $call_edit_project_details = false; $msg = $extra_message ? $extra_message : ""; $on_success_js_func_opts = $on_success_js_func ? array( "layer_bean_folder_name" => $layer_bean_folder_name, "new_filter_by_layout" => $new_filter_by_layout, "new_bean_name" => $bean_name, "new_bean_file_name" => $bean_file_name, "new_project" => $path ) : null; $project_post_data = array( "on_success_js_func" => $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds", "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); unset($get_bkp["step"]); $get_bkp["bean_name"] = $bean_name; $get_bkp["bean_file_name"] = $bean_file_name; $get_bkp["path"] = $path; $get_bkp["filter_by_layout"] = $new_filter_by_layout; $query_string = http_build_query($get_bkp); $main_content = '<script>
+		</script>'; } else if (!empty($_POST) && !empty($status)) { $call_edit_project_details = false; $msg = !empty($extra_message) ? $extra_message : ""; $on_success_js_func_opts = $on_success_js_func ? array( "layer_bean_folder_name" => $layer_bean_folder_name, "new_filter_by_layout" => $new_filter_by_layout, "new_bean_name" => $bean_name, "new_bean_file_name" => $bean_file_name, "new_project" => $path ) : null; $project_post_data = array( "on_success_js_func" => $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds", "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); unset($get_bkp["step"]); $get_bkp["bean_name"] = $bean_name; $get_bkp["bean_file_name"] = $bean_file_name; $get_bkp["path"] = $path; $get_bkp["filter_by_layout"] = $new_filter_by_layout; $query_string = http_build_query($get_bkp); $main_content = '<script>
 			' . ($msg ? 'alert("' . str_replace('"', '', $msg) . '");' : '') . '
 			postToUrl(\'?' . $query_string . '&creation_step=' . ($get_store_programs_url ? 1 : 2) . '\', ' . json_encode($project_post_data) . ');
-		</script>'; } if ($call_edit_project_details) { include_once $EVC->getViewPath("presentation/edit_project_details"); $project_exists = ($_POST && $is_previous_existent_project) || (!$_POST && $is_existent_project); $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
+		</script>'; } if ($call_edit_project_details) { include_once $EVC->getViewPath("presentation/edit_project_details"); $project_exists = (!empty($_POST) && !empty($is_previous_existent_project)) || (empty($_POST) && !empty($is_existent_project)); $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
 					<li class="continue button" data-title="' . ($project_exists ? "Save project" : "Create project") . '"><a class="active" href="javascript:void(0)" onClick="createProject(this)">Continue</a></li>
-					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)"' . ($is_existent_project ? ' onClick="cancel()' : '') . '">Cancel</a></li>
+					<li class="cancel button" data-title="Cancel"><a class="active" href="javascript:void(0)"' . (!empty($is_existent_project) ? ' onClick="cancel()' : '') . '">Cancel</a></li>
 				</ul>
 			</header>
-		</div>' . $main_content; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button install_program_step_0' . ($popup ? ' in_popup' : '') . '">
+		</div>' . $main_content; } } else { $project_post_data = array( "on_success_js_func" => $on_success_js_func, "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => isset($msg) ? $msg : null ); if ($creation_step == 3) { include_once $EVC->getViewPath("admin/install_program"); if (!$step) { $main_content = '<div class="top_bar create_project_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button install_program_step_0' . ($popup ? ' in_popup' : '') . '">
 				<header>
 					<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 					<ul>
@@ -36,7 +36,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 				<header>
 					<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 					<ul>
-					' . ($step < 3 || $next_step_html ? '
+					' . ($step < 3 || !empty($next_step_html) ? '
 						<li class="continue button" data-title="Continue to next installation step"><a class="active" href="javascript:void(0)" onClick="installProgramStep(this, project_post_data)">Continue</a></li>
 					' : '
 						<li class="continue button" data-title="Continue to the final step"><a class="active" href="javascript:void(0)" onClick="postToUrl(\'?' . $query_string . '&creation_step=2\', project_post_data)">Continue</a></li>
@@ -45,7 +45,7 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 						<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 					</ul>
 				</header>
-			</div>' . $main_content; if ($is_last_step_successfull) $status_message = ""; } } else if ($creation_step == 2) { $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=$filter_by_layout"; $head = '
+			</div>' . $main_content; if (!empty($is_last_step_successfull)) $status_message = ""; } } else if ($creation_step == 2) { $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=$filter_by_layout"; $head = '
 		<!-- Add Fontawsome Icons CSS -->
 		<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -64,11 +64,11 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 		</div>
 		<div class="message">
 			<div class="title">Your project was created successfully!</div>
-			' . ($msg ? '<div class="info">' . $msg . '</div>' : '') . '
+			' . (!empty($msg) ? '<div class="info">' . $msg . '</div>' : '') . '
 			<div class="sentence_1">Please click in the button below to start creating pages for your application</div>
 			<div class="sentence_2">Happy development...</div>
 			<button onClick="goToProjectDashboard(\'' . $admin_home_project_page_url . '\')">Go to your Project Dashboard</button>
-		</div>'; if ($msg) $status_message = $msg . ($status_message ? "<br/>$status_message" : ""); } else if ($creation_step == 1) { $head = '
+		</div>'; if (!empty($msg)) $status_message = $msg . (!empty($status_message) ? "<br/>$status_message" : ""); } else if ($creation_step == 1) { $head = '
 		<!-- Add Fontawsome Icons CSS -->
 		<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -105,8 +105,8 @@ $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_q
 var on_success_js_func_name = "' . $on_success_js_func . '";
 var on_success_js_func_opts = ' . json_encode($on_success_js_func_opts) . ';
 var popup = ' . ($popup ? "true" : "false") . ';
-var project_post_data = ' . json_encode($project_post_data) . ';
-var project_exists = ' . ($project_exists ? "true" : "false") . ';
+var project_post_data = ' . (isset($project_post_data) ? json_encode($project_post_data) : "null") . ';
+var project_exists = ' . (!empty($project_exists) ? "true" : "false") . ';
 </script>'; $main_content = '
 <div class="create_project changing_to_step">
 	<div class="creation_step creation_step_' . $creation_step . '">

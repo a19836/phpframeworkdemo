@@ -118,7 +118,9 @@ function createLayoutUIEditor(textarea) {
 			var ptl_ui_creator_var_name = "PTLLayoutUIEditor_" + Math.floor(Math.random() * 1000);
 			var PtlLayoutUIEditor = new LayoutUIEditor();
 			PtlLayoutUIEditor.options.ui_element = ui;
-			PtlLayoutUIEditor.options.template_source_editor_save_func = saveEchoStrSettings;
+			PtlLayoutUIEditor.options.on_context_menu_widget_setting = typeof onContextMenuLayoutUIEditorWidgetSetting == "function" ? onContextMenuLayoutUIEditorWidgetSetting : null;
+			PtlLayoutUIEditor.options.on_template_source_editor_ready_func = typeof setCodeEditorAutoCompleter == "function" ? setCodeEditorAutoCompleter : null;
+			PtlLayoutUIEditor.options.on_template_source_editor_save_func = saveEchoStrSettings;
 			PtlLayoutUIEditor.options.on_choose_variable_func = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : (
 				typeof onProgrammingTaskChooseCreatedVariable == "function" ? onProgrammingTaskChooseCreatedVariable : null
 			);
@@ -169,9 +171,12 @@ function createLayoutUIEditor(textarea) {
 			editor.setOptions({
 				enableBasicAutocompletion: true,
 				enableSnippets: true,
-				enableLiveAutocompletion: false,
+				enableLiveAutocompletion: true,
 			});
 			editor.setOption("wrap", true);
+			
+			if (typeof setCodeEditorAutoCompleter == "function")
+				setCodeEditorAutoCompleter(editor);
 			
 			parent.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
 

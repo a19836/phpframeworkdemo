@@ -47,15 +47,15 @@ class CommonModuleSettingsUI {
 			);
 		
 		if (isset($settings["style_type"]) || isset($settings["block_class"]))
-			$html .= self::getStyleFieldsHtml($settings["style_type"], $settings["block_class"]);
+			$html .= self::getStyleFieldsHtml(isset($settings["style_type"]) ? $settings["style_type"] : null, isset($settings["block_class"]) ? $settings["block_class"] : null);
 		
-		if ($settings["pagination"])
+		if (!empty($settings["pagination"]))
 			$html .= self::getListPaginationSettingsHtml($settings["pagination"]);
 		
-		$reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+		$reverse_class = isset($_COOKIE["main_navigator_side"]) && $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
 				
 		$html .= '
-		<div class="els" isList="' . ($settings["is_list"] ? 1 : 0) . '">
+		<div class="els" isList="' . (!empty($settings["is_list"]) ? 1 : 0) . '">
 			<ul class="els_tabs">
 				<li class="ptl_tab"><a href="#els_ptl" onClick="updatePTLFromFieldsSettings(this);onElsTabChange(this)">HTML</a></li>
 				<li class="elements_tab"><a href="#els_elements" onClick="onElsTabChange(this)">Form Elements</a></li>
@@ -76,16 +76,16 @@ class CommonModuleSettingsUI {
 		
 			<div id="els_elements" class="els_elements">';
 		
-		if ($settings["is_list"])
+		if (!empty($settings["is_list"]))
 			$html .= '
 				<div class="table_class">
 					<label>Table Class:</label>
-					<input type="text" class="module_settings_property" name="table_class" value="' . $settings["table_class"] . '" />
+					<input type="text" class="module_settings_property" name="table_class" value="' . (isset($settings["table_class"]) ? $settings["table_class"] : null) . '" />
 					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="rows_class">
 					<label>Rows Class:</label>
-					<input type="text" class="module_settings_property" name="rows_class" value="' . $settings["rows_class"] . '" />
+					<input type="text" class="module_settings_property" name="rows_class" value="' . (isset($settings["rows_class"]) ? $settings["rows_class"] : null) . '" />
 					<span class="icon add_variable inline" onclick="ProgrammingTaskUtil.onProgrammingTaskChooseCreatedVariable(this)" title="Add Variable">Search Variable</span>
 				</div>
 				<div class="clear"></div>';
@@ -100,11 +100,23 @@ class CommonModuleSettingsUI {
 		if (isset($settings["js"]))
 			$html .= self::getJsFieldsHtml($settings["js"]);
 		
-		if (isset($settings["fields"]))
+		if (isset($settings["fields"])) {
+			$settings["is_list"] = isset($settings["is_list"]) ? $settings["is_list"] : null;
+			$settings["search_values"] = isset($settings["search_values"]) ? $settings["search_values"] : null;
+			$settings["default_values"] = isset($settings["default_values"]) ? $settings["default_values"] : null;
+			
 			$html .= self::getAttributeFieldsHtml($settings["fields"], $settings["is_list"], $settings["search_values"], $settings["default_values"]);
+		}
 		
-		if (is_array($settings["buttons"])) {
-			if ($settings["is_list"])
+		if (isset($settings["buttons"]) && is_array($settings["buttons"])) {
+			$settings["buttons"]["view"] = isset($settings["buttons"]["view"]) ? $settings["buttons"]["view"] : null;
+			$settings["buttons"]["edit"] = isset($settings["buttons"]["edit"]) ? $settings["buttons"]["edit"] : null;
+			$settings["buttons"]["insert"] = isset($settings["buttons"]["insert"]) ? $settings["buttons"]["insert"] : null;
+			$settings["buttons"]["update"] = isset($settings["buttons"]["update"]) ? $settings["buttons"]["update"] : null;
+			$settings["buttons"]["delete"] = isset($settings["buttons"]["delete"]) ? $settings["buttons"]["delete"] : null;
+			$settings["buttons"]["undefined"] = isset($settings["buttons"]["undefined"]) ? $settings["buttons"]["undefined"] : null;
+			
+			if (!empty($settings["is_list"]))
 				$html .= self::getListButtonFieldsHtml($settings["buttons"]["edit"], $settings["buttons"]["delete"]);
 			else
 				$html .= self::getEditButtonFieldsHtml($settings["buttons"]["view"], $settings["buttons"]["insert"], $settings["buttons"]["update"], $settings["buttons"]["delete"], $settings["buttons"]["undefined"]);
@@ -116,7 +128,7 @@ class CommonModuleSettingsUI {
 	}
 	
 	public static function getListPaginationSettingsHtml($pagination) {
-		$label = is_array($pagination) && $pagination["label"] ? $pagination["label"] : "Pagination Settings";
+		$label = is_array($pagination) && !empty($pagination["label"]) ? $pagination["label"] : "Pagination Settings";
 		
 		return '
 	<div class="pagination">
@@ -186,7 +198,7 @@ class CommonModuleSettingsUI {
 					</ul>
 				</li>';
 		
-		if ($settings["is_list"])
+		if (!empty($settings["is_list"]))
 			$menu_widgets_html .= '
 				<li class="group">
 					<div class="group-title"><i class="zmdi zmdi-caret-right toggle"></i>Buttons</div>
@@ -235,28 +247,32 @@ class CommonModuleSettingsUI {
 	
 	//<ptl:block:field:published/>
 	private static function getLayoutUIEditorMenuBlockFieldWidgetsHtml($settings) {
-		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($settings["fields"], "field");
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
+		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($fields, "field");
 	}
 	
 	//<ptl:block:field:label:created_date/>
 	private static function getLayoutUIEditorMenuBlockFieldLabelWidgetsHtml($settings) {
-		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($settings["fields"], "field:label");
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
+		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($fields, "field:label");
 	}
 	
 	//<ptl:block:field:input:photo/>
 	private static function getLayoutUIEditorMenuBlockFieldInputWidgetsHtml($settings) {
-		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($settings["fields"], "field:input");
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
+		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($fields, "field:input");
 	}
 	
 	//<ptl:block:field:value:title/>
 	//This corresponds to: #[\$idx][title]# or #title#
 	private static function getLayoutUIEditorMenuBlockFieldValueWidgetsHtml($settings) {
-		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($settings["fields"], "field:value");
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
+		return self::getLayoutUIEditorMenuPTLBlockWidgetsHtml($fields, "field:value");
 	}
 	
 	//<ptl:block:button:edit/>
 	private static function getLayoutUIEditorMenuBlockButtonWidgetsHtml($settings) {
-		$buttons = $settings["buttons"];
+		$buttons = isset($settings["buttons"]) ? $settings["buttons"] : null;
 		unset($buttons["undefined"]); //ignore undefined
 		unset($buttons["view"]); //ignore view
 		
@@ -265,7 +281,7 @@ class CommonModuleSettingsUI {
 	
 	//<ptl:block:button:input:insert/>
 	private static function getLayoutUIEditorMenuBlockButtonInputWidgetsHtml($settings) {
-		$buttons = $settings["buttons"];
+		$buttons = isset($settings["buttons"]) ? $settings["buttons"] : null;
 		unset($buttons["undefined"]); //ignore undefined
 		unset($buttons["view"]); //ignore view
 		
@@ -274,7 +290,7 @@ class CommonModuleSettingsUI {
 	
 	//<ptl:block:button:label:insert/>
 	private static function getLayoutUIEditorMenuBlockButtonLabelWidgetsHtml($settings) {
-		$buttons = $settings["buttons"];
+		$buttons = isset($settings["buttons"]) ? $settings["buttons"] : null;
 		unset($buttons["undefined"]); //ignore undefined
 		unset($buttons["view"]); //ignore view
 		
@@ -283,7 +299,7 @@ class CommonModuleSettingsUI {
 	
 	//<ptl:block:button:value:insert/>
 	private static function getLayoutUIEditorMenuBlockButtonValueWidgetsHtml($settings) {
-		$buttons = $settings["buttons"];
+		$buttons = isset($settings["buttons"]) ? $settings["buttons"] : null;
 		unset($buttons["undefined"]); //ignore undefined
 		unset($buttons["view"]); //ignore view
 		
@@ -299,8 +315,8 @@ class CommonModuleSettingsUI {
 		if ($items)
 			foreach ($items as $name => $field) {
 				if (is_array($field)) {
-					$name = $field["name"] ? $field["name"] : $name;
-					$label = $field["label"] ? $field["label"] : ucwords(strtolower(str_replace(array("_", "-"), " ", $name)));
+					$name = !empty($field["name"]) ? $field["name"] : $name;
+					$label = !empty($field["label"]) ? $field["label"] : ucwords(strtolower(str_replace(array("_", "-"), " ", $name)));
 				}
 				else {
 					$name = is_numeric($name) ? $field : $name;
@@ -358,7 +374,7 @@ class CommonModuleSettingsUI {
 			
 			if (!$field_id && is_string($field) && !is_numeric($field)) {
 				$field_id = $field;
-				unset($field);
+				$field = null;
 			}
 			
 			$html .= self::getAttributeFieldHtml($field, $field_id, $is_list, $search_values, $default_values);
@@ -382,15 +398,15 @@ class CommonModuleSettingsUI {
 
 	public static function getAttributeFieldHtml($field, $field_id, $is_list = false, $search_values = false, $default_values = false) {
 		if (is_array($field)) {
-			$type = $field["type"];
-			$label = $field["label"];
-			$class = $field["class"];
-			$admin_class = $field["admin_class"];
-			$default_value = $field["default_value"];
-			$search_value = $field["search_value"];
-			$show = $field["show"];
+			$type = isset($field["type"]) ? $field["type"] : null;
+			$label = isset($field["label"]) ? $field["label"] : null;
+			$class = isset($field["class"]) ? $field["class"] : null;
+			$admin_class = isset($field["admin_class"]) ? $field["admin_class"] : null;
+			$default_value = isset($field["default_value"]) ? $field["default_value"] : null;
+			$search_value = isset($field["search_value"]) ? $field["search_value"] : null;
+			$show = isset($field["show"]) ? $field["show"] : null;
 			
-			if ($field["name"])
+			if (!empty($field["name"]))
 				$field_name = $field["name"];
 			
 			unset($field["type"]);
@@ -403,12 +419,15 @@ class CommonModuleSettingsUI {
 			unset($field["show"]);
 		}
 		
-		$field_name = $field_name ? $field_name : $field_id;
+		$field_name = !empty($field_name) ? $field_name : $field_id;
 		$field_label = ucwords(str_replace("_", " ", strtolower($field_name)));
 		$label = isset($label) ? $label : $field_label;
 		$field_label = $label ? $label : $field_label;//only if $label is not empty, then sets to $label
-		$type = $type ? $type : ($is_list ? "label" : "text");
+		$type = !empty($type) ? $type : ($is_list ? "label" : "text");
 		$class = isset($class) ? $class : $field_name;
+		$admin_class = isset($admin_class) ? $admin_class : null;
+		$default_value = isset($default_value) ? $default_value : null;
+		$search_value = isset($search_value) ? $search_value : null;
 		$show = isset($show) ? $show : 1;
 		
 		$extra_props_html = '';
@@ -439,7 +458,7 @@ class CommonModuleSettingsUI {
 				<option value="1"' . ($show ? ' selected' : '') . '>Show this field</option>
 			</select>';
 		
-		if (!$is_list || $default_values) {	
+		if (!$is_list || !empty($default_values)) {	
 			$html .= '
 			<div class="settings_prop_default_value">
 				<label>Default Value: </label>
@@ -448,7 +467,7 @@ class CommonModuleSettingsUI {
 			</div>';
 		}
 		
-		if ($is_list || $search_values) {
+		if ($is_list || !empty($search_values)) {
 			$html .= '
 			<div class="settings_prop_search_value">
 				<label>Search Value: </label>
@@ -490,8 +509,8 @@ class CommonModuleSettingsUI {
 		
 		if (isset($edit) && $edit !== false && $edit !== 0) {
 			$with_url = is_array($edit) && isset($edit["with_url"]) ? $edit["with_url"] : true;
-			$edit_label = is_array($edit) && $edit["button_label"] ? $edit["button_label"] : "Show Edit Button";
-			$show = !is_array($edit) ||$edit["show"] || !array_key_exists("show", $edit);
+			$edit_label = is_array($edit) && !empty($edit["button_label"]) ? $edit["button_label"] : "Show Edit Button";
+			$show = !is_array($edit) || !empty($edit["show"]) || !array_key_exists("show", $edit);
 			
 			$html .= '
 			<div class="show_edit_button">
@@ -514,8 +533,8 @@ class CommonModuleSettingsUI {
 		}
 	
 		if (isset($delete) && $delete !== false && $delete !== 0) {
-			$delete_label = is_array($delete) && $delete["button_label"] ? $delete["button_label"] : "Show Delete Button";
-			$show = !is_array($delete) ||$delete["show"] || !array_key_exists("show", $delete);
+			$delete_label = is_array($delete) && !empty($delete["button_label"]) ? $delete["button_label"] : "Show Delete Button";
+			$show = !is_array($delete) || !empty($delete["show"]) || !array_key_exists("show", $delete);
 			
 			$html .= '
 			<div class="show_delete_button">
@@ -536,8 +555,8 @@ class CommonModuleSettingsUI {
 			
 			$html .= '
 			<div class="allow_view">
-				<label>' . (is_array($view) && $view["button_label"] ? $view["button_label"] : "Allow View") . ':</label>
-				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_view" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
+				<label>' . (is_array($view) && !empty($view["button_label"]) ? $view["button_label"] : "Allow View") . ':</label>
+				<input type="checkbox" class="module_settings_property' . (!empty($field["button_show_option_hidden"]) ? " hidden" : "") . '" name="allow_view" value="1"' . (!empty($field["show"]) || !array_key_exists("show", $field) ? " checked" : "") . ' />
 			</div>';
 		}
 		
@@ -551,11 +570,11 @@ class CommonModuleSettingsUI {
 			
 			$html .= '
 			<div class="allow_insertion">
-				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Insertion") . ':</label>
-				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_insertion" value="1"' . ($field["show"] ? " checked" : "") . ' />
+				<label>' . (!empty($field["button_label"]) ? $field["button_label"] : "Allow Insertion") . ':</label>
+				<input type="checkbox" class="module_settings_property' . (!empty($field["button_show_option_hidden"]) ? " hidden" : "") . '" name="allow_insertion" value="1"' . (!empty($field["show"]) ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Insert Settings" onclick="toggleStatusAction(this, \'insert\')">Toggle</span>
 			</div>' . 
-			self::getStatusActionHtml("insert", "alert_message_and_redirect", "show_message", $field["ok_message"], $field["error_message"]) . 
+			self::getStatusActionHtml("insert", "alert_message_and_redirect", "show_message", isset($field["ok_message"]) ? $field["ok_message"] : null, isset($field["error_message"]) ? $field["error_message"] : null) . 
 			self::getEditButtonFormFieldHtml($field, "insert");
 		}
 		
@@ -569,11 +588,11 @@ class CommonModuleSettingsUI {
 			
 			$html .= '
 			<div class="allow_update">
-				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Update") . ':</label>
-				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_update" value="1"' . ($field["show"] || !array_key_exists("show", $field) ? " checked" : "") . ' />
+				<label>' . (!empty($field["button_label"]) ? $field["button_label"] : "Allow Update") . ':</label>
+				<input type="checkbox" class="module_settings_property' . (!empty($field["button_show_option_hidden"]) ? " hidden" : "") . '" name="allow_update" value="1"' . (!empty($field["show"]) || !array_key_exists("show", $field) ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Update Settings" onclick="toggleStatusAction(this, \'update\')">Toggle</span>
 			</div>' . 
-			self::getStatusActionHtml("update", "show_message", "show_message", $field["ok_message"], $field["error_message"]) . 
+			self::getStatusActionHtml("update", "show_message", "show_message", isset($field["ok_message"]) ? $field["ok_message"] : null, isset($field["error_message"]) ? $field["error_message"] : null) . 
 			self::getEditButtonFormFieldHtml($field, "update");
 		}
 	
@@ -593,11 +612,11 @@ class CommonModuleSettingsUI {
 			
 			$html .= '
 			<div class="allow_deletion">
-				<label>' . ($field["button_label"] ? $field["button_label"] : "Allow Deletion") . ':</label>
-				<input type="checkbox" class="module_settings_property' . ($field["button_show_option_hidden"] ? " hidden" : "") . '" name="allow_deletion" value="1"' . ($field["show"] ? " checked" : "") . ' />
+				<label>' . (!empty($field["button_label"]) ? $field["button_label"] : "Allow Deletion") . ':</label>
+				<input type="checkbox" class="module_settings_property' . (!empty($field["button_show_option_hidden"]) ? " hidden" : "") . '" name="allow_deletion" value="1"' . (!empty($field["show"]) ? " checked" : "") . ' />
 				<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Delete Settings" onclick="toggleStatusAction(this, \'delete\')">Toggle</span>
 			</div>' . 
-			self::getStatusActionHtml("delete", "show_message_and_stop", "show_message", $field["ok_message"], $field["error_message"]) .  
+			self::getStatusActionHtml("delete", "show_message_and_stop", "show_message", isset($field["ok_message"]) ? $field["ok_message"] : null, isset($field["error_message"]) ? $field["error_message"] : null) .  
 			self::getEditButtonFormFieldHtml($field, "delete");
 		}
 		
@@ -605,9 +624,9 @@ class CommonModuleSettingsUI {
 			$field = is_array($undefined) ? $undefined : array();
 			
 			$html .= '<div class="undefined_object">
-					<label>' . ($field["button_label"] ? $field["button_label"] : "When Object doesn't exists") . ':</label>
+					<label>' . (!empty($field["button_label"]) ? $field["button_label"] : "When Object doesn't exists") . ':</label>
 					<span class="icon maximize status_action_toggle_icon" title="Minimize/Maximize Status Undefined Object Settings" onclick="toggleStatusAction(this, \'undefined_object\')">Toggle</span>
-				</div>' . self::getStatusActionHtml("undefined_object", null, "show_message_and_stop", $field["ok_message"], $field["error_message"]);
+				</div>' . self::getStatusActionHtml("undefined_object", null, "show_message_and_stop", isset($field["ok_message"]) ? $field["ok_message"] : null, isset($field["error_message"]) ? $field["error_message"] : null);
 		}
 		
 		return $html;
@@ -615,10 +634,10 @@ class CommonModuleSettingsUI {
 
 	private static function getEditButtonFormFieldHtml($field, $field_id) {
 		if (is_array($field)) {
-			$input_value = $field["value"];
-			$class = $field["class"];
+			$input_value = isset($field["value"]) ? $field["value"] : null;
+			$class = isset($field["class"]) ? $field["class"] : null;
 			
-			if ($field["name"])
+			if (!empty($field["name"]))
 				$field_name = $field["name"];
 			
 			unset($field["value"]);
@@ -626,7 +645,9 @@ class CommonModuleSettingsUI {
 			unset($field["name"]);
 		}
 		
-		$field_name = $field_name ? $field_name : $field_id;
+		$field_name = !empty($field_name) ? $field_name : $field_id;
+		$input_value = isset($input_value) ? $input_value : "";
+		$class = isset($class) ? $class : "";
 		
 		$extra_props_html = '';
 		if (is_array($field)) {
@@ -877,18 +898,18 @@ class CommonModuleSettingsUI {
 		$html = '';
 		
 		if ($validation) {
-			$validation_action_label = $settings["validation_action_label"] ? $settings["validation_action_label"] : "On Validation Action";
-			$validation_message_label = $settings["validation_message_label"] ? $settings["validation_message_label"] : "Validation Message";
-			$validation_class_label = $settings["validation_class_label"] ? $settings["validation_class_label"] : "Validation Class";
-			$validation_redirect_label = $settings["validation_redirect_label"] ? $settings["validation_redirect_label"] : "Validation Redirect Url";
-			$validation_ttl_label = $settings["validation_ttl_label"] ? $settings["validation_ttl_label"] : "Validation Redirect TTL";
-			$validation_blocks_execution_label = $settings["validation_blocks_execution_label"] ? $settings["validation_blocks_execution_label"] : "Validation Blocks Execution";
+			$validation_action_label = !empty($settings["validation_action_label"]) ? $settings["validation_action_label"] : "On Validation Action";
+			$validation_message_label = !empty($settings["validation_message_label"]) ? $settings["validation_message_label"] : "Validation Message";
+			$validation_class_label = !empty($settings["validation_class_label"]) ? $settings["validation_class_label"] : "Validation Class";
+			$validation_redirect_label = !empty($settings["validation_redirect_label"]) ? $settings["validation_redirect_label"] : "Validation Redirect Url";
+			$validation_ttl_label = !empty($settings["validation_ttl_label"]) ? $settings["validation_ttl_label"] : "Validation Redirect TTL";
+			$validation_blocks_execution_label = !empty($settings["validation_blocks_execution_label"]) ? $settings["validation_blocks_execution_label"] : "Validation Blocks Execution";
 			
 			$html .= '
 	<div class="validation_action">
 		<label>' . $validation_action_label . ':</label>
 		<select class="module_settings_property" name="validation_action" onChange="toggleValidationMessage(this)">
-			' . ($settings["include_native_validation_action"] ? '<option value="">Native / Default</option>' : '') . '
+			' . (!empty($settings["include_native_validation_action"]) ? '<option value="">Native / Default</option>' : '') . '
 			<option value="do_nothing">Do nothing</option>
 			<option value="show_message">Show message</option>
 			<option value="show_message_and_redirect">Show message and redirect</option>
@@ -930,12 +951,12 @@ class CommonModuleSettingsUI {
 		}
 		
 		if ($non_validation) {
-			$non_validation_action_label = $settings["non_validation_action_label"] ? $settings["non_validation_action_label"] : "On Non-Validation Action";
-			$non_validation_message_label = $settings["non_validation_message_label"] ? $settings["non_validation_message_label"] : "Non-Validation Message";
-			$non_validation_class_label = $settings["non_validation_class_label"] ? $settings["non_validation_class_label"] : "Non-Validation Class";
-			$non_validation_redirect_label = $settings["non_validation_redirect_label"] ? $settings["non_validation_redirect_label"] : "Non-Validation Redirect Url";
-			$non_validation_ttl_label = $settings["non_validation_ttl_label"] ? $settings["non_validation_ttl_label"] : "Non-Validation Redirect TTL";
-			$non_validation_blocks_execution_label = $settings["non_validation_blocks_execution_label"] ? $settings["non_validation_blocks_execution_label"] : "Non-Validation Blocks Execution";
+			$non_validation_action_label = !empty($settings["non_validation_action_label"]) ? $settings["non_validation_action_label"] : "On Non-Validation Action";
+			$non_validation_message_label = !empty($settings["non_validation_message_label"]) ? $settings["non_validation_message_label"] : "Non-Validation Message";
+			$non_validation_class_label = !empty($settings["non_validation_class_label"]) ? $settings["non_validation_class_label"] : "Non-Validation Class";
+			$non_validation_redirect_label = !empty($settings["non_validation_redirect_label"]) ? $settings["non_validation_redirect_label"] : "Non-Validation Redirect Url";
+			$non_validation_ttl_label = !empty($settings["non_validation_ttl_label"]) ? $settings["non_validation_ttl_label"] : "Non-Validation Redirect TTL";
+			$non_validation_blocks_execution_label = !empty($settings["non_validation_blocks_execution_label"]) ? $settings["non_validation_blocks_execution_label"] : "Non-Validation Blocks Execution";
 			
 			$html .= '
 	<div class="non_validation_action">

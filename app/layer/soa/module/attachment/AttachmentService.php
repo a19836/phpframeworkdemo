@@ -22,7 +22,7 @@ class AttachmentService extends \soa\CommonService {
 	 * @param (name=data[path], type=varchar, not_null=1, length=255)
 	 */
 	public function insertAttachment($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -39,8 +39,9 @@ class AttachmentService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Attachment = $this->getAttachmentHbnObj($b, $options);
+			$ids = null;
 			$status = $Attachment->insert($data, $ids);
-			return $status ? $ids["attachment_id"] : $status;
+			return $status ? (isset($ids["attachment_id"]) ? $ids["attachment_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mat_attachment", array(
@@ -64,7 +65,7 @@ class AttachmentService extends \soa\CommonService {
 	 * @param (name=data[path], type=varchar, not_null=1, length=255)
 	 */
 	public function updateAttachment($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -101,7 +102,7 @@ class AttachmentService extends \soa\CommonService {
 	 */
 	public function updateAttachmentName($data) {
 		$attachment_id = $data["attachment_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -133,7 +134,7 @@ class AttachmentService extends \soa\CommonService {
 	 */
 	public function deleteAttachment($data) {
 		$attachment_id = $data["attachment_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -155,13 +156,13 @@ class AttachmentService extends \soa\CommonService {
 	 */
 	public function getAttachment($data) {
 		$attachment_id = $data["attachment_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/attachment", "get_attachment", array("attachment_id" => $attachment_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Attachment = $this->getAttachmentHbnObj($b, $options);
@@ -169,7 +170,7 @@ class AttachmentService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mat_attachment", null, array("attachment_id" => $attachment_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/attachment", "AttachmentService.getAttachment", $data, $options);
@@ -183,14 +184,15 @@ class AttachmentService extends \soa\CommonService {
 	 * @param (name=data[conditions][path], type=varchar|array, length=255)
 	 */
 	public function getAttachmentsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/attachment", "get_attachments_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -200,7 +202,7 @@ class AttachmentService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mat_attachment", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -216,25 +218,26 @@ class AttachmentService extends \soa\CommonService {
 	 * @param (name=data[conditions][path], type=varchar|array, length=255)
 	 */
 	public function countAttachmentsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/attachment", "count_attachments_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Attachment = $this->getAttachmentHbnObj($b, $options);
-				return $Attachment->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Attachment->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mat_attachment", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -243,7 +246,7 @@ class AttachmentService extends \soa\CommonService {
 	}
 	
 	public function getAllAttachments($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -261,13 +264,13 @@ class AttachmentService extends \soa\CommonService {
 	}
 	
 	public function countAllAttachments($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/attachment", "count_all_attachments", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Attachment = $this->getAttachmentHbnObj($b, $options);
@@ -285,7 +288,7 @@ class AttachmentService extends \soa\CommonService {
 	 */
 	public function getAttachmentsByIds($data) {
 		$attachment_ids = $data["attachment_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($attachment_ids) {
@@ -317,7 +320,7 @@ class AttachmentService extends \soa\CommonService {
 	public function getAttachmentsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -343,7 +346,7 @@ class AttachmentService extends \soa\CommonService {
 	public function getAttachmentsByObjects($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_ids = $data["object_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($object_ids) {
@@ -377,8 +380,8 @@ class AttachmentService extends \soa\CommonService {
 	public function getAttachmentsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -405,8 +408,8 @@ class AttachmentService extends \soa\CommonService {
 	public function getAttachmentsByObjectsGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_ids = $data["object_ids"];
-		$groups = $data["groups"];
-		$options = $data["options"];
+		$groups = isset($data["groups"]) ? $data["groups"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($object_ids) {

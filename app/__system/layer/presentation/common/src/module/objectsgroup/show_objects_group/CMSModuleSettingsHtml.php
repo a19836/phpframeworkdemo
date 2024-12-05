@@ -6,7 +6,7 @@ include $EVC->getConfigPath("config");
 //prepare init_layout_ui_editor_widget_resource_options
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
 }
 
@@ -16,9 +16,9 @@ include $EVC->getModulePath("common/end_project_module_file", $common_project_na
 $tasks = array("createform");
 include $EVC->getModulePath("common/init_tasks_flow", $common_project_name);
 
-$head = $tasks_data["head"];
-$contents = $tasks_data["contents"]["createform"];
-$js_load_function = $tasks_data["js_load_functions"]["createform"];
+$head = isset($tasks_data["head"]) ? $tasks_data["head"] : null;
+$contents = isset($tasks_data["contents"]["createform"]) ? $tasks_data["contents"]["createform"] : null;
+$js_load_function = isset($tasks_data["js_load_functions"]["createform"]) ? $tasks_data["js_load_functions"]["createform"] : null;
 
 echo '
 <!-- Add TaskFlowChart main JS and CSS files -->
@@ -113,7 +113,7 @@ echo '
 <script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/other_settings.js"></script>
 
 <script>
-' . $layout_ui_editor_widget_resource_options_js . '
+' . (isset($layout_ui_editor_widget_resource_options_js) ? $layout_ui_editor_widget_resource_options_js : "") . '
 
 var js_load_function = ' . ($js_load_function ? $js_load_function : 'null') . ';
 var create_form_settings_code_url = \'' . $project_url_prefix . 'module/objectsgroup/show_objects_group/create_form_settings_code\';

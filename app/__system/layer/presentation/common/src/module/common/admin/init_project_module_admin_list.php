@@ -1,5 +1,5 @@
 <?php
-$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 $rows_per_page = 50;
 
 $options = array(

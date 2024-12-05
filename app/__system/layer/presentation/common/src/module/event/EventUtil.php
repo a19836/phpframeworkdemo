@@ -18,7 +18,7 @@ class EventUtil {
 			$indexes = array();
 			
 			foreach ($events as $idx => $event) {
-				$photo_id = $event["photo_id"];
+				$photo_id = isset($event["photo_id"]) ? $event["photo_id"] : null;
 				
 				if ($photo_id) {
 					$attachment_ids[] = $photo_id;
@@ -33,12 +33,13 @@ class EventUtil {
 				$url = AttachmentUtil::getAttachmentsFolderUrl($EVC);
 				
 				foreach ($attachments as $attachment) {
-					$path = $attachment["path"];
+					$path = isset($attachment["path"]) ? $attachment["path"] : null;
 					
 					if ($path) {
-						$idx = $indexes[ $attachment["attachment_id"] ];
+						$attachment_id = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
+						$idx = isset($indexes[$attachment_id]) ? $indexes[$attachment_id] : null;
 						
-						if ($events[$idx]) {
+						if (!empty($events[$idx])) {
 							$events[$idx]["photo_path"] = $folder_path . $path;
 							$events[$idx]["photo_url"] = $url . $path;
 						}
@@ -85,7 +86,7 @@ class EventUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/event", "count_events_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Event = $broker->callObject("module/event", "Event");
@@ -183,21 +184,21 @@ class EventUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$result = $broker->callSelect("module/event", "count_events_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$Event = $broker->callObject("module/event", "Event");
 					$result = $Event->callSelect("count_events_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOUtil::count_events_by_tags(array("tags" => $tags_str, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -262,21 +263,21 @@ class EventUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$result = $broker->callSelect("module/event", "count_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$Event = $broker->callObject("module/event", "Event");
 					$result = $Event->callSelect("count_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOUtil::count_events_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -284,7 +285,7 @@ class EventUtil {
 	
 	//$tags is a string containing multiple event tags
 	//This method will return the events that contains at least one tag in $tags
-	public static function getEventsByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
+	public static function getEventsByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -328,7 +329,7 @@ class EventUtil {
 	
 	//$tags is a string containing multiple event tags
 	//This method will return the events that contains at least one tag in $tags
-	public static function countEventsByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $no_cache = false) {
+	public static function countEventsByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$tags = TagUtil::convertTagsStringToArray($tags);
 			$tags = array_values($tags);
@@ -349,7 +350,7 @@ class EventUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$result = $broker->callSelect("module/event", "count_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -357,7 +358,7 @@ class EventUtil {
 					
 					$Event = $broker->callObject("module/event", "Event");
 					$result = $Event->callSelect("count_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -365,7 +366,7 @@ class EventUtil {
 					$sql = EventDBDAOUtil::count_events_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -433,21 +434,21 @@ class EventUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						
 						$result = $broker->callSelect("module/event", "count_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						
 						$Event = $broker->callObject("module/event", "Event");
 						$result = $Event->callSelect("count_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						$sql = EventDBDAOUtil::count_events_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -516,21 +517,21 @@ class EventUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						
 						$result = $broker->callSelect("module/event", "count_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						
 						$Event = $broker->callObject("module/event", "Event");
 						$result = $Event->callSelect("count_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						$sql = EventDBDAOUtil::count_events_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -539,7 +540,7 @@ class EventUtil {
 	
 	//$tags is a string containing multiple event tags
 	//This method will return the events that contains all $tags
-	public static function getEventsByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
+	public static function getEventsByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -584,7 +585,7 @@ class EventUtil {
 		}
 	}
 	
-	public static function countEventsByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $no_cache = false) {
+	public static function countEventsByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$tags = TagUtil::convertTagsStringToArray($tags);
 			$tags = array_values($tags);
@@ -607,7 +608,7 @@ class EventUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 						
 						$result = $broker->callSelect("module/event", "count_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
@@ -615,7 +616,7 @@ class EventUtil {
 						
 						$Event = $broker->callObject("module/event", "Event");
 						$result = $Event->callSelect("count_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
@@ -623,7 +624,7 @@ class EventUtil {
 						$sql = EventDBDAOUtil::count_events_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => ObjectUtil::EVENT_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -662,7 +663,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/event", "count_all_events", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Event = $broker->callObject("module/event", "Event");
@@ -688,7 +689,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$data = $broker->callSelect("module/event", "get_event", array("event_id" => $event_id), array("no_cache" => $no_cache));
-					$data = $data[0];
+					$data = isset($data[0]) ? $data[0] : null;
 					break;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
@@ -698,7 +699,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$data = $broker->findObjects("me_event", null, array("event_id" => $event_id), array("no_cache" => $no_cache));
-					$data = $data[0];
+					$data = isset($data[0]) ? $data[0] : null;
 					break;
 				}
 			}
@@ -706,15 +707,18 @@ class EventUtil {
 			if ($data) {
 				$data["tags"] = TagUtil::getObjectTagsString($broker, ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id);
 				
-				if ($data["photo_id"]) {
+				if (!empty($data["photo_id"])) {
 					$attachment_data = AttachmentUtil::getAttachmentsByConditions($brokers, array("attachment_id" => $data["photo_id"]), null, null, $no_cache);
-					$data["photo_path"] = AttachmentUtil::getAttachmentsFolderPath($EVC) . $attachment_data[0]["path"];
-					$data["photo_url"] = AttachmentUtil::getAttachmentsFolderUrl($EVC) . $attachment_data[0]["path"];
+					$attachment_data_path = isset($attachment_data[0]["path"]) ? $attachment_data[0]["path"] : null;
+					$data["photo_path"] = AttachmentUtil::getAttachmentsFolderPath($EVC) . $attachment_data_path;
+					$data["photo_url"] = AttachmentUtil::getAttachmentsFolderUrl($EVC) . $attachment_data_path;
 				}
 				
+				$data["begin_date"] = isset($data["begin_date"]) ? $data["begin_date"] : null;
 				$data["begin_date"] = $data["begin_date"] ? substr($data["begin_date"], 0, strrpos($data["begin_date"], ":")) : $data["begin_date"];
 				$data["begin_date"] = $data["begin_date"] == '0000-00-00 00:00' ? '' : $data["begin_date"];
 				
+				$data["end_date"] = isset($data["end_date"]) ? $data["end_date"] : null;
 				$data["end_date"] = $data["end_date"] ? substr($data["end_date"], 0, strrpos($data["end_date"], ":")) : $data["end_date"];
 				$data["end_date"] = $data["end_date"] == '0000-00-00 00:00' ? '' : $data["end_date"];
 			}
@@ -737,18 +741,20 @@ class EventUtil {
 			
 			if ($event_id) {
 				$status = true;
+				$data["photo_id"] = isset($data["photo_id"]) ? $data["photo_id"] : null;
 				
 				//delete photo
 				if ($is_update) {
-					$db_data = self::getEventProperties($EVC, $event_id, $no_cache);
+					$db_data = self::getEventProperties($EVC, $event_id);
+					$db_data_photo_id = isset($db_data["photo_id"]) ? $db_data["photo_id"] : null;
 					
-					$delete_photo = !$data["photo_id"] || $data["photo_id"] != $db_data["photo_id"]; //bc of the default_value that could be set
+					$delete_photo = !$data["photo_id"] || $data["photo_id"] != $db_data_photo_id; //bc of the default_value that could be set
 					
 					if ($delete_photo)
 						AttachmentUtil::deleteFileByObject($EVC, ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id, self::EVENT_PHOTO_GROUP_ID, $brokers);
 				}
 				
-				if ($file["tmp_name"]) {
+				if (!empty($file["tmp_name"])) {
 					//insert or update photo
 					$photo_id = AttachmentUtil::replaceObjectFile($EVC, $file, $data["photo_id"], ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id, self::EVENT_PHOTO_GROUP_ID, 0, $brokers, $is_local_file);
 					
@@ -772,17 +778,17 @@ class EventUtil {
 			$status = false;
 					
 			$data["published"] = empty($data["published"]) ? 0 : 1;
-			$data["photo_id"] = empty($data["photo_id"]) ? 0 : $data["photo_id"];
-			$data["country_id"] = empty($data["country_id"]) ? 0 : $data["country_id"];
-			$data["latitude"] = empty($data["latitude"]) ? 0 : $data["latitude"];
-			$data["longitude"] = empty($data["longitude"]) ? 0 : $data["longitude"];
+			$data["photo_id"] = empty($data["photo_id"]) ? 0 : (isset($data["photo_id"]) ? $data["photo_id"] : null);
+			$data["country_id"] = empty($data["country_id"]) ? 0 : (isset($data["country_id"]) ? $data["country_id"] : null);
+			$data["latitude"] = empty($data["latitude"]) ? 0 : (isset($data["latitude"]) ? $data["latitude"] : null);
+			$data["longitude"] = empty($data["longitude"]) ? 0 : (isset($data["longitude"]) ? $data["longitude"] : null);
 			$data["allow_comments"] = empty($data["allow_comments"]) ? 0 : 1;
 			
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
-			$event_id = $data["event_id"];
-			$is_insert = !$event_id;
+			$event_id = isset($data["event_id"]) ? $data["event_id"] : null;
+			$is_insert = empty($event_id);
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -796,20 +802,20 @@ class EventUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
 					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
 					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
-					$data["address"] = addcslashes($data["address"], "\\'");
-					$data["zip_id"] = addcslashes($data["zip_id"], "\\'");
-					$data["locality"] = addcslashes($data["locality"], "\\'");
+					$data["address"] = isset($data["address"]) ? addcslashes($data["address"], "\\'") : "";
+					$data["zip_id"] = isset($data["zip_id"]) ? addcslashes($data["zip_id"], "\\'") : "";
+					$data["locality"] = isset($data["locality"]) ? addcslashes($data["locality"], "\\'") : "";
 					$data["country_id"] = is_numeric($data["country_id"]) ? $data["country_id"] : 0;
 					$data["latitude"] = is_numeric($data["latitude"]) ? $data["latitude"] : 0;
 					$data["longitude"] = is_numeric($data["longitude"]) ? $data["longitude"] : 0;
-					$data["end_date"] = addcslashes($data["end_date"], "\\'");
-					$data["begin_date"] = addcslashes($data["begin_date"], "\\'");
+					$data["end_date"] = isset($data["end_date"]) ? addcslashes($data["end_date"], "\\'") : "";
+					$data["begin_date"] = isset($data["begin_date"]) ? addcslashes($data["begin_date"], "\\'") : "";
 					
 					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : $data["end_date"];
 			
@@ -833,6 +839,7 @@ class EventUtil {
 					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : $data["end_date"];
 			
 					$Event = $broker->callObject("module/event", "Event", array("no_cache" => true));
+					$ids = null;
 					$status = $Event->insertOrUpdate($data, $ids);
 				
 					if ($status && !$event_id && $ids["event_id"]) {
@@ -848,22 +855,22 @@ class EventUtil {
 					$data["latitude"] = is_numeric($data["latitude"]) ? $data["latitude"] : 0;
 					$data["longitude"] = is_numeric($data["longitude"]) ? $data["longitude"] : 0;
 					
-					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : $data["end_date"];
+					$data["end_date"] = empty($data["end_date"]) ? '0000-00-00 00:00:00' : (isset($data["end_date"]) ? $data["end_date"] : null);
 					
 					$event_data = array(
-						"title" => $data["title"], 
-						"sub_title" => $data["sub_title"], 
-						"description" => $data["description"], 
+						"title" => isset($data["title"]) ? $data["title"] : null, 
+						"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+						"description" => isset($data["description"]) ? $data["description"] : null, 
 						"published" => $data["published"], 
 						"photo_id" => $data["photo_id"], 
 						"allow_comments" => $data["allow_comments"], 
-						"address" => $data["address"], 
-						"zip_id" => $data["zip_id"], 
-						"locality" => $data["locality"], 
+						"address" => isset($data["address"]) ? $data["address"] : null, 
+						"zip_id" => isset($data["zip_id"]) ? $data["zip_id"] : null, 
+						"locality" => isset($data["locality"]) ? $data["locality"] : null, 
 						"country_id" => $data["country_id"], 
 						"latitude" => $data["latitude"], 
 						"longitude" => $data["longitude"], 
-						"begin_date" => $data["begin_date"], 
+						"begin_date" => isset($data["begin_date"]) ? $data["begin_date"] : null, 
 						"end_date" => $data["end_date"], 
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
@@ -881,7 +888,9 @@ class EventUtil {
 			}
 			
 			if ($status && $event_id) {
-				$status = TagUtil::updateObjectTags($broker, $data["tags"], ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id) && self::updateObjectEventsByEventId(array($broker), $event_id, $data);
+				$tags = isset($data["tags"]) ? $data["tags"] : null;
+				
+				$status = TagUtil::updateObjectTags($broker, $tags, ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id) && self::updateObjectEventsByEventId(array($broker), $event_id, $data);
 			
 				return $status ? $event_id : false;
 			}
@@ -967,21 +976,21 @@ class EventUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$result = $broker->callSelect("module/event", "count_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$Event = $broker->callObject("module/event", "Event");
 					$result = $Event->callSelect("count_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = EventDBDAOUtil::count_events_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 				
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -1034,7 +1043,7 @@ class EventUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					
 					$result = $broker->callSelect("module/event", "count_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -1042,7 +1051,7 @@ class EventUtil {
 					
 					$Event = $broker->callObject("module/event", "Event");
 					$result = $Event->callSelect("count_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -1050,7 +1059,7 @@ class EventUtil {
 					$sql = EventDBDAOUtil::count_events_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 				
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -1064,32 +1073,32 @@ class EventUtil {
 	/* OBJECT EVENT FUNCTIONS */
 
 	public static function insertObjectEvent($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["event_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+		if (is_array($brokers) && isset($data["event_id"]) && is_numeric($data["event_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/event", "ObjectEventService.insertObjectEvent", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callInsert("module/event", "insert_object_event", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");
 					return $ObjectEvent->insert($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->insertObject("me_object_event", array(
 							"event_id" => $data["event_id"], 
@@ -1106,31 +1115,31 @@ class EventUtil {
 	}
 
 	public static function updateObjectEvent($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["new_event_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_event_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+		if (is_array($brokers) && isset($data["new_event_id"]) && is_numeric($data["new_event_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_event_id"]) && is_numeric($data["old_event_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/event", "ObjectEventService.updateObjectEvent", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/event", "update_object_event", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");
 					return $ObjectEvent->updatePrimaryKeys($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->updateObject("me_object_event", array(
 							"event_id" => $data["new_event_id"], 
@@ -1153,10 +1162,10 @@ class EventUtil {
 		if (is_array($brokers) && is_numeric($event_id)) {
 			if (self::deleteObjectEventsByEventId($brokers, $event_id)) {
 				$status = true;
-				$object_events = is_array($data["object_events"]) ? $data["object_events"] : array();
+				$object_events = isset($data["object_events"]) && is_array($data["object_events"]) ? $data["object_events"] : array();
 				
 				foreach ($object_events as $object_event) {
-					if (is_numeric($object_event["object_type_id"]) && is_numeric($object_event["object_id"])) {
+					if (isset($object_event["object_type_id"]) && is_numeric($object_event["object_type_id"]) && isset($object_event["object_id"]) && is_numeric($object_event["object_id"])) {
 						$object_event["event_id"] = $event_id;
 					
 						if (!self::insertObjectEvent($brokers, $object_event)) {
@@ -1273,7 +1282,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/event", "get_object_event", array("event_id" => $event_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");
@@ -1281,7 +1290,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$result = $broker->findObjects("me_object_event", null, array("event_id" => $event_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 			}
 		}
@@ -1325,7 +1334,7 @@ class EventUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/event", "count_object_events_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");
@@ -1370,7 +1379,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/event", "count_all_object_events", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");
@@ -1415,7 +1424,7 @@ class EventUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/event", "count_object_events_by_event_id", array("event_id" => $event_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectEvent = $broker->callObject("module/event", "ObjectEvent");

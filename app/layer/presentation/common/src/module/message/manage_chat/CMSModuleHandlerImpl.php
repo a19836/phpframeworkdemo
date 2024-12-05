@@ -4,6 +4,7 @@ namespace CMSModule\message\manage_chat;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -13,21 +14,23 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		if (!$settings["logged_user_id"] && $settings["session_id"]) {
-			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null);
+		if (empty($settings["logged_user_id"]) && !empty($settings["session_id"])) {
+			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $settings["session_id"]), null);
 			
-			if ($session_data[0]) {
+			if (isset($session_data[0]["user_id"])) {
 				$user_data = \UserUtil::getUsersByConditions($brokers, array("user_id" => $session_data[0]["user_id"]), null);
-				$settings["from_user_id"] = $user_data[0]["user_id"];
+				$settings["from_user_id"] = isset($user_data[0]["user_id"]) ? $user_data[0]["user_id"] : null;
 			}
 		}
 		else 
-			$settings["from_user_id"] = $settings["logged_user_id"];
+			$settings["from_user_id"] = isset($settings["logged_user_id"]) ? $settings["logged_user_id"] : null;
 		
-		if (is_numeric($settings["from_user_id"])) {
-			switch ($settings["action"]) {
+		if (isset($settings["from_user_id"]) && is_numeric($settings["from_user_id"])) {
+			$action = isset($settings["action"]) ? $settings["action"] : null;
+			
+			switch ($action) {
 				case "delete_chat":
-					if (is_numeric($settings["to_user_id"]) && $settings["to_user_id"] > 0)
+					if (isset($settings["to_user_id"]) && is_numeric($settings["to_user_id"]) && $settings["to_user_id"] > 0) {
 						$status_1 = \MessageUtil::updateMessagesFromUserStatus($brokers, array(
 							"from_user_status" => \MessageUtil::MESSAGE_DELETED_STATUS,
 							"from_user_id" => $settings["from_user_id"],
@@ -41,6 +44,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						));
 						
 						return $status_1 && $status_2;
+					}
 					break;
 				
 				case "get_existent_chat_users":
@@ -57,24 +61,26 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					//break;
 				
 				case "new_message":
-					if ($_POST && is_numeric($settings["to_user_id"]) && ($_POST["subject"] || $_POST["content"])) {
+					if (!empty($_POST) && isset($settings["to_user_id"]) && is_numeric($settings["to_user_id"]) && (!empty($_POST["subject"]) || !empty($_POST["content"]))) {
 						$message_id = \MessageUtil::insertMessage($brokers, array(
 							"from_user_id" => $settings["from_user_id"],
 							"to_user_id" => $settings["to_user_id"],
-							"subject" => $_POST["subject"],
-							"content" => $_POST["content"],
+							"subject" => isset($_POST["subject"]) ? $_POST["subject"] : null,
+							"content" => isset($_POST["content"]) ? $_POST["content"] : null,
 						));
 						return $message_id;
 					}
 					break;
 				
 				case "load_messages":
-					if ($_POST && is_numeric($settings["to_user_id"])) {
-						$message_id = $_POST["message_id"];
-						$direction = $_POST["direction"];
-					
+					if (!empty($_POST) && isset($settings["to_user_id"]) && is_numeric($settings["to_user_id"])) {
+						$message_id = isset($_POST["message_id"]) ? $_POST["message_id"] : null;
+						$direction = isset($_POST["direction"]) ? $_POST["direction"] : null;
+						
+						$settings["maximum_number_of_loaded_messages"] = !empty($settings["maximum_number_of_loaded_messages"]) ? $settings["maximum_number_of_loaded_messages"] : null;
+						
 						if ($message_id) {
-							if ($direction < 0) { 
+							if ($direction < 0) {
 								$messages = \MessageUtil::getPreviousChatMessagesFromMessage($brokers, $settings["from_user_id"], $settings["to_user_id"], $message_id, array("limit" => $settings["maximum_number_of_loaded_messages"], "sort" => array(
 									array("column" => "created_date", "order" => "desc")
 								)));
@@ -87,8 +93,6 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							}
 						}
 						else {
-							$settings["maximum_number_of_loaded_messages"] = $settings["maximum_number_of_loaded_messages"] ? $settings["maximum_number_of_loaded_messages"] : null;
-						
 							$messages = \MessageUtil::getChatMessages($brokers, $settings["from_user_id"], $settings["to_user_id"], array("limit" => $settings["maximum_number_of_loaded_messages"], "sort" => array(
 								array("column" => "created_date", "order" => "asc")
 							)));
@@ -125,7 +129,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					break;
 				
 				case "get_last_chats":
-					$settings["maximum_number_of_loaded_messages"] = $settings["maximum_number_of_loaded_messages"] > 0 ? $settings["maximum_number_of_loaded_messages"] : 10;
+					$settings["maximum_number_of_loaded_messages"] = isset($settings["maximum_number_of_loaded_messages"]) && $settings["maximum_number_of_loaded_messages"] > 0 ? $settings["maximum_number_of_loaded_messages"] : 10;
 					
 					$messages = \MessageUtil::getUserLastUniqueChats($brokers, $settings["from_user_id"], null, array("limit" => $settings["maximum_number_of_loaded_messages"]));
 					

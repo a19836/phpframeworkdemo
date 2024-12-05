@@ -15,46 +15,51 @@ class CommentUI {
 		$comments = null;
 		
 		if ($object_type_id && $object_id) {
-			switch ($settings["filter"]) {
+			$filter = isset($settings["filter"]) ? $settings["filter"] : null;
+			$parent_object_type_id = isset($settings["filter_by_parent"]["object_type_id"]) ? $settings["filter_by_parent"]["object_type_id"] : null;
+			$parent_object_id = isset($settings["filter_by_parent"]["object_id"]) ? $settings["filter_by_parent"]["object_id"] : null;
+			$parent_group = isset($settings["filter_by_parent"]["group"]) ? $settings["filter_by_parent"]["group"] : null;
+			
+			switch ($filter) {
 				case "filter_by_parent":
-					$comments = CommentUtil::getParentObjectCommentsByObjectGroup($brokers, $settings["filter_by_parent"]["object_type_id"], $settings["filter_by_parent"]["object_id"], $object_type_id, $object_id, $group, $options);
+					$comments = CommentUtil::getParentObjectCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $object_type_id, $object_id, $group, $options);
 					break;
 				case "filter_by_parent_group":
-					$comments = CommentUtil::getParentObjectGroupCommentsByObjectGroup($brokers, $settings["filter_by_parent"]["object_type_id"], $settings["filter_by_parent"]["object_id"], $settings["filter_by_parent"]["group"], $object_type_id, $object_id, $group, $options);
+					$comments = CommentUtil::getParentObjectGroupCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $parent_group, $object_type_id, $object_id, $group, $options);
 					break;
 				default:
 					$comments = CommentUtil::getCommentsByObjectGroup($brokers, $object_type_id, $object_id, $group, $options);
 			}
 		}
 		
-		if ($comments || $settings["add_comment_url"]) {
+		$html = '';
+		
+		if ($comments || !empty($settings["add_comment_url"])) {
 			self::prepareCommentsUsers($EVC, $settings, $comments, $common_project_name, $brokers);
 			
-			$html = '';
-		
 			if (empty($settings["style_type"])) {
 				$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/comment/object_comments.css" type="text/css" charset="utf-8" />';
 			}
 			
-			$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
-			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/comment/object_comments.js"></script>
-			<script type="text/javascript">' . $settings["js"] . '</script>
-			
+			$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
+			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/comment/object_comments.js"></script>';
+			$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+			$html .= '
 			<script>
 				var jquery_lib_url = jquery_lib_url ? jquery_lib_url : \'' . $project_common_url_prefix . 'vendor/jquery/js/jquery-1.8.1.min.js\';
 			</script>';
 			
-			$class =  trim($settings["class"] . " " . $settings["block_class"]);
+			$class =  trim((isset($settings["class"]) ? $settings["class"] : "") . (isset($settings["block_class"]) ? " " . $settings["block_class"] : ""));
 			
 			$html .= '
 			<div class="module_object_comments ' . $class . '">';
 		
-			if ($settings["add_comment_url"]) {
+			if (!empty($settings["add_comment_url"])) {
 				$html .= self::getAddCommentHtml($EVC, $settings, $object_id);
 			}
 		
 			$html .= '
-				<div class="title">' . translateProjectLabel($EVC, $settings["title"] ? $settings["title"] : "Comments:") . '</div>
+				<div class="title">' . translateProjectLabel($EVC, !empty($settings["title"]) ? $settings["title"] : "Comments:") . '</div>
 				<div class="comments">
 					<ul>';
 			
@@ -62,27 +67,28 @@ class CommentUI {
 				$HtmlFormHandler = new \HtmlFormHandler();
 				
 				foreach ($comments as $idx => $comment) {
-					$user = $settings["comments_users"][ $comment["user_id"] ];
+					$comment_user_id = isset($comment["user_id"]) ? $comment["user_id"] : null;
+					$user = isset($settings["comments_users"][$comment_user_id]) ? $settings["comments_users"][$comment_user_id] : null;
 					
-					$user_label = $settings["user_label"];
+					$user_label = isset($settings["user_label"]) ? $settings["user_label"] : null;
 					if ($user_label)
 						$user_label = $HtmlFormHandler->getParsedValueFromData($user_label, $user);
 					else 
-						$user_label = $user["username"] ? $user["username"] : $user["name"];
+						$user_label = !empty($user["username"]) ? $user["username"] : (isset($user["name"]) ? $user["name"] : null);
 					
-					$created_date = substr($comment["created_date"], 0, strrpos($comment["created_date"], ":"));
+					$created_date = isset($comment["created_date"]) ? substr($comment["created_date"], 0, strrpos($comment["created_date"], ":")) : "";
 					
 					$html .= '
-						<li class="' . ($idx % 2 == 0 ? 'hovered' : '') . '" user_id="' . $comment["user_id"] . '">
-							<div class="user_photo">' . ($user["photo_url"] ? '<img src="' . $user["photo_url"] . '" onError="$(this).remove()" />' : '') . '</div>
+						<li class="' . ($idx % 2 == 0 ? 'hovered' : '') . '" user_id="' . $comment_user_id . '">
+							<div class="user_photo">' . (!empty($user["photo_url"]) ? '<img src="' . $user["photo_url"] . '" onError="$(this).remove()" />' : '') . '</div>
 							<div class="user_name">' . $user_label . '</div>
 							<div class="date">' . $created_date . '</div>
-							<div class="comment">' . str_replace("\n", "<br/>", $comment["comment"]) . '</div>
+							<div class="comment">' . (isset($comment["comment"]) ? str_replace("\n", "<br/>", $comment["comment"]) : "") . '</div>
 						</li>';
 				}
 			}
 			else {
-				$empty_comments_label = $settings["empty_comments_label"] ? $settings["empty_comments_label"] : 'There are no comments...<br/>Be the first one to insert a comment.';
+				$empty_comments_label = !empty($settings["empty_comments_label"]) ? $settings["empty_comments_label"] : 'There are no comments...<br/>Be the first one to insert a comment.';
 				
 				$html .= '<li class="empty_comments">' . translateProjectText($EVC, $empty_comments_label) . '</li>';
 			}
@@ -97,13 +103,13 @@ class CommentUI {
 	}
 	
 	private static function getAddCommentHtml($EVC, $settings, $object_id) {
-		$current_user_data = $settings["current_user"];
-		$current_logged_user_name = $current_user_data["username"] ? $current_user_data["username"] : $current_user_data["name"];
+		$current_user_data = isset($settings["current_user"]) ? $settings["current_user"] : null;
+		$current_logged_user_name = !empty($current_user_data["username"]) ? $current_user_data["username"] : (isset($current_user_data["name"]) ? $current_user_data["name"] : null);
 		
-		$add_comment_label = translateProjectLabel($EVC, $settings["add_comment_label"] ? $settings["add_comment_label"] : "Write new comment:");
-		$add_comment_textarea_place_holder = translateProjectText($EVC, $settings["add_comment_textarea_place_holder"] ? $settings["add_comment_textarea_place_holder"] : "Write new comment here...");
-		$add_comment_button_label = translateProjectLabel($EVC, $settings["add_comment_button_label"] ? $settings["add_comment_button_label"] : "Add New Comment");
-		$add_comment_error_message = translateProjectText($EVC, $settings["add_comment_error_message"] ? $settings["add_comment_error_message"] : "Error trying to add new comment. Please try again...");
+		$add_comment_label = translateProjectLabel($EVC, !empty($settings["add_comment_label"]) ? $settings["add_comment_label"] : "Write new comment:");
+		$add_comment_textarea_place_holder = translateProjectText($EVC, !empty($settings["add_comment_textarea_place_holder"]) ? $settings["add_comment_textarea_place_holder"] : "Write new comment here...");
+		$add_comment_button_label = translateProjectLabel($EVC, !empty($settings["add_comment_button_label"]) ? $settings["add_comment_button_label"] : "Add New Comment");
+		$add_comment_error_message = translateProjectText($EVC, !empty($settings["add_comment_error_message"]) ? $settings["add_comment_error_message"] : "Error trying to add new comment. Please try again...");
 		
 		//Do not use #xx#, but instead use %xx%, bc the html return from this function, will be used HtmlFormHandler::createHtmlForm, which will parse it and replace it the #xx# accordingly with the current data.
 		$comment_html = '
@@ -121,7 +127,7 @@ class CommentUI {
 			<input class="btn btn-default" type="button" name="add" value="' . $add_comment_button_label . '" onClick="addObjectComment(this)" />
 			
 			<script>
-				var add_comment_url = \'' . $settings["add_comment_url"] . $object_id . '\';
+				var add_comment_url = \'' . (isset($settings["add_comment_url"]) ? $settings["add_comment_url"] : null) . $object_id . '\';
 				var add_comment_error_message = \'' . $add_comment_error_message . '\';
 				var comment_html = \'' . addcslashes(str_replace("\n", "", $comment_html), "\\'") . '\';
 				var current_user_data = ' . json_encode($current_user_data) . ';
@@ -135,13 +141,14 @@ class CommentUI {
 		$users_data = array();
 		$all_user_ids = array();
 		
-		if (!$settings["comments_users"]) {
+		if (empty($settings["comments_users"])) {
 			//Getting user_ids from comments
 			$comments_user_ids = array();
 			
 			if ($comments)
 				foreach ($comments as $comment)
-					$comments_user_ids[ $comment["user_id"] ] = true;
+					if (isset($comment["user_id"]))
+						$comments_user_ids[ $comment["user_id"] ] = true;
 			
 			$comments_user_ids = array_keys($comments_user_ids);
 			$all_user_ids = $comments_user_ids;
@@ -157,10 +164,10 @@ class CommentUI {
 		}
 		
 		//Preparing current logged user data
-		if (!$settings["current_user"] && $GLOBALS['UserSessionActivitiesHandler']) {
+		if (empty($settings["current_user"]) && !empty($GLOBALS['UserSessionActivitiesHandler'])) {
 			$current_user_data = $GLOBALS['UserSessionActivitiesHandler']->getUserData();
 			
-			if ($current_user_data["user_id"] && !in_array($current_user_data["user_id"], $all_user_ids))
+			if (!empty($current_user_data["user_id"]) && !in_array($current_user_data["user_id"], $all_user_ids))
 				$all_user_ids[] = $current_user_data["user_id"];
 		}
 		
@@ -177,24 +184,26 @@ class CommentUI {
 				//Preparing indexes for $user_data
 				$user_indexes = array();
 				foreach ($users_data as $idx => $user_data) 
-					$user_indexes[ $user_data["user_id"] ] = $idx;
+					if (isset($user_data["user_id"]))
+						$user_indexes[ $user_data["user_id"] ] = $idx;
 				
 				//Preparing attachments and add them to $user_data
 				foreach ($attachments as $attachment) {
-					$path = $attachment["path"];
+					$path = isset($attachment["path"]) ? $attachment["path"] : null;
 				
 					if ($path) {
-						$user_id = $attachment["object_id"];
-						$user_data_idx = $user_id ? $user_indexes[$user_id] : null;
+						$user_id = isset($attachment["object_id"]) ? $attachment["object_id"] : null;
+						$current_user_data_id = isset($current_user_data["user_id"]) ? $current_user_data["user_id"] : null;
+						$user_data_idx = $user_id && isset($user_indexes[$user_id]) ? $user_indexes[$user_id] : null;
 						
-						if ($user_data_idx && $users_data[$user_data_idx]) {
-							$users_data[$user_data_idx]["photo_id"] = $attachment["attachment_id"];
+						if ($user_data_idx && !empty($users_data[$user_data_idx])) {
+							$users_data[$user_data_idx]["photo_id"] = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
 							$users_data[$user_data_idx]["photo_path"] = $folder_path . $path;
 							$users_data[$user_data_idx]["photo_url"] = $url . $path;
 						}
 						
-						if ($user_id == $current_user_data["user_id"]) {
-							$current_user_data["photo_id"] = $attachment["attachment_id"];
+						if ($user_id == $current_user_data_id) {
+							$current_user_data["photo_id"] = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
 							$current_user_data["photo_path"] = $folder_path . $path;
 							$current_user_data["photo_url"] = $url . $path;
 						}
@@ -203,14 +212,15 @@ class CommentUI {
 			}
 			
 			$settings["comments_users"] = $users_data;
-			$settings["current_user"] = $current_user_data;
+			$settings["current_user"] = isset($current_user_data) ? $current_user_data : null;
 		}
 		
 		//Preparing $users by user_id
 		$users = array();
 		if ($settings["comments_users"])
 			foreach ($settings["comments_users"] as $user)
-				$users[ $user["user_id"] ] = $user;
+				if (isset($user["user_id"]))
+					$users[ $user["user_id"] ] = $user;
 		
 		$settings["comments_users"] = $users;
 	}

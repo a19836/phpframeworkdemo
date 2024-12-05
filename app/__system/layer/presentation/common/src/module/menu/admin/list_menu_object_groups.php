@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("menu/admin/MenuAdminUtil", $common_project_name);
 	
 	$MenuAdminUtil = new MenuAdminUtil($CommonModuleAdminUtil);
@@ -17,7 +17,8 @@ if ($PEVC) {
 	$MenuAdminUtil->initMenuGroups($brokers);
 	$available_groups = $MenuAdminUtil->getAvailableGroups();
 	
-	$group_id = $_GET["group_id"];
+	$group_id = isset($_GET["group_id"]) ? $_GET["group_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($group_id) {
 		$total = MenuUtil::countMenuObjectGroupsByGroupId($brokers, $group_id, true);

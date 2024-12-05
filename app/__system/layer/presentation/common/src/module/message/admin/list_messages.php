@@ -4,13 +4,14 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("message/admin/MessageAdminUtil", $common_project_name);
 	
 	$MessageAdminUtil = new MessageAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
+	$options = isset($options) ? $options : null;
 	$data = MessageUtil::getAllMessages($brokers, $options, true);
 	
 	$available_users = $CommonModuleAdminUtil->getSelectedUsers($brokers, $data);

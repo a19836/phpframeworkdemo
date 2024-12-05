@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (QuizUtil::deleteUserAnswer($brokers, $_GET["user_id"], $_GET["answer_id"])) {
+if (isset($_GET["user_id"]) && isset($_GET["answer_id"]) && QuizUtil::deleteUserAnswer($brokers, $_GET["user_id"], $_GET["answer_id"])) {
 	echo "1";
 }
 ?>

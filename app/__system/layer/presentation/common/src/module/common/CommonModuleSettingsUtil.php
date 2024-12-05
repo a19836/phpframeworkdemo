@@ -7,7 +7,7 @@ class CommonModuleSettingsUtil {
 		$common_project_name = $EVC->getCommonProjectName();
 		include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-		if ($PEVC) {
+		if (!empty($PEVC)) {
 			include $EVC->getModulePath("object/ObjectUtil", $common_project_name);
 	
 			$data = ObjectUtil::getAllObjectTypes($brokers, true);
@@ -15,16 +15,22 @@ class CommonModuleSettingsUtil {
 
 		include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 		
-		return $data;
+		return isset($data) ? $data : null;
 	}
 	
 	public static function getTemplatesAction($EVC, $data) {
-		if ($data["action"] == "available_templates") {
-			$data = self::getInstalledTemplates($EVC, $data["module"]);
-			return $data ? json_encode($data) : null;
+		if (isset($data["action"])) {
+			$module = isset($data["module"]) ? $data["module"] : null;
+			$template = isset($data["template"]) ? $data["template"] : null;
+			$template_module = isset($data["template_module"]) ? $data["template_module"] : null;
+			
+			if ($data["action"] == "available_templates") {
+				$data = self::getInstalledTemplates($EVC, $module);
+				return $data ? json_encode($data) : null;
+			}
+			else if ($data["action"] == "template_ptl")
+				return self::getTemplatePTLCode($EVC, $module, $template, $template_module);
 		}
-		else if ($data["action"] == "template_ptl")
-			return self::getTemplatePTLCode($EVC, $data["module"], $data["template"], $data["template_module"]);
 	}
 	
 	public static function getInstalledTemplates($EVC, $module) {
@@ -34,7 +40,7 @@ class CommonModuleSettingsUtil {
 			$common_project_name = $EVC->getCommonProjectName();
 			include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-			if ($PEVC) {
+			if (!empty($PEVC)) {
 				include $EVC->getModulePath("object/ObjectUtil", $common_project_name);
 
 				$templates_path = $PEVC->getTemplatesPath();
@@ -66,7 +72,7 @@ class CommonModuleSettingsUtil {
 			include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 		}
 		
-		return $templates;
+		return isset($templates) ? $templates : null;
 	}
 	
 	public static function getTemplatePTLCode($EVC, $module, $template, $template_module = null) {
@@ -76,7 +82,7 @@ class CommonModuleSettingsUtil {
 			$common_project_name = $EVC->getCommonProjectName();
 			include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-			if ($PEVC) {
+			if (!empty($PEVC)) {
 				include $EVC->getModulePath("object/ObjectUtil", $common_project_name);
 				
 				$module = preg_replace("/\/+$/", "", $module);
@@ -87,7 +93,7 @@ class CommonModuleSettingsUtil {
 			include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 		}
 		
-		return $code;
+		return isset($code) ? $code : null;
 	}
 }
 ?>

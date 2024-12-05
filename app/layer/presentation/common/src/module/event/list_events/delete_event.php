@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (EventUtil::deleteEvent($EVC, $_GET["event_id"]) && EventUtil::deleteObjectEventsByEventId($brokers, $_GET["event_id"])) {
+if (isset($_GET["event_id"]) && EventUtil::deleteEvent($EVC, $_GET["event_id"]) && EventUtil::deleteObjectEventsByEventId($brokers, $_GET["event_id"])) {
 	echo "1";
 }
 ?>

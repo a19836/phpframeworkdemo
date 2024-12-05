@@ -5,4 +5,4 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("SequentialLogicalActivitySettingsCodeCreator"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $actions_settings = $_POST["actions"]; $code = SequentialLogicalActivitySettingsCodeCreator::getActionsCode($webroot_cache_folder_path, $webroot_cache_folder_url, $actions_settings); $obj_code = array("code" => $code); ?>
+include_once $EVC->getUtilPath("SequentialLogicalActivitySettingsCodeCreator"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $actions_settings = isset($_POST["actions"]) ? $_POST["actions"] : null; $code = SequentialLogicalActivitySettingsCodeCreator::getActionsCode($webroot_cache_folder_path, $webroot_cache_folder_url, $actions_settings); $obj_code = array("code" => $code); ?>

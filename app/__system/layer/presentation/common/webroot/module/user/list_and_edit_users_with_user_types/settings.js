@@ -44,7 +44,7 @@ function loadListAndEditUsersWitUserTypesSettingsBlockSettings(settings_elm, set
 					+ '            					<td class="list_column email"><ptl:block:field:input:email/></td>' + "\n"
 					+ '            					<!--td class="list_column active text-center pt-2">' + "\n"
 					+ '					    				<div class="form-check form-switch m-n3">' + "\n"
-					+ '					 					<input class="form-check-input" type="checkbox" <ptl:echo \\$item[active] ? checked : \'\'/>>' + "\n"
+					+ '					 					<input class="form-check-input" type="checkbox" <ptl:echo @\\$item[active] ? checked : \'\'/>>' + "\n"
 					+ '				    					</div>' + "\n"
 					+ '            					</td-->' + "\n"
 					+ '            					<td class="list_column active text-center"><ptl:block:field:input:active/></td>' + "\n"

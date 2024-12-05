@@ -10,17 +10,18 @@ class ManageUserTypeActivityObjectsUtil {
 		include_once $EVC->getModulePath("common/CommonModuleUI", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
+		$html = "";
 		
 		//Preparing data
-		$add_action = $_GET["action"] == "add";
+		$add_action = isset($_GET["action"]) && $_GET["action"] == "add";
 		
-		if ($_POST) {
+		if (!empty($_POST)) {
 			if ($add_action) {
 				$data = array(
-					"user_type_id" => $_POST["user_type_id"],
-					"object_type_id" => $_POST["object_type_id"],
-					"object_id" => $_POST["object_id"],
-					"activity_id" => $_POST["activity_id"],
+					"user_type_id" => isset($_POST["user_type_id"]) ? $_POST["user_type_id"] : null,
+					"object_type_id" => isset($_POST["object_type_id"]) ? $_POST["object_type_id"] : null,
+					"object_id" => isset($_POST["object_id"]) ? $_POST["object_id"] : null,
+					"activity_id" => isset($_POST["activity_id"]) ? $_POST["activity_id"] : null,
 				);
 				
 				if (UserUtil::insertUserTypeActivityObject($brokers, $data)) {
@@ -34,8 +35,8 @@ class ManageUserTypeActivityObjectsUtil {
 				}
 			}
 			else {
-				$user_type_id = $_POST["user_type_id"];
-				$user_type_activities = $_POST["user_type_activities"];
+				$user_type_id = isset($_POST["user_type_id"]) ? $_POST["user_type_id"] : null;
+				$user_type_activities = isset($_POST["user_type_activities"]) ? $_POST["user_type_activities"] : null;
 				$status = true;
 				
 				if ($user_type_id && UserUtil::deleteUserTypeActivityObjectsByUserTypeId($brokers, $user_type_id)) {
@@ -78,14 +79,18 @@ class ManageUserTypeActivityObjectsUtil {
 			$user_types = UserUtil::getAllUserTypes($brokers);
 			$user_types = $user_types ? $user_types : array();
 		
-			$selected_user_type_id = $_GET["user_type_id"] ? $_GET["user_type_id"] : $user_types[0]["user_type_id"];
+			$selected_user_type_id = !empty($_GET["user_type_id"]) ? $_GET["user_type_id"] : (isset($user_types[0]["user_type_id"]) ? $user_types[0]["user_type_id"] : null);
 			
 			$user_type_activities = UserUtil::getUserTypeActivityObjectsByConditions($brokers, array("user_type_id" => $selected_user_type_id), null);
 			$user_type_activities = $user_type_activities ? $user_type_activities : array();
 		
 			$object_types_activities = array();
 			foreach ($user_type_activities as $user_type_activity) {
-				$object_types_activities[ $user_type_activity["object_type_id"] ][ $user_type_activity["object_id"] ][ $user_type_activity["activity_id"] ] = true;
+				$ut_object_type_id = isset($user_type_activity["object_type_id"]) ? $user_type_activity["object_type_id"] : null;
+				$ut_object_id = isset($user_type_activity["object_id"]) ? $user_type_activity["object_id"] : null;
+				$ut_activity_id = isset($user_type_activity["activity_id"]) ? $user_type_activity["activity_id"] : null;
+				
+				$object_types_activities[$ut_object_type_id][$ut_object_id][$ut_activity_id] = true;
 			}
 		
 			$object_types = ObjectUtil::getAllObjectTypes($brokers);
@@ -96,24 +101,26 @@ class ManageUserTypeActivityObjectsUtil {
 		}
 		
 		//Preparing HTML
+		$block_class = isset($settings["block_class"]) ? $settings["block_class"] : null;
+		
 		if ($add_action) {
 			$html .= '
-			<div class="module_add_user_type_activity_object ' . $settings["block_class"] . '">
+			<div class="module_add_user_type_activity_object ' . $block_class . '">
 				<div class="title">' . translateProjectText($EVC, "Add New User Type Activity") . '</div>';
 			
-			if ($message) {
+			if (!empty($message)) {
 				$html .= '<div class="message">' . $message . '</div>';
 			}
 			
 			$html .= '<form method="post">
-				<input type="hidden" name="object_type_id" value="' . $_GET["object_type_id"] . '" />
-				<input type="hidden" name="user_type_id" value="' . $_GET["user_type_id"] . '" />
+				<input type="hidden" name="object_type_id" value="' . (isset($_GET["object_type_id"]) ? $_GET["object_type_id"] : "") . '" />
+				<input type="hidden" name="user_type_id" value="' . (isset($_GET["user_type_id"]) ? $_GET["user_type_id"] : "") . '" />
 			
 				<div class="activity_id">
 					<label>' . translateProjectText($EVC, "Activity") . ': </label>
 					<select name="activity_id">';
 			foreach ($activities as $activity) {
-				$html .= '<option value="' . $activity["activity_id"] . '"' . ($activity["activity_id"] == $data["activity_id"] ? ' selected' : '') . '>' . $activity["name"] . '</option>';
+				$html .= '<option value="' . $activity["activity_id"] . '"' . (isset($data["activity_id"]) && $activity["activity_id"] == $data["activity_id"] ? ' selected' : '') . '>' . (isset($activity["name"]) ? $activity["name"] : null) . '</option>';
 			}
 			
 			$html .= '</select>
@@ -121,7 +128,7 @@ class ManageUserTypeActivityObjectsUtil {
 			
 				<div class="object_id">
 					<label>' . translateProjectText($EVC, "Object Id") . ': </label>
-					<input type="text" name="object_id" value="' . $data["object_id"] . '" />
+					<input type="text" name="object_id" value="' . (isset($data["object_id"]) ? $data["object_id"] : "") . '" />
 				</div>
 				
 				<div class="submit_button">
@@ -129,16 +136,16 @@ class ManageUserTypeActivityObjectsUtil {
 				</div>
 				
 				<div class="go_back">
-					' . translateProjectText($EVC, "To go back please click") . ' <a href="?bean_name=' . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"] . '&user_type_id=' . $_GET["user_type_id"] . '">' . translateProjectText($EVC, "here") . '</a>
+					' . translateProjectText($EVC, "To go back please click") . ' <a href="?bean_name=' . (isset($_GET["bean_name"]) ? $_GET["bean_name"] : "") . "&bean_file_name=" . (isset($_GET["bean_file_name"]) ? $_GET["bean_file_name"] : "") . "&path=" . (isset($_GET["path"]) ? $_GET["path"] : null) . '&user_type_id=' . (isset($_GET["user_type_id"]) ? $_GET["user_type_id"] : "") . '">' . translateProjectText($EVC, "here") . '</a>
 				</div>
 			</form>
 			</div>';
 		}
 		else {
-			$html .= '<div class="module_manage_user_type_activity_objects ' . $settings["block_class"] . '">
+			$html .= '<div class="module_manage_user_type_activity_objects ' . $block_class . '">
 			<div class="title">' . translateProjectText($EVC, "Manage User Type Activities") . '</div>';
 			
-			if ($message) {
+			if (!empty($message)) {
 				$html .= '<div class="message">' . $message . '</div>';
 			}
 			
@@ -150,7 +157,10 @@ class ManageUserTypeActivityObjectsUtil {
 		
 			$t = $user_types ? count($user_types) : 0;
 			for ($i = 0; $i < $t; $i++) {
-				$html .= '<option value="' . $user_types[$i]["user_type_id"] . '" ' . ($selected_user_type_id == $user_types[$i]["user_type_id"] ? 'selected' : '') . '>' . $user_types[$i]["name"] . '</option>';
+				$av_user_type_id = isset($user_types[$i]["user_type_id"]) ? $user_types[$i]["user_type_id"] : null;
+				$av_user_type_name = isset($user_types[$i]["name"]) ? $user_types[$i]["name"] : null;
+				
+				$html .= '<option value="' . $av_user_type_id . '" ' . ($selected_user_type_id == $av_user_type_id ? 'selected' : '') . '>' . $av_user_type_name . '</option>';
 			}
 				
 			$html .= '	</select>
@@ -161,7 +171,10 @@ class ManageUserTypeActivityObjectsUtil {
 				<ul>';
 		
 			foreach($object_types as $object_type) {
-				$html .= self::getObjectTypeHtml($EVC, $selected_user_type_id, $object_type["object_type_id"], $object_type["name"], $activities, $object_types_activities, $pages, $modules);
+				$av_object_type_id = isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null;
+				$av_object_type_name = isset($object_type["name"]) ? $object_type["name"] : null;
+				
+				$html .= self::getObjectTypeHtml($EVC, $selected_user_type_id, $av_object_type_id, $av_object_type_name, $activities, $object_types_activities, $pages, $modules);
 			}
 		
 			if ($object_types_activities) {
@@ -200,7 +213,7 @@ class ManageUserTypeActivityObjectsUtil {
 		$selected_project_name = $P->getSelectedPresentationId();
 		$common_project_name = $P->getCommonProjectName();
 		
-		if ($projects[0] != $selected_project_name || $projects[1] != $common_project_name) {
+		if (count($projects) < 2 || $projects[0] != $selected_project_name || $projects[1] != $common_project_name) {
 			$projects = array_flip($projects);
 			unset($projects[$selected_project_name]);
 			unset($projects[$common_project_name]);
@@ -209,13 +222,16 @@ class ManageUserTypeActivityObjectsUtil {
 		}
 		
 		$files = array();
+		
 		foreach ($projects as $project) {
 			$folder_path = $EVC->getEntitiesPath($project);
 			$items = self::getFolderFilesList($folder_path, $folder_path);
 			ksort($items);
 			
 			foreach ($items as $file_path => $file) {
-				if ($file["type"] != "folder") {
+				$file_type = isset($file["type"]) ? $file["type"] : null;
+				
+				if ($file_type != "folder") {
 					$extension = pathinfo($file_path, PATHINFO_EXTENSION);
 					
 					if (strtolower($extension) == "php") {
@@ -241,13 +257,16 @@ class ManageUserTypeActivityObjectsUtil {
 		ksort($items);
 		
 		$reserved_files = array("enable", "CMSModuleHandlerImpl");
+		$files = array();
 		
 		foreach ($items as $file_path => $file) {
-			if ($file["type"] != "folder") {
+			$file_type = isset($file["type"]) ? $file["type"] : null;
+				
+			if ($file_type != "folder") {
 				$path_info = pathinfo($file_path);
 				
 				if (!in_array($path_info["filename"], $reserved_files)) {
-					if (strtolower($path_info["extension"]) == "php") {
+					if (isset($path_info["extension"]) && strtolower($path_info["extension"]) == "php") {
 						$fc = substr($file_path, 0, -4);
 						$ap = $EVC->getModulePath($fc, $common_project_name);
 						
@@ -283,10 +302,10 @@ class ManageUserTypeActivityObjectsUtil {
 		
 		preg_match_all('/(validateModuleUserActivity|validatePageUserActivity)\(([^,]+),([^;]+),([^)]+)\)/u', $contents, $matches, PREG_PATTERN_ORDER); //'/u' means with accents and ç too.
 		
-		if ($matches[3]) {
+		if (!empty($matches[3])) {
 			foreach ($matches[3] as $match) {
 				preg_match_all('/array(\s*)\((.+)\)/u', $match, $sub_matches, PREG_PATTERN_ORDER); //'/u' means with accents and ç too.
-				$sub_matches = explode(",", str_replace(array("'", '"'), "", $sub_matches[2][0] ? $sub_matches[2][0] : $match));
+				$sub_matches = explode(",", str_replace(array("'", '"'), "", !empty($sub_matches[2][0]) ? $sub_matches[2][0] : $match));
 				
 				foreach ($sub_matches as $m) 
 					$activities[ trim($m) ] = true;
@@ -339,7 +358,7 @@ class ManageUserTypeActivityObjectsUtil {
 		$is_predefined_file_path = $is_page_type || $is_module_type;
 		$is_hidden = !$is_page_type;
 		
-		$query_string = "bean_name=" . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"];
+		$query_string = "bean_name=" . (isset($_GET["bean_name"]) ? $_GET["bean_name"] : null) . "&bean_file_name=" . (isset($_GET["bean_file_name"]) ? $_GET["bean_file_name"] : null) . "&path=" . (isset($_GET["path"]) ? $_GET["path"] : null);
 		
 		$html = '
 		<li>
@@ -369,14 +388,17 @@ class ManageUserTypeActivityObjectsUtil {
 		$project_html .= '#title#</td>';
 		
 		foreach($activities as $activity) {
-			$html .= '	<th class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity["name"])) . ' activity_' . $activity["activity_id"] . '">
-				<label> ' . translateProjectText($EVC, ucwords(str_replace(array("_", "-"), " ", $activity["name"]))) . '</label>
-				<input type="checkbox" onClick="toggleCheckboxes(this, \'activity_' . $activity["activity_id"] . '\')" />
+			$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
+			$activity_name = isset($activity["name"]) ? $activity["name"] : null;
+			
+			$html .= '	<th class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity_name)) . ' activity_' . $activity["activity_id"] . '">
+				<label> ' . translateProjectText($EVC, ucwords(str_replace(array("_", "-"), " ", $activity_name))) . '</label>
+				<input type="checkbox" onClick="toggleCheckboxes(this, \'activity_' . $activity_id . '\')" />
 			</th>';
 			
 			$project_html .= '
-			<td class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity["name"])) . ' activity_' . $activity["activity_id"] . '">
-				<input type="checkbox" onClick="toggleCheckboxes(this, \'activity_' . $activity["activity_id"] . '\')" />
+			<td class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity_name)) . ' activity_' . $activity_id . '">
+				<input type="checkbox" onClick="toggleCheckboxes(this, \'activity_' . $activity_id . '\')" />
 			</td>';
 		}
 		
@@ -394,8 +416,8 @@ class ManageUserTypeActivityObjectsUtil {
 			
 			foreach ($items as $project => $project_items) {
 				foreach ($project_items as $file_code => $file_props) {
-					$file_path = $file_props[0];
-					$file_activities = $file_props[1];
+					$file_path = isset($file_props[0]) ? $file_props[0] : null;
+					$file_activities = isset($file_props[1]) ? $file_props[1] : null;
 					$is_file_hidden = false;
 					
 					if ($is_page_type && $project != $selected_project_name)
@@ -415,7 +437,7 @@ class ManageUserTypeActivityObjectsUtil {
 			}
 		}
 		
-		$objects_activities = $object_types_activities[$object_type_id];
+		$objects_activities = isset($object_types_activities[$object_type_id]) ? $object_types_activities[$object_type_id] : null;
 		if ($objects_activities) {
 			$html .= $is_predefined_file_path ? str_replace("#title#", translateProjectText($EVC, "Independent Files based in Object Id") . ":", $project_html) : '';
 			
@@ -441,11 +463,11 @@ class ManageUserTypeActivityObjectsUtil {
 			<td class="object_id">' . $object_name . '</td>';
 
 		foreach($activities as $activity) {
-			$activity_id = $activity["activity_id"];
-			$activity_name = $activity["name"];
+			$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
+			$activity_name = isset($activity["name"]) ? $activity["name"] : null;
 			
-			$checked = $object_types_activities[$object_type_id][$object_id][$activity_id];
-			$warning = $is_file && !$object_available_activities[$activity_name] && !$object_available_activities[$activity_id];
+			$checked = isset($object_types_activities[$object_type_id][$object_id][$activity_id]) ? $object_types_activities[$object_type_id][$object_id][$activity_id] : null;
+			$warning = $is_file && empty($object_available_activities[$activity_name]) && empty($object_available_activities[$activity_id]);
 			
 			$html .= '
 			<td class="activity activity_' . str_replace(array(" ", "-"), "_", strtolower($activity_name)) . ' activity_' . $activity_id . ($warning ? ' activity_warning' : '') . '" ' . ($warning ? 'title="' . translateProjectText($EVC, "Apparently this activity does NOT exists in this file!") . '"' : '') . '>
@@ -459,7 +481,7 @@ class ManageUserTypeActivityObjectsUtil {
 
 		$html .= '<td class="other_activities">';
 		
-		$other_activities = $object_types_activities[$object_type_id][$object_id];
+		$other_activities = isset($object_types_activities[$object_type_id][$object_id]) ? $object_types_activities[$object_type_id][$object_id] : null;
 		if ($other_activities) {
 			foreach($other_activities as $activity_id) {
 				$html .= '

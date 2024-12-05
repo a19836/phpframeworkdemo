@@ -4,6 +4,7 @@ namespace CMSModule\article\catalog;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -12,7 +13,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("article/ArticleUI", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "article");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "article");
 		
 		$html = '';
 		
@@ -21,24 +22,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		$html .= '<script src="' . $project_common_url_prefix . 'module/article/catalog.js"></script>
-		' . ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		' . (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 
-		<div class="module_articles_catalog ' . ($settings["block_class"]) . '">';
+		<div class="module_articles_catalog ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
-		$catalog_title = $settings["catalog_title"];
+		$catalog_title = isset($settings["catalog_title"]) ? $settings["catalog_title"] : null;
 		if ($catalog_title)
 			$html .= '<h1 class="catalog_title">' . translateProjectText($EVC, $catalog_title) . '</h1>';
 		
 		//Preparing options
-		$rows_per_page = $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
+		$rows_per_page = isset($settings["rows_per_page"]) && $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
 		$options = array("limit" => $rows_per_page, "sort" => array());
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			include_once get_lib("org.phpframework.util.web.html.pagination.PaginationLayout");
 			
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 			$rows_per_page = $rows_per_page > 0 ? $rows_per_page : 50;
 			$options["start"] = \PaginationHandler::getStartValue($current_page, $rows_per_page);
 		}
@@ -59,39 +60,41 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			"articles" => &$articles,
 		), "This join point's method/function can change the \$settings, \$total or \$articles variables.");
 		
-		$current_url = $settings["article_properties_url"];
+		$current_url = isset($settings["article_properties_url"]) ? $settings["article_properties_url"] : null;
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			$PaginationLayout = new \PaginationLayout($total, $rows_per_page, array("current_page" => $current_page), "current_page");
 			$PaginationLayout->show_x_pages_at_once = 10;
 			$pagination_data = $PaginationLayout->data;
 		}
 		
-		$catalog_type = $settings["catalog_type"];
+		$catalog_type = isset($settings["catalog_type"]) ? $settings["catalog_type"] : null;
 		
 		//prepare settings with selected template html if apply
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "article/catalog", $settings);
 		
 		//execute user list with ptl
-		if ($catalog_type == "user_list" && $settings["ptl"]) {
+		if ($catalog_type == "user_list" && !empty($settings["ptl"])) {
 			$form_settings = array("ptl" => $settings["ptl"]);
-			$articles_item_input_data_var_name = $form_settings["ptl"]["external_vars"]["articles_item_input_data_var_name"]; //this should contain "article" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i article>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "articles_item_input_data_var_name" to "item" too.
+			$articles_item_input_data_var_name = isset($form_settings["ptl"]["external_vars"]["articles_item_input_data_var_name"]) ? $form_settings["ptl"]["external_vars"]["articles_item_input_data_var_name"] : null; //this should contain "article" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i article>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "articles_item_input_data_var_name" to "item" too.
 			if ($articles_item_input_data_var_name)
 				$form_settings["ptl"]["input_data_var_name"] = $articles_item_input_data_var_name;
 			$HtmlFormHandler = new \HtmlFormHandler($form_settings);
 			
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
+			
 			foreach ($settings["fields"] as $field_id => $field) 
-				if ($settings["show_" . $field_id])
+				if (!empty($settings["show_" . $field_id]))
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $articles);
 			
-			if ($settings["top_pagination_type"]) {
-				$pagination_data["style"] = $settings["top_pagination_type"];
+			if (!empty($settings["top_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["top_pagination_type"]) ? $settings["top_pagination_type"] : null;
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:top-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
 			
-			if ($settings["bottom_pagination_type"]) {
-				$pagination_data["style"] = $settings["bottom_pagination_type"];
+			if (!empty($settings["bottom_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["bottom_pagination_type"]) ? $settings["bottom_pagination_type"] : null;
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:bottom-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
 			
@@ -106,27 +109,32 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		else { //execute blog and normal list or user list with no ptl
 			//showing top pagination
-			if ($settings["top_pagination_type"]) {
-				$pagination_data["style"] = $settings["top_pagination_type"];
+			if (!empty($settings["top_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["top_pagination_type"]) ? $settings["top_pagination_type"] : null;
 				
-				$html .= '<div class="top_pagination pagination_alignment_' . $settings["top_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="top_pagination pagination_alignment_' . (isset($settings["top_pagination_alignment"]) ? $settings["top_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 			
 			//showing catalog
 			$html .= '<ul class="catalog catalog_' . $catalog_type . '">';
 			
 			if ($catalog_type == "blog_list") {
-				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $articles, $settings["blog_introduction_articles_num"], $settings["blog_featured_articles_num"], $settings["blog_featured_articles_cols"], $settings["blog_listed_articles_num"]);
+				$blog_introduction_articles_num = isset($settings["blog_introduction_articles_num"]) ? $settings["blog_introduction_articles_num"] : null;
+				$blog_featured_articles_num = isset($settings["blog_featured_articles_num"]) ? $settings["blog_featured_articles_num"] : null;
+				$blog_featured_articles_cols = isset($settings["blog_featured_articles_cols"]) ? $settings["blog_featured_articles_cols"] : null;
+				$blog_listed_articles_num = isset($settings["blog_listed_articles_num"]) ? $settings["blog_listed_articles_num"] : null;
+				
+				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $articles, $blog_introduction_articles_num, $blog_featured_articles_num, $blog_featured_articles_cols, $blog_listed_articles_num);
 			}
 			else //execute normal list and user list with no ptl
 				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $articles);
 			
 			$html .= '</ul>';
 			
-			if ($settings["bottom_pagination_type"]) {
-				$pagination_data["style"] = $settings["bottom_pagination_type"];
+			if (!empty($settings["bottom_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["bottom_pagination_type"]) ? $settings["bottom_pagination_type"] : null;
 				
-				$html .= '<div class="bottom_pagination pagination_alignment_' . $settings["bottom_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="bottom_pagination pagination_alignment_' . (isset($settings["bottom_pagination_alignment"]) ? $settings["bottom_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 		}
 		
@@ -249,25 +257,28 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		);
 		
 		if ($current_url) {
-			$form_settings["form_containers"][0]["container"]["href"] = $current_url . $article["article_id"];
-			$form_settings["form_containers"][0]["container"]["title"] = $article["title"];
+			$form_settings["form_containers"][0]["container"]["href"] = $current_url . (isset($article["article_id"]) ? $article["article_id"] : null);
+			$form_settings["form_containers"][0]["container"]["title"] = isset($article["title"]) ? $article["title"] : null;
 		}
 		
 		$HtmlFormHandler = null;
-		if ($settings["ptl"])
+		if (!empty($settings["ptl"]))
 			$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
 		
 		foreach ($settings["fields"] as $field_id => $field) 
-			if ($settings["show_" . $field_id] && ($field_id == "photo" || $article[$field_id])) {
+			if (!empty($settings["show_" . $field_id]) && ($field_id == "photo" || !empty($article[$field_id]))) {
 				//Preparing ptl
-				if ($settings["ptl"])
+				if (!empty($settings["ptl"])) {
+					$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $article);
+				}
 				else
 					$form_settings["form_containers"][0]["container"]["elements"][] = $field;
 			}
 		
 		//add ptl to form_settings
-		if ($settings["ptl"]) {
+		if (!empty($settings["ptl"])) {
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 			\CommonModuleUI::cleanBlockPTLCode($settings["ptl"]["code"]);
 			$form_settings["form_containers"][0]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 		}
@@ -281,21 +292,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	/*private static function getCatalogArticleHtml($EVC, $settings, $common_project_name, $current_url, $article) {
 		$photo = "";
-		if ($article["photo_id"] && file_exists($article["photo_path"])) {
-			$photo = '<img class="catalog_article_photo" src="' . $article["photo_url"] . '" />';
+		if (!empty($article["photo_id"]) && !empty($article["photo_path"]) && file_exists($article["photo_path"])) {
+			$photo = '<img class="catalog_article_photo" src="' . (isset($article["photo_url"]) ? $article["photo_url"] : null) . '" />';
 		}
 		
-		if ($article["title"]) {
+		if (!empty($article["title"])) {
 			$title = '<h1 class="catalog_article_title">';
 			if ($current_url)
-				$title .= '<a href="' . $current_url . $article["article_id"] . '">' . $article["title"] . '</a>';
+				$title .= '<a href="' . $current_url . (isset($article["article_id"]) ? $article["article_id"] : null) . '">' . $article["title"] . '</a>';
 			else
 				$title .= $article["title"];
 			$title .= '</h1>';
 		}
 		
-		$sub_title = $article["sub_title"] ? '<h2 class="catalog_article_sub_title">' . $article["sub_title"] . '</h2>' : '';
-		$summary = $article["summary"] ? '<div class="catalog_article_summary">' . $article["summary"] . '</div>' : '';
+		$sub_title = !empty($article["sub_title"]) ? '<h2 class="catalog_article_sub_title">' . $article["sub_title"] . '</h2>' : '';
+		$summary = !empty($article["summary"]) ? '<div class="catalog_article_summary">' . $article["summary"] . '</div>' : '';
 		
 		return $photo . '
 			<div class="catalog_article_data">' . $title . $sub_title . $summary . '</div>

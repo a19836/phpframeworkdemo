@@ -5,10 +5,10 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); if (!$is_admin_ui_advanced_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); if (empty($is_admin_ui_advanced_allowed)) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . substr($logged_name_initials[1], 0, 1)); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = $project_url_prefix . "admin/admin_home?selected_layout_project=$filter_by_layout"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+	</script>'; die(); } $filter_by_layout = isset($filter_by_layout) ? $filter_by_layout : null; $filter_by_layout_permission = isset($filter_by_layout_permission) ? $filter_by_layout_permission : null; $project = isset($project) ? $project : null; $presentation_projects_by_layer_label_and_folders = isset($presentation_projects_by_layer_label_and_folders) ? $presentation_projects_by_layer_label_and_folders : null; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1)) . (isset($logged_name_initials[1]) ? strtoupper(substr($logged_name_initials[1], 0, 1)) : ""); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = $project_url_prefix . "admin/admin_home?selected_layout_project=$filter_by_layout"; $notifications_url = $project_url_prefix . "admin/get_notifications"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_advanced.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>
@@ -17,6 +17,7 @@ include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtil
 var path_to_filter = "' . $filter_by_layout . '";
 var admin_home_project_page_url = "' . $admin_home_project_page_url . '";
 var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
+var notifications_url = "' . $notifications_url . '";
 </script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = AdminMenuUIHandler::getContextMenus($exists_db_drivers, $get_store_programs_url, $is_module_user_installed); $main_content .= '
 	<div id="top_panel">
 		<ul class="left">
@@ -37,10 +38,10 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 						<ul>
 							<li class="label"><a>Select a Project:</a></li>
 							<li class="all_projects' . ($filter_by_layout ? '' : ' selected') . '"><a value="" onClick="filterByLayout(this)"><i class="icon all_projects"></i> <span>All Projects</span></a></li>
-							<!--li class="separator"></li-->'; $selected_project_name = ""; $is_single_presentation_layer = count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '	<li class="projects_group">
+							<!--li class="separator"></li-->'; $selected_project_name = ""; $is_single_presentation_layer = is_array($presentation_projects_by_layer_label_and_folders) && count($presentation_projects_by_layer_label_and_folders) == 1; foreach ($presentation_projects_by_layer_label_and_folders as $layer_label => $projs) { if (!$is_single_presentation_layer) $main_content .= '	<li class="projects_group">
 								<a><i class="icon project_folder"></i> <span>' . $layer_label . '</span></a>
-								<ul>'; $layer_bean_folder_name = $presentation_bean_folder_name_by_layer_label[$layer_label]; $main_content .= getProjectsHtml($projs, $filter_by_layout, $layer_bean_folder_name . "/" . $EVC->getCommonProjectName()); if (!$is_single_presentation_layer) $main_content .= '		</ul>
-							</li>'; if ($filter_by_layout && $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } $common_project_selected = $selected_project_name == $EVC->getCommonProjectName(); foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '		<li class="project' . ($filter_by_layout == $lname ? ' selected' : '') . '">
+								<ul>'; $layer_bean_folder_name = isset($presentation_bean_folder_name_by_layer_label[$layer_label]) ? $presentation_bean_folder_name_by_layer_label[$layer_label] : null; $main_content .= getProjectsHtml($projs, $filter_by_layout, $layer_bean_folder_name . "/" . $EVC->getCommonProjectName()); if (!$is_single_presentation_layer) $main_content .= '		</ul>
+							</li>'; if ($filter_by_layout && !empty($presentation_projects_by_layer_label[$layer_label][$filter_by_layout])) $selected_project_name = $presentation_projects_by_layer_label[$layer_label][$filter_by_layout]; } $common_project_selected = $selected_project_name == $EVC->getCommonProjectName(); foreach ($non_projects_layout_types as $lname => $lid) $main_content .= '		<li class="project' . ($filter_by_layout == $lname ? ' selected' : '') . '">
 								<a value="' . $lname . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $lname . '</span></a>
 							</li>'; $main_content .= '		</ul>
 					</li>	
@@ -59,9 +60,22 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 			<li class="icon go_forward" onClick="goForward()" data-title="Go Forward"></li>
 			<li class="separator">|</li>
 			
-			' . ($is_flush_cache_allowed ? '<li class="icon flush_cache" data-title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
+			' . (!empty($is_flush_cache_allowed) ? '<li class="icon flush_cache" data-title="Flush Cache" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\')"></li>' : '') . '
 			<li class="icon refresh" onClick="refreshIframe()" data-title="Refresh"></li>
 			<li class="icon full_screen" data-title="Toggle Full Screen" onClick="toggleFullScreen(this)"></li>
+			<li class="separator">|</li>
+			
+			<li class="sub_menu sub_menu_notifications" data-title="Notifications" onClick="openSubmenu(this)">
+				<span class="icon notification"></span>
+				<i class="icon dropdown_arrow"></i>
+				
+				<ul>
+					<div class="triangle_up"></div>
+					
+					<li class="empty_notification"><div>There are no notifications</div></li>
+					<!--li class="notification"><div>test</div></li-->
+				</ul>
+			</li>
 			<li class="separator">|</li>
 			
 			<li class="icon tools" onClick="chooseAvailableTool(\'' . "{$project_url_prefix}admin/choose_available_tool?filter_by_layout=$filter_by_layout&popup=1" . '\')" data-title="Tools"></li>
@@ -81,12 +95,14 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 					<li class="toggle_theme_layout" title="Toggle Theme"><a onClick="toggleThemeLayout(this)"><i class="icon toggle_theme_layout"></i> <span>Show dark theme</span></a></li>
 					<li class="toggle_main_navigator_side" title="Toggle Navigator Side"><a onClick="toggleNavigatorSide(this)"><i class="icon toggle_main_navigator_side"></i> <span>Show navigator on right side</span></a></li>
 					<li class="separator"></li>
-					<li class="console" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
+					<li class="view_logs" title="Logs Console"><a onClick="openConsole(\'' . $project_url_prefix . 'admin/logs_console?popup=1\', event);"><i class="icon logs_console"></i> Logs Console</a></li>
+					' . ($is_terminal_console_allowed ? '<li class="view_terminal" title="Terminal"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/terminal_console?popup=1"><i class="icon terminal_console"></i> Terminal Console</a></li>' : '') . '
 					<!--li class="question" title="Tutorials - How To?"><a onClick="chooseAvailableTutorial(\'' . $project_url_prefix . 'admin/choose_available_tutorial?popup=1\', event);"><i class="icon tutorials"></i> Tutorials - How To?</a></li-->
 					<li class="question" title="Tutorials - How To?"><a onClick="openOnlineTutorialsPopup(\'' . $online_tutorials_url_prefix . '\', event);"><i class="icon tutorials"></i> Tutorials - How To?</a></li>
 					<li class="question" title="Open Tour Guide"><a onClick="MyTourGuide.restart()"><i class="icon question"></i> Open Tour Guide</a></li>
 					<li class="info" title="About"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 					<li class="feedback" title="Feedback - Send us your questions"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/feedback?popup=1"><i class="icon chat"></i> Feedback</a></li>
+					<li class="framework_update" title="Update to the Latest Version of the Framework"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/framework_update"><i class="icon download"></i> Framework Update</a></li>
 					<li class="separator"></li>
 					<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 				</ul>
@@ -107,7 +123,7 @@ var admin_home_projects_page_url = "' . $admin_home_projects_page_url . '";
 		
 		<div class="file_tree_root"></div>
 		<div id="file_tree" class="mytree hidden' . ($tree_layout == "left_panel_without_tabs" ? " scroll" : "") . '">
-			<ul>'; $main_layers_properties = array(); $main_content .= AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission); $main_content .= '
+			<ul>'; $main_layers_properties = array(); $main_content .= isset($layers["presentation_layers"]) ? AdminMenuUIHandler::getLayersGroup("presentation_layers", $layers["presentation_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission) : ""; $main_content .= isset($layers["business_logic_layers"]) ? AdminMenuUIHandler::getLayersGroup("business_logic_layers", $layers["business_logic_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission) : ""; $main_content .= isset($layers["data_access_layers"]) ? AdminMenuUIHandler::getLayersGroup("data_access_layers", $layers["data_access_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission) : ""; $main_content .= isset($layers["db_layers"]) ? AdminMenuUIHandler::getLayersGroup("db_layers", $layers["db_layers"], $main_layers_properties, $project_url_prefix, $filter_by_layout, $filter_by_layout_permission) : ""; $main_content .= '
 				<li class="main_node_library jstree-open" data-jstree=\'{"icon":"main_node main_node_library"}\'>
 					<label>Library</label>
 					<ul>'; $main_content .= isset($layers["libs"]["lib"]) ? AdminMenuUIHandler::getLayer("lib", $layers["libs"]["lib"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= isset($layers["vendors"]["vendor"]) ? AdminMenuUIHandler::getLayer("vendor", $layers["vendors"]["vendor"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= $layers["others"]["other"] ? AdminMenuUIHandler::getLayer("other", $layers["others"]["other"], $main_layers_properties, $project_url_prefix) : ''; $main_content .= '

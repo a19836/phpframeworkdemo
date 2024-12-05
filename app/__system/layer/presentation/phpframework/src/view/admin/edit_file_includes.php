@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $upload_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/upload_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $head = '
+include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $selected_project_id = isset($selected_project_id) ? $selected_project_id : null; $file_path = isset($file_path) ? $file_path : null; $obj = isset($obj) ? $obj : null; $db_brokers = isset($db_brokers) ? $db_brokers : null; $data_access_brokers = isset($data_access_brokers) ? $data_access_brokers : null; $ibatis_brokers = isset($ibatis_brokers) ? $ibatis_brokers : null; $hibernate_brokers = isset($hibernate_brokers) ? $hibernate_brokers : null; $business_logic_brokers = isset($business_logic_brokers) ? $business_logic_brokers : null; $presentation_brokers = isset($presentation_brokers) ? $presentation_brokers : null; $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $upload_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/upload_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $choose_dao_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=dao&path=#path#"; $choose_lib_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=lib&path=#path#"; $choose_vendor_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=vendor&path=#path#"; $head = '
 <!-- Add MD5 JS File -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 
@@ -62,18 +62,18 @@ var new_include_html = \'' . str_replace("'", "\\'", str_replace("\n", "", WorkF
 <div class="includes_obj with_top_bar_section">
 	<div class="namespace">
 		<label>Namespace:</label>
-		<input type="text" value="' . ($obj_data && $obj_data["namespaces"] ? $obj_data["namespaces"][0] : '') . '" placeHolder="Some\Namespace\Here\If\Apply" />
+		<input type="text" value="' . (!empty($obj_data["namespaces"]) ? $obj_data["namespaces"][0] : '') . '" placeHolder="Some\Namespace\Here\If\Apply" />
 	</div>
 	<div class="uses">
 		<label>Uses:</label>
 		<span class="icon add" onClick="addNewUse(this)" title="Add Use">Add</span>
-		<div class="fields">'; $uses = $obj_data ? $obj_data["uses"] : null; if ($uses) foreach ($uses as $use => $alias) $main_content .= WorkFlowPHPFileHandler::getUseHTML($use, $alias); $main_content .= '
+		<div class="fields">'; $uses = isset($obj_data["uses"]) ? $obj_data["uses"] : null; if ($uses) foreach ($uses as $use => $alias) $main_content .= WorkFlowPHPFileHandler::getUseHTML($use, $alias); $main_content .= '
 		</div>
 	</div>
 	<div class="includes">
 		<label>Includes:</label>
 		<span class="icon add" onClick="addNewInclude(this)" title="Add Include">Add</span>
-		<div class="fields">'; $includes = $obj_data ? $obj_data["includes"] : null; if ($includes) { $t = count($includes); for ($i = 0; $i < $t; $i++) { $include = $includes[$i]; if ($include && $include[0]) $main_content .= WorkFlowPHPFileHandler::getInludeHTML($include); } } $main_content .= '
+		<div class="fields">'; $includes = isset($obj_data["includes"]) ? $obj_data["includes"] : null; if ($includes) { $t = count($includes); for ($i = 0; $i < $t; $i++) { $include = $includes[$i]; if ($include && !empty($include[0])) $main_content .= WorkFlowPHPFileHandler::getInludeHTML($include); } } $main_content .= '
 		</div>
 	</div>
 </div>

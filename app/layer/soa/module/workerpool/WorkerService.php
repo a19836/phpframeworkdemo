@@ -24,7 +24,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[failed_attempts], type=tinyint, default=0)
 	 */
 	public function insertWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -33,28 +33,29 @@ class WorkerService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["class"] = addcslashes($data["class"], "\\'");
-			$data["args"] = addcslashes($data["args"], "\\'");
-			$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
+			$data["args"] = isset($data["args"]) ? addcslashes($data["args"], "\\'") : "";
+			$data["thread_id"] = isset($data["thread_id"]) ? addcslashes($data["thread_id"], "\\'") : "";
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 			
 			$status = $b->callInsert("module/workerpool", "insert_worker", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Worker = $this->getWorkerHbnObj($b, $options);
+			$ids = null;
 			$status = $Worker->insert($data, $ids);
-			return $status ? $ids["worker_id"] : $status;
+			return $status ? (isset($ids["worker_id"]) ? $ids["worker_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mwp_worker", array(
 					"class" => $data["class"], 
-					"args" => $data["args"], 
-					"status" => $data["status"], 
-					"thread_id" => $data["thread_id"], 
-					"begin_time" => $data["begin_time"], 
-					"end_time" => $data["end_time"], 
-					"failed_attempts" => $data["failed_attempts"], 
-					"description" => $data["description"], 
+					"args" => isset($data["args"]) ? $data["args"] : null, 
+					"status" => isset($data["status"]) ? $data["status"] : null, 
+					"thread_id" => isset($data["thread_id"]) ? $data["thread_id"] : null, 
+					"begin_time" => isset($data["begin_time"]) ? $data["begin_time"] : null, 
+					"end_time" => isset($data["end_time"]) ? $data["end_time"] : null, 
+					"failed_attempts" => isset($data["failed_attempts"]) ? $data["failed_attempts"] : null, 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -74,7 +75,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[failed_attempts], type=tinyint, default=0)
 	 */
 	public function updateWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -82,9 +83,9 @@ class WorkerService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["class"] = addcslashes($data["class"], "\\'");
-			$data["args"] = addcslashes($data["args"], "\\'");
-			$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
+			$data["args"] = isset($data["args"]) ? addcslashes($data["args"], "\\'") : "";
+			$data["thread_id"] = isset($data["thread_id"]) ? addcslashes($data["thread_id"], "\\'") : "";
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 			
 			return $b->callUpdate("module/workerpool", "update_worker", $data, $options);
 		}
@@ -95,13 +96,13 @@ class WorkerService extends \soa\CommonService {
 		else if (is_a($b, "IDBBrokerClient")) {
 			return $b->updateObject("mwp_worker", array(
 					"class" => $data["class"], 
-					"args" => $data["args"], 
-					"status" => $data["status"], 
-					"thread_id" => $data["thread_id"], 
-					"begin_time" => $data["begin_time"], 
-					"end_time" => $data["end_time"], 
-					"failed_attempts" => $data["failed_attempts"], 
-					"description" => $data["description"], 
+					"args" => isset($data["args"]) ? $data["args"] : null, 
+					"status" => isset($data["status"]) ? $data["status"] : null, 
+					"thread_id" => isset($data["thread_id"]) ? $data["thread_id"] : null, 
+					"begin_time" => isset($data["begin_time"]) ? $data["begin_time"] : null, 
+					"end_time" => isset($data["end_time"]) ? $data["end_time"] : null, 
+					"failed_attempts" => isset($data["failed_attempts"]) ? $data["failed_attempts"] : null, 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"worker_id" => $data["worker_id"]
@@ -115,7 +116,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[maximum_failed_attempts], type=tinyint, not_null=1)
 	 */
 	public function updateFailedAndToParseWorkers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -140,7 +141,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[expiration_time], type=bigint, not_null=1, length=19)
 	 */
 	public function updateFailedAndExpiredWorkers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -164,7 +165,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[expiration_time], type=bigint, not_null=1, length=19)
 	 */
 	public function resetExpiredWorkers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -190,7 +191,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[begin_time], type=bigint, not_null=1, length=19)
 	 */
 	public function updateThreadWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -215,7 +216,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[end_time], type=bigint, not_null=1, length=19)
 	 */
 	public function updateClosedWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -239,7 +240,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[worker_id], type=bigint, not_null=1, length=19)
 	 */
 	public function updateFailedWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -263,7 +264,7 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[worker_id], type=bigint, not_null=1, length=19)
 	 */
 	public function resetFailedWorker($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -288,7 +289,7 @@ class WorkerService extends \soa\CommonService {
 	 */
 	public function deleteWorker($data) {
 		$worker_id = $data["worker_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -310,13 +311,13 @@ class WorkerService extends \soa\CommonService {
 	 */
 	public function getWorker($data) {
 		$worker_id = $data["worker_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/workerpool", "get_worker", array("worker_id" => $worker_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Worker = $this->getWorkerHbnObj($b, $options);
@@ -324,7 +325,7 @@ class WorkerService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mwp_worker", null, array("worker_id" => $worker_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/workerpool", "WorkerService.getWorker", $data, $options);
@@ -340,14 +341,15 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[conditions][failed_attempts], type=tinyint|array)
 	 */
 	public function getWorkersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/workerpool", "get_workers_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -357,7 +359,7 @@ class WorkerService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mwp_worker", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -375,25 +377,26 @@ class WorkerService extends \soa\CommonService {
 	 * @param (name=data[conditions][failed_attempts], type=tinyint|array)
 	 */
 	public function countWorkersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/workerpool", "count_workers_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Worker = $this->getWorkerHbnObj($b, $options);
-				return $Worker->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Worker->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mwp_worker", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -402,7 +405,7 @@ class WorkerService extends \soa\CommonService {
 	}
 	
 	public function getAllWorkers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -420,13 +423,13 @@ class WorkerService extends \soa\CommonService {
 	}
 	
 	public function countAllWorkers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/workerpool", "count_all_workers", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Worker = $this->getWorkerHbnObj($b, $options);
@@ -444,7 +447,7 @@ class WorkerService extends \soa\CommonService {
 	 */
 	public function getWorkersByIds($data) {
 		$worker_ids = $data["worker_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($worker_ids) {

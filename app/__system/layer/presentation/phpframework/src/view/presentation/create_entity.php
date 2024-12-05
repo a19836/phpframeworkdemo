@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = $_GET; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; if (!$creation_step) { $main_content = '
+include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; $main_content = ''; if (!$creation_step) { $main_content = '
 		<div class="top_bar create_entity_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
@@ -29,7 +29,7 @@ include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = $_GET; unset($get_b
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>
 				<ul>
-					<li class="continue button" data-title="Continue to next step after selecting a pre-built page"><a' . ($_POST && $status ? ' class="active"' : '') . ' href="javascript:void(0)" onClick="choosePage(this, \'?' . $query_string . '&creation_step=1\')">Continue</a></li>
+					<li class="continue button" data-title="Continue to next step after selecting a pre-built page"><a' . (!empty($_POST) && !empty($status) ? ' class="active"' : '') . ' href="javascript:void(0)" onClick="choosePage(this, \'?' . $query_string . '&creation_step=1\')">Continue</a></li>
 					<li class="back button" data-title="Back to choose a new pre-built page"><a class="active" href="?' . $query_string . '&creation_step=0">Back</a></li>
 					<li class="cancel button" data-title="Close"><a class="active" href="javascript:void(0)" onClick="cancel()">Close</a></li>
 				</ul>
@@ -46,7 +46,7 @@ include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = $_GET; unset($get_b
 				<li class="continue button" data-title="Go to the Page Editor"><a class="active" href="javascript:void(0)" onClick="onSucessfullPageCreation()">Continue</a></li>
 			</ul>
 		</header>
-	</div>'; if ($from_step_1) $main_content .= '
+	</div>'; if (!empty($from_step_1)) $main_content .= '
 		<div class="message">
 			<div class="title">Your page was created successfully!</div>
 			<div class="sentence_1">Please click the button below to go to the page editor.</div>
@@ -57,7 +57,7 @@ include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = $_GET; unset($get_b
 			<div class="title">You are almost done...</div>
 			<div class="sentence_1">The next step will open the page editor and choose how you want to design your page.</div>
 			<div class="sentence_2">Happy development...</div>
-		</div>'; } $head .= '
+		</div>'; } $head = (isset($head) ? $head : "") . '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 

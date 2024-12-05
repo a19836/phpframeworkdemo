@@ -4,14 +4,15 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("zip/admin/ZipAdminUtil", $common_project_name);
 	
 	$ZipAdminUtil = new ZipAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
-	$state_id = $_GET["state_id"];
+	$state_id = isset($_GET["state_id"]) ? $_GET["state_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($state_id) {
 		$total = ZipUtil::countCitiesByConditions($brokers, array("state_id" => $state_id), null, true);

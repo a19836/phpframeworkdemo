@@ -5,7 +5,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 	
 	public function simulate(&$settings = false, &$editable_settings = false) {
 		$s = $settings;
-		$s["actions"] = $this->prepareSimulatedActions($s["actions"]);
+		$s["actions"] = isset($s["actions"]) ? $this->prepareSimulatedActions($s["actions"]) : null;
 		
 		return $this->getCMSModuleHandler()->execute($s);
 	}
@@ -15,7 +15,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 			$new_actions = array();
 			
 			foreach ($actions as $action) {
-				$action_type = $action["action_type"];
+				$action_type = isset($action["action_type"]) ? $action["action_type"] : null;
 				$action["condition_type"] = "execute_always";
 				
 				switch ($action_type) {
@@ -31,7 +31,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 						break;
 					case "loop":
 					case "group":
-						$action["actions"] = $this->prepareSimulatedActions($action["actions"]);
+						$action["actions"] = isset($action["actions"]) ? $this->prepareSimulatedActions($action["actions"]) : null;
 						$new_actions[] = $action;
 						break;
 				}

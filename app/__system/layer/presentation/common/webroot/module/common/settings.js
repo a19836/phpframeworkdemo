@@ -54,7 +54,9 @@ function initObjectBlockSettings(class_name, save_func, save_func_name) {
 		var els_ui_creator_var_name = "ElsLayoutUIEditor_" + Math.abs(("" + class_name).hashCode()); //Be sure that the hasCode is positive with Math.abs
 		var ElsLayoutUIEditor = new LayoutUIEditor();
 		ElsLayoutUIEditor.options.ui_element = layout_ui_editor_elm;
-		ElsLayoutUIEditor.options.template_source_editor_save_func = function() {
+		ElsLayoutUIEditor.options.on_context_menu_widget_setting = typeof onContextMenuLayoutUIEditorWidgetSetting == "function" ? onContextMenuLayoutUIEditorWidgetSetting : null;
+		ElsLayoutUIEditor.options.on_template_source_editor_ready_func = typeof setCodeEditorAutoCompleter == "function" ? setCodeEditorAutoCompleter : null;
+		ElsLayoutUIEditor.options.on_template_source_editor_save_func = function() {
 			var button = $(".top_bar .save a")[0];
 			save_func(button);
 		};
@@ -533,9 +535,12 @@ function createObjectItemCodeEditor(textarea, type, save_func) {
 		editor.setOptions({
 			enableBasicAutocompletion: true,
 			enableSnippets: true,
-			enableLiveAutocompletion: false,
+			enableLiveAutocompletion: true,
 		});
 		editor.setOption("wrap", true);
+		
+		if (typeof setCodeEditorAutoCompleter == "function")
+			setCodeEditorAutoCompleter(editor);
 		
 		if (typeof save_func == "function" || save_func) {
 			editor.commands.addCommand({

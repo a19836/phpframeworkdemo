@@ -6,7 +6,7 @@ include_once $EVC->getUtilPath("LayoutTypeProjectUIHandler");
 include_once $EVC->getModulePath("form/utils", $common_project_name);
 include_once $EVC->getModulePath("common/CommonModuleSettingsUI", $common_project_name);
 
-$filter_by_layout = $_GET["filter_by_layout"]; //optional
+$filter_by_layout = isset($_GET["filter_by_layout"]) ? $_GET["filter_by_layout"] : null; //optional
 $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout);
 
 $common_project_name = $EVC->getCommonProjectName();
@@ -17,7 +17,7 @@ include $EVC->getModulePath("common/start_project_module_file", $common_project_
 $project_url_prefix = $purlp;
 $project_common_url_prefix = $pcurlp;
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	$selected_db_vars = WorkFlowBrokersSelectedDBVarsHandler::getBrokersSelectedDBVars( $P->getBrokers() );
 	
 	$opts = array(
@@ -26,24 +26,24 @@ if ($PEVC) {
 		"path_extra" => hash('crc32b', "$bean_file_name/$bean_name/$path"),
 	);
 	$sla = SequentialLogicalActivityUIHandler::getHeader($EVC, $PEVC, $UserAuthenticationHandler, $bean_name, $bean_file_name, $path, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $user_beans_folder_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $filter_by_layout, $opts);
-	$sla_head = $sla["head"];
-	$sla_js_head = $sla["js_head"];
-	$tasks_contents = $sla["tasks_contents"];
-	$layer_brokers_settings = $sla["layer_brokers_settings"];
-	$presentation_projects = $sla["presentation_projects"];
-	$db_drivers = $sla["db_drivers"];
-	$WorkFlowTaskHandler = $sla["WorkFlowTaskHandler"];
-	$WorkFlowUIHandler = $sla["WorkFlowUIHandler"];
-	$set_workflow_file_url = $sla["set_workflow_file_url"];
-	$get_workflow_file_url = $sla["get_workflow_file_url"];
+	$sla_head = isset($sla["head"]) ? $sla["head"] : null;
+	$sla_js_head = isset($sla["js_head"]) ? $sla["js_head"] : null;
+	$tasks_contents = isset($sla["tasks_contents"]) ? $sla["tasks_contents"] : null;
+	$layer_brokers_settings = isset($sla["layer_brokers_settings"]) ? $sla["layer_brokers_settings"] : null;
+	$presentation_projects = isset($sla["presentation_projects"]) ? $sla["presentation_projects"] : null;
+	$db_drivers = isset($sla["db_drivers"]) ? $sla["db_drivers"] : null;
+	$WorkFlowTaskHandler = isset($sla["WorkFlowTaskHandler"]) ? $sla["WorkFlowTaskHandler"] : null;
+	$WorkFlowUIHandler = isset($sla["WorkFlowUIHandler"]) ? $sla["WorkFlowUIHandler"] : null;
+	$set_workflow_file_url = isset($sla["set_workflow_file_url"]) ? $sla["set_workflow_file_url"] : null;
+	$get_workflow_file_url = isset($sla["get_workflow_file_url"]) ? $sla["get_workflow_file_url"] : null;
 	
 	//prepare brokers
-	$presentation_brokers = $layer_brokers_settings["presentation_brokers"];
-	$business_logic_brokers = $layer_brokers_settings["business_logic_brokers"];
-	$data_access_brokers = $layer_brokers_settings["data_access_brokers"];
-	$ibatis_brokers = $layer_brokers_settings["ibatis_brokers"];
-	$hibernate_brokers = $layer_brokers_settings["hibernate_brokers"];
-	$db_brokers = $layer_brokers_settings["db_brokers"];
+	$presentation_brokers = isset($layer_brokers_settings["presentation_brokers"]) ? $layer_brokers_settings["presentation_brokers"] : null;
+	$business_logic_brokers = isset($layer_brokers_settings["business_logic_brokers"]) ? $layer_brokers_settings["business_logic_brokers"] : null;
+	$data_access_brokers = isset($layer_brokers_settings["data_access_brokers"]) ? $layer_brokers_settings["data_access_brokers"] : null;
+	$ibatis_brokers = isset($layer_brokers_settings["ibatis_brokers"]) ? $layer_brokers_settings["ibatis_brokers"] : null;
+	$hibernate_brokers = isset($layer_brokers_settings["hibernate_brokers"]) ? $layer_brokers_settings["hibernate_brokers"] : null;
+	$db_brokers = isset($layer_brokers_settings["db_brokers"]) ? $layer_brokers_settings["db_brokers"] : null;
 	
 	//preparing generic urls
 	$choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#$filter_by_layout_url_query&path=#path#";
@@ -101,7 +101,7 @@ if ($PEVC) {
 		
 		<div class="module_form_contents">
 			<?php
-			echo SequentialLogicalActivityUIHandler::getSLAHtml($EVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array(
+			echo SequentialLogicalActivityUIHandler::getSLAHtml($EVC, $PEVC, $project_url_prefix, $project_common_url_prefix, $layout_ui_editor_user_widget_folders_path, $webroot_cache_folder_path, $webroot_cache_folder_url, $tasks_contents, $db_drivers, $presentation_projects, $WorkFlowUIHandler, array(
 				"extra_short_actions_html" => $db_drivers ? '<a class="open_form_wizard" onClick="openFormWizard()">Open Wizard <i class="icon wizard"></i></a>' : '',
 				"save_func" => "saveModuleFormSettings",
 			));
@@ -180,7 +180,7 @@ if ($PEVC) {
 				<input type="button" class="next" value="Next" onClick="nextFormWizard(this)" />
 			</div>
 		</div>
-<?
+<?php
 }
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);

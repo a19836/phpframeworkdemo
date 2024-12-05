@@ -32,7 +32,7 @@ class EventService extends \soa\CommonService {
 	 * @param (name=data[end_date], type=timestamp) 
 	 */
 	public function insertEvent($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if (empty($data["published"])) 
@@ -52,39 +52,40 @@ class EventService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
-			$data["address"] = addcslashes($data["address"], "\\'");
-			$data["zip_id"] = addcslashes($data["zip_id"], "\\'");
-			$data["locality"] = addcslashes($data["locality"], "\\'");
-			$data["end_date"] = addcslashes($data["end_date"], "\\'");
-			$data["begin_date"] = addcslashes($data["begin_date"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+			$data["address"] = isset($data["address"]) ? addcslashes($data["address"], "\\'") : "";
+			$data["zip_id"] = isset($data["zip_id"]) ? addcslashes($data["zip_id"], "\\'") : "";
+			$data["locality"] = isset($data["locality"]) ? addcslashes($data["locality"], "\\'") : "";
+			$data["end_date"] = isset($data["end_date"]) ? addcslashes($data["end_date"], "\\'") : "";
+			$data["begin_date"] = isset($data["begin_date"]) ? addcslashes($data["begin_date"], "\\'") : "";
 			
 			$status = $b->callInsert("module/event", "insert_event", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Event = $this->getEventHbnObj($b, $options);
+			$ids = null;
 			$status = $Event->insert($data, $ids);
-			return $status ? $ids["event_id"] : $status;
+			return $status ? (isset($ids["event_id"]) ? $ids["event_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("me_event", array(
-					"title" => $data["title"], 
-					"sub_title" => $data["sub_title"], 
-					"description" => $data["description"], 
-					"published" => $data["published"], 
-					"photo_id" => $data["photo_id"], 
-					"allow_comments" => $data["allow_comments"], 
-					"address" => $data["address"], 
-					"zip_id" => $data["zip_id"], 
-					"locality" => $data["locality"], 
-					"country_id" => $data["country_id"], 
-					"latitude" => $data["latitude"], 
-					"longitude" => $data["longitude"], 
-					"begin_date" => $data["begin_date"], 
-					"end_date" => $data["end_date"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
+					"published" => isset($data["published"]) ? $data["published"] : null, 
+					"photo_id" => isset($data["photo_id"]) ? $data["photo_id"] : null, 
+					"allow_comments" => isset($data["allow_comments"]) ? $data["allow_comments"] : null, 
+					"address" => isset($data["address"]) ? $data["address"] : null, 
+					"zip_id" => isset($data["zip_id"]) ? $data["zip_id"] : null, 
+					"locality" => isset($data["locality"]) ? $data["locality"] : null, 
+					"country_id" => isset($data["country_id"]) ? $data["country_id"] : null, 
+					"latitude" => isset($data["latitude"]) ? $data["latitude"] : null, 
+					"longitude" => isset($data["longitude"]) ? $data["longitude"] : null, 
+					"begin_date" => isset($data["begin_date"]) ? $data["begin_date"] : null, 
+					"end_date" => isset($data["end_date"]) ? $data["end_date"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -112,7 +113,7 @@ class EventService extends \soa\CommonService {
 	 * @param (name=data[end_date], type=timestamp) 
 	 */
 	public function updateEvent($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if (empty($data["published"])) 
@@ -131,14 +132,14 @@ class EventService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
-			$data["address"] = addcslashes($data["address"], "\\'");
-			$data["zip_id"] = addcslashes($data["zip_id"], "\\'");
-			$data["locality"] = addcslashes($data["locality"], "\\'");
-			$data["end_date"] = addcslashes($data["end_date"], "\\'");
-			$data["begin_date"] = addcslashes($data["begin_date"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+			$data["address"] = isset($data["address"]) ? addcslashes($data["address"], "\\'") : "";
+			$data["zip_id"] = isset($data["zip_id"]) ? addcslashes($data["zip_id"], "\\'") : "";
+			$data["locality"] = isset($data["locality"]) ? addcslashes($data["locality"], "\\'") : "";
+			$data["end_date"] = isset($data["end_date"]) ? addcslashes($data["end_date"], "\\'") : "";
+			$data["begin_date"] = isset($data["begin_date"]) ? addcslashes($data["begin_date"], "\\'") : "";
 		
 			return $b->callUpdate("module/event", "update_event", $data, $options);
 		}
@@ -148,20 +149,20 @@ class EventService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			return $b->updateObject("me_event", array(
-					"title" => $data["title"], 
-					"sub_title" => $data["sub_title"], 
-					"description" => $data["description"], 
-					"published" => $data["published"], 
-					"photo_id" => $data["photo_id"], 
-					"allow_comments" => $data["allow_comments"], 
-					"address" => $data["address"], 
-					"zip_id" => $data["zip_id"], 
-					"locality" => $data["locality"], 
-					"country_id" => $data["country_id"], 
-					"latitude" => $data["latitude"], 
-					"longitude" => $data["longitude"], 
-					"begin_date" => $data["begin_date"], 
-					"end_date" => $data["end_date"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
+					"published" => isset($data["published"]) ? $data["published"] : null, 
+					"photo_id" => isset($data["photo_id"]) ? $data["photo_id"] : null, 
+					"allow_comments" => isset($data["allow_comments"]) ? $data["allow_comments"] : null, 
+					"address" => isset($data["address"]) ? $data["address"] : null, 
+					"zip_id" => isset($data["zip_id"]) ? $data["zip_id"] : null, 
+					"locality" => isset($data["locality"]) ? $data["locality"] : null, 
+					"country_id" => isset($data["country_id"]) ? $data["country_id"] : null, 
+					"latitude" => isset($data["latitude"]) ? $data["latitude"] : null, 
+					"longitude" => isset($data["longitude"]) ? $data["longitude"] : null, 
+					"begin_date" => isset($data["begin_date"]) ? $data["begin_date"] : null, 
+					"end_date" => isset($data["end_date"]) ? $data["end_date"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"event_id" => $data["event_id"]
@@ -176,7 +177,7 @@ class EventService extends \soa\CommonService {
 	 */
 	public function deleteEvent($data) {
 		$event_id = $data["event_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -198,13 +199,13 @@ class EventService extends \soa\CommonService {
 	 */
 	public function getEvent($data) {
 		$event_id = $data["event_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/event", "get_event", array("event_id" => $event_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Event = $this->getEventHbnObj($b, $options);
@@ -212,7 +213,7 @@ class EventService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("me_event", null, array("event_id" => $event_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/event", "EventService.getEvent", $data, $options);
@@ -235,14 +236,15 @@ class EventService extends \soa\CommonService {
 	 * @param (name=data[conditions][end_date], type=timestamp|array)  
 	 */
 	public function getEventsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/event", "get_events_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -252,7 +254,7 @@ class EventService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("me_event", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -277,25 +279,26 @@ class EventService extends \soa\CommonService {
 	 * @param (name=data[conditions][end_date], type=timestamp|array)  
 	 */
 	public function countEventsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/event", "count_events_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Event = $this->getEventHbnObj($b, $options);
-				return $Event->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Event->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("me_event", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -304,7 +307,7 @@ class EventService extends \soa\CommonService {
 	}
 	
 	public function getAllEvents($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -322,13 +325,13 @@ class EventService extends \soa\CommonService {
 	}
 	
 	public function countAllEvents($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/event", "count_all_events", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Event = $this->getEventHbnObj($b, $options);
@@ -346,7 +349,7 @@ class EventService extends \soa\CommonService {
 	 */
 	public function getEventsByIds($data) {
 		$event_ids = $data["event_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($event_ids) {
@@ -392,7 +395,9 @@ class EventService extends \soa\CommonService {
 	public function getEventsByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -403,18 +408,18 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				return $b->callSelect("module/event", "get_events_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				return $Event->callSelect("get_events_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::get_events_by_tags(array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -445,7 +450,9 @@ class EventService extends \soa\CommonService {
 	public function countEventsByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -456,24 +463,24 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$result = $b->callSelect("module/event", "count_events_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				$result = $Event->callSelect("count_events_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::count_events_by_tags(array("tags" => $tags_str, "object_type_id" => $object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/event", "EventService.countEventsByTags", $data, $options);
@@ -505,7 +512,9 @@ class EventService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -516,18 +525,18 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				return $b->callSelect("module/event", "get_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				return $Event->callSelect("get_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::get_events_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -562,7 +571,9 @@ class EventService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -573,24 +584,24 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$result = $b->callSelect("module/event", "count_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				$result = $Event->callSelect("count_events_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::count_events_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/event", "EventService.countEventsByObjectAndTags", $data, $options);
@@ -621,10 +632,12 @@ class EventService extends \soa\CommonService {
 	public function getEventsByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -635,18 +648,18 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				return $b->callSelect("module/event", "get_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				return $Event->callSelect("get_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::get_events_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 				
 				return $b->getSQL($sql, $options);
@@ -680,10 +693,12 @@ class EventService extends \soa\CommonService {
 	public function countEventsByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -694,24 +709,24 @@ class EventService extends \soa\CommonService {
 			
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$result = $b->callSelect("module/event", "count_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 				$Event = $this->getEventHbnObj($b, $options);
 				$result = $Event->callSelect("count_events_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+				$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				$sql = EventDBDAOServiceUtil::count_events_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
 				return $b->callBusinessLogic("module/event", "EventService.countEventsByObjectGroupAndTags", $data, $options);
@@ -739,7 +754,9 @@ class EventService extends \soa\CommonService {
 	public function getEventsWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -753,18 +770,18 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					return $b->callSelect("module/event", "get_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					return $Event->callSelect("get_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::get_events_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -796,7 +813,9 @@ class EventService extends \soa\CommonService {
 	public function countEventsWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -810,24 +829,24 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$result = $b->callSelect("module/event", "count_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					$result = $Event->callSelect("count_events_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::count_events_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/event", "EventService.countEventsWithAllTags", $data, $options);
@@ -860,7 +879,9 @@ class EventService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -874,18 +895,18 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					return $b->callSelect("module/event", "get_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					return $Event->callSelect("get_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::get_events_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -921,7 +942,9 @@ class EventService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -935,24 +958,24 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$result = $b->callSelect("module/event", "count_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					$result = $Event->callSelect("count_events_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::count_events_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/event", "EventService.countEventsByObjectWithAllTags", $data, $options);
@@ -984,10 +1007,12 @@ class EventService extends \soa\CommonService {
 	public function getEventsByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -1001,18 +1026,18 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					return $b->callSelect("module/event", "get_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					return $Event->callSelect("get_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::get_events_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 					
 					return $b->getSQL($sql, $options);
@@ -1047,10 +1072,12 @@ class EventService extends \soa\CommonService {
 	public function countEventsByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$event_object_type_id = $data["event_object_type_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -1064,24 +1091,24 @@ class EventService extends \soa\CommonService {
 			if ($tags_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$result = $b->callSelect("module/event", "count_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 					$Event = $this->getEventHbnObj($b, $options);
 					$result = $Event->callSelect("count_events_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+					$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 					$sql = EventDBDAOServiceUtil::count_events_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "event_object_type_id" => $event_object_type_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/event", "EventService.countEventsByObjectGroupWithAllTags", $data, $options);
@@ -1110,23 +1137,25 @@ class EventService extends \soa\CommonService {
 	public function getEventsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			return $b->callSelect("module/event", "get_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$Event = $this->getEventHbnObj($b, $options);
 			return $Event->callSelect("get_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 			$sql = EventDBDAOServiceUtil::get_events_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			return $b->getSQL($sql, $options);
@@ -1156,29 +1185,31 @@ class EventService extends \soa\CommonService {
 	public function countEventsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$result = $b->callSelect("module/event", "count_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$Event = $this->getEventHbnObj($b, $options);
 			$result = $Event->callSelect("count_events_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 			$sql = EventDBDAOServiceUtil::count_events_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/event", "EventService.countEventsByObject", $data, $options);
@@ -1206,24 +1237,26 @@ class EventService extends \soa\CommonService {
 	public function getEventsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			return $b->callSelect("module/event", "get_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$Event = $this->getEventHbnObj($b, $options);
 			return $Event->callSelect("get_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 			$sql = EventDBDAOServiceUtil::get_events_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			return $b->getSQL($sql, $options);
@@ -1254,30 +1287,32 @@ class EventService extends \soa\CommonService {
 	public function countEventsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$result = $b->callSelect("module/event", "count_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 				
 			$Event = $this->getEventHbnObj($b, $options);
 			$result = $Event->callSelect("count_events_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$cond = self::getSQLConditions($data["conditions"], $data["conditions_join"], "e");
+			$cond = self::getSQLConditions($conditions, $conditions_join, "e");
 			$sql = EventDBDAOServiceUtil::count_events_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/event", "EventService.countEventsByObjectGroup", $data, $options);

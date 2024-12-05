@@ -16,6 +16,7 @@ class QuizUtil {
 			$data["published"] = empty($data["published"]) ? 0 : 1;
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
+			$status = null;
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -24,8 +25,8 @@ class QuizUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 					
 					$status = $broker->callInsert("module/quiz", "insert_question", $data);
 					$question_id = $status ? $broker->getInsertedId() : $status;
@@ -33,15 +34,16 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Question = $broker->callObject("module/quiz", "Question");
+					$ids = null;
 					$status = $Question->insert($data, $ids);
-					$question_id = $status ? $ids["question_id"] : $status;
+					$question_id = $status ? (isset($ids["question_id"]) ? $ids["question_id"] : null) : $status;
 					break;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->insertObject("mq_question", array(
-							"title" => $data["title"], 
-							"description" => $data["description"], 
-							"published" => $data["published"], 
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
+							"published" => isset($data["published"]) ? $data["published"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -50,7 +52,7 @@ class QuizUtil {
 				}
 			}
 			
-			if ($status && $question_id) {
+			if ($status && !empty($question_id)) {
 				$status = self::updateObjectQuestionsByQuestionId(array($broker), $question_id, $data);
 			
 				return $status ? $question_id : false;
@@ -62,6 +64,7 @@ class QuizUtil {
 		if (is_array($brokers) && is_numeric($data["question_id"])) {
 			$data["published"] = empty($data["published"]) ? 0 : 1;
 			$data["modified_date"] = date("Y-m-d H:i:s");
+			$status = null;
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -69,8 +72,8 @@ class QuizUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 					
 					$status = $broker->callUpdate("module/quiz", "update_question", $data);
 					break;
@@ -82,9 +85,9 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->updateObject("mq_question", array(
-							"title" => $data["title"], 
-							"description" => $data["description"], 
-							"published" => $data["published"], 
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
+							"published" => isset($data["published"]) ? $data["published"] : null,
 							"modified_date" => $data["modified_date"]
 						), array(
 							"question_id" => $data["question_id"]
@@ -154,7 +157,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_all_questions", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Question = $broker->callObject("module/quiz", "Question");
@@ -202,7 +205,7 @@ class QuizUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/quiz", "count_questions_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Question = $broker->callObject("module/quiz", "Question");
@@ -247,18 +250,18 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_questions_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Question = $broker->callObject("module/quiz", "Question");
 					$result = $Question->callSelect("module/quiz", "count_questions_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = QuestionDBDAOUtil::count_questions_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -296,18 +299,18 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_questions_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Question = $broker->callObject("module/quiz", "Question");
 					$result = $Question->callSelect("module/quiz", "count_questions_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = QuestionDBDAOUtil::count_questions_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -322,31 +325,32 @@ class QuizUtil {
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : null;
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : null;
 					
 					return $broker->callBusinessLogic("module/quiz", "AnswerService.insertAnswer", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : 1;
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : 1;
 					
 					$status = $broker->callInsert("module/quiz", "insert_answer", $data);
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : null;
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : null;
 					
 					$Answer = $broker->callObject("module/quiz", "Answer");
+					$ids = null;
 					$status = $Answer->insert($data, $ids);
-					return $status ? $ids["answer_id"] : $status;
+					return $status ? (isset($ids["answer_id"]) ? $ids["answer_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->insertObject("mq_answer", array(
 							"question_id" => $data["question_id"], 
-							"title" => $data["title"], 
-							"description" => $data["description"], 
-							"value" => $data["value"], 
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
+							"value" => isset($data["value"]) ? $data["value"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -362,29 +366,29 @@ class QuizUtil {
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : null;
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : null;
 					
 					return $broker->callBusinessLogic("module/quiz", "AnswerService.updateAnswer", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : 1;
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : 1;
 					
 					return $broker->callUpdate("module/quiz", "update_answer", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["value"] = is_numeric($data["value"]) ? $data["value"] : null;
+					$data["value"] = isset($data["value"]) && is_numeric($data["value"]) ? $data["value"] : null;
 					
 					$Answer = $broker->callObject("module/quiz", "Answer");
 					return $Answer->update($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mq_answer", array(
-							"question_id" => $data["question_id"], 
-							"title" => $data["title"], 
-							"description" => $data["description"], 
-							"value" => $data["value"], 
+							"question_id" => $data["question_id"],  
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
+							"value" => isset($data["value"]) ? $data["value"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"answer_id" => $data["answer_id"]
@@ -467,7 +471,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_all_answers", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Answer = $broker->callObject("module/quiz", "Answer");
@@ -515,7 +519,7 @@ class QuizUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/quiz", "count_answers_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Answer = $broker->callObject("module/quiz", "Answer");
@@ -751,7 +755,7 @@ class QuizUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/quiz", "count_user_answer_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$UserAnswer = $broker->callObject("module/quiz", "UserAnswer");
@@ -796,7 +800,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_all_user_answers", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$UserAnswer = $broker->callObject("module/quiz", "UserAnswer");
@@ -946,18 +950,18 @@ class QuizUtil {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/quiz", "count_user_answers_by_question_ids_grouped_by_users", array("question_ids" => $question_ids_str), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserAnswer = $broker->callObject("module/quiz", "UserAnswer");
 						$result = $UserAnswer->callSelect("module/quiz", "count_user_answers_by_question_ids_grouped_by_users", array("question_ids" => $question_ids_str), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$sql = UserAnswerDBDAOUtil::count_user_answers_by_question_ids_grouped_by_users(array("question_ids" => $question_ids_str));
 						
 						$result = $broker->getSQL($sql, $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -973,26 +977,26 @@ class QuizUtil {
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/quiz", "ObjectQuestionService.insertObjectQuestion", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callInsert("module/quiz", "insert_object_question", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");
 					return $ObjectQuestion->insert($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->insertObject("mq_object_question", array(
 							"question_id" => $data["question_id"], 
@@ -1014,26 +1018,26 @@ class QuizUtil {
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/quiz", "ObjectQuestionService.updateObjectQuestion", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/quiz", "update_object_question", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");
 					return $ObjectQuestion->updatePrimaryKeys($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->updateObject("mq_object_question", array(
 							"question_id" => $data["new_question_id"], 
@@ -1056,10 +1060,10 @@ class QuizUtil {
 		if (is_array($brokers) && is_numeric($question_id)) {
 			if (self::deleteObjectQuestionsByQuestionId($brokers, $question_id)) {
 				$status = true;
-				$object_questions = is_array($data["object_questions"]) ? $data["object_questions"] : array();
+				$object_questions = isset($data["object_questions"]) && is_array($data["object_questions"]) ? $data["object_questions"] : array();
 				
 				foreach ($object_questions as $object_question) {
-					if (is_numeric($object_question["object_type_id"]) && is_numeric($object_question["object_id"])) {
+					if (isset($object_question["object_type_id"]) && is_numeric($object_question["object_type_id"]) && isset($object_question["object_id"]) && is_numeric($object_question["object_id"])) {
 						$object_question["question_id"] = $question_id;
 					
 						if (!self::insertObjectQuestion($brokers, $object_question)) {
@@ -1147,7 +1151,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "get_object_question", array("question_id" => $question_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");
@@ -1155,7 +1159,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$result = $broker->findObjects("mq_object_question", null, array("question_id" => $question_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 			}
 		}
@@ -1198,7 +1202,7 @@ class QuizUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/quiz", "count_object_questions_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");
@@ -1243,7 +1247,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_all_object_questions", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");
@@ -1288,7 +1292,7 @@ class QuizUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/quiz", "count_object_questions_by_question_id", array("question_id" => $question_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectQuestion = $broker->callObject("module/quiz", "ObjectQuestion");

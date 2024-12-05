@@ -8,10 +8,10 @@ class CallExternalClassMethodWorkerPoolWork extends WorkerPoolWork {
 		if ($this->args) {
 			$args = array_keys($this->args);
 			
-			$class_method_file = $args["class_method_file"];
-			$class_name = $args["class_name"];
-			$method_name = $args["method_name"];
-			$method_args = $args["method_args"];
+			$class_method_file = isset($args["class_method_file"]) ? $args["class_method_file"] : null;
+			$class_name = isset($args["class_name"]) ? $args["class_name"] : null;
+			$method_name = isset($args["method_name"]) ? $args["method_name"] : null;
+			$method_args = isset($args["method_args"]) ? $args["method_args"] : null;
 			
 			if ($class_method_file && $class_name && $method_name) {
 				$file_path = $class_method_file;
@@ -42,10 +42,12 @@ class CallExternalClassMethodWorkerPoolWork extends WorkerPoolWork {
 						else if (!$is_static)
 							throw new Exception("Method '$method_name' does NOT exists for class '$class_name' in file '$class_method_file'!");
 						else if (method_exists($cn, $mn)) {
-							debug_log("[CallExternalClassMethodWorkerPoolWork::run][" . $this->worker['thread_id'] . "] Executing class method '$cn::$mn' in file '$class_method_file'.", "info");
+							debug_log("[CallExternalClassMethodWorkerPoolWork::run][" . (isset($this->worker['thread_id']) ? $this->worker['thread_id'] : null) . "] Executing class method '$cn::$mn' in file '$class_method_file'.", "info");
 							
-							if ($method_args)
-								$res = call_user_func_array(array($cn, $mn), $method_args);
+							if ($method_args) {
+								$method_args = is_array($method_args) ? array_values($method_args) : $method_args;
+								$res = @call_user_func_array(array($cn, $mn), $method_args); //Note that the @ is very important here bc in PHP 8 this gives an warning, this is: 'Warning: Array to string conversion in...'
+							}
 							else
 								$res = call_user_func(array($cn, $mn));
 							

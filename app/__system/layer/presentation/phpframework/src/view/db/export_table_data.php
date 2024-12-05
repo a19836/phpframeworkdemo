@@ -4,7 +4,7 @@
  * 
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
- */ include $EVC->getViewPath("dataaccess/edit_query"); $head .= '
+ */ include $EVC->getViewPath("dataaccess/edit_query"); $export_type = isset($export_type) ? $export_type : null; $doc_name = isset($doc_name) ? $doc_name : null; $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/export_table_data.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/export_table_data.js"></script>

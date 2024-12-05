@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("attachment/admin/AttachmentAdminUtil", $common_project_name);
 	
 	$AttachmentAdminUtil = new AttachmentAdminUtil($CommonModuleAdminUtil);
@@ -12,6 +12,7 @@ if ($PEVC) {
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
 	$pks = "attachment_id=#[\$idx][attachment_id]#";
+	$options = isset($options) ? $options : null;
 	
 	$list_settings = array(
 		"title" => "Attachments List",

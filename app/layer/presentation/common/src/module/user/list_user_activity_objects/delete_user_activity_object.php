@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (UserUtil::deleteUserActivityObject($brokers, $_GET["thread_id"], $_GET["user_id"], $_GET["activity_id"], $_GET["object_type_id"], $_GET["object_id"], $_GET["time"])) {
+if (isset($_GET["thread_id"]) && isset($_GET["user_id"]) && isset($_GET["activity_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && UserUtil::deleteUserActivityObject($brokers, $_GET["thread_id"], $_GET["user_id"], $_GET["activity_id"], $_GET["object_type_id"], $_GET["object_id"], isset($_GET["time"]) ? $_GET["time"] : null)) {
 	echo "1";
 }
 ?>

@@ -4,6 +4,7 @@ namespace CMSModule\attachment\list_attachments;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,7 +16,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \AttachmentUtil::countAttachmentsByConditions($brokers, $conditions, null) : \AttachmentUtil::countAllAttachments($brokers);
 		
@@ -28,7 +29,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$settings["css_file"] = $project_common_url_prefix . 'module/attachment/list_attachments.css';
 		$settings["class"] = "module_list_attachments";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "attachment_id=#[idx][attachment_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "attachment_id=#[idx][attachment_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/attachment/list_attachments/delete_attachment?attachment_id=#[idx][attachment_id]#";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "attachment/list_attachments", $settings);

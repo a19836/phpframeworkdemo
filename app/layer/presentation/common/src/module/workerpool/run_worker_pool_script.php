@@ -7,7 +7,7 @@ if ($is_cmd_line) {
 	
 	//Force loglevel to what it is in the command line, even if the project as its own log level.
 	$options = getopt("", array("loglevel::"));
-	if (is_numeric($options["loglevel"]) && $GLOBALS["GlobalLogHandler"]) 
+	if (isset($options["loglevel"]) && is_numeric($options["loglevel"]) && !empty($GLOBALS["GlobalLogHandler"])) 
 		$GLOBALS["GlobalLogHandler"]->setLogLevel($options["loglevel"]);
 	
 	$WorkerPoolHandler = new \WorkerPoolHandler($EVC);

@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $is_obj_valid = $obj_data || !$hbn_obj_id; if ($is_obj_valid) { $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); } $head .= '
+include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $obj_data = isset($obj_data) ? $obj_data : null; $db_drivers = isset($db_drivers) ? $db_drivers : null; $selected_db_broker = isset($selected_db_broker) ? $selected_db_broker : null; $selected_db_driver = isset($selected_db_driver) ? $selected_db_driver : null; $selected_type = isset($selected_type) ? $selected_type : null; $selected_table = isset($selected_table) ? $selected_table : null; $selected_tables_name = isset($selected_tables_name) ? $selected_tables_name : null; $selected_table_attrs = isset($selected_table_attrs) ? $selected_table_attrs : null; $map_php_types = isset($map_php_types) ? $map_php_types : null; $map_db_types = isset($map_db_types) ? $map_db_types : null; $item_type = isset($item_type) ? $item_type : null; $is_hbn_obj_equal_to_file_name = isset($is_hbn_obj_equal_to_file_name) ? $is_hbn_obj_equal_to_file_name : null; $file_path = isset($file_path) ? $file_path : null; $obj = isset($obj) ? $obj : null; $WorkFlowTaskHandler = isset($WorkFlowTaskHandler) ? $WorkFlowTaskHandler : null; $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $is_obj_valid = $obj_data || !$hbn_obj_id; $head = ""; $main_content = ""; if ($is_obj_valid) { $get_layer_sub_files_url = $project_url_prefix . "admin/get_sub_files?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=#path#"; $WorkFlowUIHandler = new WorkFlowUIHandler($WorkFlowTaskHandler, $project_url_prefix, $project_common_url_prefix, $external_libs_url_prefix, $user_global_variables_file_path, $webroot_cache_folder_path, $webroot_cache_folder_url); $WorkFlowQueryHandler = new WorkFlowQueryHandler($WorkFlowUIHandler, $project_url_prefix, $project_common_url_prefix, $db_drivers, $selected_db_broker, $selected_db_driver, $selected_type, $selected_table, $selected_tables_name, $selected_table_attrs, $map_php_types, $map_db_types); $head = $WorkFlowUIHandler->getHeader(); $head .= LayoutTypeProjectUIHandler::getHeader(); } $head .= '
 <!-- Add MyTree main JS and CSS files -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymytree/js/mytree.js"></script>
@@ -68,7 +68,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 	<div class="extends">
 		<label>Extends: </label>
 		<select name="extends">
-			<option></option>'; $t = count($hbn_class_objs); for ($i = 0; $i < $t; $i++) $main_content .= '<option ' . ($hbn_class_objs[$i] == $extends ? 'selected' : '') . '>' . $hbn_class_objs[$i] . '</option>'; if ($extends && !in_array($extends, $hbn_class_objs)) $main_content .= '<option selected>' . $extends . '</option>'; $main_content .= '
+			<option></option>'; if (!empty($hbn_class_objs)) { $t = count($hbn_class_objs); for ($i = 0; $i < $t; $i++) $main_content .= '<option ' . ($hbn_class_objs[$i] == $extends ? 'selected' : '') . '>' . $hbn_class_objs[$i] . '</option>'; if ($extends && !in_array($extends, $hbn_class_objs)) $main_content .= '<option selected>' . $extends . '</option>'; } $main_content .= '
 		</select>
 		<span class="icon search" onClick="getExtendedClassFromFileManager(this)" title="Get from File Manager">Search</span>
 	</div>'; $main_content .= '
@@ -76,7 +76,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 		<label>Primary Keys Settings:</label>
 		<span class="icon add" onClick="addNewId(this)">Add</span>
 		<span class="icon update_automatically" onClick="createHibernateObjectIdsAutomatically(this)" title="Create Ids Automatically">Create Ids Automatically</span>
-		<div class="fields">'; $ids = array(); if ($obj_data["childs"]["id"]) { $t = count($obj_data["childs"]["id"]); for ($i = 0; $i < $t; $i++) { $attr_name = $obj_data["childs"]["id"][$i]["@"]["column"]; $generator = WorkFlowDataAccessHandler::getNodeValue($obj_data["childs"]["id"][$i], "generator", "type"); $main_content .= getIdHTML($attr_name, $generator); } } $main_content .= '
+		<div class="fields">'; $ids = array(); if (!empty($obj_data["childs"]["id"])) { $t = count($obj_data["childs"]["id"]); for ($i = 0; $i < $t; $i++) { $attr_name = isset($obj_data["childs"]["id"][$i]["@"]["column"]) ? $obj_data["childs"]["id"][$i]["@"]["column"] : null; $generator = WorkFlowDataAccessHandler::getNodeValue(isset($obj_data["childs"]["id"][$i]) ? $obj_data["childs"]["id"][$i] : null, "generator", "type"); $main_content .= getIdHTML($attr_name, $generator); } } $main_content .= '
 		</div>
 	</div>'; $main_content .= '
 	<div id="tabs" class="advanced_settings">
@@ -87,7 +87,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 			<li><a id="query_tab" href="#tabs-5" onClick="initQueriesTab(this)">Queries</a></li>
 			<li><a href="#tabs-1">Includes</a></li>
 		</ul>
-	'; $imports = $obj_data["childs"]["import"]; $main_content .= '<div id="tabs-1">' . $WorkFlowQueryHandler->getInludeHTMLBlock($imports) . '</div>'; $parameter_type = isset($obj_data["childs"]["parameter_map"]) ? "map" : "class"; $parameter_map = $obj_data["childs"]["parameter_map"][0]; $parameter_class = WorkFlowDataAccessHandler::getNodeValue($obj_data, "parameter_class"); $main_content .= '
+	'; $imports = isset($obj_data["childs"]["import"]) ? $obj_data["childs"]["import"] : null; $main_content .= '<div id="tabs-1">' . $WorkFlowQueryHandler->getInludeHTMLBlock($imports) . '</div>'; $parameter_type = isset($obj_data["childs"]["parameter_map"]) ? "map" : "class"; $parameter_map = isset($obj_data["childs"]["parameter_map"][0]) ? $obj_data["childs"]["parameter_map"][0] : null; $parameter_class = WorkFlowDataAccessHandler::getNodeValue($obj_data, "parameter_class"); $main_content .= '
 		<div id="tabs-2">
 			<div class="parameters map">
 				<div class="description">
@@ -108,7 +108,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 				' . getParameterClassHTML($parameter_type, $parameter_class) . '
 				' . $WorkFlowQueryHandler->getParameterMapHTML($parameter_type, $parameter_map, $map_php_types, $map_db_types) . '
 			</div>
-		</div>'; $result_type = isset($obj_data["childs"]["result_map"]) ? "map" : "class"; $result_map = $obj_data["childs"]["result_map"][0]; $result_class = WorkFlowDataAccessHandler::getNodeValue($obj_data, "result_class"); $main_content .= '
+		</div>'; $result_type = isset($obj_data["childs"]["result_map"]) ? "map" : "class"; $result_map = isset($obj_data["childs"]["result_map"][0]) ? $obj_data["childs"]["result_map"][0] : null; $result_class = WorkFlowDataAccessHandler::getNodeValue($obj_data, "result_class"); $main_content .= '
 		<div id="tabs-3">
 			<div class="results map">
 				<div class="description">
@@ -129,10 +129,10 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); include $EVC->getUtilPath("Bread
 				' . getResultClassHTML($result_type, $result_class) . '
 				' . $WorkFlowQueryHandler->getResultMapHTML($result_type, $result_map, $map_php_types, $map_db_types) . '
 			</div>
-		</div>'; $relationships = $obj_data["childs"]["relationships"][0]["childs"]; $relationships_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
+		</div>'; $relationships = isset($obj_data["childs"]["relationships"][0]["childs"]) ? $obj_data["childs"]["relationships"][0]["childs"] : null; $relationships_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
 		<div id="tabs-4" class="hbn_obj_relationships">
 			' . $WorkFlowQueryHandler->getDataAccessObjHtml($relationships, true, $relationships_settings) . '
-		</div>'; $queries = $obj_data["childs"]["queries"][0]["childs"]; $queries_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
+		</div>'; $queries = isset($obj_data["childs"]["queries"][0]["childs"]) ? $obj_data["childs"]["queries"][0]["childs"] : null; $queries_settings = array( "init_ui" => true, "init_workflow" => false, ); $main_content .= '
 		<div id="tabs-5" class="hbn_obj_queries">
 			' . $WorkFlowQueryHandler->getDataAccessObjHtml($queries, false, $queries_settings) . '
 		</div>'; $main_content .= '

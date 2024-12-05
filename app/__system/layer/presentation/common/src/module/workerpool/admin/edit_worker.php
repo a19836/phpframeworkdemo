@@ -1,7 +1,7 @@
 <?php
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$path_to_filter = $_GET["path_to_filter"]; //this comes from the amin/admin_citizen.php UI.
+$path_to_filter = isset($_GET["path_to_filter"]) ? $_GET["path_to_filter"] : null; //this comes from the amin/admin_citizen.php UI.
 
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getConfigPath("config");
@@ -9,13 +9,13 @@ include $EVC->getConfigPath("config");
 $tasks = array("setarray", "createform"); //createform bc we need to use the FormFieldsUtilObj.js
 include $EVC->getModulePath("common/init_tasks_flow", $common_project_name);
 
-$task_head = $tasks_data["head"];
-$task_contents = $tasks_data["contents"]["setarray"];
-$js_load_function = $tasks_data["js_load_functions"]["setarray"];
+$task_head = isset($tasks_data["head"]) ? $tasks_data["head"] : null;
+$task_contents = isset($tasks_data["contents"]["setarray"]) ? $tasks_data["contents"]["setarray"] : null;
+$js_load_function = isset($tasks_data["js_load_functions"]["setarray"]) ? $tasks_data["js_load_functions"]["setarray"] : null;
 
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getUtilPath("WorkFlowPresentationHandler");
 	include $EVC->getModulePath("workerpool/admin/WorkerPoolAdminUtil", $common_project_name);
 	
@@ -167,85 +167,85 @@ if ($PEVC) {
 	
 	/* START: PREPARING EDIT PANEL */
 	$WorkerPoolAdminUtil = new WorkerPoolAdminUtil($CommonModuleAdminUtil);
-	$worker_id = $_GET["worker_id"];
+	$worker_id = isset($_GET["worker_id"]) ? $_GET["worker_id"] : null;
 	
 	//preparing post action
-	if ($_POST) {
-		if ($_POST["add"] || $_POST["save"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["add"]) || !empty($_POST["save"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 			
-			if ($_POST["args_type"] == "array")
-				$_POST["args"] = json_decode($_POST["args"], true);
+			if (isset($_POST["args_type"]) && $_POST["args_type"] == "array")
+				$_POST["args"] = isset($_POST["args"]) ? json_decode($_POST["args"], true) : null;
 			
 			//prepare worker parameters according with the selected type.
-			$type = $_POST["type"];
+			$type = isset($_POST["type"]) ? $_POST["type"] : null;
 			
 			if ($type == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalFunctionWorkerPoolWork") {
 				$_POST["class"] = $type;
 				$_POST["args"] = array(
-					"function_file" => $_POST["function_file"],
-					"function_name" => $_POST["function_name"],
-					"function_args" => $_POST["args"],
+					"function_file" => isset($_POST["function_file"]) ? $_POST["function_file"] : null,
+					"function_name" => isset($_POST["function_name"]) ? $_POST["function_name"] : null,
+					"function_args" => isset($_POST["args"]) ? $_POST["args"] : null,
 				);
 			}
 			else if ($type == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalClassMethodWorkerPoolWork") {
 				$_POST["class"] = $type;
 				$_POST["args"] = array(
-					"class_method_file" => $_POST["class_method_file"],
-					"class_name" => $_POST["class_name"],
-					"method_name" => $_POST["method_name"],
-					"method_args" => $_POST["args"],
+					"class_method_file" => isset($_POST["class_method_file"]) ? $_POST["class_method_file"] : null,
+					"class_name" => isset($_POST["class_name"]) ? $_POST["class_name"] : null,
+					"method_name" => isset($_POST["method_name"]) ? $_POST["method_name"] : null,
+					"method_args" => isset($_POST["args"]) ? $_POST["args"] : null,
 				);
 			}
 			else if ($type == "app.layer.$layer_folder_name.common.src.module.workerpool.work.SendEmailWorkerPoolWork") {
 				$_POST["class"] = $type;
 				$_POST["args"] = array(
-					"from" => $_POST["from"],
-					"to" => $_POST["to"],
-					"subject" => $_POST["subject"],
-					"content" => $_POST["content"],
-					"smtp_host" => $_POST["smtp_host"],
-					"smtp_host" => $_POST["smtp_host"],
-					"smtp_port" => $_POST["smtp_port"],
-					"smtp_user" => $_POST["smtp_user"],
-					"smtp_pass" => $_POST["smtp_pass"],
-					"smtp_secure" => $_POST["smtp_secure"],
-					"args" => $_POST["args"],
+					"from" => isset($_POST["from"]) ? $_POST["from"] : null,
+					"to" => isset($_POST["to"]) ? $_POST["to"] : null,
+					"subject" => isset($_POST["subject"]) ? $_POST["subject"] : null,
+					"content" => isset($_POST["content"]) ? $_POST["content"] : null,
+					"smtp_host" => isset($_POST["smtp_host"]) ? $_POST["smtp_host"] : null,
+					"smtp_port" => isset($_POST["smtp_port"]) ? $_POST["smtp_port"] : null,
+					"smtp_user" => isset($_POST["smtp_user"]) ? $_POST["smtp_user"] : null,
+					"smtp_pass" => isset($_POST["smtp_pass"]) ? $_POST["smtp_pass"] : null,
+					"smtp_secure" => isset($_POST["smtp_secure"]) ? $_POST["smtp_secure"] : null,
+					"args" => isset($_POST["args"]) ? $_POST["args"] : null,
 				);
 			}
 			
-			$begin_time = $_POST["begin_date"] ? strtotime($_POST["begin_date"]) : 0;
-			$end_time = $_POST["end_date"] ? strtotime($_POST["end_date"]) : 0;
+			$begin_time = !empty($_POST["begin_date"]) ? strtotime($_POST["begin_date"]) : 0;
+			$end_time = !empty($_POST["end_date"]) ? strtotime($_POST["end_date"]) : 0;
 			
 			//echo "<textarea>".print_r($_POST, 1)."</textarea>";die();
 			
 			$data = array(
 				"worker_id" => $worker_id,
-				"class" => $_POST["class"],
-				"args" => $_POST["args"],
-				"status" => is_numeric($_POST["status"]) ? $_POST["status"] : 0,
-				"thread_id" => $_POST["thread_id"],
+				"class" => isset($_POST["class"]) ? $_POST["class"] : null,
+				"args" => isset($_POST["args"]) ? $_POST["args"] : null,
+				"status" => isset($_POST["status"]) && is_numeric($_POST["status"]) ? $_POST["status"] : 0,
+				"thread_id" => isset($_POST["thread_id"]) ? $_POST["thread_id"] : null,
 				"begin_time" => $begin_time,
 				"end_time" => $end_time,
-				"failed_attempts" => is_numeric($_POST["failed_attempts"]) ? $_POST["failed_attempts"] : 0,
-				"description" => $_POST["description"],
+				"failed_attempts" => isset($_POST["failed_attempts"]) && is_numeric($_POST["failed_attempts"]) ? $_POST["failed_attempts"] : 0,
+				"description" => isset($_POST["description"]) ? $_POST["description"] : null,
 			);
-			$status = $_POST["add"] ? WorkerPoolUtil::insertWorker($brokers, $data) : WorkerPoolUtil::updateWorker($brokers, $data);
+			$status = !empty($_POST["add"]) ? WorkerPoolUtil::insertWorker($brokers, $data) : WorkerPoolUtil::updateWorker($brokers, $data);
 		}
-		else if ($_POST["delete"]) {
+		else if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
 			$status = WorkerPoolUtil::deleteWorker($brokers, $worker_id);
 		}
 		
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "Worker ${action}d successfully!";
 				
-				if ($_POST["add"]) {
+				if (!empty($_POST["add"])) {
 					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_worker") . "worker_id=$status&path_to_filter=$path_to_filter";
-					die("<script>alert('$status_message');document.location='$url';</script>");
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -257,51 +257,53 @@ if ($PEVC) {
 	//preparing get action
 	$data = WorkerPoolUtil::getWorker($brokers, $worker_id, null, true);
 	//echo "<pre>";print_r($data);die();
+	$data_class = isset($data["class"]) ? $data["class"] : null;
+	$data_args = isset($data["args"]) ? $data["args"] : null;
 	
 	//prepare $data according with the selected class. Creates: type, function_name, class_name, method_name...
-	if ($data["class"] == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalFunctionWorkerPoolWork" && is_array($data["args"])) {
-		$data["type"] = $data["class"];
+	if ($data_class == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalFunctionWorkerPoolWork" && is_array($data_args)) {
+		$data["type"] = $data_class;
 		
-		if (is_array($data["args"])) {
-			$data["function_file"] = $data["args"]["function_file"];
-			$data["function_name"] = $data["args"]["function_name"];
-			$data["args"] = $data["args"]["function_args"];
+		if (is_array($data_args)) {
+			$data["function_file"] = isset($data_args["function_file"]) ? $data_args["function_file"] : null;
+			$data["function_name"] = isset($data_args["function_name"]) ? $data_args["function_name"] : null;
+			$data["args"] = isset($data_args["function_args"]) ? $data_args["function_args"] : null;
 		}
 	}
-	else if ($data["class"] == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalClassMethodWorkerPoolWork" && is_array($data["args"])) {
-		$data["type"] = $data["class"];
+	else if ($data_class == "app.layer.$layer_folder_name.common.src.module.workerpool.work.CallExternalClassMethodWorkerPoolWork" && is_array($data_args)) {
+		$data["type"] = $data_class;
 		
-		if (is_array($data["args"])) {
-			$data["class_method_file"] = $data["args"]["class_method_file"];
-			$data["class_name"] = $data["args"]["class_name"];
-			$data["method_name"] = $data["args"]["method_name"];
-			$data["args"] = $data["args"]["method_args"];
+		if (is_array($data_args)) {
+			$data["class_method_file"] = isset($data_args["class_method_file"]) ? $data_args["class_method_file"] : null;
+			$data["class_name"] = isset($data_args["class_name"]) ? $data_args["class_name"] : null;
+			$data["method_name"] = isset($data_args["method_name"]) ? $data_args["method_name"] : null;
+			$data["args"] = isset($data_args["method_args"]) ? $data_args["method_args"] : null;
 		}
 	}
 	else if ($data["class"] == "app.layer.$layer_folder_name.common.src.module.workerpool.work.SendEmailWorkerPoolWork") {
-		$data["type"] = $data["class"];
+		$data["type"] = $data_class;
 		
-		if (is_array($data["args"])) {
-			$data["from"] = $data["args"]["from"];
-			$data["to"] = $data["args"]["to"];
-			$data["subject"] = $data["args"]["subject"];
-			$data["content"] = $data["args"]["content"];
-			$data["smtp_host"] = $data["args"]["smtp_host"];
-			$data["smtp_port"] = $data["args"]["smtp_port"];
-			$data["smtp_user"] = $data["args"]["smtp_user"];
-			$data["smtp_pass"] = $data["args"]["smtp_pass"];
-			$data["smtp_secure"] = $data["args"]["smtp_secure"];
-			$data["args"] = $data["args"]["args"];
+		if (is_array($data_args)) {
+			$data["from"] = isset($data_args["from"]) ? $data_args["from"] : null;
+			$data["to"] = isset($data_args["to"]) ? $data_args["to"] : null;
+			$data["subject"] = isset($data_args["subject"]) ? $data_args["subject"] : null;
+			$data["content"] = isset($data_args["content"]) ? $data_args["content"] : null;
+			$data["smtp_host"] = isset($data_args["smtp_host"]) ? $data_args["smtp_host"] : null;
+			$data["smtp_port"] = isset($data_args["smtp_port"]) ? $data_args["smtp_port"] : null;
+			$data["smtp_user"] = isset($data_args["smtp_user"]) ? $data_args["smtp_user"] : null;
+			$data["smtp_pass"] = isset($data_args["smtp_pass"]) ? $data_args["smtp_pass"] : null;
+			$data["smtp_secure"] = isset($data_args["smtp_secure"]) ? $data_args["smtp_secure"] : null;
+			$data["args"] = isset($data_args["args"]) ? $data_args["args"] : null;
 		}
 	}
 	
-	if ($data["begin_time"])
+	if (!empty($data["begin_time"]))
 		$data["begin_date"] = str_replace(" ", "T", date("Y-m-d H:i:s", $data["begin_time"]));
 	
-	if ($data["end_time"])
+	if (!empty($data["end_time"]))
 		$data["end_date"] = str_replace(" ", "T", date("Y-m-d H:i:s", $data["end_time"]));
 	
-	if ($data["args"] && is_array($data["args"]))
+	if (!empty($data["args"]) && is_array($data["args"]))
 		$data["args"] = json_encode($data["args"]);
 	
 	//preparing HTML
@@ -329,7 +331,7 @@ if ($PEVC) {
 		</div>';
 	
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit Worker '$worker_id'" : "Add Worker",
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit Worker '$worker_id'" : "Add Worker",
 		"fields" => array(
 			"worker_id" => $data ? "label" : "hidden",
 			"type" => array("type" => "select", "label" => "Worker Type: ", "options" => array(
@@ -383,8 +385,8 @@ if ($PEVC) {
 			"modified_date" => array("type" => ($data ? "label" : "hidden"), "class" => "worker_advanced_field"),
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$menu_settings = $WorkerPoolAdminUtil->getMenuSettings("&path_to_filter=$path_to_filter");

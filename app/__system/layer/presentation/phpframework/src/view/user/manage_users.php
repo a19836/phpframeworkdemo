@@ -38,13 +38,13 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 				<a class="icon add" href="' . $project_url_prefix . 'user/edit_user" title="Add">Add</a>
 			</th>
 		</tr>'; $t = count($users); for ($i = 0; $i < $t; $i++) { $user = $users[$i]; $main_content .= '<tr>
-		<td class="user_id">' . $user["user_id"] . '</td>
-		<td class="username">' . $user["username"] . '</td>
-		<td class="name">' . $user["name"] . '</td>
-		<td class="created_date">' . $user["created_date"] . '</td>
-		<td class="modified_date">' . $user["modified_date"] . '</td>
+		<td class="user_id">' . (isset($user["user_id"]) ? $user["user_id"] : "") . '</td>
+		<td class="username">' . (isset($user["username"]) ? $user["username"] : "") . '</td>
+		<td class="name">' . (isset($user["name"]) ? $user["name"] : "") . '</td>
+		<td class="created_date">' . (isset($user["created_date"]) ? $user["created_date"] : "") . '</td>
+		<td class="modified_date">' . (isset($user["modified_date"]) ? $user["modified_date"] : "") . '</td>
 		<td class="buttons">
-			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_user?user_id=' . $user["user_id"] . '" title="Edit">Edit</a>
+			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_user?user_id=' . (isset($user["user_id"]) ? $user["user_id"] : "") . '" title="Edit">Edit</a>
 		</td>
 	</tr>'; } $main_content .= '</table>
 	</div>

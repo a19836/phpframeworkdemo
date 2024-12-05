@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("objectsgroup/admin/ObjectsGroupAdminUtil", $common_project_name);
 	
 	$ObjectsGroupAdminUtil = new ObjectsGroupAdminUtil($CommonModuleAdminUtil);
@@ -17,7 +17,7 @@ if ($PEVC) {
 	if ($data) {
 		$t = count($data);
 		for ($i = 0; $i < $t; $i++)
-			$data[$i]["object"] = json_encode($data[$i]["object"], true);
+			$data[$i]["object"] = json_encode(isset($data[$i]["object"]) ? $data[$i]["object"] : null, true);
 	}
 	
 	$list_settings = array(

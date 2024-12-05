@@ -11,13 +11,16 @@ if (!function_exists("getProjectCommonUrlPrefix")) {
 	}
 }
 
+if (empty($PEVC))
+	launch_exception(new Exception("No PEVC var defined"));
+
 $installed_wordpress_folders_name = CMSPresentationLayerHandler::getWordPressInstallationsFoldersName($PEVC);
 $wordpress_url_prefix = getProjectCommonUrlPrefix($PEVC, null) . WordPressUrlsParser::WORDPRESS_FOLDER_PREFIX . "/#installation_name#/";
-$default_wordpress_installation_name = $GLOBALS["default_db_driver"];
+$default_wordpress_installation_name = isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null;
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 
-$wordpress_installation_admin_login_url_prefix = $project_url_prefix . "phpframework/cms/wordpress/admin_login?bean_name=" . $_GET["bean_name"] . "&bean_file_name=" . $_GET["bean_file_name"] . "&path=" . $_GET["path"] . "&db_driver=#installation_name#&wordpress_admin_file_to_open=options-permalink.php";
+$wordpress_installation_admin_login_url_prefix = $project_url_prefix . "phpframework/cms/wordpress/admin_login?bean_name=" . (isset($_GET["bean_name"]) ? $_GET["bean_name"] : "") . "&bean_file_name=" . (isset($_GET["bean_file_name"]) ? $_GET["bean_file_name"] : "") . "&path=" . (isset($_GET["path"]) ? $_GET["path"] : "") . "&db_driver=#installation_name#&wordpress_admin_file_to_open=options-permalink.php";
 
 function getJSExecutableCodeWithWordPressUrl() {
 	return "<script>

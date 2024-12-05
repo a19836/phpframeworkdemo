@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $selected_project = isset($selected_project) ? $selected_project : null; $P = isset($P) ? $P : null; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 

@@ -1,5 +1,5 @@
 <?php
-if ($PEVC) {
+if (!empty($PEVC)) {
 	$PHPVariablesFileHandler->endUserGlobalVariables();
 }
 ?>

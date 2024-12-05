@@ -42,8 +42,8 @@ class AttachmentUI {
 		var new_object_attachment_html = \'' . addcslashes(str_replace("\n", "", $new_object_attachment_html), "\\'") . '\';
 		</script>
 	
-		<div class="module_edit_object_attachments ' . ($settings["class"] ? $settings["class"] : "") . '">
-			<div class="title">' . translateProjectLabel($EVC, $settings["title"] ? $settings["title"] : "Attachments: ") . '</div>
+		<div class="module_edit_object_attachments ' . (!empty($settings["class"]) ? $settings["class"] : "") . '">
+			<div class="title">' . translateProjectLabel($EVC, !empty($settings["title"]) ? $settings["title"] : "Attachments: ") . '</div>
 			<div class="attachments">
 				<table class="table table-condensed table-hover">
 					<thead>
@@ -59,14 +59,18 @@ class AttachmentUI {
 	
 		if ($attachments)
 			foreach ($attachments as $attachment) {
+				$attachment_id = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
+				$attachment_name = isset($attachment["name"]) ? $attachment["name"] : null;
+				$attachment_size = isset($attachment["size"]) ? $attachment["size"] : null;
+				
 				$html .= '
 						<tr>
 							<td class="name">
-								<input type="hidden" name="attachment_ids[]" value="' . $attachment["attachment_id"] . '" />
-								<input type="text" name="attachments[][name]" value="' . $attachment["name"] . '" data-allow-null="0" data-validation-message="Attachment name cannot be empty" />
-								<input type="hidden" name="attachment_names[]" value="' . $attachment["name"] . '" />
+								<input type="hidden" name="attachment_ids[]" value="' . $attachment_id . '" />
+								<input type="text" name="attachments[][name]" value="' . $attachment_name . '" data-allow-null="0" data-validation-message="Attachment name cannot be empty" />
+								<input type="hidden" name="attachment_names[]" value="' . $attachment_name . '" />
 							</td>
-							<td class="size">' . self::getSize($attachment["size"]) . '</td>
+							<td class="size">' . self::getSize($attachment_size) . '</td>
 							<td class="icons">
 								<span class="glyphicon glyphicon-remove icon delete" onClick="removeAttachment(this)" title="' . $delete_label . '">' . $delete_label . '</span>
 								<span class="glyphicon glyphicon-move icon move" title="' . $move_label . '">' . $move_label . '</span>
@@ -83,7 +87,7 @@ class AttachmentUI {
 			</div>
 		</div>
 		<script>
-		initAttachmentsMoveIcons(".module_object_attachments' . (trim($settings["class"]) ? "." . str_replace(" ", ".", preg_replace("/\s+/", " ", trim($settings["class"]))) : "") . '");
+		initAttachmentsMoveIcons(".module_object_attachments' . (isset($settings["class"]) && trim($settings["class"]) ? "." . str_replace(" ", ".", preg_replace("/\s+/", " ", trim($settings["class"]))) : "") . '");
 		</script>';
 	
 		return $html;
@@ -102,33 +106,34 @@ class AttachmentUI {
 		));
 		$attachments = $object_type_id && $object_id ? AttachmentUtil::getAttachmentsByObjectGroup($brokers, $object_type_id, $object_id, $group, $options) : null;
 		
+		$html = '';
+		
 		if ($attachments) {
-			$html = '';
-			
 			if (empty($settings["style_type"])) {
 				$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/attachment/object_attachments.css" type="text/css" charset="utf-8" />';
 			}
 			
 			$html .= '
-			<div class="module_object_attachments ' . ($settings["class"] ? $settings["class"] : "") . '">
-				<div class="title">' . translateProjectLabel($EVC, $settings["title"] ? $settings["title"] : "Attachments: ") . '</div>
+			<div class="module_object_attachments ' . (!empty($settings["class"]) ? $settings["class"] : "") . '">
+				<div class="title">' . translateProjectLabel($EVC, !empty($settings["title"]) ? $settings["title"] : "Attachments: ") . '</div>
 				<div class="attachments">
 				<ul>';
 			
 			$url = AttachmentUtil::getAttachmentsFolderUrl($EVC);
 			
 			foreach ($attachments as $attachment) {
-				$class = $attachment["type"];
+				$class = isset($attachment["type"]) ? $attachment["type"] : null;
+				
 				if ($class) {
 					$class = explode('/', str_replace(array("-", " "), "_", $class));
-					$class = "attachment_type_" . $class[0] . " " . "attachment_type_" . $class[0] . "_" . $class[1];
+					$class = "attachment_type_" . $class[0] . " " . "attachment_type_" . $class[0] . "_" . (isset($class[1]) ? $class[1] : null);
 				}
 				
 				$html .= '
 				<li>
 					<span class="attachment_type ' . ($class ? $class : "attachment_type_file") . '"></span>
-					<span class="attachment_name"><a href="' . $url . $attachment["path"] . '" target="attachment">' . $attachment["name"] . '</a></span>
-					<span class="attachment_size">' . ($attachment["size"] ? " (" . self::getSize($attachment["size"]) . ")" : "") . '</span>
+					<span class="attachment_name"><a href="' . $url . (isset($attachment["path"]) ? $attachment["path"] : null) . '" target="attachment">' . (isset($attachment["name"]) ? $attachment["name"] : null) . '</a></span>
+					<span class="attachment_size">' . (!empty($attachment["size"]) ? " (" . self::getSize($attachment["size"]) . ")" : "") . '</span>
 				</li>';
 			}
 		

@@ -4,46 +4,48 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("menu/admin/MenuAdminUtil", $common_project_name);
 	
 	$MenuAdminUtil = new MenuAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	$item_id = $_GET["item_id"];
+	$item_id = isset($_GET["item_id"]) ? $_GET["item_id"] : null;
+	$data = null;
 	
-	if ($_POST) {
-		if ($_POST["add"] || $_POST["save"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["add"]) || !empty($_POST["save"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 		
 			$data = array(
 				"item_id" => $item_id,
-				"group_id" => $_POST["group_id"],
-				"parent_id" => $_POST["parent_id"],
-				"label" => $_POST["label"],
-				"title" => $_POST["title"],
-				"class" => $_POST["class"],
-				"url" => $_POST["url"],
-				"previous_html" => $_POST["previous_html"],
-				"next_html" => $_POST["next_html"],
-				"order" => $_POST["order"],
+				"group_id" => isset($_POST["group_id"]) ? $_POST["group_id"] : null,
+				"parent_id" => isset($_POST["parent_id"]) ? $_POST["parent_id"] : null,
+				"label" => isset($_POST["label"]) ? $_POST["label"] : null,
+				"title" => isset($_POST["title"]) ? $_POST["title"] : null,
+				"class" => isset($_POST["class"]) ? $_POST["class"] : null,
+				"url" => isset($_POST["url"]) ? $_POST["url"] : null,
+				"previous_html" => isset($_POST["previous_html"]) ? $_POST["previous_html"] : null,
+				"next_html" => isset($_POST["next_html"]) ? $_POST["next_html"] : null,
+				"order" => isset($_POST["order"]) ? $_POST["order"] : null,
 			);
-			$status = $_POST["add"] ? MenuUtil::insertMenuItem($brokers, $data) : MenuUtil::updateMenuItem($brokers, $data);
+			$status = !empty($_POST["add"]) ? MenuUtil::insertMenuItem($brokers, $data) : MenuUtil::updateMenuItem($brokers, $data);
 		}
-		else if ($_POST["delete"]) {
+		else if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
 			$status = MenuUtil::deleteMenuItemsByGroupId($brokers, $item_id) && MenuUtil::deleteMenuItem($brokers, $item_id);
 		}
 	
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "Menu Item ${action}d successfully!";
 			
-				if ($_POST["add"]) {
+				if (!empty($_POST["add"])) {
 					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_menu_item") . "item_id=$status";
-					die("<script>alert('$status_message');document.location='$url';</script>");
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -54,7 +56,7 @@ if ($PEVC) {
 	
 	if ($item_id) {
 		$data = MenuUtil::getMenuItemsByConditions($brokers, array("item_id" => $item_id), null, null, true);
-		$data = $data[0];
+	$data = isset($data[0]) ? $data[0] : null;
 	}
 	
 	$default_data = array(
@@ -71,7 +73,7 @@ if ($PEVC) {
 	
 	//Preparing HTML
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit Menu Item '$item_id'" : "Add Menu Item",
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit Menu Item '$item_id'" : "Add Menu Item",
 		"fields" => array(
 			"group_id" => array("type" => "select", "options" => $group_options),
 			"parent_id" => array("type" => "select", "options" => $item_options),
@@ -85,8 +87,8 @@ if ($PEVC) {
 		),
 		"data" => $data,
 		"default_data" => $default_data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_menu_item.css" type="text/css" charset="utf-8" />';

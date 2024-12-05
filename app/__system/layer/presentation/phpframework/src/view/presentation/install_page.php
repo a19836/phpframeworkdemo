@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
- include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
+ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $P = isset($P) ? $P : null; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -22,8 +22,9 @@
 <script>
 var get_store_pages_url = "' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=pages" . '"; //This is a global var
 var is_popup = ' . ($popup ? 1 : 0) . ';
-var is_remote_url = ' . ($_POST["remote_url"] ? 1 : 0) . ';
-var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
+var is_ai = ' . (!empty($_POST["instructions"]) ? 1 : 0) . ';
+var is_remote_url = ' . (!empty($_POST["remote_url"]) ? 1 : 0) . ';
+var is_zip_file = ' . (!empty($_FILES["zip_file"]) && empty($_POST["zip_url"]) ? 1 : 0) . ';
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
@@ -32,12 +33,13 @@ var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 				<li class="continue" data-title="Install Pre-built Page Now"><a onClick="installPage(this)"><i class="icon continue"></i> Install Pre-built Page Now</a></li>
 			</ul>
 		</header>
-	</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this pre-built page. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $msg) $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; $main_content .= '</ul>'; } } else { $status_message = 'Pre-built page successfully installed!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } if ($show_install_page) { $main_content .= '
+	</div>'; if (!empty($_POST)) { if (empty($status)) { $error_message = !empty($error_message) ? $error_message : "There was an error trying to install this pre-built page. Please try again..."; if (!empty($messages)) { $main_content .= '<ul class="messages">'; foreach ($messages as $msg) $main_content .= '<li class="' . (isset($msg["type"]) ? $msg["type"] : "") . '">' . (isset($msg["msg"]) ? $msg["msg"] : "") . '</li>'; $main_content .= '</ul>'; } } else { $status_message = 'Pre-built page successfully installed!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } if (!empty($show_install_page)) { $main_content .= '
 <div class="install_page">
 	<ul>
 		' . ($get_store_pages_url ? '<li><a href="#store">Store Pages</a></li>' : '') . '
 		<li><a href="#local">Upload Local Pre-built Page</a></li>
 		<li><a href="#remote">Download Page From Web</a></li>
+		<li><a href="#ai">Generate Page with AI</a></li>
 	</ul>
 	<div id="local" class="file_upload">
 		<div class="title">Install a local pre-built page from your computer (.zip file)</div>
@@ -66,9 +68,22 @@ var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 		<div class="title">Install a page based in an url from the web</div>
 		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="dummy_for_post_var_exists" value="1">
-			<input class="remote_url" type="url" name="remote_url" value="' . $remote_url . '" placeHolder="Write an url for a web page">
+			<input class="remote_url" type="url" name="remote_url" value="' . (isset($remote_url) ? $remote_url : "") . '" placeHolder="Write an url for a web page">
 			<a class="icon refresh" href="javascript:void(0)" onClick="viewPageUrl(this)" title="Click to view the page correspondent to your url">Refresh</a>
 		</form>
 		<iframe></iframe>
+	</div>'; $place_holder = !$openai_encryption_key ? 'Artificial Intelligence is disabled. To enable it, please add your OpenAI Key in the \'Manage Permissions/Users\' panel.' : 'Eg:
+1. Page with a top menu containing articles categories. 
+2. Below should show a list of articles with 5 articles. Each article should be inside of a card and have the title, description, photo (150x200 dimensions) and a star rating block. 
+3. At the end add some pagination to the articles list.
+4. In the right side of the page, show a side bar with 2 advertisements, where each advertisement contains an image and title with 100x150 dimensions.'; $main_content .= '
+	<div id="ai" class="install_page_with_ai">
+		<div class="title">Install a page based in AI</div>
+		
+		<form method="post" enctype="multipart/form-data">
+			<div class="instructions">Please write in natural language what page do you wish to create:<textarea name="instructions" value="' . (isset($instructions) ? $instructions : "") . '" placeHolder="' . $place_holder . '"></textarea></div>
+			
+			<div class="image">Or upload a mockup/wireframe image and AI will try to translate it into HTML: <input type="file" name="image"/></div>
+		</form>
 	</div>
 </div>'; } ?>

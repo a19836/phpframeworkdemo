@@ -14,7 +14,7 @@ include $EVC->getModulePath("common/start_project_module_file", $common_project_
 $project_url_prefix = $purlp;
 $project_common_url_prefix = $pcurlp;
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	$filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout);
 	
 	$selected_project_id = $P->getSelectedPresentationId();
@@ -114,6 +114,8 @@ if ($PEVC) {
 	$get_broker_db_data_url = $project_url_prefix . "phpframework/dataaccess/get_broker_db_data?bean_name=$bean_name&bean_file_name=$bean_file_name";
 	$edit_task_source_url = $project_url_prefix . "phpframework/admin/edit_task_source?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$path";
 	
+	$manage_ai_action_url = $project_url_prefix . "phpframework/ai/manage_ai_action";
+	
 	$path_extra = hash('crc32b', "$bean_file_name/$bean_name/$path");
 	$get_workflow_tasks_id = "presentation_block_workflow&path_extra=_$path_extra";
 	$get_tmp_workflow_tasks_id = "presentation_block_workflow_tmp&path_extra=_${path_extra}_" . rand(0, 1000);
@@ -142,7 +144,8 @@ if ($PEVC) {
 	var layer_type = "pres";
 	var selected_project_id = "' . $selected_project_id . '";
 
-	var show_edit_block_advanced_url = \'?' . http_build_query($_GET) . '&edit_block_type=advanced\';
+	var manage_ai_action_url = \'' . $manage_ai_action_url . '\';
+	var show_edit_block_advanced_url = \'?' . (isset($_GET) ? http_build_query($_GET) : "") . '&edit_block_type=advanced\';
 	var create_workflow_settings_code_url = \'' . $project_url_prefix . 'module/workflow/create_workflow_settings_code\';
 	var get_workflow_file_url = \'' . $get_workflow_file_url . '\';
 	var create_workflow_file_from_code_url = \'' . $create_workflow_file_from_code_url . '\';
@@ -250,7 +253,7 @@ if ($PEVC) {
 		</ul>
 	
 		<div id="code">
-			<div class="code_menu top_bar_menu">
+			<div class="code_menu top_bar_menu" onClick="openSubmenu(this)">
 				' . WorkFlowPresentationHandler::getCodeEditorMenuHtml(array("save_func" => "saveModuleWorkflowSettings")) . '
 			</div>
 			<textarea></textarea>

@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (ObjectsGroupUtil::deleteObjectObjectsGroup($brokers, $_GET["objects_group_id"], $_GET["object_type_id"], $_GET["object_id"])) {
+if (isset($_GET["objects_group_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && ObjectsGroupUtil::deleteObjectObjectsGroup($brokers, $_GET["objects_group_id"], $_GET["object_type_id"], $_GET["object_id"])) {
 	echo "1";
 }
 ?>

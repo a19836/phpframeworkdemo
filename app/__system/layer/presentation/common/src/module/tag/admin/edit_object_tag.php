@@ -4,41 +4,42 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("tag/admin/TagAdminUtil", $common_project_name);
 	
 	$TagAdminUtil = new TagAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	$tag_id = $_GET["tag_id"];
-	$object_type_id = $_GET["object_type_id"];
-	$object_id = $_GET["object_id"];
+	$tag_id = isset($_GET["tag_id"]) ? $_GET["tag_id"] : null;
+	$object_type_id = isset($_GET["object_type_id"]) ? $_GET["object_type_id"] : null;
+	$object_id = isset($_GET["object_id"]) ? $_GET["object_id"] : null;
 	
-	if ($_POST) {
-		if ($_POST["add"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["add"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 			
 			$data = array(
-				"tag_id" => $_POST["tag_id"],
-				"object_type_id" => $_POST["object_type_id"],
-				"object_id" => $_POST["object_id"],
+				"tag_id" => isset($_POST["tag_id"]) ? $_POST["tag_id"] : null,
+				"object_type_id" => isset($_POST["object_type_id"]) ? $_POST["object_type_id"] : null,
+				"object_id" => isset($_POST["object_id"]) ? $_POST["object_id"] : null,
 			);
 			$status = TagUtil::insertObjectTag($brokers, $data);
 		}
-		else if ($_POST["delete"]) {
+		else if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
 			$status = TagUtil::deleteObjectTag($brokers, $tag_id, $object_type_id, $object_id);
 		}
 		
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "Object Tag ${action}d successfully!";
 				
-				if ($_POST["add"]) {
+				if (!empty($_POST["add"])) {
 					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_object_tag") . "tag_id=${data['tag_id']}&object_type_id=${data['object_type_id']}&object_id=${data['object_id']}";
-					die("<script>alert('$status_message');document.location='$url';</script>");
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -48,7 +49,7 @@ if ($PEVC) {
 	}
 	
 	$data = TagUtil::getObjectTagsByConditions($brokers, array("tag_id" => $tag_id, "object_type_id" => $object_type_id, "object_id" => $object_id), null, null, true);
-	$data = $data[0];
+	$data = isset($data[0]) ? $data[0] : null;
 	
 	$TagAdminUtil->initObjectTags($brokers);
 	$available_object_types = $TagAdminUtil->getAvailableObjectTypes();
@@ -56,15 +57,15 @@ if ($PEVC) {
 	
 	//Preparing HTML
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit Object Tag" : "Add Object Tag",
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit Object Tag" : "Add Object Tag",
 		"fields" => array(
 			"tag_id" => $data ? "label" : "text",
 			"object_type_id" => $data ? array("type" => "label", "available_values" => $available_object_types) : array("type" => "select", "options" => $object_type_options),
 			"object_id" => $data ? "label" : "text",
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_object_tag.css" type="text/css" charset="utf-8" />';

@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("tag/admin/TagAdminUtil", $common_project_name);
 	
 	$TagAdminUtil = new TagAdminUtil($CommonModuleAdminUtil);
@@ -14,14 +14,15 @@ if ($PEVC) {
 	$TagAdminUtil->initObjectTags($brokers);
 	$available_object_types = $TagAdminUtil->getAvailableObjectTypes();
 	
-	$tag_id = $_GET["tag_id"];
+	$tag_id = isset($_GET["tag_id"]) ? $_GET["tag_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($tag_id) {
 		$total = TagUtil::countObjectTagsByTagId($brokers, $tag_id, true);
 		$data = TagUtil::getObjectTagsByTagId($brokers, $tag_id, $options, true);
 		
 		$tag = TagUtil::getTagsByConditions($brokers, array("tag_id" => $tag_id), null, null, true);
-		$tag = $tag[0]["tag"];
+		$tag = isset($tag[0]["tag"]) ? $tag[0]["tag"] : null;
 	}
 	else {
 		$total = TagUtil::countAllObjectTags($brokers, true);

@@ -30,7 +30,7 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[security_answer_3], type=varchar, default="", length=255)
 	 */
 	public function insertUser($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -38,44 +38,45 @@ class UserService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			if ($data["password"])
-				$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+				$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			$data["username"] = addcslashes($data["username"], "\\'");
 			$data["password"] = addcslashes($data["password"], "\\'");
-			$data["email"] = addcslashes($data["email"], "\\'");
-			$data["name"] = addcslashes($data["name"], "\\'");
-			$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
-			$data["security_question_1"] = addcslashes($data["security_question_1"], "\\'");
-			$data["security_answer_1"] = addcslashes($data["security_answer_1"], "\\'");
-			$data["security_question_2"] = addcslashes($data["security_question_2"], "\\'");
-			$data["security_answer_2"] = addcslashes($data["security_answer_2"], "\\'");
-			$data["security_question_3"] = addcslashes($data["security_question_3"], "\\'");
-			$data["security_answer_3"] = addcslashes($data["security_answer_3"], "\\'");
+			$data["email"] = isset($data["email"]) ? addcslashes($data["email"], "\\'") : "";
+			$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+			$data["active"] = isset($data["active"]) && is_numeric($data["active"]) ? $data["active"] : 0;
+			$data["security_question_1"] = isset($data["security_question_1"]) ? addcslashes($data["security_question_1"], "\\'") : "";
+			$data["security_answer_1"] = isset($data["security_answer_1"]) ? addcslashes($data["security_answer_1"], "\\'") : "";
+			$data["security_question_2"] = isset($data["security_question_2"]) ? addcslashes($data["security_question_2"], "\\'") : "";
+			$data["security_answer_2"] = isset($data["security_answer_2"]) ? addcslashes($data["security_answer_2"], "\\'") : "";
+			$data["security_question_3"] = isset($data["security_question_3"]) ? addcslashes($data["security_question_3"], "\\'") : "";
+			$data["security_answer_3"] = isset($data["security_answer_3"]) ? addcslashes($data["security_answer_3"], "\\'") : "";
 			
 			$status = $b->callInsert("module/user", "insert_user", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			if ($data["password"])
-				$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+				$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			if (isset($data["active"]))
 				$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
 			
 			$User = $this->getUserHbnObj($b, $options);
+			$ids = null;
 			$status = $User->insert($data, $ids);
-			return $status ? $ids["user_id"] : $status;
+			return $status ? (isset($ids["user_id"]) ? $ids["user_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			if ($data["password"])
-				$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+				$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			if (isset($data["active"]))
 				$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
@@ -83,15 +84,15 @@ class UserService extends \soa\CommonService {
 			$status = $b->insertObject("mu_user", array(
 					"username" => $data["username"], 
 					"password" => $data["password"], 
-					"email" => $data["email"], 
-					"name" => $data["name"], 
-					"active" => $data["active"], 
-					"security_question_1" => $data["security_question_1"], 
-					"security_answer_1" => $data["security_answer_1"], 
-					"security_question_2" => $data["security_question_2"], 
-					"security_answer_2" => $data["security_answer_2"], 
-					"security_question_3" => $data["security_question_3"], 
-					"security_answer_3" => $data["security_answer_3"], 
+					"email" => isset($data["email"]) ? $data["email"] : null, 
+					"name" => isset($data["name"]) ? $data["name"] : null, 
+					"active" => isset($data["active"]) ? $data["active"] : null, 
+					"security_question_1" => isset($data["security_question_1"]) ? $data["security_question_1"] : null, 
+					"security_answer_1" => isset($data["security_answer_1"]) ? $data["security_answer_1"] : null, 
+					"security_question_2" => isset($data["security_question_2"]) ? $data["security_question_2"] : null, 
+					"security_answer_2" => isset($data["security_answer_2"]) ? $data["security_answer_2"] : null, 
+					"security_question_3" => isset($data["security_question_3"]) ? $data["security_question_3"] : null, 
+					"security_answer_3" => isset($data["security_answer_3"]) ? $data["security_answer_3"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -114,46 +115,46 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[security_answer_3], type=varchar, default="", length=255)
 	 */
 	public function updateUser($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			$data["username"] = addcslashes($data["username"], "\\'");
-			$data["email"] = addcslashes($data["email"], "\\'");
-			$data["name"] = addcslashes($data["name"], "\\'");
-			$data["security_question_1"] = addcslashes($data["security_question_1"], "\\'");
-			$data["security_answer_1"] = addcslashes($data["security_answer_1"], "\\'");
-			$data["security_question_2"] = addcslashes($data["security_question_2"], "\\'");
-			$data["security_answer_2"] = addcslashes($data["security_answer_2"], "\\'");
-			$data["security_question_3"] = addcslashes($data["security_question_3"], "\\'");
-			$data["security_answer_3"] = addcslashes($data["security_answer_3"], "\\'");
+			$data["email"] = isset($data["email"]) ? addcslashes($data["email"], "\\'") : "";
+			$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+			$data["security_question_1"] = isset($data["security_question_1"]) ? addcslashes($data["security_question_1"], "\\'") : "";
+			$data["security_answer_1"] = isset($data["security_answer_1"]) ? addcslashes($data["security_answer_1"], "\\'") : "";
+			$data["security_question_2"] = isset($data["security_question_2"]) ? addcslashes($data["security_question_2"], "\\'") : "";
+			$data["security_answer_2"] = isset($data["security_answer_2"]) ? addcslashes($data["security_answer_2"], "\\'") : "";
+			$data["security_question_3"] = isset($data["security_question_3"]) ? addcslashes($data["security_question_3"], "\\'") : "";
+			$data["security_answer_3"] = isset($data["security_answer_3"]) ? addcslashes($data["security_answer_3"], "\\'") : "";
 			
 			return $b->callUpdate("module/user", "update_user", $data, $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			$User = $this->getUserHbnObj($b, $options);
 			return $User->update($data);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			return $b->updateObject("mu_user", array(
 					"username" => $data["username"],
-					"email" => $data["email"], 
-					"name" => $data["name"], 
-					"security_question_1" => $data["security_question_1"], 
-					"security_answer_1" => $data["security_answer_1"], 
-					"security_question_2" => $data["security_question_2"], 
-					"security_answer_2" => $data["security_answer_2"], 
-					"security_question_3" => $data["security_question_3"], 
-					"security_answer_3" => $data["security_answer_3"], 
+					"email" => isset($data["email"]) ? $data["email"] : null, 
+					"name" => isset($data["name"]) ? $data["name"] : null, 
+					"security_question_1" => isset($data["security_question_1"]) ? $data["security_question_1"] : null, 
+					"security_answer_1" => isset($data["security_answer_1"]) ? $data["security_answer_1"] : null, 
+					"security_question_2" => isset($data["security_question_2"]) ? $data["security_question_2"] : null, 
+					"security_answer_2" => isset($data["security_answer_2"]) ? $data["security_answer_2"] : null, 
+					"security_question_3" => isset($data["security_question_3"]) ? $data["security_question_3"] : null, 
+					"security_answer_3" => isset($data["security_answer_3"]) ? $data["security_answer_3"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"user_id" => $data["user_id"]
@@ -169,26 +170,26 @@ class UserService extends \soa\CommonService {
 	 */
 	public function updateUserPassword($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			$data["password"] = addcslashes($data["password"], "\\'");
 			
 			return $b->callUpdate("module/user", "update_user_password", $data, $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			$User = $this->getUserHbnObj($b, $options);
 			return $User->update($data);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			return $b->updateObject("mu_user", array(
 					"password" => $data["password"],
@@ -208,26 +209,26 @@ class UserService extends \soa\CommonService {
 	 */
 	public function updateUserPasswordAndUsername($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			$data["password"] = addcslashes($data["password"], "\\'");
 			
 			return $b->callUpdate("module/user", "update_user_password_and_username", $data, $options);
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			$User = $this->getUserHbnObj($b, $options);
 			return $User->update($data);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
+			$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : UserServiceUtil::getEncryptedPassword($data["password"]);
 			
 			return $b->updateObject("mu_user", array(
 					"username" => $data["username"],
@@ -247,7 +248,7 @@ class UserService extends \soa\CommonService {
 	 */
 	public function updateUserActiveStatus($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
@@ -278,14 +279,14 @@ class UserService extends \soa\CommonService {
 	 */
 	public function updateNameOfUser($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			$data["name"] = addcslashes($data["name"], "\\'");
 			
@@ -314,14 +315,14 @@ class UserService extends \soa\CommonService {
 	 */
 	public function updateNameAndEmailOfUser($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($data);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($data);
 			
 			$data["name"] = addcslashes($data["name"], "\\'");
 			$data["email"] = addcslashes($data["email"], "\\'");
@@ -350,7 +351,7 @@ class UserService extends \soa\CommonService {
 	 */
 	public function deleteUser($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -372,25 +373,25 @@ class UserService extends \soa\CommonService {
 	 */
 	public function getUser($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "get_user", array("user_id" => $user_id), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
-			return $result[0];
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$User = $this->getUserHbnObj($b, $options);
 			$result = $User->findById($user_id);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUserData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUserData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mu_user", null, array("user_id" => $user_id), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
-			return $result[0];
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/user", "UserService.getUser", $data, $options);
@@ -412,8 +413,9 @@ class UserService extends \soa\CommonService {
 	 */
 	public function getUsersWithEnvironmentsAndConditions($data) {
 		$environment_ids = $data["environment_ids"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($environment_ids) {
@@ -426,32 +428,32 @@ class UserService extends \soa\CommonService {
 			if ($environment_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "get_users_with_environments_and_conditions", array("environment_ids" => $environment_ids_str, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("get_users_with_environments_and_conditions", array("environment_ids" => $environment_ids_str, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::get_users_with_environments_and_conditions(array("environment_ids" => $environment_ids_str, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -474,38 +476,39 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[conditions][security_answer_3], type=varchar|array, length=255)
 	 */
 	public function getUsersWithoutEnvironmentsAndWithConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "get_users_without_environments_and_with_conditions", array("conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("get_users_without_environments_and_with_conditions", array("conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::get_users_without_environments_and_with_conditions(array("conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -526,35 +529,36 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[conditions][security_answer_3], type=varchar|array, length=255)
 	 */
 	public function getUsersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "get_users_by_conditions", array("conditions" => $cond), $options);
-				$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+				!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 				return $result;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 				$User = $this->getUserHbnObj($b, $options);
 				$result = $User->find($data, $options);
-				$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+				!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 				return $result;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				$result = $b->findObjects("mu_user", null, $conditions, $options);
-				$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+				!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 				return $result;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -576,30 +580,31 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[conditions][security_answer_3], type=varchar|array, length=255)
 	 */
 	public function countUsersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "count_users_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 				$User = $this->getUserHbnObj($b, $options);
-				return $User->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $User->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+				!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mu_user", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -621,38 +626,39 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[conditions][security_answer_3], type=varchar|array, length=255)
 	 */
 	public function getUsersWithUserTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 			
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "get_users_with_user_types_by_conditions", array("conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 			
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("get_users_with_user_types_by_conditions", array("conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::get_users_with_user_types_by_conditions(array("conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -673,36 +679,37 @@ class UserService extends \soa\CommonService {
 	 * @param (name=data[conditions][security_answer_3], type=varchar|array, length=255)
 	 */
 	public function countUsersWithUserTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 				
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "count_users_with_user_types_by_conditions", array("conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 				
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("count_users_with_user_types_by_conditions", array("conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::count_users_with_user_types_by_conditions(array("conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/user", "UserService.countUsersWithUserTypesByConditions", $data, $options);
@@ -724,8 +731,9 @@ class UserService extends \soa\CommonService {
 	 */
 	public function getUsersByUserTypesAndConditions($data) {
 		$user_type_ids = $data["user_type_ids"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -738,32 +746,32 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "get_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("get_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::get_users_by_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -788,8 +796,9 @@ class UserService extends \soa\CommonService {
 	 */
 	public function countUsersByUserTypesAndConditions($data) {
 		$user_type_ids = $data["user_type_ids"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -802,30 +811,30 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "count_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("count_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::count_users_by_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient"))
 					return $b->callBusinessLogic("module/user", "UserService.countUsersByUserTypesAndConditions", $data, $options);
@@ -851,38 +860,39 @@ class UserService extends \soa\CommonService {
 	public function getUsersByObjectAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "get_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("get_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::get_users_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -907,36 +917,37 @@ class UserService extends \soa\CommonService {
 	public function countUsersByObjectAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "count_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("count_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::count_users_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/user", "UserService.countUsersByObjectAndConditions", $data, $options);
@@ -961,39 +972,40 @@ class UserService extends \soa\CommonService {
 	public function getUsersByObjectGroupAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "get_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("get_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::get_users_by_object_group_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -1019,37 +1031,38 @@ class UserService extends \soa\CommonService {
 	public function countUsersByObjectGroupAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $b->callSelect("module/user", "count_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 			$User = $this->getUserHbnObj($b, $options);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$result = $User->callSelect("count_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-			$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+			!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+			$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 			$cond = $cond ? $cond : "1=1";
 			$sql = UserDBDAOServiceUtil::count_users_by_object_group_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/user", "UserService.countUsersByObjectGroupAndConditions", $data, $options);
@@ -1075,8 +1088,9 @@ class UserService extends \soa\CommonService {
 		$user_type_ids = $data["user_type_ids"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -1089,32 +1103,32 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "get_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("get_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::get_users_by_object_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -1143,8 +1157,9 @@ class UserService extends \soa\CommonService {
 		$user_type_ids = $data["user_type_ids"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -1157,30 +1172,30 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "count_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("count_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::count_users_by_object_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/user", "UserService.countUsersByObjectAndUserTypesAndConditions", $data, $options);
@@ -1209,9 +1224,10 @@ class UserService extends \soa\CommonService {
 		$user_type_ids = $data["user_type_ids"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -1224,32 +1240,32 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "get_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("get_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::get_users_by_object_group_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+					!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 					return $result;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -1279,9 +1295,10 @@ class UserService extends \soa\CommonService {
 		$user_type_ids = $data["user_type_ids"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($user_type_ids) {
@@ -1294,30 +1311,30 @@ class UserService extends \soa\CommonService {
 			if ($user_type_ids_str) {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $b->callSelect("module/user", "count_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
 					
 					$User = $this->getUserHbnObj($b, $options);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$result = $User->callSelect("count_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
-					$data["encode_user_data"] && UserServiceUtil::encodeSensitiveUserData($conditions);
-					$cond = \DB::getSQLConditions($conditions, $data["conditions_join"], "u");
+					!empty($data["encode_user_data"]) && UserServiceUtil::encodeSensitiveUserData($conditions);
+					$cond = \DB::getSQLConditions($conditions, $conditions_join, "u");
 					$cond = $cond ? $cond : "1=1";
 					$sql = UserDBDAOServiceUtil::count_users_by_object_group_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient"))
 					return $b->callBusinessLogic("module/user", "UserService.countUsersByObjectGroupAndUserTypesAndConditions", $data, $options);
@@ -1326,24 +1343,24 @@ class UserService extends \soa\CommonService {
 	}
 	
 	public function getAllUsers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "get_all_users", null, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$User = $this->getUserHbnObj($b, $options);
 			$result = $User->find();
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mu_user", null, null, $options);
-			$data["decode_user_data"] && UserServiceUtil::decodeSensitiveUsersData($result);
+			!empty($data["decode_user_data"]) && UserServiceUtil::decodeSensitiveUsersData($result);
 			return $result;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -1351,13 +1368,13 @@ class UserService extends \soa\CommonService {
 	}
 	
 	public function countAllUsers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "count_all_users", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$User = $this->getUserHbnObj($b, $options);

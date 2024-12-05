@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("action/ActionUtil", $common_project_name);
 	
-	if (ActionUtil::deleteUserAction($brokers, $_GET["user_id"], $_GET["action_id"], $_GET["object_type_id"], $_GET["object_id"], $_GET["time"])) {
+	if (isset($_GET["user_id"]) && isset($_GET["action_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && ActionUtil::deleteUserAction($brokers, $_GET["user_id"], $_GET["action_id"], $_GET["object_type_id"], $_GET["object_id"], $_GET["time"])) {
 		echo "1";
 	}
 }

@@ -5,4 +5,4 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$obj = array( "html" => $html, "editable_settings" => $editable_settings, "block_code_id" => $block_code_id, "block_code_time" => $block_code_time ); $EVC->setTemplate("json"); ?>
+$obj = array( "html" => isset($html) ? $html : null, "editable_settings" => isset($editable_settings) ? $editable_settings : null, "block_code_id" => isset($block_code_id) ? $block_code_id : null, "block_code_time" => isset($block_code_time) ? $block_code_time : null ); $EVC->setTemplate("json"); ?>

@@ -4,14 +4,14 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("article/admin/ArticleAdminUtil", $common_project_name);
 	include $EVC->getModulePath("common/admin/CommonModuleAdminTableExtraAttributesUtil", $common_project_name);
 	
 	$ArticleAdminUtil = new ArticleAdminUtil($CommonModuleAdminUtil);
-	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $UserAuthenticationHandler, $module_path, $GLOBALS["default_db_driver"], "ma_article", "article");
+	$CommonModuleAdminTableExtraAttributesUtil = new CommonModuleAdminTableExtraAttributesUtil($EVC, $PEVC, $UserAuthenticationHandler, $module_path, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, "ma_article", "article");
 	
-	if ($_POST) {
+	if (!empty($_POST)) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 		
 		$CommonModuleAdminTableExtraAttributesUtil->saveData($_POST);

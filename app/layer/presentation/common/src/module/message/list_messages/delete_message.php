@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (MessageUtil::deleteMessage($brokers, $_GET["message_id"], $_GET["from_user_id"], $_GET["to_user_id"])) {
+if (isset($_GET["message_id"]) && isset($_GET["from_user_id"]) && isset($_GET["to_user_id"]) && MessageUtil::deleteMessage($brokers, $_GET["message_id"], $_GET["from_user_id"], $_GET["to_user_id"])) {
 	echo "1";
 }
 ?>

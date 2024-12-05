@@ -18,7 +18,7 @@ class ActivityService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function insertActivity($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -28,7 +28,7 @@ class ActivityService extends \soa\CommonService {
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["name"] = addcslashes($data["name"], "\\'");
 			
-			if ($data["activity_id"]) {
+			if (!empty($data["activity_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$status = $b->callInsert("module/user", "insert_activity_with_ai_pk", $data, $options);
 				return $status ? $data["activity_id"] : $status;
@@ -38,12 +38,13 @@ class ActivityService extends \soa\CommonService {
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			if (!$data["activity_id"])
+			if (empty($data["activity_id"]))
 				unset($data["activity_id"]);
 			
 			$Activity = $this->getActivityHbnObj($b, $options);
+			$ids = null;
 			$status = $Activity->insert($data, $ids);
-			return $status ? $ids["activity_id"] : $status;
+			return $status ? (isset($ids["activity_id"]) ? $ids["activity_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$attributes = array(
@@ -52,13 +53,13 @@ class ActivityService extends \soa\CommonService {
 				"modified_date" => $data["modified_date"]
 			);
 			
-			if ($data["activity_id"]) {
+			if (!empty($data["activity_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$attributes["activity_id"] = $data["activity_id"];
 			}
 			
 			$status = $b->insertObject("mu_activity", $attributes, $options);
-			return $status ? ($data["activity_id"] ? $data["activity_id"] : $b->getInsertedId($options)) : $status;
+			return $status ? (!empty($data["activity_id"]) ? $data["activity_id"] : $b->getInsertedId($options)) : $status;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/user", "ActivityService.insertActivity", $data, $options);
@@ -69,7 +70,7 @@ class ActivityService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function updateActivity($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -101,7 +102,7 @@ class ActivityService extends \soa\CommonService {
 	 */
 	public function deleteActivity($data) {
 		$activity_id = $data["activity_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -123,13 +124,13 @@ class ActivityService extends \soa\CommonService {
 	 */
 	public function getActivity($data) {
 		$activity_id = $data["activity_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "get_activity", array("activity_id" => $activity_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Activity = $this->getActivityHbnObj($b, $options);
@@ -137,7 +138,7 @@ class ActivityService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mu_activity", null, array("activity_id" => $activity_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/user", "ActivityService.getActivity", $data, $options);
@@ -148,14 +149,15 @@ class ActivityService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function getActivitiesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/user", "get_activities_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -165,7 +167,7 @@ class ActivityService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mu_activity", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -178,25 +180,26 @@ class ActivityService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function countActivitiesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "count_activities_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Activity = $this->getActivityHbnObj($b, $options);
-				return $Activity->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Activity->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mu_activity", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -205,7 +208,7 @@ class ActivityService extends \soa\CommonService {
 	}
 	
 	public function getAllActivities($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -223,13 +226,13 @@ class ActivityService extends \soa\CommonService {
 	}
 	
 	public function countAllActivities($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "count_all_activities", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Activity = $this->getActivityHbnObj($b, $options);

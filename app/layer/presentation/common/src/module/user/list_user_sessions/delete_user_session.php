@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (UserUtil::deleteUserSession($brokers, $_GET["username"], $_GET["environment_id"])) {
+if (isset($_GET["username"]) && isset($_GET["environment_id"]) && UserUtil::deleteUserSession($brokers, $_GET["username"], $_GET["environment_id"])) {
 	echo "1";
 }
 ?>

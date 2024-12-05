@@ -4,6 +4,7 @@ namespace CMSModule\attachment\manage_object_attachment;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -13,20 +14,20 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		//Preparing Data
-		$action = $settings["action"];
-		$object_type_id = $settings["object_type_id"];
-		$object_id = $settings["object_id"];
-		$group = $settings["group"];
+		$action = isset($settings["action"]) ? $settings["action"] : null;
+		$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		$group = isset($settings["group"]) ? $settings["group"] : null;
 		
 		//Preparing Action
 		$status = $attachment_id = $path = false;
 		
-		if ($_POST && $action && $object_type_id && is_numeric($object_id)) {
+		if (!empty($_POST) && $action && $object_type_id && is_numeric($object_id)) {
 			switch ($action) {
 				case "upload":
 				case "image_upload_resize":
-					$file_variable = $settings["file_variable"];
-					$file = $_FILES[$file_variable];
+					$file_variable = isset($settings["file_variable"]) ? $settings["file_variable"] : null;
+					$file = isset($_FILES[$file_variable]) ? $_FILES[$file_variable] : null;
 					
 					if ($file) {
 						//Uploading file
@@ -36,11 +37,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							$status = true;
 							
 							$attachment = \AttachmentUtil::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
-							$path = $attachment[0]["path"];
+							$path = isset($attachment[0]["path"]) ? $attachment[0]["path"] : null;
 							
 							//Resizing uploaded image
-							$resize_width = $settings["resize_width"];
-							$resize_height = $settings["resize_height"];
+							$resize_width = isset($settings["resize_width"]) ? $settings["resize_width"] : null;
+							$resize_height = isset($settings["resize_height"]) ? $settings["resize_height"] : null;
 							
 							if ($action == "image_upload_resize" && ($resize_width || $resize_height)) {
 								$file_path = \AttachmentUtil::getAttachmentsFolderPath($EVC) . $path;
@@ -70,22 +71,22 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		//Preparing response
 		if ($status) {
-			if (strlen($settings["ok_response"])) {
+			if (isset($settings["ok_response"]) && strlen($settings["ok_response"])) {
 				$settings["ok_response"] = translateProjectText($EVC, $settings["ok_response"]);
 				$settings["ok_response"] = str_replace("#attachment_id#", $attachment_id, $settings["ok_response"]);
 				$settings["ok_response"] = str_replace("#path#", $path, $settings["ok_response"]);
 			}
 			
-			return $settings["ok_response"] ? $settings["ok_response"] : $status;
+			return !empty($settings["ok_response"]) ? $settings["ok_response"] : $status;
 		}
 		
-		if (strlen($settings["error_response"])) {
+		if (isset($settings["error_response"]) && strlen($settings["error_response"])) {
 			$settings["error_response"] = translateProjectText($EVC, $settings["error_response"]);
 			$settings["error_response"] = str_replace("#attachment_id#", $attachment_id, $settings["error_response"]);
 			$settings["error_response"] = str_replace("#path#", $path, $settings["error_response"]);
 		}
 		
-		return $settings["error_response"];
+		return isset($settings["error_response"]) ? $settings["error_response"] : null;
 	}
 }
 ?>

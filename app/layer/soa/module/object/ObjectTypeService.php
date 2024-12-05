@@ -18,7 +18,7 @@ class ObjectTypeService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function insertObjectType($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -28,7 +28,7 @@ class ObjectTypeService extends \soa\CommonService {
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["name"] = addcslashes($data["name"], "\\'");
 			
-			if ($data["object_type_id"]) {
+			if (!empty($data["object_type_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$status = $b->callInsert("module/object", "insert_object_type_with_ai_pk", $data, $options);
 				return $status ? $data["object_type_id"] : $status;
@@ -38,12 +38,13 @@ class ObjectTypeService extends \soa\CommonService {
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			if (!$data["object_type_id"])
+			if (empty($data["object_type_id"]))
 				unset($data["object_type_id"]);
 			
 			$ObjectType = $this->getObjectTypeHbnObj($b, $options);
+			$ids = null;
 			$status = $ObjectType->insert($data, $ids);
-			return $status ? $ids["object_type_id"] : $status;
+			return $status ? (isset($ids["object_type_id"]) ? $ids["object_type_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$attributes = array(
@@ -52,13 +53,13 @@ class ObjectTypeService extends \soa\CommonService {
 				"modified_date" => $data["modified_date"]
 			);
 			
-			if ($data["object_type_id"]) {
+			if (!empty($data["object_type_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$attributes["object_type_id"] = $data["object_type_id"];
 			}
 			
 			$status = $b->insertObject("mo_object_type", $attributes, $options);
-			return $status ? ($data["object_type_id"] ? $data["object_type_id"] : $b->getInsertedId($options)) : $status;
+			return $status ? (!empty($data["object_type_id"]) ? $data["object_type_id"] : $b->getInsertedId($options)) : $status;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/object", "ObjectTypeService.insertObjectType", $data, $options);
@@ -69,7 +70,7 @@ class ObjectTypeService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function updateObjectType($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -101,7 +102,7 @@ class ObjectTypeService extends \soa\CommonService {
 	 */
 	public function deleteObjectType($data) {
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -123,13 +124,13 @@ class ObjectTypeService extends \soa\CommonService {
 	 */
 	public function getObjectType($data) {
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/object", "get_object_type", array("object_type_id" => $object_type_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectType = $this->getObjectTypeHbnObj($b, $options);
@@ -137,7 +138,7 @@ class ObjectTypeService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mo_object_type", null, array("object_type_id" => $object_type_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/object", "ObjectTypeService.getObjectType", $data, $options);
@@ -148,14 +149,15 @@ class ObjectTypeService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function getObjectTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/object", "get_object_types_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -165,7 +167,7 @@ class ObjectTypeService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mo_object_type", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -178,25 +180,26 @@ class ObjectTypeService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function countObjectTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/object", "count_object_types_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$ObjectType = $this->getObjectTypeHbnObj($b, $options);
-				return $ObjectType->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $ObjectType->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mo_object_type", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -205,7 +208,7 @@ class ObjectTypeService extends \soa\CommonService {
 	}
 	
 	public function getAllObjectTypes($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -223,13 +226,13 @@ class ObjectTypeService extends \soa\CommonService {
 	}
 	
 	public function countAllObjectTypes($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/object", "count_all_object_types", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectType = $this->getObjectTypeHbnObj($b, $options);

@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (/*ZipUtil::deleteZipsByCityId($brokers, $_GET["city_id"]) && ZipUtil::deleteZonesByCityId($brokers, $_GET["city_id"]) && */ZipUtil::deleteCity($brokers, $_GET["city_id"])) {
+if (isset($_GET["city_id"]) && /*ZipUtil::deleteZipsByCityId($brokers, $_GET["city_id"]) && ZipUtil::deleteZonesByCityId($brokers, $_GET["city_id"]) && */ZipUtil::deleteCity($brokers, $_GET["city_id"])) {
 	echo "1";
 }
 ?>

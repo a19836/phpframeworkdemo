@@ -5,7 +5,7 @@ include_once $EVC->getUtilPath("SequentialLogicalActivityCodeConverter");
 
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$settings = $_POST["settings"];
+$settings = isset($_POST["settings"]) ? $_POST["settings"] : null;
 
 if (is_array($settings)) {
 	$lower_settings = array();
@@ -13,15 +13,15 @@ if (is_array($settings)) {
 	foreach ($settings as $type => $value) //Do not lower all the settings inner keys. Only lower the main keys. Note that the "draw_graph" action can have uppercase and capitalized keys.
 		$lower_settings[ strtolower($type) ] = $value;
 	
-	$code = SequentialLogicalActivityCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $lower_settings["actions"]);
+	$code = SequentialLogicalActivityCodeConverter::convertActionsSettingsToCode($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, isset($lower_settings["actions"]) ? $lower_settings["actions"] : null);
 	
-	if ($lower_settings["css"] || $lower_settings["js"]) {
+	if (!empty($lower_settings["css"]) || !empty($lower_settings["js"])) {
 		$code = preg_replace("/\?>$/", "", $code);
 		
-		if ($lower_settings["css"])
+		if (!empty($lower_settings["css"]))
 			$code .= "\n/*** STYLE ***/\n" . 'echo "<style>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($lower_settings["css"]) . ' . "</style>";' . "\n";
 		
-		if ($lower_settings["js"]) 
+		if (!empty($lower_settings["js"]))
 			$code .= "\n/*** SCRIPT ***/\n" . 'echo "<script>" . ' . SequentialLogicalActivityCodeConverter::prepareStringValue($lower_settings["js"]) . ' . "</script>";' . "\n";
 		
 		$code .= "\n?>";
@@ -29,8 +29,8 @@ if (is_array($settings)) {
 	
 	preg_match_all("/\\$(\w+)/u", $code, $matches_1, PREG_PATTERN_ORDER); //'\w' means all words with '_' and '/u' means with accents and ç too. '/u' converts unicode to accents chars. 
 	preg_match_all("/\\$\{(\w+)/u", $code, $matches_2, PREG_PATTERN_ORDER); //'\w' means all words with '_' and '/u' means with accents and ç too. '/u' converts unicode to accents chars. 
-	$matches = $matches_1[1] && $matches_2[1] ? array_merge($matches_1[1], $matches_2[1]) : ($matches_1[1] ? $matches_1[1] : $matches_2[1]);
-	$external_vars = $matches && $matches[1] ? array_intersect($defined_vars, $matches) : null;
+	$matches = !empty($matches_1[1]) && !empty($matches_2[1]) ? array_merge($matches_1[1], $matches_2[1]) : (!empty($matches_1[1]) ? $matches_1[1] : (isset($matches_2[1]) ? $matches_2[1] : null));
+	$external_vars = !empty($matches) && !empty($matches[1]) ? array_intersect($defined_vars, $matches) : null;
 	unset($external_vars["results"]);
 	
 	if (strpos($code, '$entity_path') !== false && !in_array('entity_path', $external_vars))

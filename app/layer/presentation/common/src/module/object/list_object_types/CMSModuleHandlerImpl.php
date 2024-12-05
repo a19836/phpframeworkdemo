@@ -4,6 +4,7 @@ namespace CMSModule\object\list_object_types;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -18,7 +19,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["data"] = $conditions ? \ObjectUtil::getObjectTypesByConditions($brokers, $conditions, null) : \ObjectUtil::getAllObjectTypes($brokers);
 		$settings["css_file"] = $project_common_url_prefix . 'module/object/list_object_types.css';
 		$settings["class"] = "module_list_object_types";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "object_type_id=#[idx][object_type_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "object_type_id=#[idx][object_type_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/object/list_object_types/delete_object_type?object_type_id=#[idx][object_type_id]#";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "object/list_object_types", $settings);

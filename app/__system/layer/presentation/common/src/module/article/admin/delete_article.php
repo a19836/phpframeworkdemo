@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("article/ArticleUtil", $common_project_name);
 	
-	if (ArticleUtil::deleteArticle($PEVC, $_GET["article_id"], $brokers)) {
+	if (isset($_GET["article_id"]) && ArticleUtil::deleteArticle($PEVC, $_GET["article_id"], $brokers)) {
 		echo "1";
 	}
 }

@@ -4,6 +4,7 @@ namespace CMSModule\message\show_chat;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,19 +17,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$html = '';
 		
-		if (!$settings["logged_user_id"] && $settings["session_id"]) {
-			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null);
+		if (empty($settings["logged_user_id"]) && !empty($settings["session_id"])) {
+			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $settings["session_id"]), null);
 			
-			if ($session_data[0]) {
+			if (isset($session_data[0]["user_id"])) {
 				$user_data = \UserUtil::getUsersByConditions($brokers, array("user_id" => $session_data[0]["user_id"]), null);
-				$settings["from_user_id"] = $user_data[0]["user_id"];
+				$settings["from_user_id"] = isset($user_data[0]["user_id"]) ? $user_data[0]["user_id"] : null;
 			}
 		}
 		else 
-			$settings["from_user_id"] = $settings["logged_user_id"];
+			$settings["from_user_id"] = isset($settings["logged_user_id"]) ? $settings["logged_user_id"] : null;
 		
-		if (is_numeric($settings["from_user_id"]) && is_numeric($settings["to_user_id"])) {
-			$settings["maximum_number_of_loaded_messages"] = $settings["maximum_number_of_loaded_messages"] ? $settings["maximum_number_of_loaded_messages"] : null;
+		if (isset($settings["from_user_id"]) && is_numeric($settings["from_user_id"]) && isset($settings["to_user_id"]) && is_numeric($settings["to_user_id"])) {
+			$settings["maximum_number_of_loaded_messages"] = !empty($settings["maximum_number_of_loaded_messages"]) ? $settings["maximum_number_of_loaded_messages"] : null;
 			
 			//Getting messages
 			$messages = \MessageUtil::getChatMessages($brokers, $settings["from_user_id"], $settings["to_user_id"], array("limit" => $settings["maximum_number_of_loaded_messages"], "sort" => array(
@@ -52,11 +53,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 			}
 			
-			$from_user_data = $user_data ? $user_data : \UserUtil::getUsersByConditions($brokers, array("user_id" => $settings["from_user_id"]), null);
-			$from_user_data = $from_user_data[0];
+			$from_user_data = !empty($user_data) ? $user_data : \UserUtil::getUsersByConditions($brokers, array("user_id" => $settings["from_user_id"]), null);
+			$from_user_data = isset($from_user_data[0]) ? $from_user_data[0] : null;
 			
 			$to_user_data = \UserUtil::getUsersByConditions($brokers, array("user_id" => $settings["to_user_id"]), null);
-			$to_user_data = $to_user_data[0];
+			$to_user_data = isset($to_user_data[0]) ? $to_user_data[0] : null;
 			
 			//Add join point updating the data
 			$EVC->getCMSLayer()->getCMSJoinPointLayer()->includeJoinPoint("Changing Messages data", array(
@@ -73,8 +74,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		
 			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/message/show_chat.js"></script>';
-			$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
-			$html .= $settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+			$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
+			$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
 			
 			//Preparing messages html
 			$chat_class = 'module_show_chat_from_' . $settings["from_user_id"] . '_to_' . $settings["to_user_id"];
@@ -83,13 +84,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$toud = $to_user_data;
 			unset($toud["photo_path"]);
 			
-			$to_user_label = $settings["to_user_label"];
+			$to_user_label = isset($settings["to_user_label"]) ? $settings["to_user_label"] : null;
 			if ($to_user_label) {
 				$HtmlFormHandler = new \HtmlFormHandler();
 				$to_user_label = $HtmlFormHandler->getParsedValueFromData($to_user_label, $to_user_data);
 			}
 			else 
-				$to_user_label = $to_user_data["username"] ? $to_user_data["username"] : $to_user_data["name"];
+				$to_user_label = !empty($to_user_data["username"]) ? $to_user_data["username"] : (isset($to_user_data["name"]) ? $to_user_data["name"] : null);
+			
+			$load_messages_url = isset($settings["load_messages_url"]) ? $settings["load_messages_url"] : null;
+			$on_load_error_message = isset($settings["on_load_error_message"]) ? $settings["on_load_error_message"] : null;
+			$send_message_url = isset($settings["send_message_url"]) ? $settings["send_message_url"] : null;
+			$on_send_error_message = isset($settings["on_send_error_message"]) ? $settings["on_send_error_message"] : null;
 			
 			$html .= '
 			<script>
@@ -99,10 +105,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				id: \'' . $chat_id . '\',
 				from_user_id: \'' . $settings["from_user_id"] . '\',
 				to_user_id: \'' . $settings["to_user_id"] . '\',
-				load_messages_url: \'' . $settings["load_messages_url"] . '\',
-				on_load_error_message: \'' . translateProjectText($EVC, $settings["on_load_error_message"]) . '\',
-				send_message_url: \'' . $settings["send_message_url"] . '\',
-				on_send_error_message: \'' . translateProjectText($EVC, $settings["on_send_error_message"]) . '\',
+				load_messages_url: \'' . $load_messages_url . '\',
+				on_load_error_message: \'' . translateProjectText($EVC, $on_load_error_message) . '\',
+				send_message_url: \'' . $send_message_url . '\',
+				on_send_error_message: \'' . translateProjectText($EVC, $on_send_error_message) . '\',
 				from_user_message_html: \'' . addcslashes(str_replace("\n", "", self::getFromUserMessageHtml(array("message_id" => "#message_id#", "from_user_id" => $settings["from_user_id"], "subject" => "#subject#", "content" => "#content#", "created_date" => "#created_date#", "seen_date" => "#seen_date#"), $from_user_data)), "\\'") . '\',
 				to_user_message_html: \'' . addcslashes(str_replace("\n", "", self::getToUserMessageHtml(array("message_id" => "#message_id#", "subject" => "#subject#", "content" => "#content#", "created_date" => "#created_date#", "seen_date" => "#seen_date#"), $to_user_data)), "\\'") . '\',
 				to_user_data: ' . json_encode($toud) . ',
@@ -113,9 +119,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			var on_load_previous_messages_function = on_load_previous_messages_function ? on_load_previous_messages_function : null;
 			var on_load_next_messages_function = on_load_next_messages_function ? on_load_next_messages_function : null;
 			</script>
-			<div id="' . $chat_id . '" class="module_show_chat ' . $chat_class . ' ' . ($settings["block_class"]) . '">
+			<div id="' . $chat_id . '" class="module_show_chat ' . $chat_class . ' ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">
 				<div class="chat_header">
-					' . ($to_user_data["photo_url"] ? '<img class="to_user_photo" src="' . $to_user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
+					' . (!empty($to_user_data["photo_url"]) ? '<img class="to_user_photo" src="' . $to_user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
 					<label>' . $to_user_label . '</label>
 					<span class="close_chat" onClick="closeChat(this, \'' . $chat_id . '\')">' . translateProjectText($EVC, "Close") . '</span>
 					<span class="toggle_chat" onClick="$(this).parent().closest(\'.module_show_chat\').toggleClass(\'chat_minimized\')">' . translateProjectText($EVC, "Toggle") . '</span>
@@ -133,11 +139,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			for ($i = $t - 1; $i >= 0; $i--) {
 				$message_data = $messages[$i];
 				
+				$message_data["created_date"] = isset($message_data["created_date"]) ? $message_data["created_date"] : null;
 				$cd = explode(" ", $message_data["created_date"]);
 				if ($cd[0] == $current_date)
-					$message_data["created_date"] = $cd[1];
+					$message_data["created_date"] = isset($cd[1]) ? $cd[1] : null;
 				$message_data["created_date"] = strrpos($message_data["created_date"], ":")? substr($message_data["created_date"], 0, strrpos($message_data["created_date"], ":")) : $message_data["created_date"];
 				
+				$message_data["seen_date"] = isset($message_data["seen_date"]) ? $message_data["seen_date"] : null;
 				$sd = explode(" ", $message_data["seen_date"]);
 				if ($sd[0] == $current_date)
 					$message_data["seen_date"] = $sd[1];
@@ -153,7 +161,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$html .= '	</ul>
 				</div>
 				<div class="chat_footer">
-					' . ($settings["send_message_url"] ? '<textarea class="form-control" placeHolder="' . translateProjectText($EVC, "Write your message here...") . '"></textarea>
+					' . (!empty($settings["send_message_url"]) ? '<textarea class="form-control" placeHolder="' . translateProjectText($EVC, "Write your message here...") . '"></textarea>
 					<input class="btn btn-default" type="button" value="' . translateProjectText($EVC, "Send") . '" onClick="sendNewMessage(this, ' . $chat_id . ', on_send_new_message_function)" />' : '') . '
 				</div>
 				<script>
@@ -166,16 +174,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 	
 	private static function getFromUserMessageHtml($message_data, $user_data, $is_user_the_same_than_previous_msg = false) {
+		$message_id = isset($message_data["message_id"]) ? $message_data["message_id"] : null;
+		$content = isset($message_data["content"]) ? $message_data["content"] : null;
+		$created_date = isset($message_data["created_date"]) ? $message_data["created_date"] : null;
+		$seen_date = isset($message_data["seen_date"]) ? $message_data["seen_date"] : null;
+		
 		$html = '
-		<li class="message message_from_user' . ($is_user_the_same_than_previous_msg ? ' same_user_message' : '') . '" message_id="' . $message_data["message_id"] . '">
+		<li class="message message_from_user' . ($is_user_the_same_than_previous_msg ? ' same_user_message' : '') . '" message_id="' . $message_id . '">
 			<div class="photo">
-				' . ($user_data["photo_url"] ? '<img class="to_user_photo" src="' . $user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
+				' . (!empty($user_data["photo_url"]) ? '<img class="to_user_photo" src="' . $user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
 			</div>
 			<div class="msg">
-				' . ($message_data["subject"] ? '<div class="subject">' . $message_data["subject"] . '</div>' : '') . '
-				<div class="content">' . nl2br($message_data["content"]) . '</div>
-				<div class="created_date">' . $message_data["created_date"] . '</div>
-				<div class="seen_date">' . $message_data["seen_date"] . '</div>
+				' . (!empty($message_data["subject"]) ? '<div class="subject">' . $message_data["subject"] . '</div>' : '') . '
+				<div class="content">' . nl2br($content) . '</div>
+				<div class="created_date">' . $created_date . '</div>
+				<div class="seen_date">' . $seen_date . '</div>
 			</div>
 			<div class="clear"></div>
 		</li>';
@@ -184,16 +197,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 	
 	private static function getToUserMessageHtml($message_data, $user_data, $is_user_the_same_than_previous_msg = false) {
+		$message_id = isset($message_data["message_id"]) ? $message_data["message_id"] : null;
+		$content = isset($message_data["content"]) ? $message_data["content"] : null;
+		$created_date = isset($message_data["created_date"]) ? $message_data["created_date"] : null;
+		$seen_date = isset($message_data["seen_date"]) ? $message_data["seen_date"] : null;
+		
 		$html = '
-		<li class="message message_to_user' . ($is_user_the_same_than_previous_msg ? ' same_user_message' : '') . '" message_id="' . $message_data["message_id"] . '">
+		<li class="message message_to_user' . ($is_user_the_same_than_previous_msg ? ' same_user_message' : '') . '" message_id="' . $message_id . '">
 			<div class="photo">
-				' . ($user_data["photo_url"] ? '<img class="to_user_photo" src="' . $user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
+				' . (!empty($user_data["photo_url"]) ? '<img class="to_user_photo" src="' . $user_data["photo_url"] . '" onError="$(this).remove()" />' : '') . '
 			</div>
 			<div class="msg">
-				' . ($message_data["subject"] ? '<div class="subject">' . $message_data["subject"] . '</div>' : '') . '
-				<div class="content">' . nl2br($message_data["content"]) . '</div>
-				<div class="created_date">' . $message_data["created_date"] . '</div>
-				<div class="seen_date">' . $message_data["seen_date"] . '</div>
+				' . (!empty($message_data["subject"]) ? '<div class="subject">' . $message_data["subject"] . '</div>' : '') . '
+				<div class="content">' . nl2br($content) . '</div>
+				<div class="created_date">' . $created_date . '</div>
+				<div class="seen_date">' . $seen_date . '</div>
 			</div>
 			<div class="clear"></div>
 		</li>';

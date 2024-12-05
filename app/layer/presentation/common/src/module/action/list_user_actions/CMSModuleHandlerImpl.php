@@ -4,6 +4,7 @@ namespace CMSModule\action\list_user_actions;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,7 +17,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \ActionUtil::countUserActionsByConditions($brokers, $conditions, null) : \ActionUtil::countAllUserActions($brokers);
 		
@@ -29,11 +30,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$settings["css_file"] = $project_common_url_prefix . 'module/action/list_user_actions.css';
 		$settings["class"] = "module_list_user_actions";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "user_id=#[idx][user_id]#&action_id=#[idx][action_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#&time=#[idx][time]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "user_id=#[idx][user_id]#&action_id=#[idx][action_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#&time=#[idx][time]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/action/list_user_actions/delete_user_action?user_id=#[idx][user_id]#&action_id=#[idx][action_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#&time=#[idx][time]#";
 		
-		if ($settings["show_action_id"]) {
-			$type = $settings["fields"]["action_id"]["field"]["input"]["type"];
+		if (!empty($settings["show_action_id"])) {
+			$type = isset($settings["fields"]["action_id"]["field"]["input"]["type"]) ? $settings["fields"]["action_id"]["field"]["input"]["type"] : null;
 			$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 			
 			$actions = \ActionUtil::getAllActions($brokers);
@@ -43,10 +44,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($actions) {
 				$t = count($actions);
 				for ($i = 0; $i < $t; $i++) {
+					$action_id = isset($actions[$i]["action_id"]) ? $actions[$i]["action_id"] : null;
+					$action_name = isset($actions[$i]["name"]) ? $actions[$i]["name"] : null;
+					
 					if ($allow_options)
-						$action_options[] = array("value" => $actions[$i]["action_id"], "label" => $actions[$i]["name"]);
+						$action_options[] = array("value" => $action_id, "label" => $action_name);
 					else 
-						$available_actions[ $actions[$i]["action_id"] ] = $action[$i]["name"];
+						$available_actions[$action_id] = $action_name;
 				}
 			}
 			
@@ -54,10 +58,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$settings["fields"]["action_id"]["field"]["input"]["available_values"] = $available_actions;
 		}
 		
-		if ($settings["show_user_id"]) 
+		if (!empty($settings["show_user_id"]))
 			\CommonModuleUtil::prepareUserIdListSettingsField($EVC, $settings);
 		
-		if ($settings["show_object_type_id"])
+		if (!empty($settings["show_object_type_id"]))
 			\CommonModuleUtil::prepareObjectTypeIdListSettingsField($EVC, $settings);
 			
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "action/list_user_actions", $settings);

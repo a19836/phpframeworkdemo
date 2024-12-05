@@ -3,7 +3,7 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler");
 
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$str = trim($_POST["str"]);
+$str = isset($_POST["str"]) ? trim($_POST["str"]) : "";
 $fc = substr($str, 0, 1);
 $lc = substr($str, -1);
 $str_type = PHPUICodeExpressionHandler::getValueType($str, array("non_set_type" => "string", "empty_string_type" => "string"));

@@ -60,13 +60,13 @@ if (!class_exists("UserUtil")) {
 		
 		public static function encodeSensitiveUserData(&$user_data, $extra_attrs = array()) {
 			if (self::getConstantVariable("HASH_SENSITIVE_DATA")) {
-				if ($user_data["username"] && !is_array($user_data["username"])) //it could be a condition array
+				if (!empty($user_data["username"]) && !is_array($user_data["username"])) //it could be a condition array
 					$user_data["username"] = TextShuffler::autoShuffle($user_data["username"]);
 				
-				if ($user_data["name"] && !is_array($user_data["name"])) //it could be a condition array
+				if (!empty($user_data["name"]) && !is_array($user_data["name"])) //it could be a condition array
 					$user_data["name"] = TextShuffler::autoShuffle($user_data["name"]);
 				
-				if ($user_data["email"] && !is_array($user_data["email"])) //it could be a condition array
+				if (!empty($user_data["email"]) && !is_array($user_data["email"])) //it could be a condition array
 					$user_data["email"] = TextShuffler::autoShuffle($user_data["email"]);
 				
 				if ($extra_attrs) {
@@ -81,13 +81,13 @@ if (!class_exists("UserUtil")) {
 		
 		public static function decodeSensitiveUserData(&$user_data, $extra_attrs = array()) {
 			if (self::getConstantVariable("HASH_SENSITIVE_DATA")) {
-				if ($user_data["username"] && !is_array($user_data["username"])) //it could be a condition array
+				if (!empty($user_data["username"]) && !is_array($user_data["username"])) //it could be a condition array
 					$user_data["username"] = TextShuffler::autoUnshuffle($user_data["username"]);
 				
-				if ($user_data["name"] && !is_array($user_data["name"])) //it could be a condition array
+				if (!empty($user_data["name"]) && !is_array($user_data["name"])) //it could be a condition array
 					$user_data["name"] = TextShuffler::autoUnshuffle($user_data["name"]);
 				
-				if ($user_data["email"] && !is_array($user_data["email"])) //it could be a condition array
+				if (!empty($user_data["email"]) && !is_array($user_data["email"])) //it could be a condition array
 					$user_data["email"] = TextShuffler::autoUnshuffle($user_data["email"]);
 				
 				if ($extra_attrs) {
@@ -123,7 +123,7 @@ if (!class_exists("UserUtil")) {
 			$count = self::countAllUsers($brokers, true);
 			//$count = self::countUsersByConditions($brokers, array("active" => 1), null, true);
 			
-			return $li && $li["eumn"] > 0 && $count > $li["eumn"]; //eumn => end_users_maximum_number
+			return $li && isset($li["eumn"]) && $li["eumn"] > 0 && $count > $li["eumn"]; //eumn => end_users_maximum_number
 		}
 	
 		/* ACTIVITY FUNCTIONS */
@@ -154,9 +154,9 @@ if (!class_exists("UserUtil")) {
 					if (is_a($broker, "IBusinessLogicBrokerClient"))
 						return $broker->callBusinessLogic("module/user", "ActivityService.insertActivity", $data);
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-						if ($data["activity_id"]) {
+						if (!empty($data["activity_id"])) {
 							$options = array("hard_coded_ai_pk" => true);
 							$status = $broker->callInsert("module/user", "insert_activity_with_ai_pk", $data, $options);
 							return $status ? $data["activity_id"] : $status;
@@ -166,34 +166,35 @@ if (!class_exists("UserUtil")) {
 						return $status ? $broker->getInsertedId($options) : $status;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						if (!$data["activity_id"])
+						if (empty($data["activity_id"]))
 							unset($data["activity_id"]);
 						
 						$Activity = $broker->callObject("module/user", "Activity");
+						$ids = null;
 						$status = $Activity->insert($data, $ids);
-						return $status ? $ids["activity_id"] : $status;
+						return $status ? ($ids["activity_id"] ? $ids["activity_id"] : null) : $status;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$attributes = array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						);
 						
-						if ($data["activity_id"]) {
+						if (!empty($data["activity_id"])) {
 							$options["hard_coded_ai_pk"] = true;
-							$attributes["activity_id"] = $data["activity_id"];
+							$attributes["activity_id"] = isset($data["activity_id"]) ? $data["activity_id"] : null;
 						}
 						
 						$status = $broker->insertObject("mu_activity", $attributes, $options);
-						return $status ? ($data["activity_id"] ? $data["activity_id"] : $broker->getInsertedId($options)) : $status;
+						return $status ? (!empty($data["activity_id"]) ? $data["activity_id"] : $broker->getInsertedId($options)) : $status;
 					}
 				}
 			}
 		}
 	
 		public static function updateActivity($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["activity_id"])) {
+			if (is_array($brokers) && isset($data["activity_id"]) && is_numeric($data["activity_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -201,7 +202,7 @@ if (!class_exists("UserUtil")) {
 						return $broker->callBusinessLogic("module/user", "ActivityService.updateActivity", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 						return $broker->callUpdate("module/user", "update_activity", $data);
 					}
@@ -211,7 +212,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mu_activity", array(
-								"name" => $data["name"],
+								"name" => isset($data["name"]) ? $data["name"] : null,
 								"modified_date" => $data["modified_date"]
 							), array(
 								"activity_id" => $data["activity_id"], 
@@ -314,9 +315,9 @@ if (!class_exists("UserUtil")) {
 						return $broker->callBusinessLogic("module/user", "UserTypeService.insertUserType", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-						if ($data["user_type_id"]) {
+						if (!empty($data["user_type_id"])) {
 							$options = array("hard_coded_ai_pk" => true);
 							$status = $broker->callInsert("module/user", "insert_user_type_with_ai_pk", $data, $options);
 							return $status ? $data["user_type_id"] : $status;
@@ -326,34 +327,35 @@ if (!class_exists("UserUtil")) {
 						return $status ? $broker->getInsertedId($options) : $status;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						if (!$data["user_type_id"])
+						if (empty($data["user_type_id"]))
 							unset($data["user_type_id"]);
 						
 						$UserType = $broker->callObject("module/user", "UserType");
+						$ids = null;
 						$status = $UserType->insert($data, $ids);
-						return $status ? $ids["user_type_id"] : $status;
+						return $status ? (isset($ids["user_type_id"]) ? $ids["user_type_id"] : null) : $status;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$attributes = array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						);
 						
-						if ($data["user_type_id"]) {
+						if (!empty($data["user_type_id"])) {
 							$options["hard_coded_ai_pk"] = true;
 							$attributes["user_type_id"] = $data["user_type_id"];
 						}
 						
 						$status = $broker->insertObject("mu_user_type", $attributes, $options);
-						return $status ? ($data["user_type_id"] ? $data["user_type_id"] : $broker->getInsertedId($options)) : $status;
+						return $status ? (!empty($data["user_type_id"]) ? $data["user_type_id"] : $broker->getInsertedId($options)) : $status;
 					}
 				}
 			}
 		}
 	
 		public static function updateUserType($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_type_id"])) {
+			if (is_array($brokers) && isset($data["user_type_id"]) && is_numeric($data["user_type_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -361,7 +363,7 @@ if (!class_exists("UserUtil")) {
 						return $broker->callBusinessLogic("module/user", "UserTypeService.updateUserType", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 						return $broker->callUpdate("module/user", "update_user_type", $data);
 					}
@@ -371,7 +373,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mu_user_type", array(
-								"name" => $data["name"],
+								"name" => isset($data["name"]) ? $data["name"] : null,
 								"modified_date" => $data["modified_date"]
 							), array(
 								"user_type_id" => $data["user_type_id"], 
@@ -456,10 +458,10 @@ if (!class_exists("UserUtil")) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 				
-				if ($data["username"])
+				if (!empty($data["username"]))
 					$data["username"] = strtolower($data["username"]);
 				
-				if ($data["email"])
+				if (!empty($data["email"]))
 					$data["email"] = strtolower($data["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -473,20 +475,20 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						if ($data["password"])
-							$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						if (!empty($data["password"]))
+							$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						
-						$data["username"] = addcslashes($data["username"], "\\'");
-						$data["password"] = addcslashes($data["password"], "\\'");
-						$data["email"] = addcslashes($data["email"], "\\'");
-						$data["name"] = addcslashes($data["name"], "\\'");
-						$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
-						$data["security_question_1"] = addcslashes($data["security_question_1"], "\\'");
-						$data["security_answer_1"] = addcslashes($data["security_answer_1"], "\\'");
-						$data["security_question_2"] = addcslashes($data["security_question_2"], "\\'");
-						$data["security_answer_2"] = addcslashes($data["security_answer_2"], "\\'");
-						$data["security_question_3"] = addcslashes($data["security_question_3"], "\\'");
-						$data["security_answer_3"] = addcslashes($data["security_answer_3"], "\\'");
+						$data["username"] = isset($data["username"]) ? addcslashes($data["username"], "\\'") : "";
+						$data["password"] = isset($data["password"]) ? addcslashes($data["password"], "\\'") : "";
+						$data["email"] = isset($data["email"]) ? addcslashes($data["email"], "\\'") : "";
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+						$data["active"] = isset($data["active"]) && is_numeric($data["active"]) ? $data["active"] : 0;
+						$data["security_question_1"] = isset($data["security_question_1"]) ? addcslashes($data["security_question_1"], "\\'") : "";
+						$data["security_answer_1"] = isset($data["security_answer_1"]) ? addcslashes($data["security_answer_1"], "\\'") : "";
+						$data["security_question_2"] = isset($data["security_question_2"]) ? addcslashes($data["security_question_2"], "\\'") : "";
+						$data["security_answer_2"] = isset($data["security_answer_2"]) ? addcslashes($data["security_answer_2"], "\\'") : "";
+						$data["security_question_3"] = isset($data["security_question_3"]) ? addcslashes($data["security_question_3"], "\\'") : "";
+						$data["security_answer_3"] = isset($data["security_answer_3"]) ? addcslashes($data["security_answer_3"], "\\'") : "";
 					
 						$status = $broker->callInsert("module/user", "insert_user", $data);
 						$user_id = $status ? $broker->getInsertedId() : false;
@@ -495,38 +497,39 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						if ($data["password"])
-							$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						if (!empty($data["password"]))
+							$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						
 						if (isset($data["active"]))
 							$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
 						
 						$User = $broker->callObject("module/user", "User");
+						$ids = null;
 						$status = $User->insert($data, $ids);
-						$user_id = $status ? $ids["user_id"] : false;
+						$user_id = $status ? (isset($ids["user_id"]) ? $ids["user_id"] : null) : false;
 						break;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						if ($data["password"])
-							$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						if (!empty($data["password"]))
+							$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						
 						if (isset($data["active"]))
 							$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
 						
 						$status = $broker->insertObject("mu_user", array(
-								"username" => $data["username"], 
-								"password" => $data["password"], 
-								"email" => $data["email"], 
-								"name" => $data["name"], 
-								"active" => $data["active"], 
-								"security_question_1" => $data["security_question_1"], 
-								"security_answer_1" => $data["security_answer_1"], 
-								"security_question_2" => $data["security_question_2"], 
-								"security_answer_2" => $data["security_answer_2"], 
-								"security_question_3" => $data["security_question_3"], 
-								"security_answer_3" => $data["security_answer_3"], 
+								"username" => isset($data["username"]) ? $data["username"] : null, 
+								"password" => isset($data["password"]) ? $data["password"] : null, 
+								"email" => isset($data["email"]) ? $data["email"] : null, 
+								"name" => isset($data["name"]) ? $data["name"] : null, 
+								"active" => isset($data["active"]) ? $data["active"] : null, 
+								"security_question_1" => isset($data["security_question_1"]) ? $data["security_question_1"] : null, 
+								"security_answer_1" => isset($data["security_answer_1"]) ? $data["security_answer_1"] : null, 
+								"security_question_2" => isset($data["security_question_2"]) ? $data["security_question_2"] : null, 
+								"security_answer_2" => isset($data["security_answer_2"]) ? $data["security_answer_2"] : null, 
+								"security_question_3" => isset($data["security_question_3"]) ? $data["security_question_3"] : null, 
+								"security_answer_3" => isset($data["security_answer_3"]) ? $data["security_answer_3"] : null, 
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -535,27 +538,27 @@ if (!class_exists("UserUtil")) {
 					}
 				}
 				
-				if ($status && $user_id && (!self::updateObjectUsersByUserId(array($broker), $user_id, $data) || !self::updateUserEnvironmentsByUserId(array($broker), $user_id, $data))) {
+				if ($status && !empty($user_id) && (!self::updateObjectUsersByUserId(array($broker), $user_id, $data) || !self::updateUserEnvironmentsByUserId(array($broker), $user_id, $data))) {
 					$status = false;
 					self::deleteUser($EVC, $user_id, array($broker));
 				}
 				
-				return $status ? $user_id : false;
+				return $status && !empty($user_id) ? $user_id : false;
 			}
 		}
 	
 		public static function updateUser($EVC, $data, $brokers = array()) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 			
-			if (is_array($brokers) && is_numeric($data["user_id"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"])) {
 				$status = false;
 				
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
-				if ($data["username"])
+				if (!empty($data["username"]))
 					$data["username"] = strtolower($data["username"]);
 				
-				if ($data["email"])
+				if (!empty($data["email"]))
 					$data["email"] = strtolower($data["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -568,15 +571,15 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["username"] = addcslashes($data["username"], "\\'");
-						$data["email"] = addcslashes($data["email"], "\\'");
-						$data["name"] = addcslashes($data["name"], "\\'");
-						$data["security_question_1"] = addcslashes($data["security_question_1"], "\\'");
-						$data["security_answer_1"] = addcslashes($data["security_answer_1"], "\\'");
-						$data["security_question_2"] = addcslashes($data["security_question_2"], "\\'");
-						$data["security_answer_2"] = addcslashes($data["security_answer_2"], "\\'");
-						$data["security_question_3"] = addcslashes($data["security_question_3"], "\\'");
-						$data["security_answer_3"] = addcslashes($data["security_answer_3"], "\\'");
+						$data["username"] = isset($data["username"]) ? addcslashes($data["username"], "\\'") : "";
+						$data["email"] = isset($data["email"]) ? addcslashes($data["email"], "\\'") : "";
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+						$data["security_question_1"] = isset($data["security_question_1"]) ? addcslashes($data["security_question_1"], "\\'") : "";
+						$data["security_answer_1"] = isset($data["security_answer_1"]) ? addcslashes($data["security_answer_1"], "\\'") : "";
+						$data["security_question_2"] = isset($data["security_question_2"]) ? addcslashes($data["security_question_2"], "\\'") : "";
+						$data["security_answer_2"] = isset($data["security_answer_2"]) ? addcslashes($data["security_answer_2"], "\\'") : "";
+						$data["security_question_3"] = isset($data["security_question_3"]) ? addcslashes($data["security_question_3"], "\\'") : "";
+						$data["security_answer_3"] = isset($data["security_answer_3"]) ? addcslashes($data["security_answer_3"], "\\'") : "";
 					
 						$status = $broker->callUpdate("module/user", "update_user", $data);
 						break;
@@ -592,15 +595,15 @@ if (!class_exists("UserUtil")) {
 						self::encodeSensitiveUserData($data);
 						
 						$status = $broker->updateObject("mu_user", array(
-								"username" => $data["username"], 
-								"email" => $data["email"], 
-								"name" => $data["name"], 
-								"security_question_1" => $data["security_question_1"], 
-								"security_answer_1" => $data["security_answer_1"], 
-								"security_question_2" => $data["security_question_2"], 
-								"security_answer_2" => $data["security_answer_2"], 
-								"security_question_3" => $data["security_question_3"], 
-								"security_answer_3" => $data["security_answer_3"], 
+								"username" => isset($data["username"]) ? $data["username"] : null,
+								"email" => isset($data["email"]) ? $data["email"] : null, 
+								"name" => isset($data["name"]) ? $data["name"] : null, 
+								"security_question_1" => isset($data["security_question_1"]) ? $data["security_question_1"] : null, 
+								"security_answer_1" => isset($data["security_answer_1"]) ? $data["security_answer_1"] : null, 
+								"security_question_2" => isset($data["security_question_2"]) ? $data["security_question_2"] : null, 
+								"security_answer_2" => isset($data["security_answer_2"]) ? $data["security_answer_2"] : null, 
+								"security_question_3" => isset($data["security_question_3"]) ? $data["security_question_3"] : null, 
+								"security_answer_3" => isset($data["security_answer_3"]) ? $data["security_answer_3"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"user_id" => $data["user_id"], 
@@ -609,7 +612,7 @@ if (!class_exists("UserUtil")) {
 					}
 				}
 				
-				if ($status && $data["user_id"] && (!self::updateObjectUsersByUserId(array($broker), $data["user_id"], $data) || !self::updateUserEnvironmentsByUserId(array($broker), $data["user_id"], $data)))
+				if ($status && !empty($data["user_id"]) && (!self::updateObjectUsersByUserId(array($broker), $data["user_id"], $data) || !self::updateUserEnvironmentsByUserId(array($broker), $data["user_id"], $data)))
 					$status = false;
 				
 				return $status;
@@ -617,7 +620,7 @@ if (!class_exists("UserUtil")) {
 		}
 		
 		public static function updateUserPassword($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && strlen($data["password"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["password"]) && strlen($data["password"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -625,19 +628,19 @@ if (!class_exists("UserUtil")) {
 						return $broker->callBusinessLogic("module/user", "UserService.updateUserPassword", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						$data["password"] = addcslashes($data["password"], "\\'");
 					
 						return $broker->callUpdate("module/user", "update_user_password", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						
 						$User = $broker->callObject("module/user", "User");
 						return $User->update($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["password"] = $data["do_not_encrypt_password"] ? $data["password"] : self::getEncryptedPassword($data["password"]);
+						$data["password"] = !empty($data["do_not_encrypt_password"]) ? $data["password"] : self::getEncryptedPassword($data["password"]);
 						
 						return $broker->updateObject("mu_user", array(
 								"password" => $data["password"], 
@@ -651,7 +654,7 @@ if (!class_exists("UserUtil")) {
 		}
 		
 		public static function updateUserActiveStatus($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && strlen($data["active"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["active"]) && strlen($data["active"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 				$data["active"] = is_numeric($data["active"]) ? $data["active"] : 0;
 				
@@ -679,7 +682,7 @@ if (!class_exists("UserUtil")) {
 		}
 		
 		public static function updateNameOfUser($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && strlen($data["name"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["name"]) && strlen($data["name"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 				
 				foreach ($brokers as $broker) {
@@ -792,7 +795,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_users", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$User = $broker->callObject("module/user", "User");
@@ -809,10 +812,10 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 				
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -852,10 +855,10 @@ if (!class_exists("UserUtil")) {
 	
 		public static function countUsersByConditions($brokers, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers)) {
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -871,7 +874,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_users_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -891,10 +894,10 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 				
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -939,10 +942,10 @@ if (!class_exists("UserUtil")) {
 	
 		public static function countUsersWithUserTypesByConditions($brokers, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers)) {
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -958,7 +961,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_users_with_user_types_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -967,7 +970,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $User->callSelect("count_users_with_user_types_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -976,7 +979,7 @@ if (!class_exists("UserUtil")) {
 						$sql = UserDBDAOUtil::count_users_with_user_types_by_conditions(array("conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -1009,10 +1012,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($environment_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 					
 					foreach ($brokers as $broker) {
@@ -1060,10 +1063,10 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -1118,10 +1121,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1167,6 +1170,7 @@ if (!class_exists("UserUtil")) {
 	
 		public static function countUsersByUserTypesAndConditions($brokers, $user_type_ids, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers) && $user_type_ids) {
+				$options = array();
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
 				$user_type_ids_str = "";//just in case the user tries to hack the sql query. By default all user_type_id should be numeric.
@@ -1177,10 +1181,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1196,7 +1200,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $broker->callSelect("module/user", "count_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1205,7 +1209,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $User->callSelect("count_users_by_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1214,7 +1218,7 @@ if (!class_exists("UserUtil")) {
 							$sql = UserDBDAOUtil::count_users_by_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "conditions" => $cond));
 							
 							$result = $broker->getSQL($sql, $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
@@ -1225,10 +1229,10 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -1273,12 +1277,13 @@ if (!class_exists("UserUtil")) {
 		
 		public static function countUsersByObjectAndConditions($brokers, $object_type_id, $object_id, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
+				$options = array();
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -1294,7 +1299,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -1303,7 +1308,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $User->callSelect("count_users_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -1312,20 +1317,20 @@ if (!class_exists("UserUtil")) {
 						$sql = UserDBDAOUtil::count_users_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
 		}
 		
-		public static function getUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group = null, $conditions, $conditions_join, $options = array(), $no_cache = false) {
+		public static function getUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -1374,14 +1379,15 @@ if (!class_exists("UserUtil")) {
 			}
 		}
 		
-		public static function countUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group = null, $conditions, $conditions_join, $no_cache = false) {
+		public static function countUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
+				$options = array();
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
-				if ($conditions["email"])
+				if (!empty($conditions["email"]))
 					$conditions["email"] = strtolower($conditions["email"]);
 				
 				foreach ($brokers as $broker) {
@@ -1400,7 +1406,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -1411,7 +1417,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 						$cond = $cond ? $cond : "1=1";
 						$result = $User->callSelect("count_users_by_object_group_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -1421,7 +1427,7 @@ if (!class_exists("UserUtil")) {
 						$sql = UserDBDAOUtil::count_users_by_object_group_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, $options);
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -1439,10 +1445,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1488,6 +1494,7 @@ if (!class_exists("UserUtil")) {
 		
 		public static function countUsersByObjectAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $user_type_ids, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id) && $user_type_ids) {
+				$options = array();
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
 				$user_type_ids_str = "";//just in case the user tries to hack the sql query. By default all user_type_id should be numeric.
@@ -1498,10 +1505,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1517,7 +1524,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $broker->callSelect("module/user", "count_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1526,7 +1533,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $User->callSelect("count_users_by_object_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1535,14 +1542,14 @@ if (!class_exists("UserUtil")) {
 							$sql = UserDBDAOUtil::count_users_by_object_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 							
 							$result = $broker->getSQL($sql, $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
 			}
 		}
 		
-		public static function getUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group = null, $user_type_ids, $conditions, $conditions_join, $options = array(), $no_cache = false) {
+		public static function getUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group = null, $user_type_ids = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id) && $user_type_ids) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -1554,10 +1561,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1607,8 +1614,9 @@ if (!class_exists("UserUtil")) {
 			}
 		}
 		
-		public static function countUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group = null, $user_type_ids, $conditions, $conditions_join, $no_cache = false) {
+		public static function countUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group = null, $user_type_ids = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id) && $user_type_ids) {
+				$options = array();
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
 				$user_type_ids_str = "";//just in case the user tries to hack the sql query. By default all user_type_id should be numeric.
@@ -1619,10 +1627,10 @@ if (!class_exists("UserUtil")) {
 				}
 			
 				if ($user_type_ids_str) {
-					if ($conditions["username"])
+					if (!empty($conditions["username"]))
 						$conditions["username"] = strtolower($conditions["username"]);
 				
-					if ($conditions["email"])
+					if (!empty($conditions["email"]))
 						$conditions["email"] = strtolower($conditions["email"]);
 				
 					foreach ($brokers as $broker) {
@@ -1641,7 +1649,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $broker->callSelect("module/user", "count_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1652,7 +1660,7 @@ if (!class_exists("UserUtil")) {
 							$cond = DB::getSQLConditions($conditions, $conditions_join, "u");
 							$cond = $cond ? $cond : "1=1";
 							$result = $User->callSelect("count_users_by_object_group_and_user_types_and_conditions", array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							self::encodeSensitiveUserData($conditions);
@@ -1662,7 +1670,7 @@ if (!class_exists("UserUtil")) {
 							$sql = UserDBDAOUtil::count_users_by_object_group_and_user_types_and_conditions(array("user_type_ids" => $user_type_ids_str, "object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 							
 							$result = $broker->getSQL($sql, $options);
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
@@ -1672,7 +1680,7 @@ if (!class_exists("UserUtil")) {
 		/* USER USER TYPE FUNCTIONS */
 	
 		public static function insertUserUserType($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && is_numeric($data["user_type_id"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["user_type_id"]) && is_numeric($data["user_type_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
@@ -1689,8 +1697,8 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->insertObject("mu_user_user_type", array(
-							"user_id" => $data["user_id"], 
-							"user_type_id" => $data["user_type_id"], 
+							"user_id" => isset($data["user_id"]) ? $data["user_id"] : null, 
+							"user_type_id" => isset($data["user_type_id"]) ? $data["user_type_id"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -1700,7 +1708,7 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function updateUserUserType($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["old_user_id"]) && is_numeric($data["old_user_type_id"]) && is_numeric($data["new_user_id"]) && is_numeric($data["new_user_type_id"])) {
+			if (is_array($brokers) && isset($data["old_user_id"]) && is_numeric($data["old_user_id"]) && isset($data["old_user_type_id"]) && is_numeric($data["old_user_type_id"]) && isset($data["new_user_id"]) && is_numeric($data["new_user_id"]) && isset($data["new_user_type_id"]) && is_numeric($data["new_user_type_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -1801,7 +1809,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_user_user_types", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserUserType = $broker->callObject("module/user", "UserUserType");
@@ -1835,6 +1843,28 @@ if (!class_exists("UserUtil")) {
 				}
 			}
 		}
+	
+		public static function countUserUserTypesByConditions($brokers, $conditions, $conditions_join, $no_cache = false) {
+			if (is_array($brokers)) {
+				foreach ($brokers as $broker) {
+					if (is_a($broker, "IBusinessLogicBrokerClient")) {
+						return $broker->callBusinessLogic("module/user", "UserUserTypeService.countUserUserTypesByConditions", array("conditions" => $conditions, "conditions_join" => $conditions_join, "options" => array("no_cache" => $no_cache)), array("no_cache" => $no_cache));
+					}
+					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
+						$cond = DB::getSQLConditions($conditions, $conditions_join);
+						$cond = $cond ? $cond : "1=1";
+						return $broker->callSelect("module/user", "count_user_user_types_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
+					}
+					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+						$UserUserType = $broker->callObject("module/user", "UserUserType");
+						return $UserUserType->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), array("no_cache" => $no_cache));
+					}
+					else if (is_a($broker, "IDBBrokerClient")) {
+						return $broker->countObjects("mu_user_user_type", $conditions, array("no_cache" => $no_cache, "conditions_join" => $conditions_join));
+					}
+				}
+			}
+		}
 		
 		/* USER SESSION FUNCTIONS */
 		
@@ -1842,17 +1872,17 @@ if (!class_exists("UserUtil")) {
 		private static function getClientIP() {
 			$ip = '';
 			
-			if ($_SERVER['HTTP_CLIENT_IP'])
+			if (!empty($_SERVER['HTTP_CLIENT_IP']))
 				$ip = $_SERVER['HTTP_CLIENT_IP'];
-			else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+			else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
 				$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-			else if($_SERVER['HTTP_X_FORWARDED'])
+			else if(!empty($_SERVER['HTTP_X_FORWARDED']))
 				$ip = $_SERVER['HTTP_X_FORWARDED'];
-			else if($_SERVER['HTTP_FORWARDED_FOR'])
+			else if(!empty($_SERVER['HTTP_FORWARDED_FOR']))
 				$ip = $_SERVER['HTTP_FORWARDED_FOR'];
-			else if($_SERVER['HTTP_FORWARDED'])
+			else if(!empty($_SERVER['HTTP_FORWARDED']))
 				$ip = $_SERVER['HTTP_FORWARDED'];
-			else if($_SERVER['REMOTE_ADDR'])
+			else if(!empty($_SERVER['REMOTE_ADDR']))
 				$ip = $_SERVER['REMOTE_ADDR'];
 			else
 				$ip = 'UNKNOWN';
@@ -1869,10 +1899,11 @@ if (!class_exists("UserUtil")) {
 				
 				if ($status) {
 					$user_session = self::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null, null, $no_cache);
-					$user_session = $user_session[0];
+					$user_session = isset($user_session[0]) ? $user_session[0] : null;
+					$login_time = isset($user_session["login_time"]) ? $user_session["login_time"] : 0;
 					$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL");
 					
-					if ($user_session["logged_status"] && $user_session["login_time"] + $expired_time > time()) {
+					if (!empty($user_session["logged_status"]) && $login_time + $expired_time > time()) {
 						$user_session_control_methods = self::getConstantVariable("USER_SESSION_CONTROL_METHODS");
 						$user_session_control_var_name = self::getConstantVariable("USER_SESSION_CONTROL_VARIABLE_NAME");
 						$user_session_control_encryption_key = CryptoKeyHandler::hexToBin( self::getConstantVariable("USER_SESSION_CONTROL_ENCRYPTION_KEY_HEX") );
@@ -1880,9 +1911,11 @@ if (!class_exists("UserUtil")) {
 						$extra_flags = CSRFValidator::$COOKIES_EXTRA_FLAGS;
 						
 						//code against xss and csfr attacks
-						if (in_array(strtolower($_SERVER['REQUEST_METHOD']), $user_session_control_methods)) {
+						$request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
+						
+						if (in_array(strtolower($request_method), $user_session_control_methods)) {
 							//check session control variable and renew the expiration time. this is very important bc of xss and csfr attacks.
-							$user_session_control = $_COOKIE[$user_session_control_var_name];
+							$user_session_control = isset($_COOKIE[$user_session_control_var_name]) ? $_COOKIE[$user_session_control_var_name] : null;
 							if ($user_session_control) {
 								$user_session_control = CryptoKeyHandler::hexToBin($user_session_control);
 								$user_session_control = CryptoKeyHandler::decryptText($user_session_control, $user_session_control_encryption_key);
@@ -1918,19 +1951,23 @@ if (!class_exists("UserUtil")) {
 			if ($username && $password) {
 				$username = strtolower($username);
 				
-				$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, $no_cache);
-				$user_session = $user_sessions[0] ? $user_sessions[0]: array();
+				$user_environments = isset($settings["user_environments"]) ? $settings["user_environments"] : null;
+				$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("username" => $username), null, null, $no_cache);
+				$user_session = !empty($user_sessions[0]) ? $user_sessions[0]: array();
 				
-				if ($user_session["username"]) {
+				if (!empty($user_session["username"])) {
 					$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL");
+					$failed_login_attempts = isset($user_session["failed_login_attempts"]) ? $user_session["failed_login_attempts"] : null;
+					$failed_login_time = isset($user_session["failed_login_time"]) ? $user_session["failed_login_time"] : null;
+					$user_session_captcha = isset($user_session["captcha"]) ? $user_session["captcha"] : null;
 					
-					if ($settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_attempts"] >= $settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_time"] + $expired_time > time())
+					if (!empty($settings["maximum_login_attempts_to_block_user"]) && $failed_login_attempts >= $settings["maximum_login_attempts_to_block_user"] && $failed_login_time + $expired_time > time())
 						return self::USER_BLOCKED;
-					else if ($settings["show_captcha"] && $user_session["failed_login_attempts"] >= $settings["maximum_login_attempts_to_show_captcha"] && (!$captcha || $captcha != $user_session["captcha"]))
+					else if (!empty($settings["show_captcha"]) && !empty($settings["maximum_login_attempts_to_show_captcha"]) && $failed_login_attempts >= $settings["maximum_login_attempts_to_show_captcha"] && (!$captcha || $captcha != $user_session_captcha))
 						return self::WRONG_CAPTCHA;
 				}
 				
-				$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, $no_cache);
+				$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("username" => $username), null, null, $no_cache);
 				
 				/*
 				 * Note that you can only have 2 types of DBs:
@@ -1941,13 +1978,13 @@ if (!class_exists("UserUtil")) {
 				if ($users && count($users) > 1)
 					return self::DUPLICATED_USERNAME;
 				
-				$user = $users[0];
+				$user = isset($users[0]) ? $users[0] : null;
 				
-				if ($user && $user["active"] == 2)
+				if ($user && isset($user["active"]) && $user["active"] == 2)
 					return self::INACTIVE_USERNAME;
 				
 				//verify password
-				if ($user && !self::validatePassword($user["password"], $password, $settings["do_not_encrypt_password"]))
+				if ($user && !self::validatePassword(isset($user["password"]) ? $user["password"] : null, $password, isset($settings["do_not_encrypt_password"]) ? $settings["do_not_encrypt_password"] : null))
 					$user = null;
 				
 				return self::createLoginSession($brokers, $user_session, $user, $username, $settings);
@@ -1960,21 +1997,29 @@ if (!class_exists("UserUtil")) {
 				$external_user = self::getExternalUser($brokers, $external_user_id, $no_cache);
 				
 				if ($external_user) {
-					$username = $external_user["social_network_type"] . "|" . $external_user["social_network_user_id"] . "|" . $external_user["external_user_id"];
+					$social_network_type = isset($external_user["social_network_type"]) ? $external_user["social_network_type"] : null;
+					$social_network_user_id = isset($external_user["social_network_user_id"]) ? $external_user["social_network_user_id"] : null;
+					$social_network_external_user_id = isset($external_user["external_user_id"]) ? $external_user["external_user_id"] : null;
+					
+					$username = $social_network_type . "|" . $social_network_user_id . "|" . $social_network_external_user_id;
 					$username = strtolower($username);
 					
 					$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, $no_cache);
-					$user_session = $user_sessions[0] ? $user_sessions[0]: array();
+					$user_session = !empty($user_sessions[0]) ? $user_sessions[0]: array();
 					
-					if ($user_session["username"]) {
+					if (!empty($user_session["username"])) {
 						$expired_time = $expired_time ? $expired_time : self::getConstantVariable("DEFAULT_USER_SESSION_BLOCKED_TTL");
+						$failed_login_attempts = isset($user_session["failed_login_attempts"]) ? $user_session["failed_login_attempts"] : null;
+						$failed_login_time = isset($user_session["failed_login_time"]) ? $user_session["failed_login_time"] : null;
 						
-						if ($settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_attempts"] >= $settings["maximum_login_attempts_to_block_user"] && $user_session["failed_login_time"] + $expired_time > time())
+						if (!empty($settings["maximum_login_attempts_to_block_user"]) && $failed_login_attempts >= $settings["maximum_login_attempts_to_block_user"] && $failed_login_time + $expired_time > time())
 							return self::USER_BLOCKED;
 					}
 					
-					$user = self::getUsersByConditions($brokers, array("user_id" => $external_user["user_id"]), null, null, $no_cache);
-					$user = $user[0];
+					$social_network_user_id = isset($external_user["user_id"]) ? $external_user["user_id"] : null;
+					
+					$user = self::getUsersByConditions($brokers, array("user_id" => $social_network_user_id), null, null, $no_cache);
+					$user = isset($user[0]) ? $user[0] : null;
 					
 					return self::createLoginSession($brokers, $user_session, $user, $username, $settings);
 				}
@@ -1990,18 +2035,19 @@ if (!class_exists("UserUtil")) {
 				$user_session["failed_login_ip"] = substr(self::getClientIP(), 0, 100);
 			}
 			else {
-				$user_session["user_id"] = $user["user_id"];
+				$user_session["user_id"] = isset($user["user_id"]) ? $user["user_id"] : null;
 				$user_session["logged_status"] = 1;
 				$user_session["login_time"] = time();
 				$user_session["login_ip"] = substr(self::getClientIP(), 0, 100);
 				$user_session["failed_login_attempts"] = 0;//reset bc the login is successfull.
 			
-				if ($user["active"] == 0)
-					self::updateUserActiveStatus($brokers, array("user_id" => $user["user_id"], "active" => 1));
+				if (isset($user["active"]) && $user["active"] == 0)
+					self::updateUserActiveStatus($brokers, array("user_id" => $user_session["user_id"], "active" => 1));
 			}
 			
-			$environment_ids = self::getUserEnvironmentIds($settings["user_environments"]);
-			$environment_id = $user_session["environment_id"] ? $user_session["environment_id"] : $environment_ids[0];
+			$user_environments = isset($settings["user_environments"]) ? $settings["user_environments"] : null;
+			$environment_ids = self::getUserEnvironmentIds($user_environments);
+			$environment_id = !empty($user_session["environment_id"]) ? $user_session["environment_id"] : (isset($environment_ids[0]) ? $environment_ids[0] : null);
 			$environment_id = $environment_id ? $environment_id : 0;
 			
 			if (empty($user_session["session_id"])) {
@@ -2009,7 +2055,7 @@ if (!class_exists("UserUtil")) {
 				$user_session["session_id"] = substr($user_session["session_id"], 0, 200);
 			}
 		
-			if ($user_session["username"])
+			if (!empty($user_session["username"]))
 				self::updateUserSession($brokers, $user_session);
 			else {
 				$user_session["username"] = $username;
@@ -2041,8 +2087,8 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function insertUserSession($brokers, $data) {
-			if (is_array($brokers) && $data["username"]) {
-				$data["environment_id"] = $data["environment_id"] ? $data["environment_id"] : 0;
+			if (is_array($brokers) && !empty($data["username"])) {
+				$data["environment_id"] = !empty($data["environment_id"]) ? $data["environment_id"] : 0;
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 				$data["username"] = strtolower($data["username"]);
@@ -2056,25 +2102,24 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["username"] = addcslashes($data["username"], "\\'");
-						$data["session_id"] = addcslashes($data["session_id"], "\\'");
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["login_ip"] = addcslashes($data["login_ip"], "\\'");
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
-						$data["failed_login_ip"] = addcslashes($data["failed_login_ip"], "\\'");
-			
-					
+						$data["username"] = isset($data["username"]) ? addcslashes($data["username"], "\\'") : "";
+						$data["session_id"] = isset($data["session_id"]) ? addcslashes($data["session_id"], "\\'") : "";
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["login_ip"] = isset($data["login_ip"]) ? addcslashes($data["login_ip"], "\\'") : "";
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["failed_login_ip"] = isset($data["failed_login_ip"]) ? addcslashes($data["failed_login_ip"], "\\'") : "";
+						
 						return $broker->callInsert("module/user", "insert_user_session", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						$UserSession = $broker->callObject("module/user", "UserSession");
 						return $UserSession->insert($data);
@@ -2082,22 +2127,22 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						return $broker->insertObject("mu_user_session", array(
-							"username" => $data["username"], 
-							"environment_id" => $data["environment_id"], 
-							"session_id" => $data["session_id"], 
-							"user_id" => $data["user_id"], 
+							"username" => isset($data["username"]) ? $data["username"] : null, 
+							"environment_id" => isset($data["environment_id"]) ? $data["environment_id"] : null, 
+							"session_id" => isset($data["session_id"]) ? $data["session_id"] : null, 
+							"user_id" => isset($data["user_id"]) ? $data["user_id"] : null, 
 							"logged_status" => $data["logged_status"], 
 							"login_time" => $data["login_time"], 
-							"login_ip" => $data["login_ip"], 
+							"login_ip" => isset($data["login_ip"]) ? $data["login_ip"] : null, 
 							"failed_login_attempts" => $data["failed_login_attempts"], 
 							"failed_login_time" => $data["failed_login_time"], 
-							"failed_login_ip" => $data["failed_login_ip"], 
+							"failed_login_ip" => isset($data["failed_login_ip"]) ? $data["failed_login_ip"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -2107,8 +2152,8 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function updateUserSession($brokers, $data) {
-			if (is_array($brokers) && $data["username"]) {
-				$data["environment_id"] = $data["environment_id"] ? $data["environment_id"] : 0;
+			if (is_array($brokers) && !empty($data["username"])) {
+				$data["environment_id"] = !empty($data["environment_id"]) ? $data["environment_id"] : 0;
 				$data["modified_date"] = date("Y-m-d H:i:s");
 				$data["username"] = strtolower($data["username"]);
 				
@@ -2122,13 +2167,13 @@ if (!class_exists("UserUtil")) {
 						self::encodeSensitiveUserData($data);
 						
 						$data["username"] = addcslashes($data["username"], "\\'");
-						$data["session_id"] = addcslashes($data["session_id"], "\\'");
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["login_ip"] = addcslashes($data["login_ip"], "\\'");
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
-						$data["failed_login_ip"] = addcslashes($data["failed_login_ip"], "\\'");
+						$data["session_id"] = isset($data["session_id"]) ? addcslashes($data["session_id"], "\\'") : "";
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["login_ip"] = isset($data["login_ip"]) ? addcslashes($data["login_ip"], "\\'") : "";
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["failed_login_ip"] = isset($data["failed_login_ip"]) ? addcslashes($data["failed_login_ip"], "\\'") : "";
 			
 					
 						return $broker->callUpdate("module/user", "update_user_session", $data);
@@ -2136,10 +2181,10 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						$UserSession = $broker->callObject("module/user", "UserSession");
 						return $UserSession->update($data);
@@ -2147,20 +2192,20 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data);
 						
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
-						$data["login_time"] = is_numeric($data["login_time"]) ? $data["login_time"] : 0;
-						$data["failed_login_attempts"] = is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
-						$data["failed_login_time"] = is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["login_time"] = isset($data["login_time"]) && is_numeric($data["login_time"]) ? $data["login_time"] : 0;
+						$data["failed_login_attempts"] = isset($data["failed_login_attempts"]) && is_numeric($data["failed_login_attempts"]) ? $data["failed_login_attempts"] : 0;
+						$data["failed_login_time"] = isset($data["failed_login_time"]) && is_numeric($data["failed_login_time"]) ? $data["failed_login_time"] : 0;
 						
 						return $broker->updateObject("mu_user_session", array(
-								"session_id" => $data["session_id"], 
-								"user_id" => $data["user_id"], 
+								"session_id" => isset($data["session_id"]) ? $data["session_id"] : null, 
+								"user_id" => isset($data["user_id"]) ? $data["user_id"] : null, 
 								"logged_status" => $data["logged_status"], 
 								"login_time" => $data["login_time"], 
-								"login_ip" => $data["login_ip"], 
+								"login_ip" => isset($data["login_ip"]) ? $data["login_ip"] : null, 
 								"failed_login_attempts" => $data["failed_login_attempts"], 
 								"failed_login_time" => $data["failed_login_time"], 
-								"failed_login_ip" => $data["failed_login_ip"], 
+								"failed_login_ip" => isset($data["failed_login_ip"]) ? $data["failed_login_ip"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"username" => $data["username"], 
@@ -2172,7 +2217,7 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function updateUserSessionCaptchaBySessionId($brokers, $data) {
-			if (is_array($brokers) && $data["session_id"]) {
+			if (is_array($brokers) && !empty($data["session_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -2181,19 +2226,22 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$data["session_id"] = addcslashes($data["session_id"], "\\'");
-						$data["captcha"] = addcslashes($data["captcha"], "\\'");
+						$data["captcha"] = isset($data["captcha"]) ? addcslashes($data["captcha"], "\\'") : null;
 					
 						return $broker->callUpdate("module/user", "update_user_session_captcha_by_session_id", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserSession = $broker->callObject("module/user", "UserSession");
-						$attributes = array("captcha" => $data["captcha"], "modified_date" => $data["modified_date"]);
+						$attributes = array(
+							"captcha" => isset($data["captcha"]) ? $data["captcha"] : null, 
+							"modified_date" => $data["modified_date"]
+						);
 						$conditions = array("session_id" => $data["session_id"]);
 						return $UserSession->updateByConditions(array("attributes" => $attributes, "conditions" => $conditions));
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mu_user_session", array(
-								"captcha" => $data["captcha"], 
+								"captcha" => isset($data["captcha"]) ? $data["captcha"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"session_id" => $data["session_id"]
@@ -2206,20 +2254,24 @@ if (!class_exists("UserUtil")) {
 		public static function changeUserSessionUsernameByUsername($brokers, $settings, $old_username, $new_username) {
 			$old_username = strtolower($old_username);
 			$new_username = strtolower($new_username);
-				
+			
+			$user_environments = isset($settings["user_environments"]) ? $settings["user_environments"]: null;
+			
 			//Delete sessions from new_username. There should not exist any sessions, but just in case we remove them anyways...
-			$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $new_username), null, null, true);
+			$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("username" => $new_username), null, null, true);
 			
 			if ($user_sessions)
 				foreach ($user_sessions as $user_session)
-					self::deleteUserSession($brokers, $user_session["username"], $user_session["environment_id"]);
+					if (!empty($user_session["username"]))
+						self::deleteUserSession($brokers, $user_session["username"], isset($user_session["environment_id"]) ? $user_session["environment_id"] : null);
 			
 			//Update new username in the user_session with the old username.
-			$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $old_username), null, null, true);
+			$user_sessions = self::getUserSessionsByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("username" => $old_username), null, null, true);
 			
 			if ($user_sessions)
 				foreach ($user_sessions as $user_session) {
-					self::deleteUserSession($brokers, $user_session["username"], $user_session["environment_id"]);
+					if (!empty($user_session["username"]))
+						self::deleteUserSession($brokers, $user_session["username"], isset($user_session["environment_id"]) ? $user_session["environment_id"] : null);
 					
 					$user_session["username"] = $new_username;
 					self::insertUserSession($brokers, $user_session);
@@ -2227,7 +2279,7 @@ if (!class_exists("UserUtil")) {
 		}
 		
 		public static function logoutBySessionId($brokers, $data) {
-			if (is_array($brokers) && $data["session_id"]) {
+			if (is_array($brokers) && !empty($data["session_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 				
 				foreach ($brokers as $broker) {
@@ -2237,27 +2289,32 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$data["session_id"] = addcslashes($data["session_id"], "\\'");
 						$data["logged_status"] = 0;
-						$data["logout_time"] = is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
-						$data["logout_ip"] = addcslashes($data["logout_ip"], "\\'");
+						$data["logout_time"] = isset($data["logout_time"]) && is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
+						$data["logout_ip"] = isset($data["logout_ip"]) ? addcslashes($data["logout_ip"], "\\'") : "";
 						
 						return $broker->callUpdate("module/user", "logout_by_session_id", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["logout_time"] = is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
+						$data["logout_time"] = isset($data["logout_time"]) && is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
 						
 						$UserSession = $broker->callObject("module/user", "UserSession");
-						$attributes = array("logged_status" => 0, "logout_time" => $data["logout_time"], "logout_ip" => $data["logout_ip"], "modified_date" => $data["modified_date"]);
+						$attributes = array(
+							"logged_status" => 0, 
+							"logout_time" => $data["logout_time"], 
+							"logout_ip" => isset($data["logout_ip"]) ? $data["logout_ip"] : null, 
+							"modified_date" => $data["modified_date"]
+						);
 						$conditions = array("session_id" => $data["session_id"]);
 						return $UserSession->updateByConditions(array("attributes" => $attributes, "conditions" => $conditions));
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["logout_time"] = is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
-						$data["logged_status"] = is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
+						$data["logout_time"] = isset($data["logout_time"]) && is_numeric($data["logout_time"]) ? $data["logout_time"] : 0;
+						$data["logged_status"] = isset($data["logged_status"]) && is_numeric($data["logged_status"]) ? $data["logged_status"] : 0;
 						
 						return $broker->updateObject("mu_user_session", array(
 								"logged_status" => $data["logged_status"], 
 								"logout_time" => $data["logout_time"], 
-								"logout_ip" => $data["logout_ip"],
+								"logout_ip" => isset($data["logout_ip"]) ? $data["logout_ip"] : null,
 								"modified_date" => $data["modified_date"]
 							), array(
 								"session_id" => $data["session_id"]
@@ -2271,7 +2328,7 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers) && $username) {
 				$username = strtolower($username);
 				$data = array("username" => $username, "environment_id" => $environment_id);
-				$data["environment_id"] = $data["environment_id"] ? $data["environment_id"] : 0;
+				$data["environment_id"] = !empty($data["environment_id"]) ? $data["environment_id"] : 0;
 				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -2351,7 +2408,7 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers) && $username) {
 				$username = strtolower($username);
 				$data = array("username" => $username, "environment_id" => $environment_id);
-				$data["environment_id"] = $data["environment_id"] ? $data["environment_id"] : 0;
+				$data["environment_id"] = !empty($data["environment_id"]) ? $data["environment_id"] : 0;
 				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -2367,7 +2424,7 @@ if (!class_exists("UserUtil")) {
 						
 						$result = $broker->callSelect("module/user", "get_user_session", $data, array("no_cache" => $no_cache));
 						self::decodeSensitiveUsersData($result);
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data);
@@ -2382,7 +2439,7 @@ if (!class_exists("UserUtil")) {
 						
 						$result = $broker->findObjects("mu_user_session", null, $data, array("no_cache" => $no_cache));
 						self::decodeSensitiveUsersData($result);
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 				}
 			}
@@ -2393,7 +2450,7 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 				
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
 				foreach ($brokers as $broker) {
@@ -2435,7 +2492,7 @@ if (!class_exists("UserUtil")) {
 		//$conditions must be an array containing multiple conditions
 		public static function countUserSessionsByConditions($brokers, $conditions, $conditions_join, $no_cache = false) {
 			if (is_array($brokers)) {
-				if ($conditions["username"])
+				if (!empty($conditions["username"]))
 					$conditions["username"] = strtolower($conditions["username"]);
 				
 				foreach ($brokers as $broker) {
@@ -2451,7 +2508,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_user_sessions_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions);
@@ -2517,7 +2574,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_user_sessions", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserSession = $broker->callObject("module/user", "UserSession");
@@ -2533,7 +2590,7 @@ if (!class_exists("UserUtil")) {
 		/* USER ACTIVITY OBJECT FUNCTIONS */
 	
 		public static function insertUserActivityObject($brokers, $data) {
-			if (is_array($brokers) && $data["thread_id"] && is_numeric($data["user_id"]) && is_numeric($data["activity_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"]) && is_numeric($data["time"])) {
+			if (is_array($brokers) && !empty($data["thread_id"]) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["activity_id"]) && is_numeric($data["activity_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"]) && isset($data["time"]) && is_numeric($data["time"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
@@ -2543,7 +2600,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-						$data["extra"] = addcslashes($data["extra"], "\\'");
+						$data["extra"] = isset($data["extra"]) ? addcslashes($data["extra"], "\\'") : "";
 					
 						return $broker->callInsert("module/user", "insert_user_activity_object", $data);
 					}
@@ -2559,7 +2616,7 @@ if (!class_exists("UserUtil")) {
 							"object_type_id" => $data["object_type_id"], 
 							"object_id" => $data["object_id"], 
 							"time" => $data["time"], 
-							"extra" => $data["extra"], 
+							"extra" => isset($data["extra"]) ? $data["extra"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -2569,7 +2626,7 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function updateUserActivityObject($brokers, $data) {
-			if (is_array($brokers) && $data["thread_id"] && is_numeric($data["user_id"]) && is_numeric($data["activity_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"]) && is_numeric($data["time"])) {
+			if (is_array($brokers) && !empty($data["thread_id"]) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["activity_id"]) && is_numeric($data["activity_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"]) && isset($data["time"]) && is_numeric($data["time"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
@@ -2579,7 +2636,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-						$data["extra"] = addcslashes($data["extra"], "\\'");
+						$data["extra"] = isset($data["extra"]) ? addcslashes($data["extra"], "\\'") : "";
 					
 						return $broker->callUpdate("module/user", "update_user_activity_object", $data);
 					}
@@ -2589,7 +2646,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mu_user_activity_object", array(
-								"extra" => $data["extra"], 
+								"extra" => isset($data["extra"]) ? $data["extra"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"thread_id" => $data["thread_id"], 
@@ -2687,7 +2744,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_user_activity_objects_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserActivityObject = $broker->callObject("module/user", "UserActivityObject");
@@ -2732,7 +2789,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_user_activity_objects", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserActivityObject = $broker->callObject("module/user", "UserActivityObject");
@@ -2748,7 +2805,7 @@ if (!class_exists("UserUtil")) {
 		/* USER TYPE ACTIVITY OBJECTS FUNCTIONS */
 	
 		public static function insertUserTypeActivityObject($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_type_id"]) && is_numeric($data["activity_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+			if (is_array($brokers) && isset($data["user_type_id"]) && is_numeric($data["user_type_id"]) && isset($data["activity_id"]) && is_numeric($data["activity_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
@@ -2778,7 +2835,7 @@ if (!class_exists("UserUtil")) {
 		}
 	
 		public static function updateUserTypeActivityObject($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["new_user_type_id"]) && is_numeric($data["new_activity_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_user_type_id"]) && is_numeric($data["old_activity_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+			if (is_array($brokers) && isset($data["new_user_type_id"]) && is_numeric($data["new_user_type_id"]) && isset($data["new_activity_id"]) && is_numeric($data["new_activity_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_user_type_id"]) && is_numeric($data["old_user_type_id"]) && isset($data["old_activity_id"]) && is_numeric($data["old_activity_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -2945,7 +3002,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_user_type_activity_objects_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserTypeActivityObject = $broker->callObject("module/user", "UserTypeActivityObject");
@@ -3000,14 +3057,14 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "utao");
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $user_id, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserTypeActivityObject = $broker->callObject("module/user", "UserTypeActivityObject");
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "utao");
 						$cond = $cond ? $cond : "1=1";
 						$result = $UserTypeActivityObject->callSelect("count_user_type_activity_objects_by_user_id_and_conditions", array("user_id" => $user_id, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join, "utao");
@@ -3015,7 +3072,7 @@ if (!class_exists("UserUtil")) {
 						$sql = UserTypeActivityObjectDBDAOUtil::count_user_type_activity_objects_by_user_id_and_conditions(array("user_id" => $user_id, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -3053,7 +3110,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_user_type_activity_objects", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserTypeActivityObject = $broker->callObject("module/user", "UserTypeActivityObject");
@@ -3069,32 +3126,32 @@ if (!class_exists("UserUtil")) {
 		/* OBJECT USER FUNCTIONS */
 
 		public static function insertObjectUser($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/user", "ObjectUserService.insertObjectUser", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callInsert("module/user", "insert_object_user", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
 						return $ObjectUser->insert($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->insertObject("mu_object_user", array(
 								"user_id" => $data["user_id"], 
@@ -3111,31 +3168,31 @@ if (!class_exists("UserUtil")) {
 		}
 
 		public static function updateObjectUser($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["new_user_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_user_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+			if (is_array($brokers) && isset($data["new_user_id"]) && is_numeric($data["new_user_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_user_id"]) && is_numeric($data["old_user_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/user", "ObjectUserService.updateObjectUser", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callUpdate("module/user", "update_object_user", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
 						return $ObjectUser->updatePrimaryKeys($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->updateObject("mu_object_user", array(
 								"user_id" => $data["new_user_id"], 
@@ -3158,10 +3215,10 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers) && is_numeric($user_id)) {
 				if (self::deleteObjectUsersByUserId($brokers, $user_id)) {
 					$status = true;
-					$object_users = is_array($data["object_users"]) ? $data["object_users"] : array();
+					$object_users = isset($data["object_users"]) && is_array($data["object_users"]) ? $data["object_users"] : array();
 				
 					foreach ($object_users as $object_user) {
-						if (is_numeric($object_user["object_type_id"]) && is_numeric($object_user["object_id"])) {
+						if (isset($object_user["object_type_id"]) && is_numeric($object_user["object_type_id"]) && isset($object_user["object_id"]) && is_numeric($object_user["object_id"])) {
 							$object_user["user_id"] = $user_id;
 					
 							if (!self::insertObjectUser($brokers, $object_user)) {
@@ -3249,7 +3306,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "get_object_user", array("user_id" => $user_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
@@ -3257,7 +3314,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$result = $broker->findObjects("mu_object_user", null, array("user_id" => $user_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 				}
 			}
@@ -3300,14 +3357,14 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_object_users_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
 						return $ObjectUser->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), array("no_cache" => $no_cache));
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						return $broker->countObjects("mu_object_user", null, $conditions, array("no_cache" => $no_cache, "conditions_join" => $conditions_join));
+						return $broker->countObjects("mu_object_user", $conditions, array("no_cache" => $no_cache, "conditions_join" => $conditions_join));
 					}
 				}
 			}
@@ -3345,7 +3402,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_object_users", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
@@ -3390,7 +3447,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_object_users_by_user_id", array("user_id" => $user_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectUser = $broker->callObject("module/user", "ObjectUser");
@@ -3406,7 +3463,7 @@ if (!class_exists("UserUtil")) {
 		/* USER ENVIRONMENT FUNCTIONS */
 
 		public static function insertUserEnvironment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"]) && is_numeric($data["environment_id"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["environment_id"]) && is_numeric($data["environment_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 		
@@ -3434,7 +3491,7 @@ if (!class_exists("UserUtil")) {
 		}
 
 		public static function updateUserEnvironment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["new_user_id"]) && is_numeric($data["new_environment_id"]) && is_numeric($data["old_user_id"]) && is_numeric($data["old_environment_id"])) {
+			if (is_array($brokers) && isset($data["new_user_id"]) && is_numeric($data["new_user_id"]) && isset($data["new_environment_id"]) && is_numeric($data["new_environment_id"]) && isset($data["old_user_id"]) && is_numeric($data["old_user_id"]) && isset($data["old_environment_id"]) && is_numeric($data["old_environment_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 		
 				foreach ($brokers as $broker) {
@@ -3466,7 +3523,7 @@ if (!class_exists("UserUtil")) {
 			if (is_array($brokers) && is_numeric($user_id)) {
 				if (self::deleteUserEnvironmentsByConditions($brokers, array("user_id" => $user_id), null)) {
 					$status = true;
-					$environment_ids = self::getUserEnvironmentIds($data["user_environments"]);
+					$environment_ids = self::getUserEnvironmentIds(isset($data["user_environments"]) ? $data["user_environments"] : null);
 					
 					if ($environment_ids)
 						foreach ($environment_ids as $environment_id) {
@@ -3486,7 +3543,7 @@ if (!class_exists("UserUtil")) {
 			$user_environments = is_array($user_environments) ? $user_environments : array($user_environments);
 		    	
 	    		foreach ($user_environments as $user_environment) {
-				$user_environment = trim(is_array($user_environment) ? $user_environment["environment_id"] : $user_environment);
+				$user_environment = trim(is_array($user_environment) ? (isset($user_environment["environment_id"]) ? $user_environment["environment_id"] : null) : $user_environment);
 				
 				if ($user_environment)
 					$environment_ids[] = is_numeric($user_environment) ? $user_environment : HashCode::getHashCodePositive($user_environment);
@@ -3547,7 +3604,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "get_user_environment", array("user_id" => $user_id, "environment_id" => $environment_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserEnvironment = $broker->callObject("module/user", "UserEnvironment");
@@ -3555,7 +3612,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$result = $broker->findObjects("mu_user_environment", null, array("user_id" => $user_id, "environment_id" => $environment_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 				}
 			}
@@ -3598,7 +3655,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_user_environments_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserEnvironment = $broker->callObject("module/user", "UserEnvironment");
@@ -3644,7 +3701,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_user_environments", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$UserEnvironment = $broker->callObject("module/user", "UserEnvironment");
@@ -3673,18 +3730,18 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							$data["user_id"] = "NULL";
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
-						$data["social_network_type"] = addcslashes($data["social_network_type"], "\\'");
-						$data["social_network_user_id"] = addcslashes($data["social_network_user_id"], "\\'");
-						$data["token_1"] = addcslashes($data["token_1"], "\\'");
-						$data["token_2"] = addcslashes($data["token_2"], "\\'");
-						$data["token_3"] = addcslashes($data["token_3"], "\\'");
-						$data["data"] = addcslashes($data["data"], "\\'");
+						$data["social_network_type"] = isset($data["social_network_type"]) ? addcslashes($data["social_network_type"], "\\'") : "";
+						$data["social_network_user_id"] = isset($data["social_network_user_id"]) ? addcslashes($data["social_network_user_id"], "\\'") : "";
+						$data["token_1"] = isset($data["token_1"]) ? addcslashes($data["token_1"], "\\'") : "";
+						$data["token_2"] = isset($data["token_2"]) ? addcslashes($data["token_2"], "\\'") : "";
+						$data["token_3"] = isset($data["token_3"]) ? addcslashes($data["token_3"], "\\'") : "";
+						$data["data"] = isset($data["data"]) ? addcslashes($data["data"], "\\'") : "";
 						
 						$status = $broker->callInsert("module/user", "insert_external_user", $data);
 						return $status ? $broker->getInsertedId() : $status;
@@ -3692,34 +3749,35 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							unset($data["user_id"]);
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
 						$ExternalUser = $broker->callObject("module/user", "ExternalUser");
+						$ids = null;
 						$status = $ExternalUser->insert($data, $ids);
-						return $status ? $ids["external_user_id"] : $status;
+						return $status ? (isset($ids["external_user_id"]) ? $ids["external_user_id"] : null) : $status;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							unset($data["user_id"]);
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
 						$status = $broker->insertObject("mu_external_user", array(
-								"user_id" => $data["user_id"], 
+								"user_id" => isset($data["user_id"]) ? $data["user_id"] : null, 
 								"external_type_id" => $data["external_type_id"], 
-								"social_network_type" => $data["social_network_type"], 
-								"social_network_user_id" => $data["social_network_user_id"], 
-								"token_1" => $data["token_1"], 
-								"token_2" => $data["token_2"], 
-								"token_3" => $data["token_3"], 
-								"data" => $data["data"], 
+								"social_network_type" => isset($data["social_network_type"]) ? $data["social_network_type"] : null, 
+								"social_network_user_id" => isset($data["social_network_user_id"]) ? $data["social_network_user_id"] : null, 
+								"token_1" => isset($data["token_1"]) ? $data["token_1"] : null, 
+								"token_2" => isset($data["token_2"]) ? $data["token_2"] : null, 
+								"token_3" => isset($data["token_3"]) ? $data["token_3"] : null, 
+								"data" => isset($data["data"]) ? $data["data"] : null, 
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -3730,9 +3788,9 @@ if (!class_exists("UserUtil")) {
 		}
 
 		public static function updateExternalUser($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["external_user_id"])) {
+			if (is_array($brokers) && isset($data["external_user_id"]) && is_numeric($data["external_user_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
-		
+				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						if (self::getConstantVariable("HASH_SENSITIVE_DATA")) $data["encode_user_data"] = true;
@@ -3742,28 +3800,28 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							$data["user_id"] = "NULL";
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
-						$data["social_network_type"] = addcslashes($data["social_network_type"], "\\'");
-						$data["social_network_user_id"] = addcslashes($data["social_network_user_id"], "\\'");
-						$data["token_1"] = addcslashes($data["token_1"], "\\'");
-						$data["token_2"] = addcslashes($data["token_2"], "\\'");
-						$data["token_3"] = addcslashes($data["token_3"], "\\'");
-						$data["data"] = addcslashes($data["data"], "\\'");
+						$data["social_network_type"] = isset($data["social_network_type"]) ? addcslashes($data["social_network_type"], "\\'") : "";
+						$data["social_network_user_id"] = isset($data["social_network_user_id"]) ? addcslashes($data["social_network_user_id"], "\\'") : "";
+						$data["token_1"] = isset($data["token_1"]) ? addcslashes($data["token_1"], "\\'") : "";
+						$data["token_2"] = isset($data["token_2"]) ? addcslashes($data["token_2"], "\\'") : "";
+						$data["token_3"] = isset($data["token_3"]) ? addcslashes($data["token_3"], "\\'") : "";
+						$data["data"] = isset($data["data"]) ? addcslashes($data["data"], "\\'") : "";
 						
 						return $broker->callUpdate("module/user", "update_external_user", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							unset($data["user_id"]);
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
 						$ExternalUser = $broker->callObject("module/user", "ExternalUser");
@@ -3772,21 +3830,21 @@ if (!class_exists("UserUtil")) {
 					else if (is_a($broker, "IDBBrokerClient")) {
 						self::encodeSensitiveUserData($data, array("data"));
 						
-						if (!is_numeric($data["user_id"]))
+						if (!isset($data["user_id"]) || !is_numeric($data["user_id"]))
 							unset($data["user_id"]);
 						
-						if (!is_numeric($data["external_type_id"]))
+						if (!isset($data["external_type_id"]) || !is_numeric($data["external_type_id"]))
 							$data["external_type_id"] = 0;
 						
 						return $broker->updateObject("mu_external_user", array(
-								"user_id" => $data["user_id"], 
+								"user_id" => isset($data["user_id"]) ? $data["user_id"] : null, 
 								"external_type_id" => $data["external_type_id"], 
-								"social_network_type" => $data["social_network_type"], 
-								"social_network_user_id" => $data["social_network_user_id"], 
-								"token_1" => $data["token_1"], 
-								"token_2" => $data["token_2"], 
-								"token_3" => $data["token_3"], 
-								"data" => $data["data"], 
+								"social_network_type" => isset($data["social_network_type"]) ? $data["social_network_type"] : null, 
+								"social_network_user_id" => isset($data["social_network_user_id"]) ? $data["social_network_user_id"] : null, 
+								"token_1" => isset($data["token_1"]) ? $data["token_1"] : null, 
+								"token_2" => isset($data["token_2"]) ? $data["token_2"] : null, 
+								"token_3" => isset($data["token_3"]) ? $data["token_3"] : null, 
+								"data" => isset($data["data"]) ? $data["data"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"external_user_id" => $data["external_user_id"]
@@ -3860,7 +3918,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "get_external_user", array("external_user_id" => $external_user_id), array("no_cache" => $no_cache));
-						$result = $result[0];
+						$result = isset($result[0]) ? $result[0] : null;
 						self::decodeSensitiveUserData($result, array("data"));
 						return $result;
 					}
@@ -3872,7 +3930,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$result = $broker->findObjects("mu_external_user", null, array("external_user_id" => $external_user_id), array("no_cache" => $no_cache));
-						$result = $result[0];
+						$result = isset($result[0]) ? $result[0] : null;
 						self::decodeSensitiveUserData($result, array("data"));
 						return $result;
 					}
@@ -3937,7 +3995,7 @@ if (!class_exists("UserUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/user", "count_external_users_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						self::encodeSensitiveUserData($conditions, array("data"));
@@ -3994,7 +4052,7 @@ if (!class_exists("UserUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/user", "count_all_external_users", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ExternalUser = $broker->callObject("module/user", "ExternalUser");

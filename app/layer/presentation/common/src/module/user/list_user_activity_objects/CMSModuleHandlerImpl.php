@@ -4,6 +4,7 @@ namespace CMSModule\user\list_user_activity_objects;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,7 +17,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \UserUtil::countUserActivityObjectsByConditions($brokers, $conditions, null) : \UserUtil::countAllUserActivityObjects($brokers);
 		
@@ -30,7 +31,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		if ($data) {
 			$t = count($data);
 			for ($i = 0; $i < $t; $i++)
-				if ($data[$i]["time"])
+				if (!empty($data[$i]["time"]))
 					$data[$i]["time_date"] = date("Y-m-d H:i:s", $data[$i]["time"]);
 		}
 		$settings["data"] = $data;

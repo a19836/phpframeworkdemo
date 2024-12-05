@@ -4,6 +4,7 @@ namespace CMSModule\event\catalog;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,9 +15,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("zip/ZipUtil", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "event");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "event");
 		
-		$html .= '
+		$html = '
 		<!-- Fancy LighBox -->
 		<link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/jquerymyfancylightbox/css/style.css" type="text/css" charset="utf-8" />
 		<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquerymyfancylightbox/js/jquery.myfancybox.js"></script>
@@ -29,24 +30,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/event/catalog.css" type="text/css" charset="utf-8" />';
 		
 		$html .= '<script src="' . $project_common_url_prefix . 'module/event/catalog.js"></script>
-		' . ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		' . (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 		
-		<div class="module_events_catalog ' . ($settings["block_class"]) . '">';
+		<div class="module_events_catalog ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
-		$catalog_title = $settings["catalog_title"];
+		$catalog_title = isset($settings["catalog_title"]) ? $settings["catalog_title"] : null;
 		if ($catalog_title)
 			$html .= '<h1 class="catalog_title">' . translateProjectText($EVC, $catalog_title) . '</h1>';
 		
 		//Preparing options
-		$rows_per_page = $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
+		$rows_per_page = isset($settings["rows_per_page"]) && $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
 		$options = array("limit" => $rows_per_page, "sort" => array());
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			include_once get_lib("org.phpframework.util.web.html.pagination.PaginationLayout");
 			
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 			$rows_per_page = $rows_per_page > 0 ? $rows_per_page : 50;
 			$options["start"] = \PaginationHandler::getStartValue($current_page, $rows_per_page);
 		}
@@ -73,26 +74,39 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			//Preparing countries data
 			if ($countries) {
 				$countries_by_id = array();
-				foreach ($countries as $country) 
-					$countries_by_id[ $country["country_id"] ] = $country["name"];
-			
-				foreach ($events as $idx => $event)
-					$events[$idx]["country"] = $countries_by_id[ $event["country_id"] ];
+				foreach ($countries as $country) {
+					$country_id = isset($country["country_id"]) ? $country["country_id"] : null;
+					$country_name = isset($country["name"]) ? $country["name"] : null;
+					
+					$countries_by_id[$country_id] = $country_name;
+				}
+				
+				foreach ($events as $idx => $event) {
+					$country_id = isset($event["country_id"]) ? $event["country_id"] : null;
+					
+					$events[$idx]["country"] = isset($countries_by_id[$country_id]) ? $countries_by_id[$country_id] : null;
+				}
 			}
 			
 			//Preparing users data
-			if ($settings["show_user"]) {
+			if (!empty($settings["show_user"])) {
 				$event_idx_by_ids = array();
-				foreach ($events as $idx => $event)
-					$event_idx_by_ids[ $event["event_id"] ] = $idx;
+				foreach ($events as $idx => $event) {
+					$event_id = isset($event["event_id"]) ? $event["event_id"] : null;
+					
+					$event_idx_by_ids[$event_id] = $idx;
+				}
 				
 				$event_ids = array_keys($event_idx_by_ids);
 				$object_events = $event_ids ? \EventUtil::getObjectEventsByConditions($brokers, array("event_id" => array("operator" => "in", "value" => $event_ids), "object_type_id" => \ObjectUtil::USER_OBJECT_TYPE_ID), null) : null;
 				
 				if ($object_events) {
 					$user_event_ids = array();
-					foreach ($object_events as $object_event)
-						$user_event_ids[ $object_event["object_id"] ][] = $object_event["event_id"];
+					foreach ($object_events as $object_event) {
+						$object_event_id = isset($object_event["object_id"]) ? $object_event["object_id"] : null;
+						
+						$user_event_ids[$object_event_id][] = isset($object_event["event_id"]) ? $object_event["event_id"] : null;
+					}
 					
 					if ($user_event_ids) {
 						include_once $EVC->getModulePath("user/UserUtil", $common_project_name);
@@ -101,7 +115,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$users = \UserUtil::getUsersByConditions($brokers, array("user_id" => array("operator" => "in", "value" => $user_ids)), null);
 						
 						if ($users) {
-							foreach ($users as $user)
+							foreach ($users as $user) 
 								foreach ($user_event_ids[ $user["user_id"] ] as $event_id)
 									$events[ $event_idx_by_ids[$event_id] ]["user"] = $user;
 						}
@@ -116,39 +130,41 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			));
 		}
 		
-		$current_url = $settings["event_properties_url"];
+		$current_url = isset($settings["event_properties_url"]) ? $settings["event_properties_url"] : null;
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			$PaginationLayout = new \PaginationLayout($total, $rows_per_page, array("current_page" => $current_page), "current_page");
 			$PaginationLayout->show_x_pages_at_once = 10;
 			$pagination_data = $PaginationLayout->data;
 		}
 		
-		$catalog_type = $settings["catalog_type"];
+		$catalog_type = isset($settings["catalog_type"]) ? $settings["catalog_type"] : null;
 		
 		//prepare settings with selected template html if apply
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "event/catalog", $settings);
 		
 		//execute user list with ptl
-		if ($catalog_type == "user_list" && $settings["ptl"]) {
+		if ($catalog_type == "user_list" && !empty($settings["ptl"])) {
 			$form_settings = array("ptl" => $settings["ptl"]);
-			$events_item_input_data_var_name = $form_settings["ptl"]["external_vars"]["events_item_input_data_var_name"]; //this should contain "event" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i event>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "events_item_input_data_var_name" to "item" too.
+			$events_item_input_data_var_name = isset($form_settings["ptl"]["external_vars"]["events_item_input_data_var_name"]) ? $form_settings["ptl"]["external_vars"]["events_item_input_data_var_name"] : null; //this should contain "event" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i event>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "events_item_input_data_var_name" to "item" too.
 			if ($events_item_input_data_var_name)
 				$form_settings["ptl"]["input_data_var_name"] = $events_item_input_data_var_name;
 			$HtmlFormHandler = new \HtmlFormHandler($form_settings);
 			
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
+			
 			foreach ($settings["fields"] as $field_id => $field) 
-				if ($settings["show_" . $field_id])
+				if (!empty($settings["show_" . $field_id]))
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $events);
 			
-			if ($settings["top_pagination_type"]) {
-				$pagination_data["style"] = $settings["top_pagination_type"];
+			if (!empty($settings["top_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["top_pagination_type"]) ? $settings["top_pagination_type"] : null;
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:top-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
 			
-			if ($settings["bottom_pagination_type"]) {
-				$pagination_data["style"] = $settings["bottom_pagination_type"];
+			if (!empty($settings["bottom_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["bottom_pagination_type"]) ? $settings["bottom_pagination_type"] : null;
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:bottom-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
 			
@@ -163,27 +179,32 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		else { //execute blog and normal list or user list with no ptl
 			//showing top pagination
-			if ($settings["top_pagination_type"]) {
-				$pagination_data["style"] = $settings["top_pagination_type"];
+			if (!empty($settings["top_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["top_pagination_type"]) ? $settings["top_pagination_type"] : null;
 				
-				$html .= '<div class="top_pagination pagination_alignment_' . $settings["top_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="top_pagination pagination_alignment_' . (isset($settings["top_pagination_alignment"]) ? $settings["top_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 			
 			//showing catalog
 			$html .= '<ul class="catalog catalog_' . $catalog_type . '">';
 			
 			if ($catalog_type == "blog_list") {
-				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $events, $settings["blog_introduction_events_num"], $settings["blog_featured_events_num"], $settings["blog_featured_events_cols"], $settings["blog_listed_events_num"]);
+				$blog_introduction_events_num = isset($settings["blog_introduction_events_num"]) ? $settings["blog_introduction_events_num"] : null;
+				$blog_featured_events_num = isset($settings["blog_featured_events_num"]) ? $settings["blog_featured_events_num"] : null;
+				$blog_featured_events_cols = isset($settings["blog_featured_events_cols"]) ? $settings["blog_featured_events_cols"] : null;
+				$blog_listed_events_num = isset($settings["blog_listed_events_num"]) ? $settings["blog_listed_events_num"] : null;
+				
+				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $events, $blog_introduction_events_num, $blog_featured_events_num, $blog_featured_events_cols, $blog_listed_events_num);
 			}
 			else //execute normal list and user list with no ptl
 				$html .= self::getCatalogListHtml($EVC, $settings, $common_project_name, $current_url, $events);
 			
 			$html .= '</ul>';
 			
-			if ($settings["bottom_pagination_type"]) {
-				$pagination_data["style"] = $settings["bottom_pagination_type"];
+			if (!empty($settings["bottom_pagination_type"])) {
+				$pagination_data["style"] = isset($settings["bottom_pagination_type"]) ? $settings["bottom_pagination_type"] : null;
 				
-				$html .= '<div class="bottom_pagination pagination_alignment_' . $settings["bottom_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="bottom_pagination pagination_alignment_' . (isset($settings["bottom_pagination_alignment"]) ? $settings["bottom_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 		}
 		
@@ -306,25 +327,27 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		);
 		
 		if ($current_url) {
-			$form_settings["form_containers"][0]["container"]["href"] = $current_url . $event["event_id"];
-			$form_settings["form_containers"][0]["container"]["title"] = $event["title"];
+			$form_settings["form_containers"][0]["container"]["href"] = $current_url . (isset($event["event_id"]) ? $event["event_id"] : null);
+			$form_settings["form_containers"][0]["container"]["title"] = isset($event["title"]) ? $event["title"] : null;
 		}
 		
 		$HtmlFormHandler = null;
-		if ($settings["ptl"])
+		if (!empty($settings["ptl"])) {
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 			$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
+		}
 		
 		foreach ($settings["fields"] as $field_id => $field)
-			if ($settings["show_" . $field_id] && ($field_id == "photo" || $event[$field_id])) {
+			if (!empty($settings["show_" . $field_id]) && ($field_id == "photo" || !empty($event[$field_id]))) {
 				//Preparing ptl
-				if ($settings["ptl"])
+				if (!empty($settings["ptl"]))
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $event);
 				else
 					$form_settings["form_containers"][0]["container"]["elements"][] = $field;
 			}
 		
 		//add ptl to form_settings
-		if ($settings["ptl"]) {
+		if (!empty($settings["ptl"])) {
 			\CommonModuleUI::cleanBlockPTLCode($settings["ptl"]["code"]);
 			$form_settings["form_containers"][0]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 		}
@@ -337,8 +360,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 		
 	/*private static function getCatalogEventHtml($EVC, $settings, $common_project_name, $current_url, $event) {
-		$begin_date = explode(" ", $event["begin_date"]);
-		$end_date = explode(" ", $event["end_date"]);
+		$begin_date = explode(" ", isset($event["begin_date"]) ? $event["begin_date"] : null);
+		$end_date = explode(" ", isset($event["end_date"]) ? $event["end_date"] : null);
+		
+		$begin_date[1] = isset($begin_date[1]) ? $begin_date[1] : null;
+		$end_date[1] = isset($end_date[1]) ? $end_date[1] : null;
 		
 		$date = '
 		<div class="catalog_event_date">
@@ -356,25 +382,25 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		</div>';
 		
 		$photo = '<div class="catalog_event_photo">';
-		if ($event["photo_id"] && file_exists($event["photo_path"])) {
-			$photo .= '<img src="' . $event["photo_url"] . '" />';
+		if (!empty($event["photo_id"]) && isset($event["photo_path"]) && file_exists($event["photo_path"])) {
+			$photo .= '<img src="' . (isset($event["photo_url"]) ? $event["photo_url"] : null) . '" />';
 		}
 		$photo .= '</div>';
 		
-		if ($event["title"]) {
+		if (!empty($event["title"])) {
 			$title = '<h1 class="catalog_event_title">';
 			if ($current_url)
-				$title .= '<a href="' . $current_url . $event["event_id"] . '">' . $event["title"] . '</a>';
+				$title .= '<a href="' . $current_url . (isset($event["event_id"]) ? $event["event_id"] : null) . '">' . $event["title"] . '</a>';
 			else
 				$title .= $event["title"];
 			$title .= '</h1>';
 		}
 		
-		$sub_title = $event["sub_title"] ? '<h2 class="catalog_event_sub_title">' . $event["sub_title"] . '</h2>' : '';
+		$sub_title = !empty($event["sub_title"]) ? '<h2 class="catalog_event_sub_title">' . $event["sub_title"] . '</h2>' : '';
 		
 		$map_url = \EventUI::getMapUrl($event);
 		$map = $map_url ? '<span class="map" onClick="openMap(this, \'' . $map_url . '\')"></span>' : '';
-		$address = $event["address"] ? '<span class="address">' . $event["address"] . ($event["zip_id"] ? ', ' . $event["zip_id"] : '') . '</span>' : '';
+		$address = !empty($event["address"]) ? '<span class="address">' . $event["address"] . (!empty($event["zip_id"]) ? ', ' . $event["zip_id"] : '') . '</span>' : '';
 		$location = '<h3 class="catalog_event_location">' . $address . $map . '</h3>';
 		
 		return $date . $time . $photo . '

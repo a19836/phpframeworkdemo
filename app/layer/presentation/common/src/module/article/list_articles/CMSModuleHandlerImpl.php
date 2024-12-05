@@ -4,6 +4,7 @@ namespace CMSModule\article\list_articles;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -12,17 +13,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("article/ArticleUI", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "article");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "article");
 		
 		//Preparing options
-		$rows_per_page = $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
+		$rows_per_page = isset($settings["rows_per_page"]) && $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
 		$options = array("limit" => $rows_per_page, "sort" => array());
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			include_once get_lib("org.phpframework.util.web.html.pagination.PaginationLayout");
 			
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 			$rows_per_page = $rows_per_page > 0 ? $rows_per_page : 50;
 			$options["start"] = \PaginationHandler::getStartValue($current_page, $rows_per_page);
 		}
@@ -43,7 +44,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			"articles" => &$articles,
 		), "This join point's method/function can change the \$settings, \$total or \$articles variables.");
 		
-		$html = '<div class="module_list_articles ' . ($settings["block_class"]) . '">';
+		$html = '<div class="module_list_articles ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		$settings["block_class"] = null;
 		
 		//Getting articles
@@ -52,7 +53,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["css_file"] = $project_common_url_prefix . 'module/article/list_articles.css';
 		$settings["js_file"] = $project_common_url_prefix . 'module/article/list_articles.js';
 		$settings["class"] = "";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "article_id=#[idx][article_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "article_id=#[idx][article_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/article/list_articles/delete_article?article_id=#[idx][article_id]#";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "article/list_articles", $settings);

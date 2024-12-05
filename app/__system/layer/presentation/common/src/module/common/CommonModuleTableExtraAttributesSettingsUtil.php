@@ -37,17 +37,17 @@ class CommonModuleTableExtraAttributesSettingsUtil {
 		if (file_exists($fp)) {
 			include $fp;
 			
-			$is_edit = $options && $options["is_edit"];
-			$is_list = $options && $options["is_list"];
+			$is_edit = $options && !empty($options["is_edit"]);
+			$is_list = $options && !empty($options["is_list"]);
 			
-			if ($table_extra_attributes_settings)
+			if (!empty($table_extra_attributes_settings))
 				foreach ($table_extra_attributes_settings as $attr_name => $attr_settings) 
 					if (!$fields || (!in_array($attr_name, $fields) && !array_key_exists($attr_name, $fields))) {
 						if ($extra_settings)
 							foreach ($extra_settings as $extra_setting_name => $extra_setting_value)
 								$attr_settings[$extra_setting_name] = $extra_setting_value;
 						
-						if ($attr_settings["file_type"]) {
+						if (!empty($attr_settings["file_type"])) {
 							if ($is_edit) {
 								$attr_settings["type"] = "file"; //set type to file
 								$attr_settings["validation_type"] = "";//very important otherwise when we upload the file it will check if is a bigint. This must be empty!
@@ -79,7 +79,7 @@ class CommonModuleTableExtraAttributesSettingsUtil {
 	private function getFileFieldSettingNextHtml($attr_name, $attr_settings, $is_list = false) {
 		$an = strtolower(str_replace(" ",  "_", $attr_name));
 		$func_name = "remove_" . $an . "_file_" . rand(0, 100000000);
-		$file_type = $attr_settings["file_type"];
+		$file_type = isset($attr_settings["file_type"]) ? $attr_settings["file_type"] : null;
 		
 		$v_url = "#" . ($is_list ? '[\\$idx][' . $attr_name . "_url" . ']' : $attr_name . "_url") . "#";
 		$v_name = "#" . ($is_list ? '[\\$idx][' . $attr_name . "_name" . ']' : $attr_name . "_name") . "#";

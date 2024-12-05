@@ -27,7 +27,7 @@ class MenuItemService extends \soa\CommonService {
 	 * @param (name=data[order], type=smallint, default=0)
 	 */
 	public function insertMenuItem($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -36,31 +36,32 @@ class MenuItemService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["label"] = addcslashes($data["label"], "\\'");
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["class"] = addcslashes($data["class"], "\\'");
-			$data["url"] = addcslashes($data["url"], "\\'");
-			$data["previous_html"] = addcslashes($data["previous_html"], "\\'");
-			$data["next_html"] = addcslashes($data["next_html"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+			$data["url"] = isset($data["url"]) ? addcslashes($data["url"], "\\'") : "";
+			$data["previous_html"] = isset($data["previous_html"]) ? addcslashes($data["previous_html"], "\\'") : "";
+			$data["next_html"] = isset($data["next_html"]) ? addcslashes($data["next_html"], "\\'") : "";
 			
 			$status = $b->callInsert("module/menu", "insert_menu_item", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$MenuItem = $this->getMenuItemHbnObj($b, $options);
+			$ids = null;
 			$status = $MenuItem->insert($data, $ids);
-			return $status ? $ids["item_id"] : $status;
+			return $status ? (isset($ids["item_id"]) ? $ids["item_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mmenu_item", array(
 					"group_id" => $data["group_id"], 
-					"parent_id" => $data["parent_id"], 
+					"parent_id" => isset($data["parent_id"]) ? $data["parent_id"] : null, 
 					"label" => $data["label"], 
-					"title" => $data["title"], 
-					"class" => $data["class"], 
-					"url" => $data["url"], 
-					"previous_html" => $data["previous_html"], 
-					"next_html" => $data["next_html"], 
-					"order" => $data["order"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"class" => isset($data["class"]) ? $data["class"] : null, 
+					"url" => isset($data["url"]) ? $data["url"] : null, 
+					"previous_html" => isset($data["previous_html"]) ? $data["previous_html"] : null, 
+					"next_html" => isset($data["next_html"]) ? $data["next_html"] : null, 
+					"order" => isset($data["order"]) ? $data["order"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -83,7 +84,7 @@ class MenuItemService extends \soa\CommonService {
 	 * @param (name=data[order], type=smallint, default=0)
 	  */
 	public function updateMenuItem($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -91,11 +92,11 @@ class MenuItemService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["label"] = addcslashes($data["label"], "\\'");
-			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["class"] = addcslashes($data["class"], "\\'");
-			$data["url"] = addcslashes($data["url"], "\\'");
-			$data["previous_html"] = addcslashes($data["previous_html"], "\\'");
-			$data["next_html"] = addcslashes($data["next_html"], "\\'");
+			$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+			$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+			$data["url"] = isset($data["url"]) ? addcslashes($data["url"], "\\'") : "";
+			$data["previous_html"] = isset($data["previous_html"]) ? addcslashes($data["previous_html"], "\\'") : "";
+			$data["next_html"] = isset($data["next_html"]) ? addcslashes($data["next_html"], "\\'") : "";
 			
 			return $b->callUpdate("module/menu", "update_menu_item", $data, $options);
 		}
@@ -106,14 +107,14 @@ class MenuItemService extends \soa\CommonService {
 		else if (is_a($b, "IDBBrokerClient")) {
 			return $b->updateObject("mmenu_item", array(
 					"group_id" => $data["group_id"], 
-					"parent_id" => $data["parent_id"], 
+					"parent_id" => isset($data["parent_id"]) ? $data["parent_id"] : null, 
 					"label" => $data["label"], 
-					"title" => $data["title"], 
-					"class" => $data["class"], 
-					"url" => $data["url"], 
-					"previous_html" => $data["previous_html"], 
-					"next_html" => $data["next_html"], 
-					"order" => $data["order"], 
+					"title" => isset($data["title"]) ? $data["title"] : null, 
+					"class" => isset($data["class"]) ? $data["class"] : null, 
+					"url" => isset($data["url"]) ? $data["url"] : null, 
+					"previous_html" => isset($data["previous_html"]) ? $data["previous_html"] : null, 
+					"next_html" => isset($data["next_html"]) ? $data["next_html"] : null, 
+					"order" => isset($data["order"]) ? $data["order"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"item_id" => $data["item_id"]
@@ -128,7 +129,7 @@ class MenuItemService extends \soa\CommonService {
 	 */
 	public function deleteMenuItem($data) {
 		$item_id = $data["item_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -150,7 +151,7 @@ class MenuItemService extends \soa\CommonService {
 	 */
 	public function deleteMenuItemsByGroupId($data) {
 		$group_id = $data["group_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -173,7 +174,7 @@ class MenuItemService extends \soa\CommonService {
 	 */
 	public function deleteMenuItemsByParentId($data) {
 		$parent_id = $data["parent_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -196,13 +197,13 @@ class MenuItemService extends \soa\CommonService {
 	 */
 	public function getMenuItem($data) {
 		$item_id = $data["item_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/menu", "get_menu_item", array("item_id" => $item_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$MenuItem = $this->getMenuItemHbnObj($b, $options);
@@ -210,7 +211,7 @@ class MenuItemService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mmenu_item", null, array("item_id" => $item_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/menu", "MenuItemService.getMenuItem", $data, $options);
@@ -221,7 +222,7 @@ class MenuItemService extends \soa\CommonService {
 	 */
 	public function getMenuItemsByGroupId($data) {
 		$group_id = $data["group_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -246,7 +247,7 @@ class MenuItemService extends \soa\CommonService {
 	public function getMenuItemsByFirstGroupIdOfObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -273,8 +274,8 @@ class MenuItemService extends \soa\CommonService {
 	public function getMenuItemsByFirstGroupIdOfObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -300,14 +301,15 @@ class MenuItemService extends \soa\CommonService {
 	 * @param (name=data[conditions][class], type=varchar|array, length=255)
 	 */
 	public function getMenuItemsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/menu", "get_menu_items_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -317,7 +319,7 @@ class MenuItemService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mmenu_item", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -332,25 +334,26 @@ class MenuItemService extends \soa\CommonService {
 	 * @param (name=data[conditions][class], type=varchar|array, length=255)
 	 */
 	public function countMenuItemsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/menu", "count_menu_items_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$MenuItem = $this->getMenuItemHbnObj($b, $options);
-				return $MenuItem->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $MenuItem->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mmenu_item", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -359,7 +362,7 @@ class MenuItemService extends \soa\CommonService {
 	}
 	
 	public function getAllMenuItems($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -377,13 +380,13 @@ class MenuItemService extends \soa\CommonService {
 	}
 	
 	public function countAllMenuItems($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/menu", "count_all_menu_items", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$MenuItem = $this->getMenuItemHbnObj($b, $options);

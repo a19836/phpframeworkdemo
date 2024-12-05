@@ -5,4 +5,4 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "delete"); if ($_GET["map"] && $_GET["query_type"]) { $file_type = "save_map"; $_POST["object"] = array(); $_POST["overwrite"] = 1; $queries_ids = array( $_GET["query_type"] => array( $_GET["map"] => 0 ) ); include $EVC->getEntityPath("dataaccess/save"); } die(); ?>
+$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "delete"); if (!empty($_GET["map"]) && !empty($_GET["query_type"])) { $file_type = "save_map"; $_POST["object"] = array(); $_POST["overwrite"] = 1; $queries_ids = array( $_GET["query_type"] => array( $_GET["map"] => 0 ) ); include $EVC->getEntityPath("dataaccess/save"); } die(); ?>

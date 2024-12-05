@@ -4,6 +4,7 @@ namespace CMSModule\article\list_object_articles;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,7 +16,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \ArticleUtil::countObjectArticlesByConditions($brokers, $conditions, null) : \ArticleUtil::countAllObjectArticles($brokers);
 		
@@ -28,13 +29,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$settings["css_file"] = $project_common_url_prefix . 'module/article/list_object_articles.css';
 		$settings["class"] = "module_list_object_articles";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "article_id=#[idx][article_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "article_id=#[idx][article_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/article/list_object_articles/delete_object_article?article_id=#[idx][article_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
 		
-		if ($settings["show_object_type_id"]) {
+		if (!empty($settings["show_object_type_id"])) {
 			include_once $EVC->getModulePath("object/ObjectUtil", $common_project_name);
 		
-			$type = $settings["fields"]["object_type_id"]["field"]["input"]["type"];
+			$type = isset($settings["fields"]["object_type_id"]["field"]["input"]["type"]) ? $settings["fields"]["object_type_id"]["field"]["input"]["type"] : null;
 			$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 			
 			$object_types = \ObjectUtil::getAllObjectTypes($brokers);
@@ -44,10 +45,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($object_types) {
 				$t = count($object_types);
 				for ($i = 0; $i < $t; $i++) {
+					$object_type_id = isset($object_types[$i]["object_type_id"]) ? $object_types[$i]["object_type_id"] : null;
+					$object_type_name = isset($object_types[$i]["name"]) ? $object_types[$i]["name"] : null;
+					
 					if ($allow_options)
-						$object_type_options[] = array("value" => $object_types[$i]["object_type_id"], "label" => $object_types[$i]["name"]);
+						$object_type_options[] = array("value" => $object_type_id, "label" => $object_type_name);
 					else 
-						$available_object_types[ $object_types[$i]["object_type_id"] ] = $object_types[$i]["name"];
+						$available_object_types[$object_type_id] = $object_type_name;
 				}
 			}
 			

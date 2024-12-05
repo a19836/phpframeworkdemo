@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("quiz/QuizUtil", $common_project_name);
 	
-	if (QuizUtil::deleteUserAnswersByQuestionIds($brokers, $_GET["question_id"]) && QuizUtil::deleteAnswersByQuestionId($brokers, $_GET["question_id"]) && QuizUtil::deleteQuestion($brokers, $_GET["question_id"])) {
+	if (isset($_GET["question_id"]) && QuizUtil::deleteUserAnswersByQuestionIds($brokers, $_GET["question_id"]) && QuizUtil::deleteAnswersByQuestionId($brokers, $_GET["question_id"]) && QuizUtil::deleteQuestion($brokers, $_GET["question_id"])) {
 		echo "1";
 	}
 }

@@ -58,21 +58,26 @@ class ActionAdminUtil {
 	
 	public function getAvailableActions() {
 		$available_actions = array();
-		foreach ($this->actions as $action) {
-			$available_actions[ $action["action_id"] ] = $action["name"];
-		}
+		foreach ($this->actions as $action) 
+			if (isset($action["action_id"]))
+				$available_actions[ $action["action_id"] ] = isset($action["name"]) ? $action["name"] : null;
+			
 		return $available_actions;
 	}
 	
 	public function getActionOptions($data) {
 		$action_options = array();
-		$default_id = $data ? $data["action_id"] : null;
+		$default_id = isset($data["action_id"]) ? $data["action_id"] : null;
 		$exists = false;
 		
 		foreach ($this->actions as $action) {
-			$action_options[] = array("value" => $action["action_id"], "label" => $action["name"]);
+			$action_id = isset($action["action_id"]) ? $action["action_id"] : null;
+			$action_options[] = array(
+				"value" => $action_id, 
+				"label" => isset($action["name"]) ? $action["name"] : null
+			);
 			
-			if ($default_id && $action["action_id"] == $default_id)
+			if ($default_id && $action_id == $default_id)
 				$exists = true;
 		}
 		

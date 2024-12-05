@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (MenuUtil::deleteMenuObjectGroup($brokers, $_GET["group_id"], $_GET["object_type_id"], $_GET["object_id"])) {
+if (isset($_GET["group_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && MenuUtil::deleteMenuObjectGroup($brokers, $_GET["group_id"], $_GET["object_type_id"], $_GET["object_id"])) {
 	echo "1";
 }
 ?>

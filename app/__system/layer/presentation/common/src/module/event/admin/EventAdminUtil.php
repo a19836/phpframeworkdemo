@@ -70,16 +70,20 @@ class EventAdminUtil {
 	
 	public function getAvailableObjectTypes() {
 		$available_object_types = array();
-		foreach ($this->object_types as $object_type) {
-			$available_object_types[ $object_type["object_type_id"] ] = $object_type["name"];
-		}
+		foreach ($this->object_types as $object_type) 
+			if (isset($object_type["object_type_id"]))
+				$available_object_types[ $object_type["object_type_id"] ] = $object_type["name"];
+		
 		return $available_object_types;
 	}
 	
 	public function getObjectTypeOptions() {
 		$object_type_options = array();
 		foreach ($this->object_types as $object_type) {
-			$object_type_options[] = array("value" => $object_type["object_type_id"], "label" => $object_type["name"]);
+			$object_type_options[] = array(
+				"value" => isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null, 
+				"label" => isset($object_type["name"]) ? $object_type["name"] : null
+			);
 		}
 		return $object_type_options;
 	}
@@ -87,7 +91,10 @@ class EventAdminUtil {
 	public function getCountryOptions() {
 		$country_options = array();
 		foreach ($this->countries as $country) {
-			$country_options[] = array("value" => $country["country_id"], "label" => $country["name"]);
+			$country_options[] = array(
+				"value" => isset($country["country_id"]) ? $country["country_id"] : null, 
+				"label" => isset($country["name"]) ? $country["name"] : null
+			);
 		}
 		return $country_options;
 	}

@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$exists_phpmailer = file_exists( get_lib("lib.vendor.phpmailer.PHPMailerAutoload") ); if (!$exists_phpmailer) echo '<script>SendEmailTaskPropertyObj.exists_phpmailer = false;</script>'; ?>
+$exists_phpmailer = file_exists( get_lib("lib.vendor.phpmailer.vendor.autoload") ); if (!$exists_phpmailer) echo '<script>SendEmailTaskPropertyObj.exists_phpmailer = false;</script>'; ?>
 <div class="send_email_task_html">
 	
 	<div class="info">This task needs the file 'lib/org/phpframework/util/web/SendEmailHandler' to be included before! If is not included yet, please add it by clicking <a class="include_file_before" href="javascript:void(0)" onClick="ProgrammingTaskUtil.addIncludeFileTaskBeforeTaskFromSelectedTaskProperties(SendEmailTaskPropertyObj.dependent_file_path_to_include, '', 1)">here</a>. 
@@ -34,6 +34,7 @@ $exists_phpmailer = file_exists( get_lib("lib.vendor.phpmailer.PHPMailerAutoload
 	</div>
 	
 	<?php include dirname(dirname($file_path)) . "/common/ResultVariableHtml.php"; ?>
+	<?php include dirname(dirname($file_path)) . "/common/CommentsHtml.php"; ?>
 	
 	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

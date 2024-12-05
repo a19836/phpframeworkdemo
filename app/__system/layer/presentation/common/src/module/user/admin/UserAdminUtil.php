@@ -220,20 +220,26 @@ class UserAdminUtil {
 	public function getAvailableActivities() {
 		$available_activities = array();
 		foreach ($this->activities as $activity) 
-			$available_activities[ $activity["activity_id"] ] = $activity["name"];
+			if (isset($activity["activity_id"]))
+				$available_activities[ $activity["activity_id"] ] = isset($activity["name"]) ? $activity["name"] : null;
 		
 		return $available_activities;
 	}
 	
 	public function getActivityOptions($data) {
 		$activity_options = array( array("value" => "", "label" => "") ); //ad default empty option
-		$default_id = $data ? $data["activity_id"] : null;
+		$default_id = isset($data["activity_id"]) ? $data["activity_id"] : null;
 		$exists = false;
 		
 		foreach ($this->activities as $activity) {
-			$activity_options[] = array("value" => $activity["activity_id"], "label" => $activity["name"]);
+			$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
 			
-			if ($default_id && $activity["activity_id"] == $default_id)
+			$activity_options[] = array(
+				"value" => $activity_id, 
+				"label" => isset($activity["name"]) ? $activity["name"] : null
+			);
+			
+			if ($default_id && $activity_id == $default_id)
 				$exists = true;
 		}
 		
@@ -246,20 +252,26 @@ class UserAdminUtil {
 	public function getAvailableUserTypes() {
 		$available_user_types = array();
 		foreach ($this->user_types as $user_type) 
-			$available_user_types[ $user_type["user_type_id"] ] = $user_type["name"];
+			if (isset($user_type["user_type_id"]))
+				$available_user_types[ $user_type["user_type_id"] ] = isset($user_type["name"]) ? $user_type["name"] : null;
 		
 		return $available_user_types;
 	}
 	
 	public function getUserTypeOptions($data) {
 		$user_type_options = array( array("value" => "", "label" => "") ); //ad default empty option
-		$default_id = $data ? $data["user_type_id"] : null;
+		$default_id = isset($data["user_type_id"]) ? $data["user_type_id"] : null;
 		$exists = false;
 		
 		foreach ($this->user_types as $user_type) {
-			$user_type_options[] = array("value" => $user_type["user_type_id"], "label" => $user_type["name"]);
+			$user_type_id = isset($user_type["user_type_id"]) ? $user_type["user_type_id"] : null;
 			
-			if ($default_id && $user_type["user_type_id"] == $default_id)
+			$user_type_options[] = array(
+				"value" => $user_type_id, 
+				"label" => isset($user_type["name"]) ? $user_type["name"] : null
+			);
+			
+			if ($default_id && $user_type_id == $default_id)
 				$exists = true;
 		}
 		

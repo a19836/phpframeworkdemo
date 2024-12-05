@@ -18,8 +18,8 @@ CommonModuleSettingsUI::$WEBROOT_CACHE_FOLDER_URL = $webroot_cache_folder_url;
 //Set PEVC and default db driver
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
-	$CommonModuleTableExtraAttributesSettingsUtil = new CommonModuleTableExtraAttributesSettingsUtil($EVC, $PEVC, $GLOBALS["default_db_driver"], $module["path"]);
+if (!empty($PEVC)) {
+	$CommonModuleTableExtraAttributesSettingsUtil = new CommonModuleTableExtraAttributesSettingsUtil($EVC, $PEVC, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $module["path"]);
 	
 	//prepare init_layout_ui_editor_widget_resource_options
 	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
@@ -34,7 +34,7 @@ include $EVC->getModulePath("common/init_tasks_flow", $common_project_name);
 echo '<script>
 var taskFlowChartObj = null;
 </script>';
-echo $tasks_data["head"];
+echo isset($tasks_data["head"]) ? $tasks_data["head"] : "";
 echo '<script>
 ProgrammingTaskUtil.on_programming_task_choose_created_variable_callback = typeof onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute == "function" ? onProgrammingTaskChooseCreatedVariableForUrlQueryStringAttribute : onProgrammingTaskChooseCreatedVariable;
 ProgrammingTaskUtil.on_programming_task_choose_file_path_callback = onIncludeFileTaskChooseFile;
@@ -46,9 +46,10 @@ ProgrammingTaskUtil.on_programming_task_choose_webroot_file_url_callback = onInc
 
 echo $WorkFlowUIHandler->getHeader(array("tasks_css_and_js" => false, "icons_and_edit_code_already_included" => true, "ui_editor" => true, "taskflowchart_already_included" => true));
 
-echo '<script>
-' . $layout_ui_editor_widget_resource_options_js . '
-</script>';
+if (!empty($layout_ui_editor_widget_resource_options_js))
+	echo '<script>
+	' . $layout_ui_editor_widget_resource_options_js . '
+	</script>';
 
 /*echo '
 <!-- Layout UI Editor - Color -->

@@ -13,7 +13,7 @@
 <h2>Sorry... Server Error!</h2>
 <h2>Server Error - The server detected a syntax error in the client's request...</h2>
 <?php
-$ip = getenv ("REMOTE_ADDR"); $requri = getenv ("REQUEST_URI"); $servname = getenv ("SERVER_NAME"); $combine = "IP: <b>" . $ip . "</b> tried to load <b>http://" . $servname . $requri . "</b>"; $httpref = getenv ("HTTP_REFERER"); $httpagent = getenv ("HTTP_USER_AGENT"); $today = date("D M j Y g:i:s a T"); $message = "($today) \n
+$ip = getenv ("REMOTE_ADDR"); $requri = getenv ("REQUEST_URI"); $servname = getenv ("SERVER_NAME"); $combine = "IP: <b>" . $ip . "</b> tried to load <b>http://" . $servname . $requri . "</b>"; $httpref = getenv ("HTTP_REFERER"); $httpagent = getenv ("HTTP_USER_AGENT"); $today = date("D M j Y g:i:s a T"); $note = ""; $message = "($today) \n
 <br><br>
 $combine, with the following navigator:<br> \n
 User Agent = $httpagent \n<br> \n

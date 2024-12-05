@@ -31,7 +31,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 	</header>
 </div>
 
-<div class="import_table_data with_top_bar_section">'; if ($error_message) $main_content .= '<div class="error">' . $error_message . ($errors ? '<br/>Please see errors bellow...' : '') . '</div>'; $main_content .= '
+<div class="import_table_data with_top_bar_section">'; if (!empty($error_message)) $main_content .= '<div class="error">' . $error_message . (!empty($errors) ? '<br/>Please see errors bellow...' : '') . '</div>'; $file_type = isset($file_type) ? $file_type : null; $rows_delimiter = isset($rows_delimiter) ? $rows_delimiter : null; $columns_delimiter = isset($columns_delimiter) ? $columns_delimiter : null; $enclosed_by = isset($enclosed_by) ? $enclosed_by : null; $ignore_rows_number = isset($ignore_rows_number) ? $ignore_rows_number : null; $insert_ignore = isset($insert_ignore) ? $insert_ignore : null; $update_existent = isset($update_existent) ? $update_existent : null; $force = isset($force) ? $force : null; $columns_attributes = isset($columns_attributes) ? $columns_attributes : null; $main_content .= '
 	<form method="post" enctype="multipart/form-data">
 		<div class="file_type">
 			<label>File Type: </label>
@@ -99,7 +99,7 @@ var column_attributes_html = \'' . str_replace("'", "\\'", str_replace("\n", "",
 				</tr>
 			</tbody>
 		</table>
-	</form>'; if ($errors) $main_content .= '<div class="errors">
+	</form>'; if (!empty($errors)) $main_content .= '<div class="errors">
 		<label>Errors:</label>
 		<ul>
 			<li>' . implode('</li><li>', $errors) . '</li>

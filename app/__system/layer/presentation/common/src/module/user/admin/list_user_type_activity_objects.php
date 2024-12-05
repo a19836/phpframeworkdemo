@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("user/admin/UserAdminUtil", $common_project_name);
 	
 	$UserAdminUtil = new UserAdminUtil($CommonModuleAdminUtil);
@@ -17,6 +17,7 @@ if ($PEVC) {
 	$available_object_types = $CommonModuleAdminUtil->getAvailableObjectTypes($brokers);
 	
 	$pks = "user_type_id=#[\$idx][user_type_id]#&activity_id=#[\$idx][activity_id]#&object_type_id=#[\$idx][object_type_id]#&object_id=#[\$idx][object_id]#";
+	$options = isset($options) ? $options : null;
 	
 	$list_settings = array(
 		"title" => "User Type Activity Objects List",

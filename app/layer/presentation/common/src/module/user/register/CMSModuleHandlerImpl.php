@@ -4,6 +4,7 @@ namespace CMSModule\user\register;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = $user_id = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -13,21 +14,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesUtil", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "user");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "user");
 		
 		//Preparing Action
-		if ($_POST) {
-			$user_type_id = $settings["user_type_id"];
-			$username = trim($_POST["username"]);
-			$password = trim($_POST["password"]);
-			$name = $_POST["name"];
-			$email = $_POST["email"];
-			$security_question_1 = $_POST["security_question_1"];
-			$security_answer_1 = $_POST["security_answer_1"];
-			$security_question_2 = $_POST["security_question_2"];
-			$security_answer_2 = $_POST["security_answer_2"];
-			$security_question_3 = $_POST["security_question_3"];
-			$security_answer_3 = $_POST["security_answer_3"];
+		if (!empty($_POST)) {
+			$user_type_id = isset($settings["user_type_id"]) ? $settings["user_type_id"] : null;
+			$username = isset($_POST["username"]) ? trim($_POST["username"]) : "";
+			$password = isset($_POST["password"]) ? trim($_POST["password"]) : "";
+			$name = isset($_POST["name"]) ? $_POST["name"] : null;
+			$email = isset($_POST["email"]) ? $_POST["email"] : null;
+			$security_question_1 = isset($_POST["security_question_1"]) ? $_POST["security_question_1"] : null;
+			$security_answer_1 = isset($_POST["security_answer_1"]) ? $_POST["security_answer_1"] : null;
+			$security_question_2 = isset($_POST["security_question_2"]) ? $_POST["security_question_2"] : null;
+			$security_answer_2 = isset($_POST["security_answer_2"]) ? $_POST["security_answer_2"] : null;
+			$security_question_3 = isset($_POST["security_question_3"]) ? $_POST["security_question_3"] : null;
+			$security_answer_3 = isset($_POST["security_answer_3"]) ? $_POST["security_answer_3"] : null;
 			
 			$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("username" => $username, "password" => $password, "name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3));
 			
@@ -37,9 +38,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($empty_field_name)
 				$error_message = \CommonModuleUI::getFieldValidationMessage($EVC, $settings, $empty_field_name);
 			else {
-				if ($settings["show_username"] && $username) {
+				if (!empty($settings["show_username"]) && $username) {
 					$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, true);	
-					$user_exists = $users[0]["user_id"];
+					$user_exists = isset($users[0]["user_id"]) ? $users[0]["user_id"] : null;
 					
 					if ($user_exists) {
 						$username_label = \CommonModuleUI::getFieldLabel($settings, "username");
@@ -48,18 +49,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					}
 				}
 				
-				if (!$error_message) {
+				if (empty($error_message)) {
 					$data = array(
-						"username" => $settings["show_username"] ? $username : "",
-						"password" => $settings["show_password"] ? $password : "",
-						"name" => $settings["show_name"] ? $name : "",
-						"email" => $settings["show_email"] ? $email : "",
-						"security_question_1" => $settings["show_security_question_1"] ? $security_question_1 : "",
-						"security_answer_1" => $settings["show_security_answer_1"] ? $security_answer_1 : "",
-						"security_question_2" => $settings["show_security_question_2"] ? $security_question_2 : "",
-						"security_answer_2" => $settings["show_security_answer_2"] ? $security_answer_2 : "",
-						"security_question_3" => $settings["show_security_question_3"] ? $security_question_3 : "",
-						"security_answer_3" => $settings["show_security_answer_3"] ? $security_answer_3 : "",
+						"username" => !empty($settings["show_username"]) ? $username : "",
+						"password" => !empty($settings["show_password"]) ? $password : "",
+						"name" => !empty($settings["show_name"]) ? $name : "",
+						"email" => !empty($settings["show_email"]) ? $email : "",
+						"security_question_1" => !empty($settings["show_security_question_1"]) ? $security_question_1 : "",
+						"security_answer_1" => !empty($settings["show_security_answer_1"]) ? $security_answer_1 : "",
+						"security_question_2" => !empty($settings["show_security_question_2"]) ? $security_question_2 : "",
+						"security_answer_2" => !empty($settings["show_security_answer_2"]) ? $security_answer_2 : "",
+						"security_question_3" => !empty($settings["show_security_question_3"]) ? $security_question_3 : "",
+						"security_answer_3" => !empty($settings["show_security_answer_3"]) ? $security_answer_3 : "",
 					);
 					
 					$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $data, array(), $_POST);
@@ -71,9 +72,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						if (\UserUtil::usersCountExceedLimit($EVC))
 							$error_message = translateProjectText($EVC, "Users count exceeded the licence limit. Please renew your licence with more users...");
 						else {
-							$data["object_users"] = $settings["object_to_objects"];
-							$data["user_environments"] = $settings["user_environments"];
-							$data["do_not_encrypt_password"] = $settings["do_not_encrypt_password"];
+							$data["object_users"] = isset($settings["object_to_objects"]) ? $settings["object_to_objects"] : null;
+							$data["user_environments"] = isset($settings["user_environments"]) ? $settings["user_environments"] : null;
+							$data["do_not_encrypt_password"] = isset($settings["do_not_encrypt_password"]) ? $settings["do_not_encrypt_password"] : null;
 							
 							$status = \UserUtil::insertUser($EVC, $data, $brokers);
 							$user_id = $status;
@@ -96,7 +97,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 									$new_extra_data = $data;
 									$new_extra_data["user_id"] = $user_id;
 									$status = $CommonModuleTableExtraAttributesUtil->insertOrUpdateTableExtra($new_extra_data);
-									$CommonModuleTableExtraAttributesUtil->reloadSavedTableExtra($settings, array("user_id" => $user_id), $aux = null, $data, $_POST);
+									$aux = null;
+									$CommonModuleTableExtraAttributesUtil->reloadSavedTableExtra($settings, array("user_id" => $user_id), $aux, $data, $_POST);
 									
 									if ($status) {
 										//Add Join Point creating a new action of some kind
@@ -115,44 +117,50 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 					}
 				}
-				else if ($user_exists) {
+				else if (!empty($user_exists)) {
+					$user_data = isset($users[0]) ? $users[0] : null;
+					
 					//Add Join Point creating a new action of some kind
 					$status = $EVC->getCMSLayer()->getCMSJoinPointLayer()->includeStatusJoinPoint("On repeated user register action", array(
 						"EVC" => $EVC,
 						"settings" => &$settings,
 						"user_id" => $user_exists,
-						"user_data" => &$users[0],
+						"user_data" => &$user_data,
 						"error_message" => &$error_message,
 					));
+					
+					if (isset($users[0]) && $user_data != $users[0])
+						$users[0] = $user_data;
 				}
 			}
 		}
 		
 		$form_data = array(
-			"username" => $username,
-			"password" => $password,
-			"name" => $name,
-			"email" => $email,
-			"security_question_1" => $security_question_1,
-			"security_answer_1" => $security_answer_1,
-			"security_question_2" => $security_question_2,
-			"security_answer_2" => $security_answer_2,
-			"security_question_3" => $security_question_3,
-			"security_answer_3" => $security_answer_3,
+			"username" => isset($username) ? $username : null,
+			"password" => isset($password) ? $password : null,
+			"name" => isset($name) ? $name : null,
+			"email" => isset($email) ? $email : null,
+			"security_question_1" => isset($security_question_1) ? $security_question_1 : null,
+			"security_answer_1" => isset($security_answer_1) ? $security_answer_1 : null,
+			"security_question_2" => isset($security_question_2) ? $security_question_2 : null,
+			"security_answer_2" => isset($security_answer_2) ? $security_answer_2 : null,
+			"security_question_3" => isset($security_question_3) ? $security_question_3 : null,
+			"security_answer_3" => isset($security_answer_3) ? $security_answer_3 : null,
 		);
 		
-		$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $form_data, array(), $_POST);
+		$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $form_data, array(), isset($_POST) ? $_POST : null);
 		
-		$form_data = $data ? array_merge($data, $form_data) : $form_data;//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+		$form_data = !empty($data) ? array_merge($data, $form_data) : $form_data;//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/user/register.css';
 		$settings["js_file"] = $project_common_url_prefix . 'module/user/register.js';
 		$settings["class"] = "module_register";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		
 		$settings["allow_insertion"] = true;
+		$settings["redirect_page_url"] = isset($settings["redirect_page_url"]) ? $settings["redirect_page_url"] : null;
 		$settings["on_insert_ok_message"] = array_key_exists("on_insert_ok_message", $settings) ? $settings["on_insert_ok_message"] : "User registered successfully!";
 		$settings["on_insert_ok_action"] = array_key_exists("on_insert_ok_action", $settings) ? $settings["on_insert_ok_action"] : (
 			$settings["redirect_page_url"] ? "alert_message_and_redirect" : "show_message_and_stop"
@@ -161,7 +169,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["on_insert_error_message"] = array_key_exists("on_insert_error_message", $settings) ? $settings["on_insert_error_message"] : "User NOT registered! Please try again...";
 		$settings["on_insert_error_action"] = array_key_exists("on_insert_error_action", $settings) ? $settings["on_insert_error_action"] : "show_message";
 		
-		if (!$settings["buttons"] || !array_key_exists("insert", $settings["buttons"]))
+		if (empty($settings["buttons"]) || !array_key_exists("insert", $settings["buttons"]))
 			$settings["buttons"]["insert"] = array(
 				"field" => array(
 					"class" => "submit_button",
@@ -177,29 +185,29 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$CommonModuleTableExtraAttributesUtil->prepareFileFieldsSettings($EVC, $settings);
 		
-		if ($settings["show_password"]) {
+		if (!empty($settings["show_password"])) {
 			$settings["fields"]["password"]["field"]["input"]["type"] = "password";
 			
-			if ($settings["fields"]["password"]["field"]["input"]["password_generator"])
+			if (!empty($settings["fields"]["password"]["field"]["input"]["password_generator"]))
 				\CMSModule\user\UserModuleUI::addPasswordGeneratorToPasswordField($settings);
 		}
 		
-		if ($settings["show_security_question_1"])
+		if (!empty($settings["show_security_question_1"]))
 			$settings["fields"]["security_question_1"]["field"]["input"]["type"] = "select";
 		
-		if ($settings["show_security_question_2"])
+		if (!empty($settings["show_security_question_2"]))
 			$settings["fields"]["security_question_2"]["field"]["input"]["type"] = "select";
 		
-		if ($settings["show_security_question_3"])
+		if (!empty($settings["show_security_question_3"]))
 			$settings["fields"]["security_question_3"]["field"]["input"]["type"] = "select";
 		
-		if ($settings["show_user_attachments"]) {
+		if (!empty($settings["show_user_attachments"])) {
 			include_once $EVC->getModulePath("attachment/AttachmentUI", $common_project_name);
 			
 			$attachments_settings = array(
-				"style_type" => $settings["style_type"],
-				"class" => $settings["fields"]["user_attachments"]["field"]["class"],
-				"title" => $settings["fields"]["user_attachments"]["field"]["label"]["value"],
+				"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+				"class" => isset($settings["fields"]["user_attachments"]["field"]["class"]) ? $settings["fields"]["user_attachments"]["field"]["class"] : null,
+				"title" => isset($settings["fields"]["user_attachments"]["field"]["label"]["value"]) ? $settings["fields"]["user_attachments"]["field"]["label"]["value"] : null,
 			);
 			
 			unset($settings["fields"]["user_attachments"]["field"]);

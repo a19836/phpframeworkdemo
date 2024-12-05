@@ -37,7 +37,7 @@
 		</function>
 
 		<function name="setDefaultBrokerName">
-			<parameter value="&lt;?php echo $GLOBALS['default_db_broker']; ?>" />
+			<parameter value="&lt;?php echo isset($GLOBALS['default_db_broker']) ? $GLOBALS['default_db_broker'] : ''; ?>" />
 		</function>
 	</bean>
 	

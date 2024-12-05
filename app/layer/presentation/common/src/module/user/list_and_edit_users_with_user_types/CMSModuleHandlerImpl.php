@@ -6,6 +6,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	private $CommonModuleTableExtraAttributesUtil;
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,14 +15,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesUtil", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$this->CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "user");
+		$this->CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "user");
 		$continue = true;
 		
 		//Executing buttons' actions
-		if ($_POST && $_POST["users"]) {
-			$is_insert = $settings["allow_insertion"] && $_POST["save"];
-			$is_update = $settings["allow_update"] && $_POST["save"];
-			$is_delete = $settings["allow_deletion"] && $_POST["delete"];
+		if (!empty($_POST) && !empty($_POST["users"])) {
+			$is_insert = !empty($settings["allow_insertion"]) && !empty($_POST["save"]);
+			$is_update = !empty($settings["allow_update"]) && !empty($_POST["save"]);
+			$is_delete = !empty($settings["allow_deletion"]) && !empty($_POST["delete"]);
 				
 			if ($is_insert || $is_update || $is_delete) {
 				$to_insert = array();
@@ -31,23 +32,23 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$files_to_update = array();
 				$user_ids_to_load = array();
 				
-				$files = $this->CommonModuleTableExtraAttributesUtil->convertMultipleFilesToFormattedArray($_FILES["users"]);
+				$files = $this->CommonModuleTableExtraAttributesUtil->convertMultipleFilesToFormattedArray(isset($_FILES["users"]) ? $_FILES["users"] : null);
 				
 				foreach ($_POST["users"] as $idx => $user) 
-					if ($user["selected_item"]) {
-						if ($user["user_id"]) {
-							if ($settings["allow_deletion"] && $_POST["delete"])
+					if (!empty($user["selected_item"])) {
+						if (!empty($user["user_id"])) {
+							if (!empty($settings["allow_deletion"]) && !empty($_POST["delete"]))
 								$to_delete[] = $user;
-							else if ($settings["allow_update"] && $_POST["save"]) {
+							else if (!empty($settings["allow_update"]) && !empty($_POST["save"])) {
 								$to_update[] = $user;
 								$files_to_update[] = $files[$idx];
 								$user_ids_to_load[] = $user["user_id"];
 							}
 						}
-						else if ($settings["allow_insertion"] && $_POST["save"]) {
+						else if (!empty($settings["allow_insertion"]) && !empty($_POST["save"])) {
 							$to_insert[] = $user;
 							$files_to_insert[] = $files[$idx];
-							$user_ids_to_load[] = $user["user_id"];
+							$user_ids_to_load[] = isset($user["user_id"]) ? $user["user_id"] : null;
 						}
 					}
 					
@@ -60,14 +61,15 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$loaded_users = \UserUtil::getUsersWithUserTypesByConditions($brokers, array("user_id" => array(
 							"operator" => "in",
 							"value" => $user_ids_to_load,
-						)), null, $options);
+						)), null);
 						
 						if ($loaded_users)
 							foreach ($loaded_users as $loaded_user) {
-								if ($loaded_user["user_type_ids"])
-									$loaded_user["user_type_ids"] = explode(",", $row["user_type_ids"]);
+								if (!empty($loaded_user["user_type_ids"]))
+									$loaded_user["user_type_ids"] = explode(",", $loaded_user["user_type_ids"]);
 								
-								$old_users[ $loaded_user["user_id"] ] = $loaded_user;
+								$loaded_user_id = isset($loaded_user["user_id"]) ? $loaded_user["user_id"] : null;
+								$old_users[$loaded_user_id] = $loaded_user;
 							}
 					}
 					
@@ -75,26 +77,34 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						if (!$this->deleteUser($EVC, $settings, $brokers, $user))
 							$status = false;
 					
-					foreach ($to_update as $idx => $user) 
-						if (!$this->editUser($EVC, $settings, $brokers, $old_users[ $user["user_id"] ], $user, $files_to_update[$idx], $error_message))
+					foreach ($to_update as $idx => $user) {
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$old_user = isset($old_users[$user_id]) ? $old_users[$user_id] : null;
+						
+						if (!$this->editUser($EVC, $settings, $brokers, $old_user, $user, $files_to_update[$idx], $error_message))
 							$status = false;
+					}
 					
-					foreach ($to_insert as $idx => $user) 
-						if (!$this->editUser($EVC, $settings, $brokers, $old_users[ $user["user_id"] ], $user, $files_to_insert[$idx], $error_message))
+					foreach ($to_insert as $idx => $user) {
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$old_user = isset($old_users[$user_id]) ? $old_users[$user_id] : null;
+						
+						if (!$this->editUser($EVC, $settings, $brokers, $old_user, $user, $files_to_insert[$idx], $error_message))
 							$status = false;
+					}
 					
 					if ($status)
 						//Add Join Point creating a new action of some kind
 						$status = $EVC->getCMSLayer()->getCMSJoinPointLayer()->includeStatusJoinPoint("On successfull user action", array(
 							"EVC" => &$EVC,
-							"POST" => $_POST,
+							"POST" => isset($_POST) ? $_POST : null,
 							"users_to_delete" => $to_delete,
 							"users_to_update" => $to_update,
 							"users_to_insert" => $to_insert,
 							"error_message" => &$error_message,
 						));
 					
-					if ($error_message)
+					if (!empty($error_message))
 						$msg = \CommonModuleUI::getModuleMessagesHtml($EVC, null, $error_message);
 					else {
 						if ($to_insert && !$to_update)
@@ -117,7 +127,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["css_file"] = $project_common_url_prefix . 'module/user/list_and_edit_users_with_user_types.css';
 		$settings["class"] = "module_list_and_edit_users_with_user_types";
 		$settings["show_edit_button"] = $settings["edit_page_url"] = $settings["show_delete_button"] = null;
-		$settings["previous_html"] = $msg;
+		$settings["previous_html"] = isset($msg) ? $msg : null;
 		
 		$html = "";
 		
@@ -127,7 +137,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			//Getting data
 			$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 			
-			$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+			$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 			$settings["rows_per_page"] = 50;
 			
 			$options = array(
@@ -136,31 +146,36 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				"sort" => null
 			);
 			
-			switch ($settings["query_type"]) {
+			$query_type = isset($settings["query_type"]) ? $settings["query_type"] : null;
+			$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+			$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+			$group = isset($settings["group"]) ? $settings["group"] : null;
+			
+			switch ($query_type) {
 				case "user_by_user_type": 
-					if ($settings["user_type_id"]) {
+					if (!empty($settings["user_type_id"])) {
 						$settings["total"] = \UserUtil::countUsersByUserTypesAndConditions($brokers, array($settings["user_type_id"]), $conditions, null);
 						$settings["data"] = \UserUtil::getUsersByUserTypesAndConditions($brokers, array($settings["user_type_id"]), $conditions, null, $options);
 					}
 					break;
 				case "parent": 
-					$settings["total"] = \UserUtil::countUsersByObjectAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $conditions, null);
-					$settings["data"] = \UserUtil::getUsersByObjectAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $conditions, null, $options);
+					$settings["total"] = \UserUtil::countUsersByObjectAndConditions($brokers, $object_type_id, $object_id, $conditions, null);
+					$settings["data"] = \UserUtil::getUsersByObjectAndConditions($brokers, $object_type_id, $object_id, $conditions, null, $options);
 					break;
 				case "parent_group": 
-					$settings["total"] = \UserUtil::countUsersByObjectGroupAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], $conditions, null);
-					$settings["data"] = \UserUtil::getUsersByObjectGroupAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], $conditions, null, $options);
+					$settings["total"] = \UserUtil::countUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group, $conditions, null);
+					$settings["data"] = \UserUtil::getUsersByObjectGroupAndConditions($brokers, $object_type_id, $object_id, $group, $conditions, null, $options);
 					break;
 				case "parent_and_user_type": 
-					if ($settings["user_type_id"]) {
-						$settings["total"] = \UserUtil::countUsersByObjectAndUserTypesAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], array($settings["user_type_id"]), $conditions, null);
-						$settings["data"] = \UserUtil::getUsersByObjectAndUserTypesAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], array($settings["user_type_id"]), $conditions, null, $options);
+					if (!empty($settings["user_type_id"])) {
+						$settings["total"] = \UserUtil::countUsersByObjectAndUserTypesAndConditions($brokers, $object_type_id, $object_id, array($settings["user_type_id"]), $conditions, null);
+						$settings["data"] = \UserUtil::getUsersByObjectAndUserTypesAndConditions($brokers, $object_type_id, $object_id, array($settings["user_type_id"]), $conditions, null, $options);
 					}
 					break;
 				case "parent_group_and_user_type": 
-					if ($settings["user_type_id"]) {
-						$settings["total"] = \UserUtil::countUsersByObjectGroupAndUserTypesAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], array($settings["user_type_id"]), $conditions, null);
-						$settings["data"] = \UserUtil::getUsersByObjectGroupAndUserTypesAndConditions($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], array($settings["user_type_id"]), $conditions, null, $options);
+					if (!empty($settings["user_type_id"])) {
+						$settings["total"] = \UserUtil::countUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group, array($settings["user_type_id"]), $conditions, null);
+						$settings["data"] = \UserUtil::getUsersByObjectGroupAndUserTypesAndConditions($brokers, $object_type_id, $object_id, $group, array($settings["user_type_id"]), $conditions, null, $options);
 					}
 					break;
 				default:
@@ -169,14 +184,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 			
 			//prepare data
-			if ($settings["data"]) {
+			if (!empty($settings["data"])) {
 				foreach ($settings["data"] as $idx => $row)
-					if ($row["user_type_ids"])
+					if (!empty($row["user_type_ids"]))
 						$settings["data"][$idx]["user_type_ids"] = explode(",", $row["user_type_ids"]);
 				
 				//Getting User Extra Details
 				$this->CommonModuleTableExtraAttributesUtil->prepareItemsWithTableExtra($settings["data"], "user_id");
 			}
+			else
+				$settings["data"] = null;
 			
 			//Add Join Point
 			$EVC->getCMSLayer()->getCMSJoinPointLayer()->includeJoinPoint("Preparing user data", array(
@@ -193,17 +210,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$reserved_user_type_ids = \UserUtil::getReservedUserTypeIds();
 				
 				$t = count($user_types);
-				for ($i = 0; $i < $t; $i++)
-					if (!in_array($user_types[$i]["user_type_id"], $reserved_user_type_ids))
-						$user_type_options[] = array("value" => $user_types[$i]["user_type_id"], "label" => $user_types[$i]["name"]);
+				for ($i = 0; $i < $t; $i++) {
+					$user_type_id = isset($user_types[$i]["user_type_id"]) ? $user_types[$i]["user_type_id"] : null;
+					$user_type_name = isset($user_types[$i]["name"]) ? $user_types[$i]["name"] : null;
+					
+					if (!in_array($user_type_id, $reserved_user_type_ids))
+						$user_type_options[] = array("value" => $user_type_id, "label" => $user_type_name);
+				}
 			}
 			$settings["fields"]["user_type_ids"]["field"]["input"]["options"] = $user_type_options;
 			
 			//prepare buttons
 			$buttons = array();
 			
-			if ($settings["allow_update"] && $settings["total"]) {
-				$button = $settings["buttons"]["update"]["field"] ? $settings["buttons"]["update"] : array(
+			if (!empty($settings["allow_update"]) && !empty($settings["total"])) {
+				$button = !empty($settings["buttons"]["update"]["field"]) ? $settings["buttons"]["update"] : array(
 					"field" => array(
 						"class" => "submit_button",
 						"input" => array(
@@ -216,8 +237,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				
 				$buttons["update"] = $button;
 			}
-			else if ($settings["allow_insertion"]) {
-				$button = $settings["buttons"]["insert"]["field"] ? $settings["buttons"]["insert"] : array(
+			else if (!empty($settings["allow_insertion"])) {
+				$button = !empty($settings["buttons"]["insert"]["field"]) ? $settings["buttons"]["insert"] : array(
 					"field" => array(
 						"class" => "submit_button",
 						"input" => array(
@@ -231,8 +252,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$buttons["insert"] = $button;
 			}
 
-			if ($settings["allow_deletion"] && $settings["total"]) {
-				$button = $settings["buttons"]["delete"]["field"] ? $settings["buttons"]["delete"] : array(
+			if (!empty($settings["allow_deletion"]) && !empty($settings["total"])) {
+				$button = !empty($settings["buttons"]["delete"]["field"]) ? $settings["buttons"]["delete"] : array(
 					"field" => array(
 						"class" => "submit_button",
 						"input" => array(
@@ -254,8 +275,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			
 			$HtmlFormHandler = null;
 			
-			if ($settings["ptl"]) {
+			if (!empty($settings["ptl"])) {
 				$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
+				
+				$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 				
 				foreach ($buttons as $button_name => $button)
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $button_name, $button, $settings["data"]);
@@ -291,11 +314,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			//prepare javascript for insert icon
 			$tr = '';
 			
-			if ($settings["allow_insertion"]) {
+			if (!empty($settings["allow_insertion"])) {
 				$HtmlFormHandler = new \HtmlFormHandler(array("parse_values" => false));
 				$fields_aux = $settings["fields"];
 				
-				if (!$fields_aux["selected_item"]["field"]["input"]["extra_attributes"])
+				if (empty($fields_aux["selected_item"]["field"]["input"]["extra_attributes"]))
 					$fields_aux["selected_item"]["field"]["input"]["extra_attributes"] = array();
 				
 				$fields_aux["selected_item"]["field"]["input"]["extra_attributes"][] = array("name" => "checked", "value" => "");
@@ -304,8 +327,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				
 				$tr = '<tr>';
 				foreach ($fields_aux as $field_name => $field) 
-					if ($settings["show_" . $field_name]) {
-						$class = ' class="list_column' . ($field["field"]["class"] ? ' ' . str_replace('"', '&quot;', $HtmlFormHandler->getParsedValueFromData($field["field"]["class"], null)) : '') . '"';
+					if (!empty($settings["show_" . $field_name])) {
+						$class = ' class="list_column' . (!empty($field["field"]["class"]) ? ' ' . str_replace('"', '&quot;', $HtmlFormHandler->getParsedValueFromData($field["field"]["class"], null)) : '') . '"';
 						$field["field"]["class"] = "";
 						$field["field"]["disable_field_group"] = 1;
 						$field["field"]["label"] = null;
@@ -333,10 +356,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 	
 	private function deleteUser($EVC, $settings, $brokers, $user) {
-		$status = \UserUtil::deleteUser($EVC, $user["user_id"], $brokers);
+		$status = false;
 		
-		if ($status && $user["user_id"])
-			$status = $this->CommonModuleTableExtraAttributesUtil->deleteTableExtra(array("user_id" => $user["user_id"]));
+		if (!empty($user["user_id"])) {
+			$status = \UserUtil::deleteUser($EVC, $user["user_id"], $brokers);
+			
+			if ($status)
+				$status = $this->CommonModuleTableExtraAttributesUtil->deleteTableExtra(array("user_id" => $user["user_id"]));
+		}
 		
 		return $status;
 	}
@@ -345,18 +372,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	private function editUser($EVC, $settings, $brokers, $old_user, $new_user, $files, &$error_message) {
 		$status = true;
 		
-		$user_type_ids = $new_user["user_type_ids"];
-		$username = strtolower(trim($new_user["username"]));
-		$password = trim($new_user["password"]);
-		$name = $new_user["name"];
-		$email = strtolower($new_user["email"]);
-		$security_question_1 = $new_user["security_question_1"];
-		$security_answer_1 = $new_user["security_answer_1"];
-		$security_question_2 = $new_user["security_question_2"];
-		$security_answer_2 = $new_user["security_answer_2"];
-		$security_question_3 = $new_user["security_question_3"];
-		$security_answer_3 = $new_user["security_answer_3"];
-		$active = $new_user["active"];
+		$user_type_ids = isset($new_user["user_type_ids"]) ? $new_user["user_type_ids"] : null;
+		$username = isset($new_user["username"]) ? strtolower(trim($new_user["username"])) : null;
+		$password = isset($new_user["password"]) ? trim($new_user["password"]) : null;
+		$name = isset($new_user["name"]) ? $new_user["name"] : null;
+		$email = isset($new_user["email"]) ? strtolower($new_user["email"]) : null;
+		$security_question_1 = isset($new_user["security_question_1"]) ? $new_user["security_question_1"] : null;
+		$security_answer_1 = isset($new_user["security_answer_1"]) ? $new_user["security_answer_1"] : null;
+		$security_question_2 = isset($new_user["security_question_2"]) ? $new_user["security_question_2"] : null;
+		$security_answer_2 = isset($new_user["security_answer_2"]) ? $new_user["security_answer_2"] : null;
+		$security_question_3 = isset($new_user["security_question_3"]) ? $new_user["security_question_3"] : null;
+		$security_answer_3 = isset($new_user["security_answer_3"]) ? $new_user["security_answer_3"] : null;
+		$active = isset($new_user["active"]) ? $new_user["active"] : null;
 		
 		$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_type_ids" => $user_type_ids, "username" => $username, /*"password" => $password, */"name" => $name, "email" => $email, "security_question_1" => $security_question_1, "security_answer_1" => $security_answer_1, "security_question_2" => $security_question_2, "security_answer_2" => $security_answer_2, "security_question_3" => $security_question_3, "security_answer_3" => $security_answer_3, "active" => $active), $files);
 		
@@ -368,12 +395,12 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		else {
 			$new_data = $old_user ? $old_user : array();
 		
-			if ($settings["show_username"]) {
+			if (!empty($settings["show_username"])) {
 				if (empty($username))
 					$new_data["username"] = $username;
-				else if (strtolower($old_user["username"]) != strtolower($username)) {
-					$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, true);
-					$user_exists = $users[0]["user_id"];
+				else if (!isset($old_user["username"]) || strtolower($old_user["username"]) != strtolower($username)) {
+					$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, isset($settings["user_environments"]) ? $settings["user_environments"] : null, array("username" => $username), null, null, true);
+					$user_exists = !empty($users[0]["user_id"]);
 		
 					if ($user_exists) {
 						$username_label = \CommonModuleUI::getFieldLabel($settings, "username");
@@ -385,38 +412,40 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 			}
 		
-			if (!$error_message) {
-				$new_data["password"] = $settings["show_password"] ? (strlen($password) ? $password : $new_data["password"]) : $new_data["password"];
-				$new_data["name"] = $settings["show_name"] ? $name : $new_data["name"];
-				$new_data["email"] = $settings["show_email"] ? $email : $new_data["email"];
-				$new_data["security_question_1"] = $settings["show_security_question_1"] ? $security_question_1 : $new_data["security_question_1"];
-				$new_data["security_answer_1"] = $settings["show_security_answer_1"] ? $security_answer_1 : $new_data["security_answer_1"];
-				$new_data["security_question_2"] = $settings["show_security_question_2"] ? $security_question_2 : $new_data["security_question_2"];
-				$new_data["security_answer_2"] = $settings["show_security_answer_2"] ? $security_answer_2 : $new_data["security_answer_2"];
-				$new_data["security_question_3"] = $settings["show_security_question_3"] ? $security_question_3 : $new_data["security_question_3"];
-				$new_data["security_answer_3"] = $settings["show_security_answer_3"] ? $security_answer_3 : $new_data["security_answer_3"];
+			if (empty($error_message)) {
+				$new_data["password"] = isset($new_data["password"]) ? $new_data["password"] : null;
+				$new_data["password"] = !empty($settings["show_password"]) ? (strlen($password) ? $password : $new_data["password"]) : $new_data["password"];
+				$new_data["name"] = !empty($settings["show_name"]) ? $name : (isset($new_data["name"]) ? $new_data["name"] : null);
+				$new_data["email"] = !empty($settings["show_email"]) ? $email : (isset($new_data["email"]) ? $new_data["email"] : null);
+				$new_data["security_question_1"] = !empty($settings["show_security_question_1"]) ? $security_question_1 : (isset($new_data["security_question_1"]) ? $new_data["security_question_1"] : null);
+				$new_data["security_answer_1"] = !empty($settings["show_security_answer_1"]) ? $security_answer_1 : (isset($new_data["security_answer_1"]) ? $new_data["security_answer_1"] : null);
+				$new_data["security_question_2"] = !empty($settings["show_security_question_2"]) ? $security_question_2 : (isset($new_data["security_question_2"]) ? $new_data["security_question_2"] : null);
+				$new_data["security_answer_2"] = !empty($settings["show_security_answer_2"]) ? $security_answer_2 : (isset($new_data["security_answer_2"]) ? $new_data["security_answer_2"] : null);
+				$new_data["security_question_3"] = !empty($settings["show_security_question_3"]) ? $security_question_3 : (isset($new_data["security_question_3"]) ? $new_data["security_question_3"] : null);
+				$new_data["security_answer_3"] = !empty($settings["show_security_answer_3"]) ? $security_answer_3 : (isset($new_data["security_answer_3"]) ? $new_data["security_answer_3"] : null);
 				
-				$new_data["active"] = $settings["show_active"] ? $active : $new_data["active"];
-				$new_data["user_type_ids"] = $settings["show_user_type_ids"] ? $user_type_ids : $new_data["user_type_ids"];
+				$new_data["active"] = !empty($settings["show_active"]) ? $active : (isset($new_data["active"]) ? $new_data["active"] : null);
+				$new_data["user_type_ids"] = !empty($settings["show_user_type_ids"]) ? $user_type_ids : (isset($new_data["user_type_ids"]) ? $new_data["user_type_ids"] : null);
 				
 				$this->CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $new_data, $old_user, $new_user);
 				
 				\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data, $files);
 				
 				if (strlen($new_data["active"]) == 0) //if active is allow_null and is a checkbox the POST will not contain the active field and bc is allow null, the prepareFieldsWithDefaultValue won't set the default value. So we need to do it manually.
-					$new_data["active"] = is_numeric($settings["active_default_value"]) ? $settings["active_default_value"] : 0;
+					$new_data["active"] = isset($settings["active_default_value"]) && is_numeric($settings["active_default_value"]) ? $settings["active_default_value"] : 0;
 				
 				$active = $new_data["active"]; //set $active with default values with apply
+				$inserted_user_id = null;
 				
-				if (empty($new_data["user_type_ids"]))
+				if ($new_data["user_type_ids"])
 					$new_data["user_type_ids"] = \UserUtil::PUBLIC_USER_TYPE_ID;
 				
 				if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message, $files) && $this->CommonModuleTableExtraAttributesUtil->areFileFieldsValid($EVC, $settings, $error_message, $files)) {
-					$new_data["object_users"] = isset($new_data["object_users"]) ? $new_data["object_users"] : $settings["object_to_objects"];
-					$new_data["user_environments"] = isset($new_data["user_environments"]) ? $new_data["user_environments"] : $settings["user_environments"];
-					$new_data["do_not_encrypt_password"] = $settings["do_not_encrypt_password"];
+					$new_data["object_users"] = isset($new_data["object_users"]) ? $new_data["object_users"] : (isset($settings["object_to_objects"]) ? $settings["object_to_objects"] : null);
+					$new_data["user_environments"] = isset($new_data["user_environments"]) ? $new_data["user_environments"] : (isset($settings["user_environments"]) ? $settings["user_environments"] : null);
+					$new_data["do_not_encrypt_password"] = isset($settings["do_not_encrypt_password"]) ? $settings["do_not_encrypt_password"] : null;
 					
-					if ($settings["allow_insertion"] && empty($old_user["user_id"])) {
+					if (!empty($settings["allow_insertion"]) && empty($old_user["user_id"])) {
 						$status = \UserUtil::insertUser($EVC, $new_data, $brokers);
 						$inserted_user_id = $status;
 						
@@ -430,15 +459,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 								$status = false;
 						}
 					}
-					else if ($settings["allow_update"] && $old_user["user_id"] && \UserUtil::updateUser($EVC, $new_data, $brokers)) {
-						if ($settings["show_password"] && strlen($new_data["password"])) {
+					else if (!empty($settings["allow_update"]) && !empty($old_user["user_id"]) && \UserUtil::updateUser($EVC, $new_data, $brokers)) {
+						if (!empty($settings["show_password"]) && strlen($new_data["password"])) {
 							//only update password if exists any change
-							if (!$new_data["do_not_encrypt_password"] || $old_user["password"] != $new_data["password"])
+							if (empty($new_data["do_not_encrypt_password"]) || !isset($old_user["password"]) || $old_user["password"] != $new_data["password"])
 								$status = \UserUtil::updateUserPassword($brokers, $new_data);
 						}
 						
-						if ($status && $old_user["user_type_ids"] != $new_data["user_type_ids"]) {
-							$status = !$old_user["user_type_ids"] || \UserUtil::deleteUserUserTypesByConditions($brokers, array("user_id" => $old_user["user_id"]), null);
+						$old_user_type_ids = isset($old_user["user_type_ids"]) ? $old_user["user_type_ids"] : null;
+						
+						if ($status && $$old_user_type_ids != $new_data["user_type_ids"]) {
+							$status = !$$old_user_type_ids || \UserUtil::deleteUserUserTypesByConditions($brokers, array("user_id" => $old_user["user_id"]), null);
 							
 							if ($new_data["user_type_ids"]) {
 								if (is_array($new_data["user_type_ids"])) {
@@ -454,7 +485,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 				
 				if ($status) {
-					$user_id = $settings["allow_insertion"] && empty($old_user["user_id"]) ? $inserted_user_id : $old_user["user_id"];
+					$user_id = !empty($settings["allow_insertion"]) && empty($old_user["user_id"]) ? $inserted_user_id : (isset($old_user["user_id"]) ? $old_user["user_id"] : null);
 					
 					//save user extra
 					$new_extra_data = $new_data;
@@ -465,14 +496,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					if (!$s) //note that on insert the status contains the new user id
 						$status = false;
 					
-					if ($settings["show_username"] && $username && strtolower($old_user["username"]) != strtolower($username))
+					if (!empty($settings["show_username"]) && $username && (!isset($old_user["username"]) || strtolower($old_user["username"]) != strtolower($username)))
 						\UserUtil::changeUserSessionUsernameByUsername($brokers, $settings, $old_user["username"], $username);
 					
 					//save user active status
-					if ($settings["show_active"]) 
+					if (!empty($settings["show_active"])) 
 						$status = \UserUtil::updateUserActiveStatus($brokers, array("user_id" => $user_id, "active" => $active));
 				}
-				else if ($settings["allow_insertion"] && empty($old_user["user_id"]) && $inserted_user_id)
+				else if (!empty($settings["allow_insertion"]) && empty($old_user["user_id"]) && $inserted_user_id)
 					\UserUtil::deleteUser($EVC, $inserted_user_id, $brokers);
 			}
 		}

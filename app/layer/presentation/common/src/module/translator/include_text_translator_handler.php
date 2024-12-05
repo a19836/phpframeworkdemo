@@ -3,7 +3,7 @@ function translateText($EVC, $text, $category = null, $lang = null) {
 	if ($text) {
 		initTextTranslatorHandler($EVC);
 		
-		return $GLOBALS["TextTranslatorHandler"] ? $GLOBALS["TextTranslatorHandler"]->translateText($text, $category, $lang) : $text;
+		return !empty($GLOBALS["TextTranslatorHandler"]) ? $GLOBALS["TextTranslatorHandler"]->translateText($text, $category, $lang) : $text;
 	}
 	
 	return $text;
@@ -13,7 +13,7 @@ function translateCategoryText($EVC, $text, $category = null, $lang = null) {
 	if ($text) {
 		initTextTranslatorHandler($EVC);
 		
-		return $GLOBALS["TextTranslatorHandler"] ? $GLOBALS["TextTranslatorHandler"]->translateCategoryText($text, $category, $lang) : $text;
+		return !empty($GLOBALS["TextTranslatorHandler"]) ? $GLOBALS["TextTranslatorHandler"]->translateCategoryText($text, $category, $lang) : $text;
 	}
 	
 	return $text;
@@ -23,7 +23,7 @@ function translateProjectLabel($EVC, $text, $project = null, $lang = null) {
 	if ($text) {
 		initTextTranslatorHandler($EVC);
 		
-		return $GLOBALS["TextTranslatorHandler"] ? $GLOBALS["TextTranslatorHandler"]->translateProjectLabel($text, $project, $lang) : $text;
+		return !empty($GLOBALS["TextTranslatorHandler"]) ? $GLOBALS["TextTranslatorHandler"]->translateProjectLabel($text, $project, $lang) : $text;
 	}
 	
 	return $text;
@@ -33,7 +33,7 @@ function translateProjectText($EVC, $text, $project = null, $lang = null) {
 	if ($text) {
 		initTextTranslatorHandler($EVC);
 		
-		return $GLOBALS["TextTranslatorHandler"] ? $GLOBALS["TextTranslatorHandler"]->translateProjectText($text, $project, $lang) : $text;
+		return !empty($GLOBALS["TextTranslatorHandler"]) ? $GLOBALS["TextTranslatorHandler"]->translateProjectText($text, $project, $lang) : $text;
 	}
 	
 	return $text;
@@ -43,7 +43,7 @@ function translateProjectFormSettings($EVC, &$form_settings, $project = null, $l
 	if ($form_settings) {
 		initTextTranslatorHandler($EVC);
 		
-		if ($GLOBALS["TextTranslatorHandler"])
+		if (!empty($GLOBALS["TextTranslatorHandler"]))
 			$GLOBALS["TextTranslatorHandler"]->translateProjectFormSettings($form_settings, $project, $lang);
 	}
 }
@@ -52,13 +52,13 @@ function translateProjectFormSettingsElement($EVC, &$form_element, $project = nu
 	if ($form_element) {
 		initTextTranslatorHandler($EVC);
 		
-		if ($GLOBALS["TextTranslatorHandler"])
+		if (!empty($GLOBALS["TextTranslatorHandler"]))
 			$GLOBALS["TextTranslatorHandler"]->translateProjectFormElement($form_element, $project, $lang);
 	}
 }
 
 function initTextTranslatorHandler($EVC) {
-	if (!$GLOBALS["TextTranslatorHandler"]) {
+	if (empty($GLOBALS["TextTranslatorHandler"])) {
 		include_once $EVC->getModulePath("translator/TextTranslatorHandler", $EVC->getCommonProjectName());
 		include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler");
 		

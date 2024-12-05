@@ -4,6 +4,7 @@ namespace CMSModule\comment\list_object_comments;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,7 +17,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \CommentUtil::countObjectCommentsByConditions($brokers, $conditions, null) : \CommentUtil::countAllObjectComments($brokers);
 		
@@ -29,10 +30,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$settings["css_file"] = $project_common_url_prefix . 'module/comment/list_object_comments.css';
 		$settings["class"] = "module_list_object_comments";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "comment_id=#[idx][comment_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "comment_id=#[idx][comment_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/comment/list_object_comments/delete_object_comment?comment_id=#[idx][comment_id]#&object_type_id=#[idx][object_type_id]#&object_id=#[idx][object_id]#";
 		
-		if ($settings["show_object_type_id"]) 
+		if (!empty($settings["show_object_type_id"])) 
 			\CommonModuleUtil::prepareObjectTypeIdListSettingsField($EVC, $settings);
 			
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "comment/list_object_comments", $settings);

@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once get_lib("org.phpframework.db.DB"); $extensions = DB::getAllExtensionsByType(); $encodings = DB::getAllDBCharsetsByType(); $driver_labels = DB::getAllDriverLabelsByType(); $ignore_connection_options = DB::getAllIgnoreConnectionOptionsByType(); $ignore_connection_options_by_extension = DB::getAllIgnoreConnectionOptionsByExtensionAndType(); echo '<script>
+include_once get_lib("org.phpframework.db.DB"); $extensions = DB::getAllExtensionsByType(); $encodings = DB::getAllDBConnectionEncodingsByType(); $driver_labels = DB::getAllDriverLabelsByType(); $ignore_connection_options = DB::getAllIgnoreConnectionOptionsByType(); $ignore_connection_options_by_extension = DB::getAllIgnoreConnectionOptionsByExtensionAndType(); echo '<script>
 DBDriverTaskPropertyObj.encodings = ' . json_encode($encodings) . ';
 DBDriverTaskPropertyObj.extensions = ' . json_encode($extensions) . ';
 DBDriverTaskPropertyObj.ignore_options = ' . json_encode($ignore_connection_options) . ';
@@ -24,7 +24,7 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 		<label>Connection Type:</label>
 		<select class="task_property_field" name="extension" onChange="DBDriverTaskPropertyObj.onChangeExtension(this)">
 		<?php
- if ($first_driver_type) { $first_driver_extensions = $extensions[$first_driver_type]; foreach ($first_driver_extensions as $idx => $value) echo '<option value="' . $value . '">' . $value . ($idx == 0 ? " - Default" : "") . '</option>'; } ?>
+ if ($first_driver_type) { $first_driver_extensions = isset($extensions[$first_driver_type]) ? $extensions[$first_driver_type] : null; foreach ($first_driver_extensions as $idx => $value) echo '<option value="' . $value . '">' . $value . ($idx == 0 ? " - Default" : "") . '</option>'; } ?>
 		</select>
 	</div>
 
@@ -83,7 +83,7 @@ DBDriverTaskPropertyObj.ignore_options_by_extension = ' . json_encode($ignore_co
 		<select class="task_property_field" name="encoding">
 			<option value="">-- Default --</option>
 		<?php
- if ($first_driver_type) { $first_driver_encodings = $encodings[$first_driver_type]; foreach ($first_driver_encodings as $enc => $label) echo '<option value="' . $enc . '">' . $label . '</option>'; } ?>
+ if ($first_driver_type) { $first_driver_encodings = isset($encodings[$first_driver_type]) ? $encodings[$first_driver_type] : null; foreach ($first_driver_encodings as $enc => $label) echo '<option value="' . $enc . '">' . $label . '</option>'; } ?>
 		</select>
 	</div>
 	

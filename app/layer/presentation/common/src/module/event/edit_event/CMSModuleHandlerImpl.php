@@ -4,6 +4,7 @@ namespace CMSModule\event\edit_event;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,12 +15,12 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesUtil", $common_project_name);
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "event");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "event");
 		
 		//Getting Event Details
-		$event_id = $_GET["event_id"];
+		$event_id = isset($_GET["event_id"]) ? $_GET["event_id"] : null;
 		$data = \EventUtil::getEventProperties($EVC, $event_id, true);
-		$photo_url = $data["photo_url"];
+		$photo_url = isset($data["photo_url"]) ? $data["photo_url"] : null;
 		
 		//Getting Event Extra Details
 		if ($data) {
@@ -28,39 +29,41 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		//Preparing Action
-		if ($_POST) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
-				$status = !$data || \EventUtil::deleteEvent($EVC, $data["event_id"]);
+		if (!empty($_POST)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
+				$data_event_id = isset($data["event_id"]) ? $data["event_id"] : null;
 				
-				if ($status && $data["event_id"])
-					$status = $CommonModuleTableExtraAttributesUtil->deleteTableExtra(array("event_id" => $data["event_id"]));
+				$status = !$data || \EventUtil::deleteEvent($EVC, $data_event_id);
+				
+				if ($status && $data_event_id)
+					$status = $CommonModuleTableExtraAttributesUtil->deleteTableExtra(array("event_id" => $data_event_id));
 				
 				if ($status) {
 					//Add Join Point creating a new action of some kind
 					$status = $EVC->getCMSLayer()->getCMSJoinPointLayer()->includeStatusJoinPoint("On successfull event deleting action", array(
 						"EVC" => &$EVC,
-						"event_id" => $data["event_id"],
+						"event_id" => $data_event_id,
 						"event_data" => &$data,
 						"error_message" => &$error_message,
 					));
 				}
 			}
-			else if ($_POST["save"]) {
-				$title = $_POST["title"];
-				$sub_title = $_POST["sub_title"];
-				$published = $_POST["published"];
-				$tags = $_POST["tags"];
-				$photo_id = $_POST["photo_id"];
-				$description = $_POST["description"];
-				$address = $_POST["address"];
-				$zip_id = $_POST["zip_id"];
-				$locality = $_POST["locality"];
-				$country_id = $_POST["country_id"];
-				$latitude = $_POST["latitude"];
-				$longitude = $_POST["longitude"];
-				$begin_date = $_POST["begin_date"];
-				$end_date = $_POST["end_date"];
-				$allow_comments = $_POST["allow_comments"];
+			else if (!empty($_POST["save"])) {
+				$title = isset($_POST["title"]) ? $_POST["title"] : null;
+				$sub_title = isset($_POST["sub_title"]) ? $_POST["sub_title"] : null;
+				$published = isset($_POST["published"]) ? $_POST["published"] : null;
+				$tags = isset($_POST["tags"]) ? $_POST["tags"] : null;
+				$photo_id = isset($_POST["photo_id"]) ? $_POST["photo_id"] : null;
+				$description = isset($_POST["description"]) ? $_POST["description"] : null;
+				$address = isset($_POST["address"]) ? $_POST["address"] : null;
+				$zip_id = isset($_POST["zip_id"]) ? $_POST["zip_id"] : null;
+				$locality = isset($_POST["locality"]) ? $_POST["locality"] : null;
+				$country_id = isset($_POST["country_id"]) ? $_POST["country_id"] : null;
+				$latitude = isset($_POST["latitude"]) ? $_POST["latitude"] : null;
+				$longitude = isset($_POST["longitude"]) ? $_POST["longitude"] : null;
+				$begin_date = isset($_POST["begin_date"]) ? $_POST["begin_date"] : null;
+				$end_date = isset($_POST["end_date"]) ? $_POST["end_date"] : null;
+				$allow_comments = isset($_POST["allow_comments"]) ? $_POST["allow_comments"] : null;
 				
 				$photo_id = $photo_id ? $photo_id : 0;
 				$begin_date = $begin_date == '0000-00-00 00:00:00' ? '' : $begin_date;
@@ -75,27 +78,27 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					$error_message = \CommonModuleUI::getFieldValidationMessage($EVC, $settings, $empty_field_name);
 				else {
 					$new_data = $data;
-					$new_data["title"] = $settings["show_title"] ? $title : $new_data["title"];
-					$new_data["sub_title"] = $settings["show_sub_title"] ? $sub_title : $new_data["sub_title"];
-					$new_data["published"] = $settings["show_published"] ? $published : $new_data["published"];
-					$new_data["tags"] = $settings["show_tags"] ? $tags : $new_data["tags"];
-					$new_data["photo_id"] = $settings["show_photo_id"] ? $photo_id : $new_data["photo_id"];
-					$new_data["description"] = $settings["show_description"] ? $description : $new_data["description"];
-					$new_data["address"] = $settings["show_address"] ? $address : $new_data["address"];
-					$new_data["zip_id"] = $settings["show_zip_id"] ? $zip_id : $new_data["zip_id"];
-					$new_data["locality"] = $settings["show_locality"] ? $locality : $new_data["locality"];
-					$new_data["country_id"] = $settings["show_country_id"] ? $country_id : $new_data["country_id"];
-					$new_data["latitude"] = $settings["show_latitude"] ? $latitude : $new_data["latitude"];
-					$new_data["longitude"] = $settings["show_longitude"] ? $longitude : $new_data["longitude"];
-					$new_data["begin_date"] = $settings["show_begin_date"] ? $begin_date : $new_data["begin_date"];
-					$new_data["end_date"] = $settings["show_end_date"] ? $end_date : $new_data["end_date"];
-					$new_data["allow_comments"] = $settings["show_allow_comments"] ? $allow_comments : $new_data["allow_comments"];
+					$new_data["title"] = !empty($settings["show_title"]) ? $title : (isset($new_data["title"]) ? $new_data["title"] :null);
+					$new_data["sub_title"] = !empty($settings["show_sub_title"]) ? $sub_title : (isset($new_data["sub_title"]) ? $new_data["sub_title"] :null);
+					$new_data["published"] = !empty($settings["show_published"]) ? $published : (isset($new_data["published"]) ? $new_data["published"] :null);
+					$new_data["tags"] = !empty($settings["show_tags"]) ? $tags : (isset($new_data["tags"]) ? $new_data["tags"] :null);
+					$new_data["photo_id"] = !empty($settings["show_photo_id"]) ? $photo_id : (isset($new_data["photo_id"]) ? $new_data["photo_id"] :null);
+					$new_data["description"] = !empty($settings["show_description"]) ? $description : (isset($new_data["description"]) ? $new_data["description"] :null);
+					$new_data["address"] = !empty($settings["show_address"]) ? $address : (isset($new_data["address"]) ? $new_data["address"] :null);
+					$new_data["zip_id"] = !empty($settings["show_zip_id"]) ? $zip_id : (isset($new_data["zip_id"]) ? $new_data["zip_id"] :null);
+					$new_data["locality"] = !empty($settings["show_locality"]) ? $locality : (isset($new_data["locality"]) ? $new_data["locality"] :null);
+					$new_data["country_id"] = !empty($settings["show_country_id"]) ? $country_id : (isset($new_data["country_id"]) ? $new_data["country_id"] :null);
+					$new_data["latitude"] = !empty($settings["show_latitude"]) ? $latitude : (isset($new_data["latitude"]) ? $new_data["latitude"] :null);
+					$new_data["longitude"] = !empty($settings["show_longitude"]) ? $longitude : (isset($new_data["longitude"]) ? $new_data["longitude"] :null);
+					$new_data["begin_date"] = !empty($settings["show_begin_date"]) ? $begin_date : (isset($new_data["begin_date"]) ? $new_data["begin_date"] :null);
+					$new_data["end_date"] = !empty($settings["show_end_date"]) ? $end_date : (isset($new_data["end_date"]) ? $new_data["end_date"] :null);
+					$new_data["allow_comments"] = !empty($settings["show_allow_comments"]) ? $allow_comments : (isset($new_data["allow_comments"]) ? $new_data["allow_comments"] :null);
 					
 					$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $new_data, $data, $_POST);
 					
 					\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
 					
-					if ($new_data["begin_date"] && $new_data["end_date"]) {
+					if (!empty($new_data["begin_date"]) && !empty($new_data["end_date"])) {
 						$begin_time = strtotime($new_data["begin_date"]);
 						$end_time = strtotime($new_data["end_date"]);
 						
@@ -104,36 +107,34 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					}
 					
 					//check if $_FILES["photo"] is an image
-					if ($_FILES["photo"] && $_FILES["photo"]["tmp_name"]) {
-						$mime_type = $_FILES["photo"]["type"] ? $_FILES["photo"]["type"] : MimeTypeHandler::getFileMimeType($_FILES["photo"]["tmp_name"]);
+					if (!empty($_FILES["photo"]) && !empty($_FILES["photo"]["tmp_name"])) {
+						$mime_type = !empty($_FILES["photo"]["type"]) ? $_FILES["photo"]["type"] : \MimeTypeHandler::getFileMimeType($_FILES["photo"]["tmp_name"]);
 						
 						if (!\MimeTypeHandler::isImageMimeType($mime_type))
 							$error_message = "Upload photo must be an image!";
 					} 
 					
 					if (!$error_message && \CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message) && $CommonModuleTableExtraAttributesUtil->areFileFieldsValid($EVC, $settings, $error_message)) {
-						$new_data["object_events"] = $settings["object_to_objects"];
+						$new_data["object_events"] = isset($settings["object_to_objects"]) ? $settings["object_to_objects"] : null;
 						
-						if ($settings["allow_insertion"] && empty($data["event_id"])) {
-							$status = \EventUtil::setEventProperties($EVC, null, $new_data, $_FILES["photo"]);
-							if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
-								$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "event_id=$status";
+						if (!empty($settings["allow_insertion"]) && empty($data["event_id"])) {
+							$status = \EventUtil::setEventProperties($EVC, null, $new_data, isset($_FILES["photo"]) ? $_FILES["photo"] : null);
+							if (isset($settings["on_insert_ok_action"]) && strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								$settings["on_insert_ok_redirect_url"] .= (isset($settings["on_insert_ok_redirect_url"]) && strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "event_id=$status";
 							}
 						}
-						else if ($settings["allow_update"] && $data["event_id"]) {
-							$status = \EventUtil::setEventProperties($EVC, $data["event_id"], $new_data, $_FILES["photo"]);
+						else if (!empty($settings["allow_update"]) && !empty($data["event_id"])) {
+							$status = \EventUtil::setEventProperties($EVC, $data["event_id"], $new_data, isset($_FILES["photo"]) ? $_FILES["photo"] : null);
 						}
 					
-						if ($status) {
+						if (!empty($status)) {
 							$event_id = $status;
 						
-							if ($_FILES["photo"]) {
+							if (!empty($_FILES["photo"])) {
 								//Load again data because of the photo_url, but without changing the $data variable
 								$db_data = \EventUtil::getEventProperties($EVC, $event_id, true);
-								$new_data["photo_id"] = $db_data["photo_id"];
-								$new_data["photo_url"] = $db_data["photo_url"];
-								$photo_id = $db_data["photo_id"];
-								$photo_url = $db_data["photo_url"];
+								$photo_id = $new_data["photo_id"] = isset($db_data["photo_id"]) ? $db_data["photo_id"] : null;
+								$photo_url = $new_data["photo_url"] = isset($db_data["photo_url"]) ? $db_data["photo_url"] : null;
 							}
 							else
 								$photo_url = $photo_id ? $photo_url : false;
@@ -149,14 +150,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 								
 								if ($status) {
 									//Prepare inline html images
-									if ($new_data["description"] != $data["description"]) {
+									$data_description = isset($data["description"]) ? $data["description"] : null;
+									
+									if ($new_data["description"] != $data_description) {
 										$this->prepareEventHtmlAttributes($EVC, $settings, $event_id, $new_data, $status);
 										$aux = $new_data;
 										$aux["event_id"] = $event_id;
 										if (!\EventUtil::insertOrUpdateEvent($brokers, $aux))
 											$status = false;
 										
-										$description = $settings["show_description"] ? $new_data["description"] : $description;
+										$description = !empty($settings["show_description"]) ? $new_data["description"] : $description;
 									}
 								
 									if ($status) {
@@ -178,79 +181,79 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
-		if ($_POST["save"]) {
+		if (!empty($_POST["save"])) {
 			$form_data = array(
-				"event_id" => $settings["show_event_id"] ? $event_id : $data["event_id"],
-				"title" => $settings["show_title"] ? $title : $data["title"],
-				"sub_title" => $settings["show_sub_title"] ? $sub_title : $data["sub_title"],
-				"published" => $settings["show_published"] ? $published : $data["published"],
-				"tags" => $settings["show_tags"] ? $tags : $data["tags"],
-				"photo_id" => $settings["show_photo_id"] ? $photo_id : $data["photo_id"],
+				"event_id" => !empty($settings["show_event_id"]) ? $event_id : (isset($data["event_id"]) ? $data["event_id"] : null),
+				"title" => !empty($settings["show_title"]) ? $title : (isset($data["title"]) ? $data["title"] : null),
+				"sub_title" => !empty($settings["show_sub_title"]) ? $sub_title : (isset($data["sub_title"]) ? $data["sub_title"] : null),
+				"published" => !empty($settings["show_published"]) ? $published : (isset($data["published"]) ? $data["published"] : null),
+				"tags" => !empty($settings["show_tags"]) ? $tags : (isset($data["tags"]) ? $data["tags"] : null),
+				"photo_id" => !empty($settings["show_photo_id"]) ? $photo_id : (isset($data["photo_id"]) ? $data["photo_id"] : null),
 				"photo_url" => $photo_url,
-				"description" => $settings["show_description"] ? $description : $data["description"],
-				"address" => $settings["show_address"] ? $address : $data["address"],
-				"zip_id" => $settings["show_zip_id"] ? $zip_id : $data["zip_id"],
-				"locality" => $settings["show_locality"] ? $locality : $data["locality"],
-				"country_id" => $settings["show_country_id"] ? $country_id : $data["country_id"],
-				"latitude" => $settings["show_latitude"] ? $latitude : $data["latitude"],
-				"longitude" => $settings["show_longitude"] ? $longitude : $data["longitude"],
-				"begin_date" => $settings["show_begin_date"] ? $begin_date : $data["begin_date"],
-				"end_date" => $settings["show_end_date"] ? $end_date : $data["end_date"],
-				"allow_comments" => $settings["show_allow_comments"] ? $allow_comments : $data["allow_comments"],
+				"description" => !empty($settings["show_description"]) ? $description : (isset($data["description"]) ? $data["description"] : null),
+				"address" => !empty($settings["show_address"]) ? $address : (isset($data["address"]) ? $data["address"] : null),
+				"zip_id" => !empty($settings["show_zip_id"]) ? $zip_id : (isset($data["zip_id"]) ? $data["zip_id"] : null),
+				"locality" => !empty($settings["show_locality"]) ? $locality : (isset($data["locality"]) ? $data["locality"] : null),
+				"country_id" => !empty($settings["show_country_id"]) ? $country_id : (isset($data["country_id"]) ? $data["country_id"] : null),
+				"latitude" => !empty($settings["show_latitude"]) ? $latitude : (isset($data["latitude"]) ? $data["latitude"] : null),
+				"longitude" => !empty($settings["show_longitude"]) ? $longitude : (isset($data["longitude"]) ? $data["longitude"] : null),
+				"begin_date" => !empty($settings["show_begin_date"]) ? $begin_date : (isset($data["begin_date"]) ? $data["begin_date"] : null),
+				"end_date" => !empty($settings["show_end_date"]) ? $end_date : (isset($data["end_date"]) ? $data["end_date"] : null),
+				"allow_comments" => !empty($settings["show_allow_comments"]) ? $allow_comments : (isset($data["allow_comments"]) ? $data["allow_comments"] : null),
 			);
 			
 			$CommonModuleTableExtraAttributesUtil->prepareFieldsWithNewData($settings, $form_data, $data, $_POST);
 			
-			$form_data = $new_data ? array_merge($new_data, $form_data) : ($settings["allow_view"] && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+			$form_data = !empty($new_data) ? array_merge($new_data, $form_data) : (!empty($settings["allow_view"]) && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		}
 		else
-			$form_data = $settings["allow_view"] && $data ? $data : array();
+			$form_data = !empty($settings["allow_view"]) && $data ? $data : array();
 		
 		$settings["data"] = $data;
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/event/edit_event.css';
 		$settings["js_file"] = $project_common_url_prefix . 'module/event/edit_event.js';
 		$settings["class"] = "module_edit_event";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		$settings["form_on_submit"] = "saveEvent()";
 		
-		$is_insertion = $settings["allow_insertion"] && !$data;
+		$is_insertion = !empty($settings["allow_insertion"]) && !$data;
 		
 		$CommonModuleTableExtraAttributesUtil->prepareFileFieldsSettings($EVC, $settings);
 		
-		if ($settings["show_event_id"]) {
+		if (!empty($settings["show_event_id"])) {
 			$settings["fields"]["event_id"]["field"]["input"]["type"] = $is_insertion ? "hidden" : "label";
 		}
 		
-		if ($settings["show_published"]) {
+		if (!empty($settings["show_published"])) {
 			$settings["fields"]["published"]["field"]["input"]["type"] = "checkbox";
 			$settings["fields"]["published"]["field"]["input"]["options"] = array(
 				array("value" => 1)
 			);
 		}
 		
-		if ($settings["show_allow_comments"]) {
+		if (!empty($settings["show_allow_comments"])) {
 			$settings["fields"]["allow_comments"]["field"]["input"]["type"] = "checkbox";
 			$settings["fields"]["allow_comments"]["field"]["input"]["options"] = array(
 				array("value" => 1)
 			);
 		}
 		
-		if ($settings["show_photo_id"]) {
+		if (!empty($settings["show_photo_id"])) {
 			$settings["fields"]["photo_id"]["field"]["input"]["type"] = "hidden";
 			
-			$label = $settings["fields"]["photo_id"]["field"]["label"]["value"];
-			
-			$previous_html = $settings["fields"]["photo_id"]["field"]["input"]["previous_html"];
-			$next_html = $settings["fields"]["photo_id"]["field"]["input"]["next_html"];
+			$label = isset($settings["fields"]["photo_id"]["field"]["label"]["value"]) ? $settings["fields"]["photo_id"]["field"]["label"]["value"] : null;
+			$class = isset($settings["fields"]["photo_id"]["field"]["label"]["class"]) ? $settings["fields"]["photo_id"]["field"]["label"]["class"] : null;
+			$previous_html = isset($settings["fields"]["photo_id"]["field"]["input"]["previous_html"]) ? $settings["fields"]["photo_id"]["field"]["input"]["previous_html"] : null;
+			$next_html = isset($settings["fields"]["photo_id"]["field"]["input"]["next_html"]) ? $settings["fields"]["photo_id"]["field"]["input"]["next_html"] : null;
 			
 			$settings["fields"]["photo_id"]["field"]["input"]["previous_html"] = "";
 			
 			$settings["fields"]["photo_id"]["field"]["input"]["next_html"] = '
 			</div>
 			<div class="form-group form_field photo_file">
-				' . ($label ? '<label class="form-label control-label ' . $label = $settings["fields"]["photo_id"]["field"]["label"]["class"] . '">' . translateProjectText($EVC, $label) . '</label>' : '') . '
+				' . ($label ? '<label class="form-label control-label ' . $class . '">' . translateProjectText($EVC, $label) . '</label>' : '') . '
 				<input type="file" class="form-control" name="photo" data-allow-null="1" data-validation-label="' . translateProjectText($EVC, \CommonModuleUI::getFieldLabel($settings, "photo_id")) . '" />';
 			
 			if ($photo_url) {
@@ -270,49 +273,53 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$settings["fields"]["photo_id"]["field"]["input"]["next_html"] .= $next_html;
 		}
 		
-		if ($settings["show_country_id"]) {
+		if (!empty($settings["show_country_id"])) {
 			include_once $EVC->getModulePath("zip/ZipUtil", $common_project_name);
 			
 			$countries = \ZipUtil::getAllCountries($brokers);
 			$country_options = array();
 			if ($countries)
-				foreach ($countries as $country)
-					$country_options[] = array("value" => $country["country_id"], "label" => $country["name"]);
+				foreach ($countries as $country) {
+					$av_country_id = isset($country["country_id"]) ? $country["country_id"] : null;
+					$av_country_name = isset($country["name"]) ? $country["name"] : null;
+					
+					$country_options[] = array("value" => $av_country_id, "label" => $av_country_name);
+				}
 			
 			$settings["fields"]["country_id"]["field"]["input"]["type"] = "select";
 			$settings["fields"]["country_id"]["field"]["input"]["options"] = $country_options;
 		}
 		
-		if ($settings["show_begin_date"]) {
+		if (!empty($settings["show_begin_date"])) {
 			$settings["fields"]["begin_date"]["field"]["input"]["type"] = "datetime"; //Do not add datetime-local bc in chrome the date is not shown bc does not contain 'T' in date, this is: 'yyy-mm-ddThh:ii'. The date is 'yyy-mm-dd hh:ii'.
 		}
 		
-		if ($settings["show_end_date"]) {
+		if (!empty($settings["show_end_date"])) {
 			$settings["fields"]["end_date"]["field"]["input"]["type"] = "datetime"; //Do not add datetime-local bc in chrome the date is not shown bc does not contain 'T' in date, this is: 'yyy-mm-ddThh:ii'. The date is 'yyy-mm-dd hh:ii'.
 		}
 		
-		if ($settings["show_map"]) {
+		if (!empty($settings["show_map"])) {
 			$map_settings = array(
-				"style_type" => $settings["style_type"],
-				"class" => $settings["fields"]["map"]["field"]["class"],
-				"title" => $settings["fields"]["map"]["field"]["label"]["value"],
+				"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+				"class" => isset($settings["fields"]["map"]["field"]["class"]) ? $settings["fields"]["map"]["field"]["class"] : null,
+				"title" => isset($settings["fields"]["map"]["field"]["label"]["value"]) ? $settings["fields"]["map"]["field"]["label"]["value"] : null,
 			);
 			
 			unset($settings["fields"]["map"]["field"]);
 			
 			$settings["fields"]["map"]["container"] = array(
 				"class" => "module_edit_event_map",
-				"previous_html" => $this->getMapHtml($map_settings, $project_common_url_prefix),
+				"previous_html" => $this->getMapHtml($EVC, $map_settings, $project_common_url_prefix),
 			);
 		}
 		
-		if ($settings["show_event_attachments"]) {
+		if (!empty($settings["show_event_attachments"])) {
 			include_once $EVC->getModulePath("attachment/AttachmentUI", $common_project_name);
 			
 			$attachments_settings = array(
-				"style_type" => $settings["style_type"],
-				"class" => $settings["fields"]["event_attachments"]["field"]["class"],
-				"title" => $settings["fields"]["event_attachments"]["field"]["label"]["value"],
+				"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+				"class" => isset($settings["fields"]["event_attachments"]["field"]["class"]) ? $settings["fields"]["event_attachments"]["field"]["class"] : null,
+				"title" => isset($settings["fields"]["event_attachments"]["field"]["label"]["value"]) ? $settings["fields"]["event_attachments"]["field"]["label"]["value"] : null,
 			);
 			
 			unset($settings["fields"]["event_attachments"]["field"]);
@@ -332,18 +339,21 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			"group_id" => \EventUtil::EVENT_ATTACHMENTS_GROUP_ID,
 		));
 		
-		$html .= '<script type="text/javascript">
-			var style_type = "' . $settings["style_type"] . '";
+		$style_type = isset($settings["style_type"]) ? $settings["style_type"] : null;
+		$upload_url = isset($upload_url) ? str_replace("#event_id#", $event_id ? $event_id : 0, str_replace("#group#", \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $settings["upload_url"])) : null;
+		
+		$html = '<script type="text/javascript">
+			var style_type = "' . $style_type . '";
 			
 			var description_ckeditor_active_prev = description_ckeditor_active;
 			var description_ckeditor_active = description_ckeditor_active ? description_ckeditor_active : false;
 			var description_ckeditor_configs = description_ckeditor_configs ? description_ckeditor_configs : null;
-			var description_upload_url = "' . str_replace("#event_id#", $event_id ? $event_id : 0, str_replace("#group#", \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $settings["upload_url"])) . '";
+			var description_upload_url = "' . $upload_url . '";
 		</script>';
 		
 		$exists_ckeditor = file_exists($EVC->getWebrootPath($common_project_name) . "vendor/ckeditor/ckeditor.js");
 		
-		if (empty($settings["style_type"]) && $exists_ckeditor)
+		if (!$style_type && $exists_ckeditor)
 			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'vendor/ckeditor/ckeditor.js"></script>
 			<script>
 			description_ckeditor_active = typeof description_ckeditor_active_prev != "undefined" ? description_ckeditor_active_prev : true;
@@ -360,24 +370,27 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 	
 	private function prepareEventHtmlAttributes($EVC, $settings, $event_id, &$event_data, &$status = false) {
-		$upload_url = str_replace("#event_id#", $event_id, str_replace("#group#", \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $settings["upload_url"]));
-		\CommonModuleUtil::prepareObjectHtmlContent($EVC, $event_data["description"], \ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id, \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $settings["attachment_id_regex"], $upload_url, $status);
+		$upload_url = isset($settings["upload_url"]) ? str_replace("#event_id#", $event_id, str_replace("#group#", \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $settings["upload_url"])) : null;
+		$description = isset($event_data["description"]) ? $event_data["description"] : null;
+		$regex = isset($settings["attachment_id_regex"]) ? $settings["attachment_id_regex"] : null;
+		
+		\CommonModuleUtil::prepareObjectHtmlContent($EVC, $description, \ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id, \EventUtil::EVENT_DESCRIPTION_HTML_IMAGE_GROUP_ID, $regex, $upload_url, $status);
 		
 		return $status;
 	}
 	
-	private function getMapHtml($map_settings, $project_common_url_prefix) {
-		$label = $map_settings["label"] ? $map_settings["label"] : "Address Search";
+	private function getMapHtml($EVC, $map_settings, $project_common_url_prefix) {
+		$label = !empty($map_settings["label"]) ? $map_settings["label"] : "Address Search";
 		
 		return '
-		<div class="' . ($map_settings["class"] ? $map_settings["class"] : "") . '">
+		<div class="' . (!empty($map_settings["class"]) ? $map_settings["class"] : "") . '">
 			<label>' . translateProjectText($EVC, $label) . ':</label>
             		<input class="map_search" type="text" placeholder="' . translateProjectText($EVC, "Write here your address...") . '">
                     	<div class="map_canvas"></div>
                 	
                 	<script>
                 		var address_search_map_main_element = $(".module_edit_event");
-                		var address_search_map_class = "' . ($map_settings["class"] ? str_replace(" ", ".", $map_settings["class"]) : "map") . '";
+                		var address_search_map_class = "' . (!empty($map_settings["class"]) ? str_replace(" ", ".", $map_settings["class"]) : "map") . '";
                 	</script>
                 	<script type="text/javascript" src="' . $project_common_url_prefix . 'module/event/map.js"></script>
                 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=' . \EventSettings::GOOGLE_MAPS_KEY . '&libraries=places&callback=initializeMapAddressSearch"></script>

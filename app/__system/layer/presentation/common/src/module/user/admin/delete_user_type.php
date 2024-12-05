@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC) && isset($_GET["user_type_id"])) {
 	include $EVC->getModulePath("user/UserUtil", $common_project_name);
 	
 	$reserved_user_type_ids = UserUtil::getReservedUserTypeIds();

@@ -18,7 +18,7 @@ class UserTypeService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function insertUserType($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -28,22 +28,23 @@ class UserTypeService extends \soa\CommonService {
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["name"] = addcslashes($data["name"], "\\'");
 			
-			if ($data["user_type_id"]) {
+			if (!empty($data["user_type_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$status = $b->callInsert("module/user", "insert_user_type_with_ai_pk", $data, $options);
-				return $status ? $data["user_type_id"] : $status;
+				return $status ? (isset($data["user_type_id"]) ? $data["user_type_id"] : null) : $status;
 			}
 			
 			$status = $b->callInsert("module/user", "insert_user_type", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			if (!$data["user_type_id"])
+			if (empty($data["user_type_id"]))
 				unset($data["user_type_id"]);
 			
 			$UserType = $this->getUserTypeHbnObj($b, $options);
+			$ids = null;
 			$status = $UserType->insert($data, $ids);
-			return $status ? $ids["user_type_id"] : $status;
+			return $status ? (isset($ids["user_type_id"]) ? $ids["user_type_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$attributes = array(
@@ -52,13 +53,13 @@ class UserTypeService extends \soa\CommonService {
 				"modified_date" => $data["modified_date"]
 			);
 			
-			if ($data["user_type_id"]) {
+			if (!empty($data["user_type_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$attributes["user_type_id"] = $data["user_type_id"];
 			}
 			
 			$status = $b->insertObject("mu_user_type", $attributes, $options);
-			return $status ? ($data["user_type_id"] ? $data["user_type_id"] : $b->getInsertedId($options)) : $status;
+			return $status ? (!empty($data["user_type_id"]) ? $data["user_type_id"] : $b->getInsertedId($options)) : $status;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/user", "UserTypeService.insertUserType", $data, $options);
@@ -69,7 +70,7 @@ class UserTypeService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function updateUserType($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -101,7 +102,7 @@ class UserTypeService extends \soa\CommonService {
 	 */
 	public function deleteUserType($data) {
 		$user_type_id = $data["user_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -123,13 +124,13 @@ class UserTypeService extends \soa\CommonService {
 	 */
 	public function getUserType($data) {
 		$user_type_id = $data["user_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "get_user_type", array("user_type_id" => $user_type_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserType = $this->getUserTypeHbnObj($b, $options);
@@ -137,7 +138,7 @@ class UserTypeService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mu_user_type", null, array("user_type_id" => $user_type_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/user", "UserTypeService.getUserType", $data, $options);
@@ -148,14 +149,15 @@ class UserTypeService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function getUserTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/user", "get_user_types_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -165,7 +167,7 @@ class UserTypeService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mu_user_type", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -178,25 +180,26 @@ class UserTypeService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function countUserTypesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/user", "count_user_types_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$UserType = $this->getUserTypeHbnObj($b, $options);
-				return $UserType->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $UserType->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mu_user_type", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -205,7 +208,7 @@ class UserTypeService extends \soa\CommonService {
 	}
 	
 	public function getAllUserTypes($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -223,13 +226,13 @@ class UserTypeService extends \soa\CommonService {
 	}
 	
 	public function countAllUserTypes($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/user", "count_all_user_types", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserType = $this->getUserTypeHbnObj($b, $options);

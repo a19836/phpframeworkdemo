@@ -5,4 +5,4 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-interface ICMSModuleSimulatorHandler { public function simulate(&$v30857f7eca = false, &$v881367f1c2 = false);} ?>
+interface ICMSModuleSimulatorHandler { public function simulate(&$v30857f7eca = false, &$v881367f1c2 = false); } ?>

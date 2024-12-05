@@ -7,9 +7,9 @@ class CallExternalFunctionWorkerPoolWork extends WorkerPoolWork {
 		if ($this->args) {
 			$args = array_keys($this->args);
 			
-			$function_file = $args["function_file"];
-			$function_name = $args["function_name"];
-			$function_args = $args["function_args"];
+			$function_file = isset($args["function_file"]) ? $args["function_file"] : null;
+			$function_name = isset($args["function_name"]) ? $args["function_name"] : null;
+			$function_args = isset($args["function_args"]) ? $args["function_args"] : null;
 			
 			if ($function_file && $function_name) {
 				$file_path = $function_file;
@@ -21,10 +21,12 @@ class CallExternalFunctionWorkerPoolWork extends WorkerPoolWork {
 					include_once $file_path;
 					
 					if (function_exists($function_name)) {
-						debug_log("[CallExternalFunctionWorkerPoolWork::run][" . $this->worker['thread_id'] . "] Executing function '$function_name' in file '$function_file'.", "info");
+						debug_log("[CallExternalFunctionWorkerPoolWork::run][" . (isset($this->worker['thread_id']) ? $this->worker['thread_id'] : null) . "] Executing function '$function_name' in file '$function_file'.", "info");
 						
-						if ($function_args)
-							$res = call_user_func_array($function_name, $function_args);
+						if ($function_args){
+							$function_args = is_array($function_args) ? array_values($function_args) : $function_args;
+							$res = @call_user_func_array($function_name, $function_args); //Note that the @ is very important here bc in PHP 8 this gives an warning, this is: 'Warning: Array to string conversion in...'
+						}
 						else
 							$res = call_user_func($function_name);
 						

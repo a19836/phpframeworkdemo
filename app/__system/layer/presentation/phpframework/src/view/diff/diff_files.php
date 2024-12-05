@@ -29,4 +29,4 @@ $head = '
 	.diff td.diffInserted {
 		background:#00800040;
 	}
-</style>'; $main_content = $html; ?>
+</style>'; $main_content = isset($html) ? $html : null; ?>

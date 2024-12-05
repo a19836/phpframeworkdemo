@@ -20,7 +20,7 @@ class TagService extends \soa\CommonService {
 	 * @param (name=data[tag], type=varchar, not_null=1, min_length=1, max_length=200)  
 	 */
 	public function insertTag($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -31,12 +31,13 @@ class TagService extends \soa\CommonService {
 			$data["tag"] = addcslashes($data["tag"], "\\'");
 			
 			$status = $b->callInsert("module/tag", "insert_tag", $data, $options);
-			return $status ? $data["tag_id"] : $status;
+			return $status ? (isset($data["tag_id"]) ? $data["tag_id"] : null) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Tag = $this->getTagHbnObj($b, $options);
+			$ids = null;
 			$status = $Tag->insert($data, $ids);
-			return $status ? $data["tag_id"] : $status;
+			return $status ? (isset($data["tag_id"]) ? $data["tag_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mt_tag", array(
@@ -56,7 +57,7 @@ class TagService extends \soa\CommonService {
 	 */
 	public function deleteTag($data) {
 		$tag_id = $data["tag_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -78,13 +79,13 @@ class TagService extends \soa\CommonService {
 	 */
 	public function getTag($data) {
 		$tag_id = $data["tag_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/tag", "get_tag", array("tag_id" => $tag_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Tag = $this->getTagHbnObj($b, $options);
@@ -92,7 +93,7 @@ class TagService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mt_tag", null, array("tag_id" => $tag_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/tag", "TagService.getTag", $data, $options);
@@ -103,14 +104,15 @@ class TagService extends \soa\CommonService {
 	 * @param (name=data[conditions][tag], type=varchar|array)
 	 */
 	public function getTagsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/tag", "get_tags_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -120,7 +122,7 @@ class TagService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mt_tag", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -133,25 +135,26 @@ class TagService extends \soa\CommonService {
 	 * @param (name=data[conditions][tag], type=varchar|array)
 	 */
 	public function countTagsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/tag", "count_tags_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Tag = $this->getTagHbnObj($b, $options);
-				return $Tag->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Tag->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mt_tag", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -160,7 +163,7 @@ class TagService extends \soa\CommonService {
 	}
 	
 	public function getAllTags($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -178,13 +181,13 @@ class TagService extends \soa\CommonService {
 	}
 	
 	public function countAllTags($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/tag", "count_all_tags", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Tag = $this->getTagHbnObj($b, $options);
@@ -202,7 +205,7 @@ class TagService extends \soa\CommonService {
 	 */
 	public function getTagsByIds($data) {
 		$tag_ids = $data["tag_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tag_ids) {
@@ -234,7 +237,7 @@ class TagService extends \soa\CommonService {
 	public function getTagsByObjects($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_ids = $data["object_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($object_ids) {

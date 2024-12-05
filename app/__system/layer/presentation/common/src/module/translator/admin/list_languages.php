@@ -4,14 +4,14 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("translator/admin/TranslatorAdminUtil", $common_project_name);
 	
 	$TranslatorAdminUtil = new TranslatorAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
-	$category = $_GET["category"];
+	$category = isset($_GET["category"]) ? $_GET["category"] : null;
 	$languages = TranslatorUtil::getLanguages($PEVC, $category);
 	
 	if ($languages) {
@@ -36,7 +36,7 @@ if ($PEVC) {
 		"delete_url" => $CommonModuleAdminUtil->getAdminFileUrl("delete_language") . $pks,
 		"other_urls" => array($CommonModuleAdminUtil->getAdminFileUrl("list_translations") . $pks),
 		"fields" => array("language", "modified_date"),
-		"data" => $data,
+		"data" => isset($data) ? $data : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'list_languages.css" type="text/css" charset="utf-8" />

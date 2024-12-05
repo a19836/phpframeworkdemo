@@ -7,7 +7,7 @@ class MessageUtil {
 	/* MESSAGE FUNCTIONS */
 
 	public static function insertMessage($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["from_user_id"]) && is_numeric($data["to_user_id"])) {
+		if (is_array($brokers) && isset($data["from_user_id"]) && isset($data["to_user_id"]) && is_numeric($data["from_user_id"]) && is_numeric($data["to_user_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			$options = array();
@@ -17,12 +17,12 @@ class MessageUtil {
 					return $broker->callBusinessLogic("module/message", "MessageService.insertMessage", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["subject"] = addcslashes($data["subject"], "\\'");
-					$data["content"] = addcslashes($data["content"], "\\'");
-					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
-					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
+					$data["subject"] = isset($data["subject"]) ? addcslashes($data["subject"], "\\'") : "";
+					$data["content"] = isset($data["content"]) ? addcslashes($data["content"], "\\'") : "";
+					$data["from_user_status"] = isset($data["from_user_status"]) && is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = isset($data["to_user_status"]) && is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
 					
-					if ($data["message_id"]) {
+					if (!empty($data["message_id"])) {
 						$options = array("hard_coded_ai_pk" => true);
 						$status = $broker->callInsert("module/message", "insert_message_with_ai_pk", $data, $options);
 						return $status ? $data["message_id"] : $status;
@@ -32,46 +32,47 @@ class MessageUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
-					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
+					$data["from_user_status"] = isset($data["from_user_status"]) && is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = isset($data["to_user_status"]) && is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
 					
-					if (!$data["message_id"]) {
+					if (empty($data["message_id"])) {
 						unset($data["message_id"]);
 					}
 					
 					$Message = $broker->callObject("module/message", "Message");
+					$ids = null;
 					$status = $Message->insert($data, $ids);
-					return $status ? $ids["message_id"] : $status;
+					return $status ? (isset($ids["message_id"]) ? $ids["message_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["from_user_status"] = is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
-					$data["to_user_status"] = is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
+					$data["from_user_status"] = isset($data["from_user_status"]) && is_numeric($data["from_user_status"]) ? $data["from_user_status"] : 1;
+					$data["to_user_status"] = isset($data["to_user_status"]) && is_numeric($data["to_user_status"]) ? $data["to_user_status"] : 1;
 					
 					$attributes = array(
 						"from_user_id" => $data["from_user_id"], 
 						"to_user_id" => $data["to_user_id"], 
-						"subject" => $data["subject"], 
-						"content" => $data["content"], 
+						"subject" => isset($data["subject"]) ? $data["subject"] : null, 
+						"content" => isset($data["content"]) ? $data["content"] : null, 
 						"from_user_status" => $data["from_user_status"], 
 						"to_user_status" => $data["to_user_status"], 
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
 					);
 					
-					if ($data["message_id"]) {
+					if (!empty($data["message_id"])) {
 						$options["hard_coded_ai_pk"] = true;
 						$attributes["message_id"] = $data["message_id"];
 					}
 					
 					$status = $broker->insertObject("mmsg_message", $attributes, $options);
-					return $status ? ($data["message_id"] ? $data["message_id"] : $broker->getInsertedId($options)) : $status;
+					return $status ? (!empty($data["message_id"]) ? $data["message_id"] : $broker->getInsertedId($options)) : $status;
 				}
 			}
 		}
 	}
 
 	public static function updateMessageSeenDate($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["message_id"]) && is_numeric($data["from_user_id"]) && is_numeric($data["to_user_id"]) && $data["seen_date"]) {
+		if (is_array($brokers) && isset($data["message_id"]) && is_numeric($data["message_id"]) && isset($data["from_user_id"]) && is_numeric($data["from_user_id"]) && isset($data["to_user_id"]) && is_numeric($data["to_user_id"]) && !empty($data["seen_date"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
@@ -102,7 +103,7 @@ class MessageUtil {
 	}
 
 	public static function updateMessagesFromUserStatus($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["from_user_id"]) && is_numeric($data["to_user_id"]) && is_numeric($data["from_user_status"])) {
+		if (is_array($brokers) && isset($data["from_user_id"]) && is_numeric($data["from_user_id"]) && isset($data["to_user_id"]) && is_numeric($data["to_user_id"]) && isset($data["from_user_status"]) && is_numeric($data["from_user_status"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
@@ -139,7 +140,7 @@ class MessageUtil {
 	}
 
 	public static function updateMessagesToUserStatus($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["from_user_id"]) && is_numeric($data["to_user_id"]) && is_numeric($data["to_user_status"])) {
+		if (is_array($brokers) && isset($data["from_user_id"]) && is_numeric($data["from_user_id"]) && isset($data["to_user_id"]) && is_numeric($data["to_user_id"]) && isset($data["to_user_status"]) && is_numeric($data["to_user_status"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
@@ -287,7 +288,7 @@ class MessageUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/message", "count_all_messages", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Message = $broker->callObject("module/message", "Message");
@@ -335,7 +336,7 @@ class MessageUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/message", "count_messages_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Message = $broker->callObject("module/message", "Message");
@@ -382,18 +383,18 @@ class MessageUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/message", "count_chat_messages", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Message = $broker->callObject("module/message", "Message");
 					$result = $Message->callSelect("count_chat_messages", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = MessageDBDAOUtil::count_chat_messages(array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id));
 						
 					$result = $broker->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -433,18 +434,18 @@ class MessageUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/message", "count_previous_chat_messages_from_message", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Message = $broker->callObject("module/message", "Message");
 					$result = $Message->callSelect("count_previous_chat_messages_from_message", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = MessageDBDAOUtil::count_previous_chat_messages_from_message(array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id));
 						
 					$result = $broker->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -484,18 +485,18 @@ class MessageUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/message", "count_next_chat_messages_from_message", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Message = $broker->callObject("module/message", "Message");
 					$result = $Message->callSelect("count_next_chat_messages_from_message", array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = MessageDBDAOUtil::count_next_chat_messages_from_message(array("from_user_id" => $from_user_id, "to_user_id" => $to_user_id, "message_id" => $message_id));
 						
 					$result = $broker->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -544,7 +545,7 @@ class MessageUtil {
 					$sql = MessageDBDAOUtil::get_user_last_unique_chats(array("user_id" => $user_id));
 					
 					$result = $broker->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}

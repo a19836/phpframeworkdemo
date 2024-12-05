@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("attachment/admin/AttachmentAdminUtil", $common_project_name);
 	
 	$AttachmentAdminUtil = new AttachmentAdminUtil($CommonModuleAdminUtil);
@@ -14,7 +14,8 @@ if ($PEVC) {
 	$AttachmentAdminUtil->initObjectAttachments($brokers);
 	$available_object_types = $AttachmentAdminUtil->getAvailableObjectTypes();
 	
-	$attachment_id = $_GET["attachment_id"];
+	$attachment_id = isset($_GET["attachment_id"]) ? $_GET["attachment_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($attachment_id) {
 		$total = AttachmentUtil::countObjectAttachmentsByAttachmentId($brokers, $attachment_id, true);

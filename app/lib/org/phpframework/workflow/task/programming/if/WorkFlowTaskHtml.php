@@ -13,4 +13,6 @@
 
 	<?php
  ?>
+	
+	<?php include dirname(dirname($file_path)) . "/common/CommentsHtml.php"; ?>
 </div>

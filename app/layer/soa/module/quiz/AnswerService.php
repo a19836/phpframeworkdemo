@@ -22,7 +22,7 @@ class AnswerService extends \soa\CommonService {
 	 * @param (name=data[value], type=smallint, default=1)  
 	 */
 	public function insertAnswer($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -31,22 +31,23 @@ class AnswerService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 			
 			$status = $b->callInsert("module/quiz", "insert_answer", $data, $options);
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Answer = $this->getAnswerHbnObj($b, $options);
+			$ids = null;
 			$status = $Answer->insert($data, $ids);
-			return $status ? $ids["answer_id"] : $status;
+			return $status ? (isset($ids["answer_id"]) ? $ids["answer_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mq_answer", array(
 					"question_id" => $data["question_id"], 
 					"title" => $data["title"], 
-					"description" => $data["description"], 
-					"value" => $data["value"], 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
+					"value" => isset($data["value"]) ? $data["value"] : null, 
 					"created_date" => $data["created_date"], 
 					"modified_date" => $data["modified_date"]
 				), $options);
@@ -64,7 +65,7 @@ class AnswerService extends \soa\CommonService {
 	 * @param (name=data[value], type=smallint, default=1)  
 	 */
 	public function updateAnswer($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -72,7 +73,7 @@ class AnswerService extends \soa\CommonService {
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["title"] = addcslashes($data["title"], "\\'");
-			$data["description"] = addcslashes($data["description"], "\\'");
+			$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
 			
 			return $b->callUpdate("module/quiz", "update_answer", $data, $options);
 		}
@@ -84,8 +85,8 @@ class AnswerService extends \soa\CommonService {
 			return $b->updateObject("mq_answer", array(
 					"question_id" => $data["question_id"], 
 					"title" => $data["title"], 
-					"description" => $data["description"], 
-					"value" => $data["value"], 
+					"description" => isset($data["description"]) ? $data["description"] : null, 
+					"value" => isset($data["value"]) ? $data["value"] : null, 
 					"modified_date" => $data["modified_date"]
 				), array(
 					"answer_id" => $data["answer_id"]
@@ -100,7 +101,7 @@ class AnswerService extends \soa\CommonService {
 	 */
 	public function deleteAnswer($data) {
 		$answer_id = $data["answer_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -122,7 +123,7 @@ class AnswerService extends \soa\CommonService {
 	 */
 	public function deleteAnswersByQuestionId($data) {
 		$question_id = $data["question_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -145,13 +146,13 @@ class AnswerService extends \soa\CommonService {
 	 */
 	public function getAnswer($data) {
 		$answer_id = $data["answer_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/quiz", "get_answer", array("answer_id" => $answer_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Answer = $this->getAnswerHbnObj($b, $options);
@@ -159,7 +160,7 @@ class AnswerService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mq_answer", null, array("answer_id" => $answer_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/quiz", "AnswerService.getAnswer", $data, $options);
@@ -173,14 +174,15 @@ class AnswerService extends \soa\CommonService {
 	 * @param (name=data[conditions][value], type=smallint|array)  
 	 */
 	public function getAnswersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/quiz", "get_answers_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -190,7 +192,7 @@ class AnswerService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mq_answer", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -206,25 +208,26 @@ class AnswerService extends \soa\CommonService {
 	 * @param (name=data[conditions][value], type=smallint|array)
 	 */
 	public function countAnswersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/quiz", "count_answers_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Answer = $this->getAnswerHbnObj($b, $options);
-				return $Answer->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Answer->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mq_answer", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -233,7 +236,7 @@ class AnswerService extends \soa\CommonService {
 	}
 	
 	public function getAllAnswers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -251,13 +254,13 @@ class AnswerService extends \soa\CommonService {
 	}
 	
 	public function countAllAnswers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/quiz", "count_all_answers", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Answer = $this->getAnswerHbnObj($b, $options);
@@ -275,7 +278,7 @@ class AnswerService extends \soa\CommonService {
 	 */
 	public function getAnswersStatsByQuestionIds($data) {
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($question_ids) {

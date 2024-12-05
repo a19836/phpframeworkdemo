@@ -12,6 +12,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 	'; $head .= $WorkFlowUIHandler->getHeader(); $head .= '
 	<!-- Add Layout CSS file -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+	<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 	
 	<!-- Add Local JS and CSS files -->
 	<link rel="stylesheet" href="' . $project_url_prefix . 'css/db/diagram.css" type="text/css" charset="utf-8" />
@@ -32,7 +33,7 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 				<li class="save" data-title="Save"><a onClick="saveDBDiagram()"><i class="icon save"></i> Save</a></li>
 			</ul>
 		</header>
-	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if ($DBDriver) $main_content .= '<script>
+	</div>'; $main_content .= $WorkFlowUIHandler->getContent(); if (!empty($DBDriver)) $main_content .= '<script>
 			taskFlowChartObj.TaskFlow.default_connection_line_width = 2;
 			taskFlowChartObj.TaskFlow.default_connection_from_target = true;
 			taskFlowChartObj.TaskFlow.default_similar_connections_gap = 100;
@@ -43,12 +44,14 @@ include $EVC->getUtilPath("WorkFlowUIHandler"); if ($bean_name) { $WorkFlowUIHan
 			DBTableTaskPropertyObj.column_mandatory_length_types = ' . json_encode($DBDriver->getDBColumnMandatoryLengthTypes()) . ';
 			DBTableTaskPropertyObj.column_types_ignored_props = ' . json_encode($DBDriver->getDBColumnTypesIgnoredProps()) . ';
 			DBTableTaskPropertyObj.column_types_hidden_props = ' . json_encode($DBDriver->getDBColumnTypesHiddenProps()) . ';
-			DBTableTaskPropertyObj.table_charsets = ' . json_encode($DBDriver->getTableCharsets()) . ';
-			DBTableTaskPropertyObj.table_collations = ' . json_encode($DBDriver->getTableCollations()) . ';
-			DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($DBDriver->getStorageEngines()) . ';
-			DBTableTaskPropertyObj.column_charsets = ' . json_encode($DBDriver->getColumnCharsets()) . ';
-			DBTableTaskPropertyObj.column_collations = ' . json_encode($DBDriver->getColumnCollations()) . ';
+			DBTableTaskPropertyObj.table_charsets = ' . json_encode($DBDriver->listTableCharsets()) . ';
+			DBTableTaskPropertyObj.table_collations = ' . json_encode($DBDriver->listTableCollations()) . ';
+			DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($DBDriver->listStorageEngines()) . ';
+			DBTableTaskPropertyObj.column_charsets = ' . json_encode($DBDriver->listColumnCharsets()) . ';
+			DBTableTaskPropertyObj.column_collations = ' . json_encode($DBDriver->listColumnCollations()) . ';
 			DBTableTaskPropertyObj.allow_column_sorting = ' . ($DBDriver->allowTableAttributeSorting() ? "true" : "false") . ';
+			DBTableTaskPropertyObj.allow_modify_table_encoding = ' . ($DBDriver->allowModifyTableEncoding() ? "true" : "false") . ';
+			DBTableTaskPropertyObj.allow_modify_table_storage_engine = ' . ($DBDriver->allowModifyTableStorageEngine() ? "true" : "false") . ';
 			
 			DBTableTaskPropertyObj.on_load_task_properties_callback = onLoadDBTableTaskProperties;
 			DBTableTaskPropertyObj.on_submit_task_properties_callback = onSubmitDBTableTaskProperties;

@@ -12,6 +12,8 @@ var DBTableTaskPropertyObj = {
 	column_types_hidden_props : null,
 	show_properties_on_connection_drop : false,
 	allow_column_sorting : false,
+	allow_modify_table_encoding : false,
+	allow_modify_table_storage_engine : false,
 	
 	//These will be used by the __system/layer/presentation/phpframework/.../db/diagram.php , __system/layer/presentation/phpframework/.../db/edit_table.php and other/availablemodules/common/.../CommonModuleAdminTableExtraAttributesUtil.php.
 	on_load_task_properties_callback : null,
@@ -37,6 +39,8 @@ var DBTableTaskPropertyObj = {
 		"serial" : {type: "int", "null": false, unique: true, unsigned: true, auto_increment: true, extra: "auto_increment"},
 		"bigserial" : {type: "bigint", "null": false, unique: true, unsigned: true, auto_increment: true, extra: "auto_increment"},
 	},*/
+	
+	current_short_attr_input_active : null,
 	
 	/** START: TASK METHODS **/
 	onLoadTaskProperties : function(properties_html_elm, task_id, task_property_values) {
@@ -87,6 +91,11 @@ var DBTableTaskPropertyObj = {
 		
 		table_charset_elm.find('select').html(charset_options);
 		
+		if (DBTableTaskPropertyObj.allow_modify_table_encoding)
+			table_charset_elm.show();
+		else
+			table_charset_elm.hide();
+		
 		//PREPARING COLLATIONS
 		var collation_options = '<option value="">-- Default --</option>';
 		var collation_exists = false;
@@ -111,6 +120,11 @@ var DBTableTaskPropertyObj = {
 			collation_options += '<option value="' + task_property_values.table_collation + '" selected>' + task_property_values.table_collation + ' - NON DEFAULT</option>';
 		
 		table_collation_elm.find('select').html(collation_options);
+		
+		if (DBTableTaskPropertyObj.allow_modify_table_encoding)
+			table_collation_elm.show();
+		else
+			table_collation_elm.hide();
 		
 		//PREPARING STORAGE ENGINES
 		var storage_engine_options = '<option value="">-- Default --</option>';
@@ -137,6 +151,11 @@ var DBTableTaskPropertyObj = {
 		
 		table_storage_engine_elm.find('select').html(storage_engine_options);
 		
+		if (DBTableTaskPropertyObj.allow_modify_table_storage_engine)
+			table_storage_engine_elm.show();
+		else
+			table_storage_engine_elm.hide();
+		
 		//PREPARING ATTRIBUTES
 		task_html_elm.find('.table_attrs').html("");
 		
@@ -156,14 +175,14 @@ var DBTableTaskPropertyObj = {
 		var advanced_attributes_html = "";
 		
 		//set some default attributes when we are creating a new table
-		if (!task_property_values || !task_property_values.table_attr_names || task_property_values.table_attr_names.length == 0) {
+		if (!task_property_values || !task_property_values.table_attr_names || getObjectorArraySize(task_property_values.table_attr_names) == 0) {
 			//DEPRECATED bc now we have default attributes
 			//advanced_attributes_html = DBTableTaskPropertyObj.getTableAttributeHtml();
 			
 			task_property_values = DBTableTaskPropertyObj.prepareTaskPropertyValuesWithDefaultAttributes(task_property_values);
 		}
 		
-		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
+		if (task_property_values && task_property_values.table_attr_names && getObjectorArraySize(task_property_values.table_attr_names) > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			
 			$.each(task_property_values.table_attr_names, function(i, table_attr_name) {
@@ -354,7 +373,7 @@ var DBTableTaskPropertyObj = {
 	onTaskCreation : function(task_id) {
 		var task_property_values = myWFObj.getTaskFlowChart().TaskFlow.tasks_properties[task_id];
 		
-		if (task_property_values && task_property_values.table_attr_names && task_property_values.table_attr_names.length > 0) {
+		if (task_property_values && task_property_values.table_attr_names && getObjectorArraySize(task_property_values.table_attr_names) > 0) {
 			DBTableTaskPropertyObj.regularizeTaskPropertyValues(task_property_values);
 			DBTableTaskPropertyObj.prepareShortTableAttributes(task_id, task_property_values);
 		}
@@ -831,6 +850,8 @@ var DBTableTaskPropertyObj = {
 				DBTableTaskPropertyObj.onChangeShortTableAttributeNameInput( input[0] );
 			else
 				DBTableTaskPropertyObj.onChangeShortTableAttribute( input[0] );
+				
+			//Note: Do not set current_short_attr_input_active = null, here otherwise the behaviour will be weird when changing the attr name and height and then click in the table properties. Note that the current_short_attr_input_active will be reset in the onClickTask method.
 		})
 		.on("keyup", function(event) {
 			var input = $(this);
@@ -847,6 +868,9 @@ var DBTableTaskPropertyObj = {
 			}, 2000);
 			
 			table_attr.data("timeout_id", timeout_id);
+		})
+		.on("mousedown", function(event) {
+			DBTableTaskPropertyObj.current_short_attr_input_active = this;
 		});
 		
 		table_attr.find("select").on("change", function(event) {
@@ -2157,7 +2181,7 @@ var DBTableTaskPropertyObj = {
 						
 						var sub_exists = false;
 						
-						for (var j = 0; j < props_value.length; j++) {
+						for (var j = 0; j < props_value.length; j++) { //TODO
 							if (prop_name == "name") { //prop_name=="name" is a different property that will check if name contains the searching string.
 								if (DBTableTaskPropertyObj.isAttributeNameASimpleAttributeName(props_value[j], current_simple_props[prop_name])) {
 									sub_exists = true;
@@ -2710,18 +2734,18 @@ var DBTableTaskPropertyObj = {
 			var target_task_property_values = WF.TaskFlow.tasks_properties[conn.targetId];
 			
 			//prepare source_task_property_values in case the task_property_values_table_attr_prop_names be a string instead of an array/object.
-			if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0)
+			if (source_task_property_values && source_task_property_values.table_attr_names && getObjectorArraySize(source_task_property_values.table_attr_names) > 0)
 				DBTableTaskPropertyObj.regularizeTaskPropertyValues(source_task_property_values);
 			
 			//prepare target_task_property_values in case the task_property_values_table_attr_prop_names be a string instead of an array/object.
-			if (conn.sourceId != conn.targetId && target_task_property_values && target_task_property_values.table_attr_names && target_task_property_values.table_attr_names.length > 0) {
+			if (conn.sourceId != conn.targetId && target_task_property_values && target_task_property_values.table_attr_names && getObjectorArraySize(target_task_property_values.table_attr_names) > 0) {
 				DBTableTaskPropertyObj.regularizeTaskPropertyValues(target_task_property_values);
 			}
 			
 			//finds the primary key for target table
 			var target_pks = {};
 			
-			if (target_task_property_values && target_task_property_values.table_attr_primary_keys && source_task_property_values.table_attr_primary_keys.length > 0)
+			if (target_task_property_values && target_task_property_values.table_attr_primary_keys && getObjectorArraySize(source_task_property_values.table_attr_primary_keys) > 0)
 				$.each(target_task_property_values.table_attr_primary_keys, function(i, table_attr_primary_key) {
 					if (checkIfValueIsTrue(table_attr_primary_key)) {
 						var pk_name = target_task_property_values.table_attr_names[i];
@@ -2753,7 +2777,7 @@ var DBTableTaskPropertyObj = {
 				}
 				else { //finds if PKs from one table exist in another, and if not, add them
 					//check if pk attr exists in source_task_property_values.table_attr_names
-					if (source_task_property_values && source_task_property_values.table_attr_names && source_task_property_values.table_attr_names.length > 0) {
+					if (source_task_property_values && source_task_property_values.table_attr_names && getObjectorArraySize(source_task_property_values.table_attr_names) > 0) {
 						var target_table_name = WF.TaskFlow.getTaskLabelByTaskId(conn.targetId);
 						
 						for (var pk_name in target_pks) {
@@ -2900,6 +2924,16 @@ var DBTableTaskPropertyObj = {
 	onSuccessConnectionDeletion : function(connection) {
 		DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.sourceId);
 		DBTableTaskPropertyObj.updateShortTableForeignKeys(connection.targetId);
+	},
+	
+	onClickTask : function(task_id, task) {
+		if (DBTableTaskPropertyObj.current_short_attr_input_active)
+			$(DBTableTaskPropertyObj.current_short_attr_input_active).trigger("blur");
+		
+		DBTableTaskPropertyObj.current_short_attr_input_active = null;
+		
+		//we need to do this bc when we change an attribute name in the '.table_attrs' and then click to show the table properties, the changed name is not getting updated in the properties, messing all the attributes
+		showTaskPropertiesIfExists(task_id, task);
 	},
 	
 	getTableForeignKeyHtml : function(data) {
@@ -3254,5 +3288,5 @@ var DBTableTaskPropertyObj = {
 		task_property_values.table_attr_comments = [null, null, null, null, null];
 		
 		return task_property_values;
-	}
+	},
 };

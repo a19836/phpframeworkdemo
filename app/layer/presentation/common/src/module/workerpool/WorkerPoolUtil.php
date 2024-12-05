@@ -7,11 +7,11 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 	/* WORKER FUNCTIONS */
 	
 	public static function insertWorker($brokers, $data) {
-		if (is_array($brokers) && $data["class"]) {
+		if (is_array($brokers) && !empty($data["class"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
-			if ($data["args"])
+			if (!empty($data["args"]))
 				$data["args"] = json_encode($data["args"]);
 			
 			foreach ($brokers as $broker) {
@@ -19,37 +19,38 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 					return $broker->callBusinessLogic("module/workerpool", "WorkerService.insertWorker", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["class"] = addcslashes($data["class"], "\\'");
-					$data["args"] = addcslashes($data["args"], "\\'");
-					$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+					$data["args"] = isset($data["args"]) ? addcslashes($data["args"], "\\'") : "";
+					$data["thread_id"] = isset($data["thread_id"]) ? addcslashes($data["thread_id"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					$status = $broker->callInsert("module/workerpool", "insert_worker", $data);
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					$Worker = $broker->callObject("module/workerpool", "Worker");
+					$ids = null;
 					$status = $Worker->insert($data, $ids);
-					return $status ? $ids["worker_id"] : $status;
+					return $status ? (isset($ids["worker_id"]) ? $ids["worker_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					$status = $broker->insertObject("mwp_worker", array(
-							"class" => $data["class"], 
-							"args" => $data["args"], 
+							"class" => isset($data["class"]) ? $data["class"] : null, 
+							"args" => isset($data["args"]) ? $data["args"] : null, 
 							"status" => $data["status"], 
-							"thread_id" => $data["thread_id"], 
-							"begin_time" => $data["begin_time"], 
-							"end_time" => $data["end_time"], 
+							"thread_id" => isset($data["thread_id"]) ? $data["thread_id"] : null, 
+							"begin_time" => isset($data["begin_time"]) ? $data["begin_time"] : null, 
+							"end_time" => isset($data["end_time"]) ? $data["end_time"] : null, 
 							"failed_attempts" => $data["failed_attempts"], 
-							"description" => $data["description"], 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -60,10 +61,10 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 	}
 	
 	public static function updateWorker($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["worker_id"])) {
+		if (is_array($brokers) && isset($data["worker_id"]) && is_numeric($data["worker_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
-			if ($data["args"])
+			if (!empty($data["args"]))
 				$data["args"] = json_encode($data["args"]);
 			
 			foreach ($brokers as $broker) {
@@ -71,35 +72,35 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 					return $broker->callBusinessLogic("module/workerpool", "WorkerService.updateWorker", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["class"] = addcslashes($data["class"], "\\'");
-					$data["args"] = addcslashes($data["args"], "\\'");
-					$data["thread_id"] = addcslashes($data["thread_id"], "\\'");
-					$data["description"] = addcslashes($data["description"], "\\'");
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+					$data["args"] = isset($data["args"]) ? addcslashes($data["args"], "\\'") : "";
+					$data["thread_id"] = isset($data["thread_id"]) ? addcslashes($data["thread_id"], "\\'") : "";
+					$data["description"] = isset($data["description"]) ? addcslashes($data["description"], "\\'") : "";
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					return $broker->callUpdate("module/workerpool", "update_worker", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					$Worker = $broker->callObject("module/workerpool", "Worker");
 					return $Worker->update($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["status"] = is_numeric($data["status"]) ? $data["status"] : 0;
-					$data["failed_attempts"] = is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
+					$data["status"] = isset($data["status"]) && is_numeric($data["status"]) ? $data["status"] : 0;
+					$data["failed_attempts"] = isset($data["failed_attempts"]) && is_numeric($data["failed_attempts"]) ? $data["failed_attempts"] : 0;
 					
 					return $broker->updateObject("mwp_worker", array(
-							"class" => $data["class"], 
-							"args" => $data["args"], 
+							"class" => isset($data["class"]) ? $data["class"] : null, 
+							"args" => isset($data["args"]) ? $data["args"] : null, 
 							"status" => $data["status"], 
-							"thread_id" => $data["thread_id"], 
-							"begin_time" => $data["begin_time"], 
-							"end_time" => $data["end_time"], 
+							"thread_id" => isset($data["thread_id"]) ? $data["thread_id"] : null, 
+							"begin_time" => isset($data["begin_time"]) ? $data["begin_time"] : null, 
+							"end_time" => isset($data["end_time"]) ? $data["end_time"] : null, 
 							"failed_attempts" => $data["failed_attempts"], 
-							"description" => $data["description"], 
+							"description" => isset($data["description"]) ? $data["description"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						), array(
@@ -130,7 +131,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::update_failed_and_to_parse_workers($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -157,7 +158,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::update_failed_and_expired_workers($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -183,7 +184,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::reset_expired_workers($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -211,7 +212,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::update_thread_worker($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -238,7 +239,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::update_closed_worker($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -264,7 +265,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::update_failed_worker($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -290,7 +291,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = WorkerDBDAOUtil::reset_failed_worker($data);
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -321,12 +322,14 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
 			foreach ($brokers as $broker) {
+				$result = null;
+				
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
 					$result = $broker->callBusinessLogic("module/workerpool", "WorkerService.getWorker", array("worker_id" => $worker_id, "options" => $options), $options);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/workerpool", "get_worker", array("worker_id" => $worker_id), $options);
-					$result = $result[0];
+					$result = isset($result[0]) ? $result[0] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Worker = $broker->callObject("module/workerpool", "Worker");
@@ -334,11 +337,11 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$result = $broker->findObjects("mwp_worker", null, array("worker_id" => $worker_id), $options);
-					$result = $result[0];
+					$result = isset($result[0]) ? $result[0] : null;
 				}
 				
 				$result = self::prepareResult(array($result));
-				return $result[0];
+				return isset($result[0]) ? $result[0] : null;
 			}
 		}
 	}
@@ -354,6 +357,8 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 			}
 			
 			foreach ($brokers as $broker) {
+				$result = null;
+				
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
 					$result = $broker->callBusinessLogic("module/workerpool", "WorkerService.getWorkersByIds", array("worker_ids" => $worker_ids, "options" => $options), $options);
 				}
@@ -379,6 +384,8 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
 			foreach ($brokers as $broker) {
+				$result = null;
+				
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
 					$data = array("options" => $options);
 					$result = $broker->callBusinessLogic("module/workerpool", "WorkerService.getAllWorkers", $data, $options);
@@ -408,7 +415,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/workerpool", "count_all_workers", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Worker = $broker->callObject("module/workerpool", "Worker");
@@ -429,6 +436,8 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 				$conditions["worker"] = strtolower($conditions["worker"]);
 			
 			foreach ($brokers as $broker) {
+				$result = null;
+				
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
 					$result = $broker->callBusinessLogic("module/workerpool", "WorkerService.getWorkersByConditions", array("conditions" => $conditions, "conditions_join" => $conditions_join, "options" => $options), $options);
 				}
@@ -464,7 +473,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/workerpool", "count_workers_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Worker = $broker->callObject("module/workerpool", "Worker");
@@ -480,7 +489,7 @@ class WorkerPoolUtil extends WorkerPoolSettings {
 	private static function prepareResult($result) {
 		if ($result)
 			foreach ($result as &$item)
-				if ($item["args"])
+				if (!empty($item["args"]))
 					$item["args"] = json_decode($item["args"], true);
 		
 		return $result;

@@ -4,6 +4,7 @@ namespace CMSModule\quiz\edit_user_answer;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -17,21 +18,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["allow_update"] = false;
 		
 		//Getting User Answers
-		$user_id = $_GET["user_id"];
-		$answer_id = $_GET["answer_id"];
+		$user_id = isset($_GET["user_id"]) ? $_GET["user_id"] : null;
+		$answer_id = isset($_GET["answer_id"]) ? $_GET["answer_id"] : null;
 		
 		$data = $user_id && $answer_id ? \QuizUtil::getUserAnswersByConditions($brokers, array("user_id" => $user_id, "answer_id" => $answer_id), null, null, true) : null;
-		$data = $data[0];
+		$data = isset($data[0]) ? $data[0] : null;
 		
 		//Preparing Answer
-		if ($_POST) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
-				$status = !$data || \QuizUtil::deleteUserAnswer($brokers, $data["user_id"], $data["answer_id"]);
+		if (!empty($_POST)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
+				$data_user_id = isset($data["user_id"]) ? $data["user_id"] : null;
+				$data_answer_id = isset($data["answer_id"]) ? $data["answer_id"] : null;
+				
+				$status = !$data || \QuizUtil::deleteUserAnswer($brokers, $data_user_id, $data_answer_id);
 			}
-			else if ($_POST["save"]) {
-				if ($settings["allow_insertion"] && empty($data)) {
-					$user_id = $_POST["user_id"];
-					$answer_id = $_POST["answer_id"];
+			else if (!empty($_POST["save"])) {
+				if (!empty($settings["allow_insertion"]) && empty($data)) {
+					$user_id = isset($_POST["user_id"]) ? $_POST["user_id"] : null;
+					$answer_id = isset($_POST["answer_id"]) ? $_POST["answer_id"] : null;
 					
 					$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_id" => $user_id, "answer_id" => $answer_id));
 					if ($empty_field_name) {
@@ -47,8 +51,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						
 						if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message)) {
 							$status = \QuizUtil::insertUserAnswer($brokers, $new_data);
-							if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
-								$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "user_id=$user_id&answer_id=$answer_id";
+							if (isset($settings["on_insert_ok_action"]) && strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								$settings["on_insert_ok_redirect_url"] .= (isset($settings["on_insert_ok_redirect_url"]) && strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "user_id=$user_id&answer_id=$answer_id";
 							}
 						}
 					}
@@ -56,30 +60,30 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
-		if ($_POST["save"]) {
+		if (!empty($_POST["save"])) {
 			$form_data = array(
-				"user_id" => $settings["show_user_id"] ? $user_id : $data["user_id"],
-				"answer_id" => $settings["show_answer_id"] ? $answer_id : $data["answer_id"],
+				"user_id" => !empty($settings["show_user_id"]) ? $user_id : (isset($data["user_id"]) ? $data["user_id"] : null),
+				"answer_id" => !empty($settings["show_answer_id"]) ? $answer_id : (isset($data["answer_id"]) ? $data["answer_id"] : null),
 			);
-			$form_data = $new_data ? array_merge($new_data, $form_data) : ($settings["allow_view"] && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+			$form_data = !empty($new_data) ? array_merge($new_data, $form_data) : (!empty($settings["allow_view"]) && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		}
 		else {
-			$form_data = $settings["allow_view"] && $data ? $data : array();
+			$form_data = !empty($settings["allow_view"]) && $data ? $data : array();
 		}
 		
 		$settings["data"] = $data;
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/quiz/edit_user_answer.css';
 		$settings["class"] = "module_edit_user_answer";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		
-		$is_insertion = $settings["allow_insertion"] && !$data;
+		$is_insertion = !empty($settings["allow_insertion"]) && !$data;
 		
-		if ($settings["show_user_id"]) 
+		if (!empty($settings["show_user_id"])) 
 			\CommonModuleUtil::prepareUserIdFormSettingsField($EVC, $settings, $is_insertion);
 		
-		if ($settings["show_answer_id"])
+		if (!empty($settings["show_answer_id"]))
 			$settings["fields"]["answer_id"]["field"]["input"]["type"] = $is_insertion ? "text" : "label";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "quiz/edit_user_answer", $settings);

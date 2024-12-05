@@ -4,51 +4,55 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("menu/admin/MenuAdminUtil", $common_project_name);
 	
 	$MenuAdminUtil = new MenuAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	$group_id = $_GET["group_id"];
+	$group_id = isset($_GET["group_id"]) ? $_GET["group_id"] : null;
 	$data = $group_id ? MenuUtil::getMenuGroupsByConditions($brokers, array("group_id" => $group_id), null, null, true) : null;
-	$data = $data[0];
+	$data = isset($data[0]) ? $data[0] : null;
+	$items = null;
+	$settings = isset($settings) ? $settings : null;
 	
 	if ($data) {
-		$data["tags"] = TagUtil::getObjectTagsString($brokers, ObjectUtil::MENU_OBJECT_TYPE_ID, $data["group_id"], array(), true);
+		$data["tags"] = TagUtil::getObjectTagsString($brokers, ObjectUtil::MENU_OBJECT_TYPE_ID, $group_id, array(), true);
 			
 		$options = array("sort" => array(array("column" => "order", "order" => "asc")));
-		$items = MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $data["group_id"]), null, $options, true);
+		$items = MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $group_id), null, $options, true);
 		$items = MenuUtil::encapsulateMenuGroupItems($items);
 	}
 	
 	//Saving Menu
-	if ($_POST) {
-		if ($_POST["delete"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
-			$status = !$data || (MenuUtil::deleteMenuItemsByGroupId($brokers, $data["group_id"]) && MenuUtil::deleteMenuGroup($brokers, $data["group_id"]));
+			$status = !$data || (MenuUtil::deleteMenuItemsByGroupId($brokers, $group_id) && MenuUtil::deleteMenuGroup($brokers, $group_id));
 		}
-		else if ($_POST["add"] || $_POST["save"]) {
+		else if (!empty($_POST["add"]) || !empty($_POST["save"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
-			$name = $_POST["name"];
-			$tags = $_POST["tags"];
+			$name = isset($_POST["name"]) ? $_POST["name"] : null;
+			$tags = isset($_POST["tags"]) ? $_POST["tags"] : null;
 			$old_items = $items;
-			$items = $_POST["menu_items"];
+			$items = isset($_POST["menu_items"]) ? $_POST["menu_items"] : null;
 			
 			//Saving new group data
-			if (!$data || $name != $data["name"]) {
+			$data_name = isset($data["name"]) ? $data["name"] : null;
+			
+			if (!$data || $name != $data_name) {
 				if (empty($name)) {
 					$error_message = "Group Name cannot be undefined!";
 				}
 				else {
 					$data["name"] = $name;
 					
-					if ($data["group_id"])
+					if (!empty($data["group_id"]))
 						$data["object_groups"] = MenuUtil::getMenuObjectGroupsByConditions($brokers, array("group_id" => $data["group_id"]), null, false, true);
 					
-					$status = $_POST["add"] ? MenuUtil::insertMenuGroup($brokers, $data) : MenuUtil::updateMenuGroup($brokers, $data);
+					$status = !empty($_POST["add"]) ? MenuUtil::insertMenuGroup($brokers, $data) : MenuUtil::updateMenuGroup($brokers, $data);
 					
 				}
 			}
@@ -57,10 +61,11 @@ if ($PEVC) {
 			}
 			
 			//Saving new items data
-			if ($status && !$error_message) {
-				$group_id = $data["group_id"] ? $data["group_id"] : $status;
+			if (!empty($status) && empty($error_message)) {
+				$group_id = !empty($data["group_id"]) ? $data["group_id"] : $status;
+				$data_tags = isset($data["tags"]) ? $data["tags"] : null;
 				
-				if ($tags != $data["tags"])
+				if ($tags != $data_tags)
 					$status = TagUtil::updateObjectTags($brokers, $tags, ObjectUtil::MENU_OBJECT_TYPE_ID, $group_id);
 				
 				if ($status)
@@ -68,13 +73,14 @@ if ($PEVC) {
 			}
 		}
 		
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "Menu ${action}d successfully!";
 			
-				if ($_POST["add"]) {
+				if (!empty($_POST["add"])) {
 					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_menu") . "group_id=$group_id";
-					die("<script>alert('$status_message');document.location='$url';</script>");
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -85,14 +91,14 @@ if ($PEVC) {
 	
 	//Preparing HTML
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit Menu Group '$group_id'" : "Add Menu Group",
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit Menu Group '$group_id'" : "Add Menu Group",
 		"fields" => array(
 			"name" => "text",
 			"tags" => "text",
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 		"form_on_submit" => "saveMenu(this)",
 		"next_html" => '
 			<div class="menu_items">
@@ -177,15 +183,15 @@ function saveMenuItems($brokers, $settings, &$items, &$error_message, $group_id,
 				$new_data["parent_id"] = $parent_id;
 				$new_data["order"] = $order;
 				
-				if (!$new_data["item_id"])
+				if (empty($new_data["item_id"]))
 					$new_data["item_id"] = MenuUtil::insertMenuItem($brokers, $new_data);
 				else if (!MenuUtil::updateMenuItem($brokers, $new_data))
 					return false;
 				
-				if ($new_data["item_id"]) {
+				if (!empty($new_data["item_id"])) {
 					$items[$idx]["item_id"] = $new_data["item_id"];
 					
-					if (!saveMenuItems($brokers, $settings, $items[$idx]["items"], $error_message, $group_id, $new_data["item_id"]))
+					if (isset($items[$idx]["items"]) && !saveMenuItems($brokers, $settings, $items[$idx]["items"], $error_message, $group_id, $new_data["item_id"]))
 						return false;
 				}
 				else
@@ -207,15 +213,16 @@ function deleteOldItems($brokers, $old_items, $new_items) {
 	
 	$new_items_ids = array();
 	foreach ($new_items_decapsulated as $idx => $new_item)
-		if ($new_item["item_id"])
+		if (!empty($new_item["item_id"]))
 			$new_items_ids[ $new_item["item_id"] ] = $idx;
 	
 	$t = count($old_items_decapsulated);
 	for ($i = $t - 1; $i >= 0; --$i) {
 		$old_item = $old_items_decapsulated[$i];
-		$idx = $new_items_ids[ $old_item["item_id"] ];
+		$old_item_id = isset($old_item["item_id"]) ? $old_item["item_id"] : null;
+		$idx = isset($new_items_ids[$old_item_id]) ? $new_items_ids[$old_item_id] : null;
 		
-		if (!isset($idx) && !\MenuUtil::deleteMenuItem($brokers, $old_item["item_id"]))
+		if (!isset($idx) && !\MenuUtil::deleteMenuItem($brokers, $old_item_id))
 			$status = false;
 	}
 	

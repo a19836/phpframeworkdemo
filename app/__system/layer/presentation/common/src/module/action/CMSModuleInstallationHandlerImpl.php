@@ -108,7 +108,7 @@ class CMSModuleInstallationHandlerImpl extends \CMSModuleInstallationHandler {
 			
 			//insert default actions
 			$date = date("Y-m-d H:i:s");
-			$insert_options = array("hard_coded_ai_pk" => true); //used in mssql server
+			$insert_options = array("hard_coded_ai_pk" => true, "skip_reserved_words" => true); //hard_coded_ai_pk used in mssql server
 			
 			$objects_to_insert = array();
 			$objects_to_insert[] = array("mact_action", array("action_id" => 1, "name" => "like", "created_date" => $date, "modified_date" => $date), $insert_options);

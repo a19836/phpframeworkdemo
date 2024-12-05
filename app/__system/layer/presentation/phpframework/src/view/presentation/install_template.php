@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
- include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
+ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $selected_project = isset($selected_project) ? $selected_project : null; $P = isset($P) ? $P : null; $layers_projects = isset($layers_projects) ? $layers_projects : null; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -22,7 +22,7 @@
 <script>
 var get_store_templates_url = "' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=templates" . '"; //This is a global var
 var is_popup = ' . ($popup ? 1 : 0) . ';
-var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
+var is_zip_file = ' . (!empty($_FILES["zip_file"]) && empty($_POST["zip_url"]) ? 1 : 0) . ';
 </script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
@@ -32,12 +32,12 @@ var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 				<li class="continue" data-title="Install Template Now"><a onClick="installTemplate(this)"><i class="icon continue"></i> Install Template Now</a></li>
 			</ul>
 		</header>
-	</div>'; if ($_POST) { if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install this template. Please try again..."; if ($messages) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . $msg["type"] . '">' . $msg["msg"] . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } $main_content .= '<div class="install_template">
+	</div>'; if (!empty($_POST)) { if (empty($status)) { $error_message = !empty($error_message) ? $error_message : "There was an error trying to install this template. Please try again..."; if (!empty($messages)) { $main_content .= '<ul class="messages">'; foreach ($messages as $project_name => $msgs) { if ($msgs) { $main_content .= '<li><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) { $main_content .= '<li class="' . (isset($msg["type"]) ? $msg["type"] : "") . '">' . (isset($msg["msg"]) ? $msg["msg"] : "") . '</li>'; } $main_content .= '</ul></li>'; } } $main_content .= '</ul>'; } } else { $status_message = 'Template successfully installed!'; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $main_content .= "<script>if (typeof window.parent.$on_success_js_func == 'function') window.parent.$on_success_js_func();</script>"; } } $main_content .= '<div class="install_template">
 	<div class="layer' . (count($layers_projects) == 1 ? ' unique_layer hidden' : '') . '">
 		<label>Install in Layer: </label>
-		<select onChange="onChangeLayer(this)">'; foreach ($layers_projects as $bn => $layer) $main_content .= '<option' . ($bean_name == $bn ? ' selected' : '') . ' value="' . $bn . '">' . $layer["item_label"] . '</option>'; $main_content .= '</select>
-	</div>'; foreach ($layers_projects as $bn => $layer) { $projects = $layer["projects"]; $main_content .= '
-	<div id="project_' . $bn . '" class="project' . ($bean_name == $bn && $selected_project && $projects[$selected_project] ? ' hidden' : '') . '">
+		<select onChange="onChangeLayer(this)">'; foreach ($layers_projects as $bn => $layer) $main_content .= '<option' . ($bean_name == $bn ? ' selected' : '') . ' value="' . $bn . '">' . (isset($layer["item_label"]) ? $layer["item_label"] : "") . '</option>'; $main_content .= '</select>
+	</div>'; foreach ($layers_projects as $bn => $layer) { $projects = isset($layer["projects"]) ? $layer["projects"] : null; $main_content .= '
+	<div id="project_' . $bn . '" class="project' . ($bean_name == $bn && $selected_project && !empty($projects[$selected_project]) ? ' hidden' : '') . '">
 		<label>Install in Project: </label>
 		<select onChange="onChangeProject(this)">'; if ($projects) { $previous_folder = null; foreach ($projects as $project_name => $project) { $project_folder = dirname($project_name); $project_folder = $project_folder == "." ? "" : $project_folder; if ($project_folder && $project_folder != $previous_folder) { $main_content .= '<option disabled>' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_folder, '/')) . basename($project_folder) . '</option>'; $previous_folder = $project_folder; } $main_content .= '<option' . ($bean_name == $bn && $selected_project == $project_name ? ' selected' : '') . ' value="' . $project_name . '">' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_name, '/')) . basename($project_name) . '</option>'; } } $main_content .= '
 		</select>
@@ -47,7 +47,7 @@ var is_zip_file = ' . ($_FILES["zip_file"] ? 1 : 0) . ';
 		<li><a href="#local">Upload Local Template</a></li>
 	</ul>
 	<div id="local" class="file_upload">
-		<div class="title">Install a local template from your computer (.zip file)</div>'; foreach ($layers_projects as $bn => $layer) { $bfn = $layer["bean_file_name"]; $projects = $layer["projects"]; $query_str = $_SERVER["QUERY_STRING"]; $query_str = preg_replace("/(^|&)(bean_name|bean_file_name)=[^&]*/", "", $query_str); $main_content .= '
+		<div class="title">Install a local template from your computer (.zip file)</div>'; foreach ($layers_projects as $bn => $layer) { $bfn = isset($layer["bean_file_name"]) ? $layer["bean_file_name"] : null; $projects = isset($layer["projects"]) ? $layer["projects"] : null; $query_str = isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : null; $query_str = preg_replace("/(^|&)(bean_name|bean_file_name)=[^&]*/", "", $query_str); $main_content .= '
 		<form id="form_' . $bn . '" class="hidden" action="?bean_name=' . $bn . '&bean_file_name=' . $bfn . $query_str . '" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="project" value="" />
 			

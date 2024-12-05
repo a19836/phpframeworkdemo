@@ -20,7 +20,7 @@ class CommentService extends \soa\CommonService {
 	 * @param (name=data[comment], type=longblob, not_null=1)
 	 */
 	public function insertComment($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -35,8 +35,9 @@ class CommentService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Comment = $this->getCommentHbnObj($b, $options);
+			$ids = null;
 			$status = $Comment->insert($data, $ids);
-			return $status ? $ids["comment_id"] : $status;
+			return $status ? (isset($ids["comment_id"]) ? $ids["comment_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mc_comment", array(
@@ -57,7 +58,7 @@ class CommentService extends \soa\CommonService {
 	 * @param (name=data[comment], type=longblob, not_null=1)
 	 */
 	public function updateComment($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -90,7 +91,7 @@ class CommentService extends \soa\CommonService {
 	 */
 	public function deleteComment($data) {
 		$comment_id = $data["comment_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -114,7 +115,7 @@ class CommentService extends \soa\CommonService {
 	public function deleteCommentsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -138,13 +139,13 @@ class CommentService extends \soa\CommonService {
 	 */
 	public function getComment($data) {
 		$comment_id = $data["comment_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/comment", "get_comment", array("comment_id" => $comment_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Comment = $this->getCommentHbnObj($b, $options);
@@ -152,7 +153,7 @@ class CommentService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mc_comment", array("comment_id" => $comment_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/comment", "CommentService.getComment", $data, $options);
@@ -164,14 +165,15 @@ class CommentService extends \soa\CommonService {
 	 * @param (name=data[conditions][comment], type=longblob|array)
 	 */
 	public function getCommentsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/comment", "get_comments_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -181,7 +183,7 @@ class CommentService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mc_comment", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -195,25 +197,26 @@ class CommentService extends \soa\CommonService {
 	 * @param (name=data[conditions][comment], type=longblob|array)
 	 */
 	public function countCommentsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/comment", "count_comments_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Comment = $this->getCommentHbnObj($b, $options);
-				return $Comment->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Comment->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mc_comment", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -222,7 +225,7 @@ class CommentService extends \soa\CommonService {
 	}
 	
 	public function getAllComments($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -240,13 +243,13 @@ class CommentService extends \soa\CommonService {
 	}
 	
 	public function countAllComments($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/comment", "count_all_comments", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Comment = $this->getCommentHbnObj($b, $options);
@@ -264,7 +267,7 @@ class CommentService extends \soa\CommonService {
 	 */
 	public function getCommentsByIds($data) {
 		$comment_ids = $data["comment_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($comment_ids) {
@@ -296,7 +299,7 @@ class CommentService extends \soa\CommonService {
 	public function getCommentsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -323,8 +326,8 @@ class CommentService extends \soa\CommonService {
 	public function getCommentsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -354,7 +357,7 @@ class CommentService extends \soa\CommonService {
 		$parent_object_id = $data["parent_object_id"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -385,8 +388,8 @@ class CommentService extends \soa\CommonService {
 		$parent_object_id = $data["parent_object_id"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -418,7 +421,7 @@ class CommentService extends \soa\CommonService {
 		$parent_group = $data["parent_group"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -451,8 +454,8 @@ class CommentService extends \soa\CommonService {
 		$parent_group = $data["parent_group"];
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);

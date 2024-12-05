@@ -21,7 +21,7 @@ class ZoneService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function insertZone($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -31,7 +31,7 @@ class ZoneService extends \soa\CommonService {
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$data["name"] = addcslashes($data["name"], "\\'");
 			
-			if ($data["zone_id"]) {
+			if (!empty($data["zone_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$status = $b->callInsert("module/zip", "insert_zone_with_ai_pk", $data, $options);
 				return $status ? $data["zone_id"] : $status;
@@ -41,12 +41,13 @@ class ZoneService extends \soa\CommonService {
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			if (!$data["zone_id"]) 
+			if (empty($data["zone_id"]))
 				unset($data["zone_id"]);
 			
 			$Zone = $this->getZoneHbnObj($b, $options);
+			$ids = null;
 			$status = $Zone->insert($data, $ids);
-			return $status ? $ids["zone_id"] : $status;
+			return $status ? (isset($ids["zone_id"]) ? $ids["zone_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$attributes = array(
@@ -56,13 +57,13 @@ class ZoneService extends \soa\CommonService {
 				"modified_date" => $data["modified_date"]
 			);
 			
-			if ($data["zone_id"]) {
+			if (!empty($data["zone_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$attributes["zone_id"] = $data["zone_id"];
 			}
 			
 			$status = $b->insertObject("mz_zone", $attributes, $options);
-			return $status ? ($data["zone_id"] ? $data["zone_id"] : $b->getInsertedId($options)) : $status;
+			return $status ? (!empty($data["zone_id"]) ? $data["zone_id"] : $b->getInsertedId($options)) : $status;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/zip", "ZoneService.insertZone", $data, $options);
@@ -74,7 +75,7 @@ class ZoneService extends \soa\CommonService {
 	 * @param (name=data[name], type=varchar, not_null=1, min_length=1, max_length=50)
 	 */
 	public function updateZone($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -107,7 +108,7 @@ class ZoneService extends \soa\CommonService {
 	 */
 	public function deleteZone($data) {
 		$zone_id = $data["zone_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -130,24 +131,25 @@ class ZoneService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function deleteZonesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callDelete("module/zip", "delete_zones_by_conditions", array("conditions" => $cond), $options);
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Zone = $this->getZoneHbnObj($b, $options);
-				return $Zone->deleteByConditions(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Zone->deleteByConditions(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->deleteObject("mz_zone", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -160,7 +162,7 @@ class ZoneService extends \soa\CommonService {
 	 */
 	public function deleteZonesByStateId($data) {
 		$state_id = $data["state_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -183,18 +185,18 @@ class ZoneService extends \soa\CommonService {
 	 */
 	public function deleteZonesByCountryId($data) {
 		$country_id = $data["country_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) 
-			return $b->callDelete("module/zip", "delete_zones_by_country", array("country_id" => $country_id), $options);
+			return $b->callDelete("module/zip", "delete_zones_by_country_id", array("country_id" => $country_id), $options);
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Zone = $this->getZoneHbnObj($b, $options);
-			return $Zone->callDelete("delete_zones_by_country", array("country_id" => $country_id), $options);
+			return $Zone->callDelete("delete_zones_by_country_id", array("country_id" => $country_id), $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
-			$sql = ZoneDBDAOServiceUtil::delete_zones_by_country(array("country_id" => $country_id));
+			$sql = ZoneDBDAOServiceUtil::delete_zones_by_country_id(array("country_id" => $country_id));
 			return $b->setSQL($sql, $options);
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -206,22 +208,22 @@ class ZoneService extends \soa\CommonService {
 	 */
 	public function getZone($data) {
 		$zone_id = $data["zone_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/zip", "get_zone", array("zone_id" => $zone_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Zone = $this->getZoneHbnObj($b, $options);
 			$result = $Zone->callSelect("get_zone", array("zone_id" => $zone_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mz_zone", null, array("zone_id" => $zone_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/zip", "ZoneService.getZone", $data, $options);
@@ -233,14 +235,15 @@ class ZoneService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function getZonesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/zip", "get_zones_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -250,7 +253,7 @@ class ZoneService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mz_zone", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -264,25 +267,26 @@ class ZoneService extends \soa\CommonService {
 	 * @param (name=data[conditions][name], type=varchar|array, length=50)
 	 */
 	public function countZonesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/zip", "count_zones_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Zone = $this->getZoneHbnObj($b, $options);
-				return $Zone->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Zone->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mz_zone", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -291,7 +295,7 @@ class ZoneService extends \soa\CommonService {
 	}
 	
 	public function getAllZones($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -309,13 +313,13 @@ class ZoneService extends \soa\CommonService {
 	}
 	
 	public function countAllZones($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/zip", "count_all_zones", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Zone = $this->getZoneHbnObj($b, $options);
@@ -329,7 +333,7 @@ class ZoneService extends \soa\CommonService {
 	}
 	
 	public function getFullZones($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);

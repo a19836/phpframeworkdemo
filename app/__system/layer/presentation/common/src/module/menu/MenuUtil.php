@@ -12,8 +12,11 @@ class MenuUtil {
 		
 		if ($items)
 			foreach ($items as $item) {
-				if ($item["parent_id"] == $parent_id) {
-					$sub_items = self::encapsulateMenuGroupItems($items, $item["item_id"], $items_label);
+				$item_parent_id = isset($item["parent_id"]) ? $item["parent_id"] : null;
+				
+				if ($item_parent_id == $parent_id) {
+					$item_id = isset($item["item_id"]) ? $item["item_id"] : null;
+					$sub_items = self::encapsulateMenuGroupItems($items, $item_id, $items_label);
 					
 					if ($sub_items)
 						$item[$items_label] = $sub_items;
@@ -30,7 +33,9 @@ class MenuUtil {
 		
 		if ($items)
 			foreach ($items as $item) {
-				if (empty($parent_id) || $item["item_id"] == $parent_id) {
+				$item_id = isset($item["item_id"]) ? $item["item_id"] : null;
+				
+				if (empty($parent_id) || $item_id == $parent_id) {
 					$sub_items = $item[$items_label];
 					
 					if ($include_parent) {
@@ -43,7 +48,7 @@ class MenuUtil {
 						$new_items = $sub_items ? array_merge($new_items, $sub_items) : $new_items;
 					}
 				}
-				else if ($item[$items_label]) {
+				else if (!empty($item[$items_label])) {
 					$sub_items = self::decapsulateMenuGroupItems($item[$items_label], $parent_id, $items_label, $include_parent);
 					$new_items = $sub_items ? array_merge($new_items, $sub_items) : $new_items;
 				}
@@ -68,7 +73,7 @@ class MenuUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 				
 					$status = $broker->callInsert("module/menu", "insert_menu_group", $data);
 					$group_id = $status ? $broker->getInsertedId() : false;
@@ -76,13 +81,14 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
+					$ids = null;
 					$status = $MenuGroup->insert($data, $ids);
-					$group_id = $status ? $ids["group_id"] : false;
+					$group_id = $status ? (isset($ids["group_id"]) ? $ids["group_id"] : null) : false;
 					break;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->insertObject("mmenu_group", array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -91,15 +97,15 @@ class MenuUtil {
 				}
 			}
 			
-			if ($status && $group_id && !self::updateMenuObjectGroupsByGroupId(array($broker), $group_id, $data))
+			if ($status && !empty($group_id) && !self::updateMenuObjectGroupsByGroupId(array($broker), $group_id, $data))
 				$status = false;
 			
-			return $status ? $group_id : false;
+			return $status && !empty($group_id) ? $group_id : false;
 		}
 	}
 
 	public static function updateMenuGroup($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["group_id"])) {
+		if (is_array($brokers) && isset($data["group_id"]) && is_numeric($data["group_id"])) {
 			$status = false;
 				
 			$data["modified_date"] = date("Y-m-d H:i:s");
@@ -110,7 +116,7 @@ class MenuUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 				
 					$status = $broker->callUpdate("module/menu", "update_menu_group", $data);
 					break;
@@ -122,7 +128,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->updateObject("mmenu_group", array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"group_id" => $data["group_id"]
@@ -131,7 +137,7 @@ class MenuUtil {
 				}
 			}
 			
-			if ($status && $data["group_id"] && !self::updateMenuObjectGroupsByGroupId(array($broker), $data["group_id"], $data))
+			if ($status && !empty($data["group_id"]) && !self::updateMenuObjectGroupsByGroupId(array($broker), $data["group_id"], $data))
 				$status = false;
 			
 			return $status;
@@ -195,7 +201,7 @@ class MenuUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/menu", "count_menu_groups_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
@@ -228,6 +234,8 @@ class MenuUtil {
 					return $MenuGroup->callSelect("get_menu_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$cond = DB::getSQLConditions($conditions, $conditions_join);
+					
 					$sql = MenuGroupDBDAOUtil::get_menu_groups_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 					
 					return $broker->getSQL($sql, $options);
@@ -246,20 +254,22 @@ class MenuUtil {
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$result = $broker->callSelect("module/menu", "count_menu_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 					$result = $MenuGroup->callSelect("count_menu_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
+					$cond = DB::getSQLConditions($conditions, $conditions_join);
+					
 					$sql = MenuGroupDBDAOUtil::count_menu_groups_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -318,18 +328,18 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/menu", "count_menu_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 					$result = $MenuGroup->callSelect("count_menu_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = MenuGroupDBDAOUtil::count_menu_groups_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -378,21 +388,21 @@ class MenuUtil {
 					$group = is_numeric($group) ? $group : 0;
 					
 					$result = $broker->callSelect("module/menu", "count_menu_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
 					
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 					$result = $MenuGroup->callSelect("count_menu_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
 					$sql = MenuGroupDBDAOUtil::count_menu_groups_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -419,18 +429,18 @@ class MenuUtil {
 						return $broker->callBusinessLogic("module/menu", "MenuGroupService.getMenuGroupsWithAllTags", array("tags" => $tags, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $conditions, "conditions_join" => $conditions_join, "options" => $options), $options);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					
 						return $broker->callSelect("module/menu", "get_menu_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), $options);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 						return $MenuGroup->callSelect("get_menu_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), $options);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 						$sql = MenuGroupDBDAOUtil::get_menu_groups_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						return $broker->getSQL($sql, $options);
@@ -457,24 +467,24 @@ class MenuUtil {
 						return $broker->callBusinessLogic("module/menu", "MenuGroupService.countMenuGroupsWithAllTags", array("tags" => $tags, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $conditions, "conditions_join" => $conditions_join, "options" => array("no_cache" => $no_cache)), array("no_cache" => $no_cache));
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$result = $broker->callSelect("module/menu", "count_menu_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 						$result = $MenuGroup->callSelect("count_menu_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+						$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 						$sql = MenuGroupDBDAOUtil::count_menu_groups_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -500,18 +510,18 @@ class MenuUtil {
 					return $broker->callBusinessLogic("module/menu", "MenuGroupService.getMenuGroupsByTags", array("tags" => $tags, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $conditions, "conditions_join" => $conditions_join, "options" => $options), $options);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					
 					return $broker->callSelect("module/menu", "get_menu_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), $options);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 					return $MenuGroup->callSelect("get_menu_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), $options);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = MenuGroupDBDAOUtil::get_menu_groups_by_tags(array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					return $broker->getSQL($sql, $options);
@@ -537,24 +547,24 @@ class MenuUtil {
 					return $broker->callBusinessLogic("module/menu", "MenuGroupService.countMenuGroupsByTags", array("tags" => $tags, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $conditions, "conditions_join" => $conditions_join, "options" => array("no_cache" => $no_cache)), array("no_cache" => $no_cache));
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/menu", "count_menu_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$MenuGroup = $broker->callObject("module/menu", "MenuGroup");
 					$result = $MenuGroup->callSelect("count_menu_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
+					$cond = DB::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = MenuGroupDBDAOUtil::count_menu_groups_by_tags(array("tags" => $tags_str, "object_type_id" => ObjectUtil::MENU_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -572,40 +582,41 @@ class MenuUtil {
 					return $broker->callBusinessLogic("module/menu", "MenuItemService.insertMenuItem", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : 0;
-					$data["label"] = addcslashes($data["label"], "\\'");
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["class"] = addcslashes($data["class"], "\\'");
-					$data["url"] = addcslashes($data["url"], "\\'");
-					$data["previous_html"] = addcslashes($data["previous_html"], "\\'");
-					$data["next_html"] = addcslashes($data["next_html"], "\\'");
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["parent_id"] = isset($data["parent_id"]) && is_numeric($data["parent_id"]) ? $data["parent_id"] : 0;
+					$data["label"] = isset($data["label"]) ? addcslashes($data["label"], "\\'") : "";
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+					$data["url"] = isset($data["url"]) ? addcslashes($data["url"], "\\'") : "";
+					$data["previous_html"] = isset($data["previous_html"]) ? addcslashes($data["previous_html"], "\\'") : "";
+					$data["next_html"] = isset($data["next_html"]) ? addcslashes($data["next_html"], "\\'") : "";
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					$status = $broker->callInsert("module/menu", "insert_menu_item", $data);
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["parent_id"] = isset($data["parent_id"]) && is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$MenuItem = $broker->callObject("module/menu", "MenuItem");
+					$ids = null;
 					$status = $MenuItem->insert($data, $ids);
-					return $status ? $ids["item_id"] : $status;
+					return $status ? (isset($ids["item_id"]) ? $ids["item_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["parent_id"] = isset($data["parent_id"]) && is_numeric($data["parent_id"]) ? $data["parent_id"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$status = $broker->insertObject("mmenu_item", array(
-							"group_id" => $data["group_id"], 
-							"parent_id" => $data["parent_id"], 
-							"label" => $data["label"], 
-							"title" => $data["title"], 
-							"class" => $data["class"], 
-							"url" => $data["url"], 
-							"previous_html" => $data["previous_html"], 
-							"next_html" => $data["next_html"], 
-							"order" => $data["order"], 
+							"group_id" => isset($data["group_id"]) ? $data["group_id"] : null, 
+							"parent_id" => isset($data["parent_id"]) ? $data["parent_id"] : null, 
+							"label" => isset($data["label"]) ? $data["label"] : null, 
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"class" => isset($data["class"]) ? $data["class"] : null, 
+							"url" => isset($data["url"]) ? $data["url"] : null, 
+							"previous_html" => isset($data["previous_html"]) ? $data["previous_html"] : null, 
+							"next_html" => isset($data["next_html"]) ? $data["next_html"] : null, 
+							"order" => isset($data["order"]) ? $data["order"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -616,7 +627,7 @@ class MenuUtil {
 	}
 
 	public static function updateMenuItem($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["item_id"])) {
+		if (is_array($brokers) && isset($data["item_id"]) && is_numeric($data["item_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
@@ -624,14 +635,14 @@ class MenuUtil {
 					return $broker->callBusinessLogic("module/menu", "MenuItemService.updateMenuItem", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["parent_id"] = is_numeric($data["parent_id"]) ? $data["parent_id"] : 0;
-					$data["label"] = addcslashes($data["label"], "\\'");
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["class"] = addcslashes($data["class"], "\\'");
-					$data["url"] = addcslashes($data["url"], "\\'");
-					$data["previous_html"] = addcslashes($data["previous_html"], "\\'");
-					$data["next_html"] = addcslashes($data["next_html"], "\\'");
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["parent_id"] = isset($data["parent_id"]) && is_numeric($data["parent_id"]) ? $data["parent_id"] : 0;
+					$data["label"] = isset($data["label"]) ? addcslashes($data["label"], "\\'") : "";
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["class"] = isset($data["class"]) ? addcslashes($data["class"], "\\'") : "";
+					$data["url"] = isset($data["url"]) ? addcslashes($data["url"], "\\'") : "";
+					$data["previous_html"] = isset($data["previous_html"]) ? addcslashes($data["previous_html"], "\\'") : "";
+					$data["next_html"] = isset($data["next_html"]) ? addcslashes($data["next_html"], "\\'") : "";
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/menu", "update_menu_item", $data);
 				}
@@ -641,15 +652,15 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mmenu_item", array(
-							"group_id" => $data["group_id"], 
-							"parent_id" => $data["parent_id"], 
-							"label" => $data["label"], 
-							"title" => $data["title"], 
-							"class" => $data["class"], 
-							"url" => $data["url"], 
-							"previous_html" => $data["previous_html"], 
-							"next_html" => $data["next_html"], 
-							"order" => $data["order"], 
+							"group_id" => isset($data["group_id"]) ? $data["group_id"] : null, 
+							"parent_id" => isset($data["parent_id"]) ? $data["parent_id"] : null, 
+							"label" => isset($data["label"]) ? $data["label"] : null, 
+							"title" => isset($data["title"]) ? $data["title"] : null, 
+							"class" => isset($data["class"]) ? $data["class"] : null, 
+							"url" => isset($data["url"]) ? $data["url"] : null, 
+							"previous_html" => isset($data["previous_html"]) ? $data["previous_html"] : null, 
+							"next_html" => isset($data["next_html"]) ? $data["next_html"] : null, 
+							"order" => isset($data["order"]) ? $data["order"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"item_id" => $data["item_id"]
@@ -703,6 +714,7 @@ class MenuUtil {
 	public static function getAllMenuItems($brokers, $options = array(), $no_cache = false) {
 		if (is_array($brokers)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
+			$result = null;
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -737,7 +749,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/menu", "count_all_menu_items", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuItem = $broker->callObject("module/menu", "MenuItem");
@@ -753,6 +765,7 @@ class MenuUtil {
 	public static function getMenuItemsByConditions($brokers, $conditions, $conditions_join, $options = array(), $no_cache = false) {
 		if (is_array($brokers)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
+			$result = null;
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -791,7 +804,7 @@ class MenuUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/menu", "count_menu_items_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuItem = $broker->callObject("module/menu", "MenuItem");
@@ -807,6 +820,7 @@ class MenuUtil {
 	public static function getMenuItemsByFirstGroupIdOfObject($brokers, $object_type_id, $object_id, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
+			$result = null;
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -836,6 +850,7 @@ class MenuUtil {
 	public static function getMenuItemsByFirstGroupIdOfObjectGroup($brokers, $object_type_id, $object_id, $group = null, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
+			$result = null;
 			
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -871,10 +886,10 @@ class MenuUtil {
 	}
 	
 	private static function prepareMenuItemsResult($result, $options) {
-		if ($options["encapsulate"]) {
+		if (!empty($options["encapsulate"])) {
 			$encapsulate = is_array($options["encapsulate"]) ? $options["encapsulate"] : array();
-			$parent_id = $encapsulate["parent_id"] ? $encapsulate["parent_id"] : 0;
-			$items_label = $encapsulate["items_label"] ? $encapsulate["items_label"] : "items";
+			$parent_id = !empty($encapsulate["parent_id"]) ? $encapsulate["parent_id"] : 0;
+			$items_label = !empty($encapsulate["items_label"]) ? $encapsulate["items_label"] : "items";
 			
 			return self::encapsulateMenuGroupItems($result, $parent_id, $items_label);
 		}
@@ -885,37 +900,37 @@ class MenuUtil {
 	/* OBJECT MENU GROUP FUNCTIONS */
 
 	public static function insertMenuObjectGroup($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["group_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+		if (is_array($brokers) && isset($data["group_id"]) && is_numeric($data["group_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/menu", "MenuObjectGroupService.insertMenuObjectGroup", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callInsert("module/menu", "insert_menu_object_group", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");
 					return $MenuObjectGroup->insert($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->insertObject("mmenu_object_group", array(
-							"group_id" => $data["group_id"], 
-							"object_type_id" => $data["object_type_id"], 
-							"object_id" => $data["object_id"], 
+							"group_id" => isset($data["group_id"]) ? $data["group_id"] : null, 
+							"object_type_id" => isset($data["object_type_id"]) ? $data["object_type_id"] : null, 
+							"object_id" => isset($data["object_id"]) ? $data["object_id"] : null, 
 							"group" => $data["group"], 
 							"order" => $data["order"], 
 							"created_date" => $data["created_date"], 
@@ -927,31 +942,31 @@ class MenuUtil {
 	}
 
 	public static function updateMenuObjectGroup($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["new_group_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_group_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+		if (is_array($brokers) && isset($data["new_group_id"]) && is_numeric($data["new_group_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_group_id"]) && is_numeric($data["old_group_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/menu", "MenuObjectGroupService.updateMenuObjectGroup", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/menu", "update_menu_object_group", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");
 					return $MenuObjectGroup->updatePrimaryKeys($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->updateObject("mmenu_object_group", array(
 							"group_id" => $data["new_group_id"], 
@@ -974,10 +989,10 @@ class MenuUtil {
 		if (is_array($brokers) && is_numeric($group_id)) {
 			if (self::deleteMenuObjectGroupsByGroupId($brokers, $group_id)) {
 				$status = true;
-				$object_groups = is_array($data["object_groups"]) ? $data["object_groups"] : array();
+				$object_groups = isset($data["object_groups"]) && is_array($data["object_groups"]) ? $data["object_groups"] : array();
 				
 				foreach ($object_groups as $object_group) {
-					if (is_numeric($object_group["object_type_id"]) && is_numeric($object_group["object_id"])) {
+					if (isset($object_group["object_type_id"]) && is_numeric($object_group["object_type_id"]) && isset($object_group["object_id"]) && is_numeric($object_group["object_id"])) {
 						$object_group["group_id"] = $group_id;
 					
 						if (!self::insertMenuObjectGroup($brokers, $object_group)) {
@@ -1065,7 +1080,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/menu", "get_menu_object_group", array("group_id" => $group_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");
@@ -1073,7 +1088,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$result = $broker->findObjects("mmenu_object_group", null, array("group_id" => $group_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 			}
 		}
@@ -1116,7 +1131,7 @@ class MenuUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/menu", "count_menu_object_groups_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");
@@ -1161,7 +1176,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/menu", "count_all_menu_object_groups", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");
@@ -1206,7 +1221,7 @@ class MenuUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/menu", "count_menu_object_groups_by_group_id", array("group_id" => $group_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$MenuObjectGroup = $broker->callObject("module/menu", "MenuObjectGroup");

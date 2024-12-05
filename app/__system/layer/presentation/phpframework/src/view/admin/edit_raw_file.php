@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
+include $EVC->getUtilPath("BreadCrumbsUIHandler"); $file_path = isset($file_path) ? $file_path : null; $obj = isset($obj) ? $obj : null; $editor_code_type = isset($editor_code_type) ? $editor_code_type : null; $manage_ai_action_url = $openai_encryption_key ? $project_url_prefix . "phpframework/ai/manage_ai_action" : null; $head = '
 <!-- Add CodeHighLight CSS and JS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/codehighlight/styles/default.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/codehighlight/highlight.pack.js"></script>
@@ -33,28 +33,32 @@ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $head = '
 
 <!-- Add Layout CSS and JS file -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
-<script src="' . $project_url_prefix . 'js/layout.js"></script>
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 
 <!-- Add local CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/edit_raw_file.css" type="text/css" charset="utf-8" />
 <script src="' . $project_url_prefix . 'js/admin/edit_raw_file.js"></script>
 <script>
-var file_modified_time = ' . ($file_modified_time ? $file_modified_time : "null") . '; //for version control
-var scroll_top = ' . (is_numeric($scroll_top) ? $scroll_top : 0 ) . ';
-var editor_code_type = "' . $editor_code_type . '";
-var code_id = "' . md5($code) . '";
-var readonly = ' . ($readonly ? "true" : "false") . ';
-</script>'; $main_content .= '
+var file_modified_time = ' . (!empty($file_modified_time) ? $file_modified_time : "null") . '; //for version control
+var scroll_top = ' . (isset($scroll_top) && is_numeric($scroll_top) ? $scroll_top : 0 ) . ';
+var editor_code_type = "' . (isset($editor_code_type) ? $editor_code_type : "") . '";
+var code_id = "' . md5(isset($code) ? $code : null) . '";
+var readonly = ' . (!empty($readonly) ? "true" : "false") . ';
+var manage_ai_action_url = "' . $manage_ai_action_url . '";
+</script>'; $main_content = '
 	<div class="top_bar' . ($popup ? " in_popup" : "") . '">
 		<header>
-			<div class="title" title="' . $path . '">Edit File: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if (!$readonly) $main_content .= '<li class="save" data-title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu" onClick="openSubmenu(this)">
+			<div class="title" title="' . $path . '">Edit File: ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>'; if ($editor_code_type) { $main_content .= '<ul>'; if (empty($readonly)) $main_content .= '<li class="save" data-title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '	<li class="sub_menu" onClick="openSubmenu(this)">
 						<i class="icon sub_menu"></i>
 						<ul>
-							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '			<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
+							<li class="editor_settings" title="Open Editor Setings"><a onClick="openEditorSettings()"><i class="icon settings"></i> Open Editor Setings</a></li>'; if ($editor_code_type == "php") $main_content .= '		<li class="pretty_print" title="Pretty Print Code"><a onClick="prettyPrintCode()"><i class="icon pretty_print"></i> Pretty Print Code</a></li>'; $main_content .= '<li class="set_word_wrap" title="Toggle Word Wrap"><a onClick="setWordWrap(this)" wrap="0"><i class="icon word_wrap"></i> Word Wrap</a></li>
+							<li class="separator"></li>
+							<li class="ai" title="Comment code automatically"><a onClick="commentCodeAutomatically(this)"><i class="icon ai"></i> Comment Code Automatically</a></li>
+							<li class="ai" title="Open Code Chat Bot"><a onClick="openCodeChatBot(this)"><i class="icon ai"></i> Open Code Chat Bot</a></li>'; $main_content .= '
 							<li class="separator"></li>
 							<li class="full_screen" title="Maximize/Minimize Editor Screen"><a onClick="toggleFullScreen(this)"><i class="icon full_screen"></i> Maximize Editor Screen</a></li>
 							<li class="separator"></li>
-							<li class="dummy_elm_to_add_auto_save_options"></li>'; if (!$readonly) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '
+							<li class="dummy_elm_to_add_auto_save_options"></li>'; if (empty($readonly)) $main_content .= '<li class="save" title="Save File"><a onClick="save(false)"><i class="icon save"></i> Save</a></li>'; $main_content .= '
 						</ul>
 					</li>
 				</ul>'; } $main_content .= '
@@ -62,7 +66,7 @@ var readonly = ' . ($readonly ? "true" : "false") . ';
 	</div>'; if ($editor_code_type) { $main_content .= '
 	<div class="code_area with_top_bar_section' . ($popup ? " in_popup" : "") . '">
 		<textarea>' . "\n" . htmlspecialchars($code, ENT_NOQUOTES) . '</textarea>
-	</div>'; if (!$readonly) $main_content .= '
+	</div>'; if (empty($readonly)) $main_content .= '
 	<div class="confirm_save hidden">
 		<div class="title">Please confirm if the code is correct and if it is, click on the save button...</div>
 		

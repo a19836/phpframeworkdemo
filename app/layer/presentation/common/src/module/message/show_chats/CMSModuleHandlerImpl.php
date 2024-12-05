@@ -4,6 +4,7 @@ namespace CMSModule\message\show_chats;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,21 +16,23 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		$html = '';
+		$user_id = null;
 		
-		if (!$settings["logged_user_id"] && $settings["session_id"]) {
-			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $session_id), null);
+		if (empty($settings["logged_user_id"]) && !empty($settings["session_id"])) {
+			$session_data = \UserUtil::getUserSessionsByConditions($brokers, array("session_id" => $settings["session_id"]), null);
 			
-			if ($session_data[0]) {
+			if (isset($session_data[0]["user_id"])) {
 				$user_data = \UserUtil::getUsersByConditions($brokers, array("user_id" => $session_data[0]["user_id"]), null);
-				$user_id = $user_data[0]["user_id"];
+				$user_id = isset($user_data[0]["user_id"]) ? $user_data[0]["user_id"] : null;
 			}
 		}
 		else 
-			$user_id = $settings["logged_user_id"];
+			$user_id = isset($settings["logged_user_id"]) ? $settings["logged_user_id"] : null;
 		
 		if (is_numeric($user_id)) {
 			//Getting users
 			$chat_users = \MessageUtil::getUserChatUsers($brokers, $user_id);
+			$available_users = null;
 			
 			//Add join point updating the data
 			$EVC->getCMSLayer()->getCMSJoinPointLayer()->includeJoinPoint("Changing Chat Users data", array(
@@ -49,27 +52,33 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/message/show_chats.css" type="text/css" charset="utf-8" />';
 			
 			$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/message/show_chats.js"></script>';
-			$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
-			$html .= $settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+			$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
+			$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
 			
 			//Preparing messages html
 			$current_date = date("Y-m-d");
+			
+			$show_chat_url = isset($settings["show_chat_url"]) ? $settings["show_chat_url"] : null;
+			$load_existent_chat_users_url = isset($settings["load_existent_chat_users_url"]) ? $settings["load_existent_chat_users_url"] : null;
+			$delete_chat_url = isset($settings["delete_chat_url"]) ? $settings["delete_chat_url"] : null;
+			$user_label = isset($settings["user_label"]) ? $settings["user_label"] : null;
+			$default_chat_user_id = isset($settings["default_chat_user_id"]) ? $settings["default_chat_user_id"] : null;
 			
 			$html .= '
 			<script>
 				var jquery_lib_url = jquery_lib_url ? jquery_lib_url : \'' . $project_common_url_prefix . 'vendor/jquery/js/jquery-1.8.1.min.js\';
 				
-				var show_chat_url = \'' . $settings["show_chat_url"] . '\';
-				var load_existent_chat_users_url = \'' . $settings["load_existent_chat_users_url"] . '\';
-				var delete_chat_url = \'' . $settings["delete_chat_url"] . '\';
-				var chat_list_user_html = \'' . addcslashes(str_replace("\n", "", self::getChatListUserHtml(array("user_id" => "#user_id#", "name" => "#name#", "photo_url" => "#photo_url#", "last_chat_date" => "#last_chat_date#"), $current_date, false, false, $settings["delete_chat_url"])), "\\'") . '\';
+				var show_chat_url = \'' . $show_chat_url . '\';
+				var load_existent_chat_users_url = \'' . $load_existent_chat_users_url . '\';
+				var delete_chat_url = \'' . $delete_chat_url . '\';
+				var chat_list_user_html = \'' . addcslashes(str_replace("\n", "", self::getChatListUserHtml(array("user_id" => "#user_id#", "name" => "#name#", "photo_url" => "#photo_url#", "last_chat_date" => "#last_chat_date#"), $current_date, false, false, $delete_chat_url)), "\\'") . '\';
 				var on_user_chat_function = on_user_chat_function ? on_user_chat_function : null;//check if already exists before. This allows the on_user_chat_function variable be set on the template level...
 				var on_check_new_users_function = on_check_new_users_function ? on_check_new_users_function : null;
 				var on_delete_chat_function = on_delete_chat_function ? on_delete_chat_function : null;
 				var on_delete_chat_confirmation_message = "' . translateProjectText($EVC, "Do you wish to delete these messages?") . '";
 				var on_delete_chat_error_message = "' . translateProjectText($EVC, "There was an error trying to delete these messages. Please try again...") . '";
 			</script>
-			<div class="module_show_chats ' . ($settings["block_class"]) . '">';
+			<div class="module_show_chats ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 			
 			if ($available_users)
 				$html .= '<div class="open_new_chat" onClick="$(this).parent().closest(\'.module_show_chats\').toggleClass(\'new_chat_openned\')">
@@ -82,9 +91,12 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				</div>
 				<div class="chats_list">';
 			
-			if ($chat_users)
-				foreach ($chat_users as $user)
-					$html .= self::getChatListUserHtml($user, $current_date, $settings["user_label"], $settings["default_chat_user_id"] == $user["user_id"], $settings["delete_chat_url"]);
+			if ($chat_users) {
+				foreach ($chat_users as $user) {
+					$chat_user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+					$html .= self::getChatListUserHtml($user, $current_date, $user_label, $default_chat_user_id == $chat_user_id, $delete_chat_url);
+				}
+			}
 			else 
 				$html .= '<div class="empty_items">' . translateProjectText($EVC, "There are no chats...") . '</div>';
 			
@@ -94,14 +106,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			
 			if ($available_users)
 				foreach ($available_users as $available_user)
-					$html .= self::getAvailableUsersUserHtml($available_user, $current_date, $settings["user_label"]);
+					$html .= self::getAvailableUsersUserHtml($available_user, $current_date, $user_label);
 				
 			$html .= '</div>
 			</div>';
 			
 			//Open a chat by default with the correspondent user id
-			if ($settings["default_chat_user_id"])
-				$html .= '<script>openUserChat(' . $settings["default_chat_user_id"] . ', on_user_chat_function);</script>';
+			if ($default_chat_user_id)
+				$html .= '<script>openUserChat(' . $default_chat_user_id . ', on_user_chat_function);</script>';
 		}
 		
 		return $html;
@@ -116,6 +128,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	}
 	
 	private static function getChatUserHtml($user, $current_date, $user_label, $selected, $delete_btn) {
+		$user["last_chat_date"] = isset($user["last_chat_date"]) ? $user["last_chat_date"] : null;
 		$cd = explode(" ", $user["last_chat_date"]);
 		if ($cd[0] == $current_date)
 			$user["last_chat_date"] = $cd[1];
@@ -128,12 +141,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$user_label = $HtmlFormHandler->getParsedValueFromData($user_label, $user);
 		}
 		else 
-			$user_label = $user["username"] ? $user["username"] : $user["name"];
+			$user_label = !empty($user["username"]) ? $user["username"] : (isset($user["name"]) ? $user["name"] : null);
+		
+		$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
 		
 		return '
-		<div class="user_chat' . ($selected ? ' selected' : '') . '" onClick="openUserChat(\'' . $user["user_id"] . '\', on_user_chat_function)" user_id="' . $user["user_id"] . '">
+		<div class="user_chat' . ($selected ? ' selected' : '') . '" onClick="openUserChat(\'' . $user_id . '\', on_user_chat_function)" user_id="' . $user_id . '">
 			<div class="user_photo">
-				' . ($user["photo_url"] ? '<img src="' . $user["photo_url"] . '" onError="$(this).remove()"/>' : '') . '
+				' . (!empty($user["photo_url"]) ? '<img src="' . $user["photo_url"] . '" onError="$(this).remove()"/>' : '') . '
 			</div>
 			<div class="user_name">' . $user_label . '</div>
 			<div class="last_chat_date">' . $user["last_chat_date"] . '</div>

@@ -4,50 +4,54 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("user/admin/UserAdminUtil", $common_project_name);
 	
 	$UserAdminUtil = new UserAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	$username = $_GET["username"];
-	$environment_id = $_GET["environment_id"];
+	$username = isset($_GET["username"]) ? $_GET["username"] : null;
+	$environment_id = isset($_GET["environment_id"]) ? $_GET["environment_id"] : null;
 	
-	if ($_POST) {
-		if ($_POST["add"] || $_POST["save"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["add"]) || !empty($_POST["save"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 			
 			$data = array(
-				"username" => strtolower($_POST["username"]),
-				"environment_id" => $_POST["environment_id"],
-				"session_id" => $_POST["session_id"],
-				"user_id" => $_POST["user_id"],
-				"logged_status" => $_POST["logged_status"],
-				"login_time" => $_POST["login_time"],
-				"login_ip" => $_POST["login_ip"],
-				"logout_time" => $_POST["logout_time"],
-				"logout_ip" => $_POST["logout_ip"],
-				"failed_login_attempts" => $_POST["failed_login_attempts"],
-				"failed_login_time" => $_POST["failed_login_time"],
-				"failed_login_ip" => $_POST["failed_login_ip"],
-				"captcha" => $_POST["captcha"],
+				"username" => isset($_POST["username"]) ? strtolower($_POST["username"]) : null,
+				"environment_id" => isset($_POST["environment_id"]) ? $_POST["environment_id"] : null,
+				"session_id" => isset($_POST["session_id"]) ? $_POST["session_id"] : null,
+				"user_id" => isset($_POST["user_id"]) ? $_POST["user_id"] : null,
+				"logged_status" => isset($_POST["logged_status"]) ? $_POST["logged_status"] : null,
+				"login_time" => isset($_POST["login_time"]) ? $_POST["login_time"] : null,
+				"login_ip" => isset($_POST["login_ip"]) ? $_POST["login_ip"] : null,
+				"logout_time" => isset($_POST["logout_time"]) ? $_POST["logout_time"] : null,
+				"logout_ip" => isset($_POST["logout_ip"]) ? $_POST["logout_ip"] : null,
+				"failed_login_attempts" => isset($_POST["failed_login_attempts"]) ? $_POST["failed_login_attempts"] : null,
+				"failed_login_time" => isset($_POST["failed_login_time"]) ? $_POST["failed_login_time"] : null,
+				"failed_login_ip" => isset($_POST["failed_login_ip"]) ? $_POST["failed_login_ip"] : null,
+				"captcha" => isset($_POST["captcha"]) ? $_POST["captcha"] : null,
 			);
-			$status = $_POST["add"] ? UserUtil::insertUserSession($brokers, $data) : UserUtil::updateUserSession($brokers, $data);
+			$status = !empty($_POST["add"]) ? UserUtil::insertUserSession($brokers, $data) : UserUtil::updateUserSession($brokers, $data);
 		}
-		else if ($_POST["delete"]) {
+		else if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
 			$status = UserUtil::deleteUserSession($brokers, $username, $environment_id);
 		}
 		
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "User Session ${action}d successfully!";
 				
-				if ($_POST["add"]) {
-					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_user_session") . "username=${data['username']}&environment_id=${data['environment_id']}";
-					die("<script>alert('$status_message');document.location='$url';</script>");
+				if (!empty($_POST["add"])) {
+					$data_username = isset($data["username"]) ? $data["username"] : null;
+					$data_environment_id = isset($data["environment_id"]) ? $data["environment_id"] : null;
+					
+					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_user_session") . "username=$data_username&environment_id=$data_environment_id";
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -58,11 +62,12 @@ if ($PEVC) {
 	
 	$data = UserUtil::getUserSession($brokers, $username, $environment_id, true);
 	
+	$users_limit_exceeded = null;
 	$user_options = $CommonModuleAdminUtil->getUserOptions($brokers, $data, $users_limit_exceeded);
 	
 	//Preparing HTML
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit User Session '$username - $environment_id'" : "Add User Session",
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit User Session '$username - $environment_id'" : "Add User Session",
 		"fields" => array(
 			"username" => "text",
 			"environment_id" => "text",
@@ -82,8 +87,8 @@ if ($PEVC) {
 			"captcha" => "text",
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_user_session.css" type="text/css" charset="utf-8" />';

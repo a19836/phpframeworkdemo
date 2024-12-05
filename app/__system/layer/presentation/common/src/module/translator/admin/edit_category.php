@@ -4,49 +4,51 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("translator/admin/TranslatorAdminUtil", $common_project_name);
 	
 	$TranslatorAdminUtil = new TranslatorAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	$parent = trim($_GET["parent"]);
+	$parent = isset($_GET["parent"]) ? trim($_GET["parent"]) : "";
 	$parent .= $parent && substr($parent, -1) != "/" ? "/" : "";
-	$category = trim($_GET["category"]);
+	$category = isset($_GET["category"]) ? trim($_GET["category"]) : "";
+	$data = null;
 	
-	if ($_POST) {
-		if ($_POST["add"]) {
+	if (!empty($_POST)) {
+		if (!empty($_POST["add"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 			
 			$data = array(
-				"category" => $parent . trim($_POST["category"]),
+				"category" => $parent . (isset($_POST["category"]) ? trim($_POST["category"]) : ""),
 			);
 			$status = TranslatorUtil::insertCategory($PEVC, $data);
 		}
-		else if ($_POST["save"]) {
+		else if (!empty($_POST["save"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 			$action = "save";
 			
 			$data = array(
 				"old_category" => $parent . $category,
-				"new_category" => $parent . trim($_POST["category"]),
+				"new_category" => $parent . (isset($_POST["category"]) ? trim($_POST["category"]) : ""),
 			);
 			$status = TranslatorUtil::updateCategory($PEVC, $data);
 		}
-		else if ($_POST["delete"]) {
+		else if (!empty($_POST["delete"])) {
 			$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "delete");
 			$action = "delete";
 			$status = TranslatorUtil::deleteCategory($PEVC, $parent . $category);
 		}
 		
-		if ($action) {
-			if ($status) {
+		if (!empty($action)) {
+			if (!empty($status)) {
 				$status_message = "Category ${action}d successfully!";
 				
-				if ($_POST["add"] || $_POST["save"]) {
-					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_category") . "parent=$parent&category=" . trim($_POST["category"]);
-					die("<script>alert('$status_message');document.location='$url';</script>");
+				if (!empty($_POST["add"]) || !empty($_POST["save"])) {
+					$url = $CommonModuleAdminUtil->getAdminFileUrl("edit_category") . "parent=$parent&category=" . (isset($_POST["category"]) ? trim($_POST["category"]) : "");
+					echo "<script>alert('$status_message');document.location='$url';</script>";
+					die();
 				}
 			}
 			else {
@@ -62,13 +64,13 @@ if ($PEVC) {
 	
 	//Preparing HTML
 	$form_settings = array(
-		"title" => $data || ($_POST["delete"] && !$error_message) ? "Edit Category '$parent$category'" : "Add Category" . ($parent ? " to '$parent'" : ""),
+		"title" => $data || (!empty($_POST["delete"]) && empty($error_message)) ? "Edit Category '$parent$category'" : "Add Category" . ($parent ? " to '$parent'" : ""),
 		"fields" => array(
 			"category" => "text",
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_category.css" type="text/css" charset="utf-8" />';

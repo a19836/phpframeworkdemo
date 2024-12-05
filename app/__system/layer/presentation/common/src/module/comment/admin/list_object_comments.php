@@ -4,14 +4,15 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("comment/admin/CommentAdminUtil", $common_project_name);
 	
 	$CommentAdminUtil = new CommentAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
-	$comment_id = $_GET["comment_id"];
+	$comment_id = isset($_GET["comment_id"]) ? $_GET["comment_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($comment_id) {
 		$total = CommentUtil::countObjectCommentsByCommentId($brokers, $comment_id, true);

@@ -51,7 +51,7 @@ if (!class_exists("ObjectUtil")) {
 			
 			if ($object_types)
 				foreach ($object_types as $object_type_id => $name) {
-					self::deleteActivity($brokers, $object_type_id);
+					self::deleteObjectType($brokers, $object_type_id);
 					
 					$data = array("object_type_id" => $object_type_id, "name" => $name);
 					if (!self::insertObjectType($brokers, $data))
@@ -71,9 +71,9 @@ if (!class_exists("ObjectUtil")) {
 					if (is_a($broker, "IBusinessLogicBrokerClient"))
 						return $broker->callBusinessLogic("module/object", "ObjectTypeService.insertObjectType", $data);
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 						
-						if ($data["object_type_id"]) {
+						if (!empty($data["object_type_id"])) {
 							$options = array("hard_coded_ai_pk" => true);
 							$status = $broker->callInsert("module/object", "insert_object_type_with_ai_pk", $data, $options);
 							return $status ? $data["object_type_id"] : $status;
@@ -83,34 +83,35 @@ if (!class_exists("ObjectUtil")) {
 						return $status ? $broker->getInsertedId($options) : $status;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						if (!$data["object_type_id"])
+						if (empty($data["object_type_id"]))
 							unset($data["object_type_id"]);
 						
 						$ObjectType = $broker->callObject("module/object", "ObjectType");
+						$ids = null;
 						$status = $ObjectType->insert($data, $ids);
-						return $status ? $ids["object_type_id"] : $status;
+						return $status ? (isset($ids["object_type_id"]) ? $ids["object_type_id"] : null) : $status;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$attributes = array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						);
 						
-						if ($data["object_type_id"]) {
+						if (!empty($data["object_type_id"])) {
 							$options["hard_coded_ai_pk"] = true;
 							$attributes["object_type_id"] = $data["object_type_id"];
 						}
 						
 						$status = $broker->insertObject("mo_object_type", $attributes, $options);
-						return $status ? ($data["object_type_id"] ? $data["object_type_id"] : $broker->getInsertedId($options)) : $status;
+						return $status ? (!empty($data["object_type_id"]) ? $data["object_type_id"] : $broker->getInsertedId($options)) : $status;
 					}
 				}
 			}
 		}
 	
 		public static function updateObjectType($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["object_type_id"])) {
+			if (is_array($brokers) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -118,7 +119,7 @@ if (!class_exists("ObjectUtil")) {
 						return $broker->callBusinessLogic("module/object", "ObjectTypeService.updateObjectType", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 						return $broker->callUpdate("module/object", "update_object_type", $data);
 					}
@@ -128,7 +129,7 @@ if (!class_exists("ObjectUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mo_object_type", array(
-								"name" => $data["name"],
+								"name" => isset($data["name"]) ? $data["name"] : null,
 								"modified_date" => $data["modified_date"]
 							), array(
 								"object_type_id" => $data["object_type_id"], 
@@ -214,7 +215,7 @@ if (!class_exists("ObjectUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/object", "count_object_types_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectType = $broker->callObject("module/object", "ObjectType");

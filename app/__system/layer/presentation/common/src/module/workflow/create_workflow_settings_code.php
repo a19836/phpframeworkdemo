@@ -4,7 +4,7 @@ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler");
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
 $external_vars_code = "";
-if ($_POST["external_vars"])
+if (!empty($_POST["external_vars"]))
 	foreach ($_POST["external_vars"] as $external_var_name => $external_var_value)
 		if ($external_var_name) {
 			$type = PHPUICodeExpressionHandler::getValueType($external_var_name, array("empty_string_type" => "string"));
@@ -22,7 +22,7 @@ else
 	$external_vars_code = "null";
 
 $code = 'array(
-	"code" => \'' . addcslashes($_POST["code"], "'") . '\',
+	"code" => \'' . (isset($_POST["code"]) ? addcslashes($_POST["code"], "'") : "") . '\',
 	"external_vars" => ' . $external_vars_code . '
 )';
 

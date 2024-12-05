@@ -5,4 +5,4 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-echo CMSPresentationLayerJoinPointsUIHandler::getBlockJoinPointsHtml($module_join_points, $block, false, $module["module_handler_impl_file_path"]); $EVC->setTemplate("empty"); ?>
+echo CMSPresentationLayerJoinPointsUIHandler::getBlockJoinPointsHtml(isset($module_join_points) ? $module_join_points : null, $block, false, isset($module["module_handler_impl_file_path"]) ? $module["module_handler_impl_file_path"] : null); $EVC->setTemplate("empty"); ?>

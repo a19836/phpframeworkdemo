@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("event/admin/EventAdminUtil", $common_project_name);
 	
 	$EventAdminUtil = new EventAdminUtil($CommonModuleAdminUtil);
@@ -12,6 +12,7 @@ if ($PEVC) {
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
 	$pks = "event_id=#[\$idx][event_id]#";
+	$options = isset($options) ? $options : null;
 	
 	$list_settings = array(
 		"title" => "Events List",

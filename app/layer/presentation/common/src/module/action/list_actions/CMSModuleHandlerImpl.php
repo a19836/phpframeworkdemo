@@ -4,6 +4,7 @@ namespace CMSModule\action\list_actions;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -18,7 +19,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["data"] = $conditions ? \ActionUtil::getActionsByConditions($brokers, $conditions, null) : \ActionUtil::getAllActions($brokers);
 		$settings["css_file"] = $project_common_url_prefix . 'module/action/list_actions.css';
 		$settings["class"] = "module_list_actions";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "action_id=#[idx][action_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "action_id=#[idx][action_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/action/list_actions/delete_action?action_id=#[idx][action_id]#";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "action/list_actions", $settings);

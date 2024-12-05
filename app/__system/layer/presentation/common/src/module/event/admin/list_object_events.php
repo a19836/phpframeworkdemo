@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("event/admin/EventAdminUtil", $common_project_name);
 	
 	$EventAdminUtil = new EventAdminUtil($CommonModuleAdminUtil);
@@ -14,7 +14,8 @@ if ($PEVC) {
 	$EventAdminUtil->initObjectEvents($brokers);
 	$available_object_types = $EventAdminUtil->getAvailableObjectTypes();
 	
-	$event_id = $_GET["event_id"];
+	$event_id = isset($_GET["event_id"]) ? $_GET["event_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($event_id) {
 		$total = EventUtil::countObjectEventsByEventId($brokers, $event_id, true);

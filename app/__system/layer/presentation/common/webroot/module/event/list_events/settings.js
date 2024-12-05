@@ -65,7 +65,7 @@ function loadListEventsBlockSettings(settings_elm, settings_values) {
 					+ '				<tr>' + "\n"
 					+ '					<td class="list_column published text-center pt-4 pb-4">' + "\n"
 					+ '					    	<div class="form-check form-switch m-n3">' + "\n"
-					+ '					 		<input class="form-check-input" type="checkbox" disabled <ptl:echo \\$item[published] ? checked : \'\'/>>' + "\n"
+					+ '					 		<input class="form-check-input" type="checkbox" disabled <ptl:echo @\\$item[published] ? checked : \'\'/>>' + "\n"
 					+ '				    		</div>' + "\n"
 					+ '				    	</td>						' + "\n"
 					+ '					<td class="list_column date text-center text-danger align-top p-3 pt-4 pb-4" style="min-width:150px;">' + "\n"

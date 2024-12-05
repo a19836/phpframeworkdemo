@@ -39,12 +39,12 @@ if (!class_exists("AttachmentUtil")) {
 				
 				if (substr($fip, 0, strlen($fop)) == $fop) {
 					$options = $options ? $options : array();
-					$name = $options["name"];
+					$name = isset($options["name"]) ? $options["name"] : null;
 					
 					if (!$name) {
 						$name = basename($file_path);
 						$parts = explode("_", $name);
-						$attachment_id = $parts[1];
+						$attachment_id = isset($parts[1]) ? $parts[1] : null;
 						
 						if (is_numeric($attachment_id)) {
 							//Caching attachment name
@@ -56,7 +56,7 @@ if (!class_exists("AttachmentUtil")) {
 								$name = $UserCacheHandler->read($cached_file_name);
 							else {
 								$attachment_data = self::getAttachmentsByConditions($EVC->getPresentationLayer()->getBrokers(), array("attachment_id" => $attachment_id), null);
-								$name = $attachment_data[0]["name"] ? $attachment_data[0]["name"] : $name;
+								$name = !empty($attachment_data[0]["name"]) ? $attachment_data[0]["name"] : $name;
 								
 								//saving cache
 								$UserCacheHandler->write($cached_file_name, $name);
@@ -66,7 +66,7 @@ if (!class_exists("AttachmentUtil")) {
 					
 					header('Content-Length: ' . filesize($file_path));
 					
-					if ($options["force_download"]) {
+					if (!empty($options["force_download"])) {
 						header('Content-Type: application/octet-stream');
 						header('Content-Disposition: attachment; filename="' . $name . '"');
 					}
@@ -75,17 +75,17 @@ if (!class_exists("AttachmentUtil")) {
 						header('Content-Disposition: inline; filename="' . $name . '"');
 					}
 
-					if ($options["description"])
+					if (!empty($options["description"]))
 						header('Content-Description: ' . $options["description"]);
 					
 					//More info about the cache-control in https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching#defining-optimal-cache-control-policy
-					if ($options["cache"])
+					if (!empty($options["cache"]))
 						header('Cache-Control: ' . $options["cache"]);
 					
-					if ($options["expires"])
+					if (!empty($options["expires"]))
 						header('Expires: ' . $options["expires"]);
 					
-					if ($options["pragma"])
+					if (!empty($options["pragma"]))
 						header('Pragma: ' . $options["pragma"]);
 					
 					readfile($file_path);
@@ -117,7 +117,7 @@ if (!class_exists("AttachmentUtil")) {
 					$f = "$folder_path/$file";
 					
 					//The attachment module doesn't have hidden files, so we can skip these files. But bc the svn and git files, the user may wish to ignore these files...
-					$continue = $options["ignore_hidden_files"] ? substr($file, 0, 1) != "." : true;
+					$continue = !empty($options["ignore_hidden_files"]) ? substr($file, 0, 1) != "." : true;
 					
 					if ($continue) {
 						if (is_dir($f)) {
@@ -147,7 +147,7 @@ if (!class_exists("AttachmentUtil")) {
 					$f = "$folder_path/$file";
 					
 					//The attachment module doesn't have hidden files, so we can skip these files. But bc the svn and git files, the user may wish to ignore these files...
-					$continue = $options["ignore_hidden_files"] ? substr($file, 0, 1) != "." : true;
+					$continue = !empty($options["ignore_hidden_files"]) ? substr($file, 0, 1) != "." : true;
 					
 					if ($continue && is_dir($f)) {
 						self::deleteEmptyFolders($EVC, $f, $ttl, $options);
@@ -155,7 +155,7 @@ if (!class_exists("AttachmentUtil")) {
 						$has_files = false;
 						if ($dh = opendir($f)) {
 							while (($sub_file = readdir($dh)) !== false) {
-								$continue = $options["ignore_hidden_files"] ? substr($sub_file, 0, 1) != "." : $sub_file != "." && $sub_file != "..";
+								$continue = !empty($options["ignore_hidden_files"]) ? substr($sub_file, 0, 1) != "." : $sub_file != "." && $sub_file != "..";
 								
 								if ($continue) {
 									$has_files = true;
@@ -167,7 +167,7 @@ if (!class_exists("AttachmentUtil")) {
 						
 						if (!$has_files && filemtime($f) < $expired_time) {
 							//echo "deleteEmptyFolders:$f<br>\n";
-							if ($options["ignore_hidden_files"]) {
+							if (!empty($options["ignore_hidden_files"])) {
 								if (!CacheHandlerUtil::deleteFolder($f))
 									$status = false;
 							}
@@ -199,7 +199,7 @@ if (!class_exists("AttachmentUtil")) {
 			if ($files)
 				foreach ($files as $file) {
 					//The attachment module doesn't have hidden files, so we can skip these files. But bc the svn and git files, the user may wish to ignore these files...
-					$continue = $options["ignore_hidden_files"] ? substr($file, 0, 1) != "." : true;
+					$continue = !empty($options["ignore_hidden_files"]) ? substr($file, 0, 1) != "." : true;
 					
 					if ($continue) {
 						$pf = $prefix_path ? "$prefix_path/$file" : $file;
@@ -237,11 +237,11 @@ if (!class_exists("AttachmentUtil")) {
 			
 			if ($attachments)
 				foreach ($attachments as $attachment) {
-					$path = $attachment["path"];
+					$path = isset($attachment["path"]) ? $attachment["path"] : null;
 					
 					if ($path && file_exists("$folder_path/$path") && filemtime("$folder_path/$path") < $expired_time) {
 						//echo "deleteOldObjectAttachments:".$attachment["attachment_id"]."<br>\n";
-						if (!self::deleteAttachment($brokers, $attachment["attachment_id"]))
+						if (isset($attachment["attachment_id"]) && !self::deleteAttachment($brokers, $attachment["attachment_id"]))
 							$status = false;
 					}
 				}
@@ -259,14 +259,14 @@ if (!class_exists("AttachmentUtil")) {
 		public static function saveObjectAttachments($EVC, $object_type_id, $object_id, $group = null, &$error_message = null) {
 			$status = true;
 		
-			if ($_POST && $object_type_id && is_numeric($object_id)) {
+			if (!empty($_POST) && $object_type_id && is_numeric($object_id)) {
 				$brokers = $EVC->getPresentationLayer()->getBrokers();
 			
 				//Preparing variables
-				$attachments = $_POST["attachments"];
-				$files = $_FILES["attachment_files"];
-				$attachment_names = $_POST["attachment_names"];
-				$attachment_ids = is_array($_POST["attachment_ids"]) ? $_POST["attachment_ids"] : array();
+				$attachments = isset($_POST["attachments"]) ? $_POST["attachments"] : null;
+				$files = isset($_FILES["attachment_files"]) ? $_FILES["attachment_files"] : null;
+				$attachment_names = isset($_POST["attachment_names"]) ? $_POST["attachment_names"] : null;
+				$attachment_ids = isset($_POST["attachment_ids"]) && is_array($_POST["attachment_ids"]) ? $_POST["attachment_ids"] : array();
 				
 				$file_id = 0;
 			
@@ -277,24 +277,27 @@ if (!class_exists("AttachmentUtil")) {
 				
 				if ($existent_attachments) {
 					$t = count($existent_attachments);
-					for ($i = 0; $i < $t; $i++)
-						if (!in_array($existent_attachments[$i]["attachment_id"], $attachment_ids))
-							$attachment_ids_to_delete[] = $existent_attachments[$i]["attachment_id"];
+					for ($i = 0; $i < $t; $i++) {
+						$ea_id = isset($existent_attachments[$i]["attachment_id"]) ? $existent_attachments[$i]["attachment_id"] : null;
+						
+						if (!in_array($ea_id, $attachment_ids))
+							$attachment_ids_to_delete[] = $ea_id;
+					}
 				}
 			
 				//Saving new attachment names and upload new attachments
 				$t = $attachments ? count($attachments) : 0;
 				for ($i = 0; $i < $t; $i++) {
 					$oa = $attachments[$i];
-					$attachment_id = $attachment_ids[$i];
+					$attachment_id = isset($attachment_ids[$i]) ? $attachment_ids[$i] : null;
 				
 					if (isset($oa["file"])) {//Upload attachment
 						$file = array(
-							"tmp_name" => $files["tmp_name"][$file_id],
-							"name" => $files["name"][$file_id],
-							"type" => $files["type"][$file_id],
-							"size" => $files["size"][$file_id],
-							"error" => $files["error"][$file_id],
+							"tmp_name" => isset($files["tmp_name"][$file_id]) ? $files["tmp_name"][$file_id] : null,
+							"name" => isset($files["name"][$file_id]) ? $files["name"][$file_id] : null,
+							"type" => isset($files["type"][$file_id]) ? $files["type"][$file_id] : null,
+							"size" => isset($files["size"][$file_id]) ? $files["size"][$file_id] : null,
+							"error" => isset($files["error"][$file_id]) ? $files["error"][$file_id] : null,
 						);
 						$attachment_id = self::uploadObjectFile($EVC, $file, $object_type_id, $object_id, $group, $i + 1, $brokers);
 					
@@ -306,7 +309,7 @@ if (!class_exists("AttachmentUtil")) {
 						$file_id++;
 					}
 					else if ($attachment_id) {//Save attachment name
-						$new_name = $oa["name"];
+						$new_name = isset($oa["name"]) ? $oa["name"] : null;
 						$old_name = $attachment_names[$i];
 					
 						if (empty($new_name)) {
@@ -355,8 +358,11 @@ if (!class_exists("AttachmentUtil")) {
 							$t = count($object_attachments);
 							for ($i = 0; $i < $t; $i++) {
 								$oa = $object_attachments[$i];
-							
-								if ($oa["object_type_id"] != $object_type_id || $oa["object_id"] != $object_id || $oa["group"] != $group) {
+								$oa_object_type_id = isset($oa["object_type_id"]) ? $oa["object_type_id"] : null;
+								$oa_object_id = isset($oa["object_id"]) ? $oa["object_id"] : null;
+								$oa_group = isset($oa["group"]) ? $oa["group"] : null;
+								
+								if ($oa_object_type_id != $object_type_id || $oa_object_id != $object_id || $oa_group != $group) {
 									$delete = false;
 									break;
 								}
@@ -387,19 +393,19 @@ if (!class_exists("AttachmentUtil")) {
 				//check if file exists in DB
 				if ($attachment_id) {
 					$attachment_data = self::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
-					$attachment_data = $attachment_data[0];
+					$attachment_data = isset($attachment_data[0]) ? $attachment_data[0] : null;
 				}
 		
-				if ($attachment_data) {
+				if (!empty($attachment_data)) {
 					//Delete file from server
-					if ($attachment_data["path"]) {
+					if (!empty($attachment_data["path"])) {
 						$file_path = $folder_path . $attachment_data["path"];
 						if (file_exists($file_path) && !unlink($file_path)) {
 							return false;
 						}
 					}
 					
-					$file["name"] = $file["name"] ? $file["name"] : basename($file["tmp_name"]);
+					$file["name"] = !empty($file["name"]) ? $file["name"] : (isset($file["tmp_name"]) ? basename($file["tmp_name"]) : "");
 					$extension = pathinfo($file["name"], PATHINFO_EXTENSION);
 					$extension = $extension ? "." . $extension : "";
 			
@@ -412,8 +418,8 @@ if (!class_exists("AttachmentUtil")) {
 						$data = array(
 							"attachment_id" => $attachment_id,
 							"name" => str_replace(array("\\", "'"), "", $file["name"]),
-							"type" => $file["type"] ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
-							"size" => is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
+							"type" => !empty($file["type"]) ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
+							"size" => isset($file["size"]) && is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
 							"path" => $file_name,
 						);
 					
@@ -431,7 +437,7 @@ if (!class_exists("AttachmentUtil")) {
 							$relationships = self::getObjectAttachmentsByConditions($brokers, $data, null);
 						
 							//insert relationship
-							if (!$relationships[0] && !self::insertObjectAttachment($brokers, $data)) {
+							if (empty($relationships[0]) && !self::insertObjectAttachment($brokers, $data)) {
 								return false;
 							}
 						
@@ -466,19 +472,19 @@ if (!class_exists("AttachmentUtil")) {
 				//check if file exists in DB
 				if ($attachment_id) {
 					$attachment_data = self::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
-					$attachment_data = $attachment_data[0];
+					$attachment_data = isset($attachment_data[0]) ? $attachment_data[0] : null;
 				}
-		
-				if ($attachment_data) {
+				
+				if (!empty($attachment_data)) {
 					//Delete file from server
-					if ($attachment_data["path"]) {
+					if (!empty($attachment_data["path"])) {
 						$file_path = $folder_path . $attachment_data["path"];
 						if (file_exists($file_path) && !unlink($file_path)) {
 							return false;
 						}
 					}
 					
-					$file["name"] = $file["name"] ? $file["name"] : basename($file["tmp_name"]);
+					$file["name"] = !empty($file["name"]) ? $file["name"] : (isset($file["tmp_name"]) ? basename($file["tmp_name"]) : "");
 					$extension = pathinfo($file["name"], PATHINFO_EXTENSION);
 					$extension = $extension ? "." . $extension : "";
 			
@@ -486,13 +492,13 @@ if (!class_exists("AttachmentUtil")) {
 					$file_path = $folder_path . $file_name;
 					
 					//Upload file
-					if (self::createAttachmentFileFolder($file_path) && self::moveUploadedFile($file["tmp_name"], $file_path, $is_local_file)) {
+					if (self::createAttachmentFileFolder($file_path) && !empty($file["tmp_name"]) && self::moveUploadedFile($file["tmp_name"], $file_path, $is_local_file)) {
 						//save data to DB
 						$data = array(
 							"attachment_id" => $attachment_id,
 							"name" => str_replace(array("\\", "'"), "", $file["name"]),
-							"type" => $file["type"] ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
-							"size" => is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
+							"type" => !empty($file["type"]) ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
+							"size" => isset($file["size"]) && is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
 							"path" => $file_name,
 						);
 					
@@ -521,11 +527,13 @@ if (!class_exists("AttachmentUtil")) {
 		 * VERY CAREFULL USING THIS FUNCTION, bc of security issues. If there is a $attachment_data["path"] that contains an apache executable extension, and if someone finds the direct link for this attachment, the file will be executed! By default this action is disabled! If you want to enable it, please add $security = false;
 		 */
 		public static function updateFile($EVC, $attachment_data, $brokers = array(), $old_attachment_data = array(), $security = true) {
-			$attachment_id = $attachment_data["attachment_id"];
+			$attachment_id = isset($attachment_data["attachment_id"]) ? $attachment_data["attachment_id"] : null;
 		
 			if ($attachment_id) {
+				$attachment_path = isset($attachment_data["path"]) ? $attachment_data["path"] : null;
+				
 				//check if exists extension in the path attribute bc of security issues. This is, if there is someone that adds a php extension and someone can find the direct link for this attachment, the code will be executed. But if there is no extension, the http server (apache) won't execute it and will not treat it as a php file. So the EXTENSION MUST NOT EVER BE PRESENT!
-				$extension = $attachment_data["path"] ? pathinfo($attachment_data["path"], PATHINFO_EXTENSION) : "";
+				$extension = $attachment_path ? pathinfo($attachment_path, PATHINFO_EXTENSION) : "";
 				if ($security && $extension)
 					return false;
 				
@@ -533,22 +541,22 @@ if (!class_exists("AttachmentUtil")) {
 			
 				if (!$old_attachment_data) {
 					$old_attachment_data = self::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
-					$old_attachment_data = $old_attachment_data[0];
+					$old_attachment_data = isset($old_attachment_data[0]) ? $old_attachment_data[0] : null;
 				}
 				
 				if ($old_attachment_data) {
 					$status = true;
 						
 					//rename file in server
-					if ($old_attachment_data["path"] && $old_attachment_data["path"] != $attachment_data["path"]) {
+					if (!empty($old_attachment_data["path"]) && $old_attachment_data["path"] != $attachment_path) {
 						$folder_path = self::getAttachmentsFolderPath($EVC);
 			
 						if (file_exists($folder_path . $old_attachment_data["path"])) {
-							if (!$attachment_data["path"]) {
+							if (!$attachment_path) {
 								return false;
 							}
 							
-							$status = self::isFileExtensionAllowed($attachment_data["path"]) && self::createAttachmentFileFolder($folder_path . $attachment_data["path"]) && rename($folder_path . $old_attachment_data["path"], $folder_path . $attachment_data["path"]);
+							$status = self::isFileExtensionAllowed($attachment_path) && self::createAttachmentFileFolder($folder_path . $attachment_path) && rename($folder_path . $old_attachment_data["path"], $folder_path . $attachment_path);
 						}
 					}
 			
@@ -567,12 +575,12 @@ if (!class_exists("AttachmentUtil")) {
 				$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 			
 				$attachment_data = self::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
-				$attachment_data = $attachment_data[0];
+				$attachment_data = isset($attachment_data[0]) ? $attachment_data[0] : null;
 			
 				if ($attachment_data) {
 					$status = true;
 					
-					if ($attachment_data["path"]) {
+					if (!empty($attachment_data["path"])) {
 						$folder_path = self::getAttachmentsFolderPath($EVC);
 			
 						if (file_exists($folder_path . $attachment_data["path"])) {
@@ -613,9 +621,9 @@ if (!class_exists("AttachmentUtil")) {
 				$repeated = array();
 			
 				foreach ($attachments as $attachment) {
-					$attachment_id = $attachment["attachment_id"];
+					$attachment_id = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
 				
-					if (!$repeated[$attachment_id] && !self::deleteFile($EVC, $attachment_id, $brokers)) {
+					if (empty($repeated[$attachment_id]) && !self::deleteFile($EVC, $attachment_id, $brokers)) {
 						$status = false;
 					}
 				
@@ -659,7 +667,7 @@ if (!class_exists("AttachmentUtil")) {
 					$attachment_data = self::getAttachmentsByConditions($brokers, array("attachment_id" => $attachment_id), null);
 				
 					//Delete file from server
-					if ($attachment_data[0]["path"]) {
+					if (!empty($attachment_data[0]["path"])) {
 						$folder_path = $folder_path ? $folder_path : self::getAttachmentsFolderPath($EVC);
 						$attachment_file_path = $folder_path . $attachment_data[0]["path"];
 					
@@ -685,15 +693,15 @@ if (!class_exists("AttachmentUtil")) {
 				$brokers = $EVC->getPresentationLayer()->getBrokers();
 				$folder_path = self::getAttachmentsFolderPath($EVC);
 				
-				if ($files["tmp_name"]) {
+				if (!empty($files["tmp_name"])) {
 					$t = count($files["tmp_name"]);
 					for ($i = 0; $i < $t; $i++) {
 						$file = array(
 							"tmp_name" => $files["tmp_name"][$i],
-							"name" => $files["name"][$i],
-							"type" => $files["type"][$i],
-							"size" => $files["size"][$i],
-							"error" => $files["error"][$i],
+							"name" => isset($files["name"][$i]) ? $files["name"][$i] : null,
+							"type" => isset($files["type"][$i]) ? $files["type"][$i] : null,
+							"size" => isset($files["size"][$i]) ? $files["size"][$i] : null,
+							"error" => isset($files["error"][$i]) ? $files["error"][$i] : null,
 						);
 				
 						if (!self::uploadObjectFile($file, $object_type_id, $object_id, $group, $i + 1, $brokers, $folder_path, $is_local_file))
@@ -742,18 +750,18 @@ if (!class_exists("AttachmentUtil")) {
 				$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 				$folder_path = $folder_path ? $folder_path : self::getAttachmentsFolderPath($EVC);
 				
-				$file["name"] = $file["name"] ? $file["name"] : basename($file["tmp_name"]);
+				$file["name"] = !empty($file["name"]) ? $file["name"] : (isset($file["tmp_name"]) ? basename($file["tmp_name"]) : "");
 				$extension = pathinfo($file["name"], PATHINFO_EXTENSION);
 				$extension = $extension ? "." . $extension : "";
 				
 				$file_name = self::getTemporaryAttachmentRelativePath($file, $extension);
 				$file_path = $folder_path . $file_name;
 
-				if (self::createAttachmentFileFolder($file_path) && self::moveUploadedFile($file["tmp_name"], $file_path, $is_local_file)) {
+				if (self::createAttachmentFileFolder($file_path) && isset($file["tmp_name"]) && self::moveUploadedFile($file["tmp_name"], $file_path, $is_local_file)) {
 					$data = array(
 						"name" => str_replace(array("\\", "'"), "", $file["name"]),
-						"type" => $file["type"] ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
-						"size" => is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
+						"type" => !empty($file["type"]) ? str_replace(array("\\", "'"), "", $file["type"]) : MimeTypeHandler::getFileMimeType($file_path),
+						"size" => isset($file["size"]) && is_numeric($file["size"]) && $file["size"] > 0 ? $file["size"] : filesize($file_path),
 						"path" => $file_name,
 					);
 					$attachment_id = self::insertAttachment($brokers, $data);
@@ -777,11 +785,11 @@ if (!class_exists("AttachmentUtil")) {
 		}
 		
 		public static function getTemporaryAttachmentRelativePath($file, $extension) {
-			return "temp_" . basename($file["tmp_name"]) . "_" . uniqid() . rand(0, 1000000);// . $extension;//$extension var removed bc of security issues. This is, if there is a hack to the our upload service where the hacker can upload a php file and he can find the direct link for this file, the code will be executed. But if there is no extension, the http server (apache) won't execute it and will not treat it as a php file. So the EXTENSION MUST NOT EVER BE PRESENT!
+			return "temp_" . (isset($file["tmp_name"]) ? basename($file["tmp_name"]) : "") . "_" . uniqid() . rand(0, 1000000);// . $extension;//$extension var removed bc of security issues. This is, if there is a hack to the our upload service where the hacker can upload a php file and he can find the direct link for this file, the code will be executed. But if there is no extension, the http server (apache) won't execute it and will not treat it as a php file. So the EXTENSION MUST NOT EVER BE PRESENT!
 		}
 		
 		public static function getAttachmentRelativePathPrefix($EVC) {
-			$default_db_driver = $GLOBALS["default_db_driver"];
+			$default_db_driver = isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null;
 			
 			$pre_init_config_path = $EVC->getConfigPath("pre_init_config");
 			
@@ -818,7 +826,7 @@ if (!class_exists("AttachmentUtil")) {
 		}
 		
 		public static function isUploadedFileAllowed($file, $is_local_file = false) {
-			return $file["tmp_name"] && file_exists($file["tmp_name"]) && empty($file["error"]) && self::isFileMimeTypeAllowed($file["tmp_name"]) && self::isFileExtensionAllowed($file["name"]) && ($is_local_file || is_uploaded_file($file["tmp_name"]));
+			return !empty($file["tmp_name"]) && isset($file["name"]) && file_exists($file["tmp_name"]) && empty($file["error"]) && self::isFileMimeTypeAllowed($file["tmp_name"]) && self::isFileExtensionAllowed($file["name"]) && ($is_local_file || is_uploaded_file($file["tmp_name"]));
 		}
 		
 		public static function isFileMimeTypeAllowed($file_path) {
@@ -865,9 +873,9 @@ if (!class_exists("AttachmentUtil")) {
 			if (is_array($brokers)) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
-				$data["size"] = is_numeric($data["size"]) ? $data["size"] : 0;
+				$data["size"] = isset($data["size"]) && is_numeric($data["size"]) ? $data["size"] : 0;
 				
-				$status = $data["path"] ? self::isFileExtensionAllowed($data["path"]) : true;
+				$status = !empty($data["path"]) ? self::isFileExtensionAllowed($data["path"]) : true;
 				
 				if ($status) {
 					foreach ($brokers as $broker) {
@@ -875,23 +883,24 @@ if (!class_exists("AttachmentUtil")) {
 							return $broker->callBusinessLogic("module/attachment", "AttachmentService.insertAttachment", $data);
 						}
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-							$data["name"] = addcslashes($data["name"], "\\'");
-							$data["type"] = addcslashes($data["type"], "\\'");
-							$data["path"] = addcslashes($data["path"], "\\'");
+							$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+							$data["type"] = isset($data["type"]) ? addcslashes($data["type"], "\\'") : "";
+							$data["path"] = isset($data["path"]) ? addcslashes($data["path"], "\\'") : "";
 					
 							$status = $broker->callInsert("module/attachment", "insert_attachment", $data);
 							return $status ? $broker->getInsertedId() : $status;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							$Attachment = $broker->callObject("module/attachment", "Attachment");
+							$ids = null;
 							$status = $Attachment->insert($data, $ids);
-							return $status ? $ids["attachment_id"] : $status;
+							return $status ? (isset($ids["attachment_id"]) ? $ids["attachment_id"] : null) : $status;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							$status = $broker->insertObject("mat_attachment", array(
-								"name" => $data["name"], 
-								"type" => $data["type"], 
-								"size" => $data["size"], 
+								"name" => isset($data["name"]) ? $data["name"] : null, 
+								"type" => isset($data["type"]) ? $data["type"] : null, 
+								"size" => isset($data["size"]) ? $data["size"] : null, 
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -903,11 +912,11 @@ if (!class_exists("AttachmentUtil")) {
 		}
 	
 		public static function updateAttachment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["attachment_id"])) {
+			if (is_array($brokers) && isset($data["attachment_id"]) && is_numeric($data["attachment_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
-				$data["size"] = is_numeric($data["size"]) ? $data["size"] : 0;
+				$data["size"] = isset($data["size"]) && is_numeric($data["size"]) ? $data["size"] : 0;
 			
-				$status = $data["path"] ? self::isFileExtensionAllowed($data["path"]) : true;
+				$status = !empty($data["path"]) ? self::isFileExtensionAllowed($data["path"]) : true;
 				
 				if ($status) {
 					foreach ($brokers as $broker) {
@@ -915,9 +924,9 @@ if (!class_exists("AttachmentUtil")) {
 							return $broker->callBusinessLogic("module/attachment", "AttachmentService.updateAttachment", $data);
 						}
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-							$data["name"] = addcslashes($data["name"], "\\'");
-							$data["type"] = addcslashes($data["type"], "\\'");
-							$data["path"] = addcslashes($data["path"], "\\'");
+							$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
+							$data["type"] = isset($data["type"]) ? addcslashes($data["type"], "\\'") : "";
+							$data["path"] = isset($data["path"]) ? addcslashes($data["path"], "\\'") : "";
 					
 							return $broker->callUpdate("module/attachment", "update_attachment", $data);
 						}
@@ -927,9 +936,9 @@ if (!class_exists("AttachmentUtil")) {
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							return $broker->updateObject("mat_attachment", array(
-								"name" => $data["name"], 
-								"type" => $data["type"], 
-								"size" => $data["size"], 
+								"name" => isset($data["name"]) ? $data["name"] : null, 
+								"type" => isset($data["type"]) ? $data["type"] : null, 
+								"size" => isset($data["size"]) ? $data["size"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"attachment_id" => $data["attachment_id"]
@@ -941,7 +950,7 @@ if (!class_exists("AttachmentUtil")) {
 		}
 	
 		public static function updateAttachmentName($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["attachment_id"])) {
+			if (is_array($brokers) && isset($data["attachment_id"]) && is_numeric($data["attachment_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -949,7 +958,7 @@ if (!class_exists("AttachmentUtil")) {
 						return $broker->callBusinessLogic("module/attachment", "AttachmentService.updateAttachmentName", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["name"] = addcslashes($data["name"], "\\'");
+						$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 						return $broker->callUpdate("module/attachment", "update_attachment_name", $data);
 					}
@@ -959,7 +968,7 @@ if (!class_exists("AttachmentUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						return $broker->updateObject("mat_attachment", array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"attachment_id" => $data["attachment_id"]
@@ -1021,7 +1030,7 @@ if (!class_exists("AttachmentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/attachment", "count_all_attachments", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$Attachment = $broker->callObject("module/attachment", "Attachment");
@@ -1069,7 +1078,7 @@ if (!class_exists("AttachmentUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/attachment", "count_attachments_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$Attachment = $broker->callObject("module/attachment", "Attachment");
@@ -1231,39 +1240,39 @@ if (!class_exists("AttachmentUtil")) {
 		/* OBJECT ATTACHMENT FUNCTIONS */
 	
 		public static function insertObjectAttachment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["attachment_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+			if (is_array($brokers) && isset($data["attachment_id"]) && is_numeric($data["attachment_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/attachment", "ObjectAttachmentService.insertObjectAttachment", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 						
 						return $broker->callInsert("module/attachment", "insert_object_attachment", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectAttachment = $broker->callObject("module/attachment", "ObjectAttachment");
 						return $ObjectAttachment->insert($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->insertObject("mat_object_attachment", array(
 								"attachment_id" => $data["attachment_id"], 
 								"object_type_id" => $data["object_type_id"], 
 								"object_id" => $data["object_id"], 
-								"group" => $data["group"], 
-								"order" => $data["order"], 
+								"group" => isset($data["group"]) ? $data["group"] : null, 
+								"order" => isset($data["order"]) ? $data["order"] : null, 
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -1273,38 +1282,38 @@ if (!class_exists("AttachmentUtil")) {
 		}
 	
 		public static function updateObjectAttachment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["new_attachment_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_attachment_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+			if (is_array($brokers) && isset($data["new_attachment_id"]) && is_numeric($data["new_attachment_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_attachment_id"]) && is_numeric($data["old_attachment_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/attachment", "ObjectAttachmentService.updateObjectAttachment", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callUpdate("module/attachment", "update_object_attachment", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectAttachment = $broker->callObject("module/attachment", "ObjectAttachment");
 						return $ObjectAttachment->updatePrimaryKeys($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->updateObject("mat_object_attachment", array(
 								"attachment_id" => $data["new_attachment_id"], 
 								"object_type_id" => $data["new_object_type_id"], 
 								"object_id" => $data["new_object_id"], 
-								"group" => $data["group"], 
-								"order" => $data["order"], 
+								"group" => isset($data["group"]) ? $data["group"] : null, 
+								"order" => isset($data["order"]) ? $data["order"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"attachment_id" => $data["old_attachment_id"], 
@@ -1440,7 +1449,7 @@ if (!class_exists("AttachmentUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/attachment", "count_object_attachments_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectAttachment = $broker->callObject("module/attachment", "ObjectAttachment");
@@ -1485,7 +1494,7 @@ if (!class_exists("AttachmentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/attachment", "count_all_object_attachments", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectAttachment = $broker->callObject("module/attachment", "ObjectAttachment");
@@ -1530,7 +1539,7 @@ if (!class_exists("AttachmentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/attachment", "count_object_attachments_by_attachment_id", array("attachment_id" => $attachment_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectAttachment = $broker->callObject("module/attachment", "ObjectAttachment");

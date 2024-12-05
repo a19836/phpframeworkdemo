@@ -19,7 +19,7 @@ class ArticleUtil {
 			$indexes = array();
 			
 			foreach ($articles as $idx => $article) {
-				$photo_id = $article["photo_id"];
+				$photo_id = isset($article["photo_id"]) ? $article["photo_id"] : null;
 				
 				if ($photo_id) {
 					$attachment_ids[] = $photo_id;
@@ -34,12 +34,13 @@ class ArticleUtil {
 				$url = AttachmentUtil::getAttachmentsFolderUrl($EVC);
 				
 				foreach ($attachments as $attachment) {
-					$path = $attachment["path"];
+					$path = isset($attachment["path"]) ? $attachment["path"] : null;
 					
 					if ($path) {
-						$idx = $indexes[ $attachment["attachment_id"] ];
+						$attachment_id = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
+						$idx = $indexes[$attachment_id];
 						
-						if ($articles[$idx]) {
+						if (!empty($articles[$idx])) {
 							$articles[$idx]["photo_path"] = $folder_path . $path;
 							$articles[$idx]["photo_url"] = $url . $path;
 						}
@@ -86,7 +87,7 @@ class ArticleUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/article", "count_articles_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Article = $broker->callObject("module/article", "Article");
@@ -184,21 +185,21 @@ class ArticleUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/article", "count_articles_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$Article = $broker->callObject("module/article", "Article");
 					$result = $Article->callSelect("count_articles_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOUtil::count_articles_by_tags(array("tags" => $tags_str, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -263,21 +264,21 @@ class ArticleUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/article", "count_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$Article = $broker->callObject("module/article", "Article");
 					$result = $Article->callSelect("count_articles_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOUtil::count_articles_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -285,7 +286,7 @@ class ArticleUtil {
 	
 	//$tags is a string containing multiple article tags
 	//This method will return the articles that contains at least one tag in $tags
-	public static function getArticlesByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
+	public static function getArticlesByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -329,7 +330,7 @@ class ArticleUtil {
 	
 	//$tags is a string containing multiple article tags
 	//This method will return the articles that contains at least one tag in $tags
-	public static function countArticlesByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $no_cache = false) {
+	public static function countArticlesByObjectGroupAndTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$tags = TagUtil::convertTagsStringToArray($tags);
 			$tags = array_values($tags);
@@ -350,7 +351,7 @@ class ArticleUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/article", "count_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -358,7 +359,7 @@ class ArticleUtil {
 					
 					$Article = $broker->callObject("module/article", "Article");
 					$result = $Article->callSelect("count_articles_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -366,7 +367,7 @@ class ArticleUtil {
 					$sql = ArticleDBDAOUtil::count_articles_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 					
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -434,21 +435,21 @@ class ArticleUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$result = $broker->callSelect("module/article", "count_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$Article = $broker->callObject("module/article", "Article");
 						$result = $Article->callSelect("count_articles_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						$sql = ArticleDBDAOUtil::count_articles_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -517,21 +518,21 @@ class ArticleUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$result = $broker->callSelect("module/article", "count_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$Article = $broker->callObject("module/article", "Article");
 						$result = $Article->callSelect("count_articles_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						$sql = ArticleDBDAOUtil::count_articles_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -540,7 +541,7 @@ class ArticleUtil {
 	
 	//$tags is a string containing multiple article tags
 	//This method will return the articles that contains all $tags
-	public static function getArticlesByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
+	public static function getArticlesByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $options = array(), $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -585,7 +586,7 @@ class ArticleUtil {
 		}
 	}
 	
-	public static function countArticlesByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags, $conditions = null, $conditions_join = null, $no_cache = false) {
+	public static function countArticlesByObjectGroupWithAllTags($brokers, $object_type_id, $object_id, $group = null, $tags = null, $conditions = null, $conditions_join = null, $no_cache = false) {
 		if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 			$tags = TagUtil::convertTagsStringToArray($tags);
 			$tags = array_values($tags);
@@ -608,7 +609,7 @@ class ArticleUtil {
 						$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 						
 						$result = $broker->callSelect("module/article", "count_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
@@ -616,7 +617,7 @@ class ArticleUtil {
 						
 						$Article = $broker->callObject("module/article", "Article");
 						$result = $Article->callSelect("count_articles_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
@@ -624,7 +625,7 @@ class ArticleUtil {
 						$sql = ArticleDBDAOUtil::count_articles_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "article_object_type_id" => ObjectUtil::ARTICLE_OBJECT_TYPE_ID, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -663,7 +664,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/article", "count_all_articles", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Article = $broker->callObject("module/article", "Article");
@@ -689,7 +690,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$data = $broker->callSelect("module/article", "get_article", array("article_id" => $article_id), array("no_cache" => $no_cache));
-					$data = $data[0];
+					$data = isset($data[0]) ? $data[0] : null;
 					break;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
@@ -699,7 +700,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$data = $broker->findObjects("ma_article", null, array("article_id" => $article_id), array("no_cache" => $no_cache));
-					$data = $data[0];
+					$data = isset($data[0]) ? $data[0] : null;
 					break;
 				}
 			}
@@ -707,10 +708,11 @@ class ArticleUtil {
 			if ($data) {
 				$data["tags"] = TagUtil::getObjectTagsString($broker, ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id);
 				
-				if ($data["photo_id"]) {
+				if (!empty($data["photo_id"])) {
 					$attachment_data = AttachmentUtil::getAttachmentsByConditions($brokers, array("attachment_id" => $data["photo_id"]), null, null, $no_cache);
-					$data["photo_path"] = AttachmentUtil::getAttachmentsFolderPath($EVC) . $attachment_data[0]["path"];
-					$data["photo_url"] = AttachmentUtil::getAttachmentsFolderUrl($EVC) . $attachment_data[0]["path"];
+					$attachment_data_path = isset($attachment_data[0]["path"]) ? $attachment_data[0]["path"] : null;
+					$data["photo_path"] = AttachmentUtil::getAttachmentsFolderPath($EVC) . $attachment_data_path;
+					$data["photo_url"] = AttachmentUtil::getAttachmentsFolderUrl($EVC) . $attachment_data_path;
 				}
 			}
 		}
@@ -732,18 +734,20 @@ class ArticleUtil {
 			
 			if ($article_id) {
 				$status = true;
+				$data["photo_id"] = isset($data["photo_id"]) ? $data["photo_id"] : null;
 				
 				//delete photo
 				if ($is_update) {
-					$db_data = self::getArticleProperties($EVC, $article_id, $no_cache);
+					$db_data = self::getArticleProperties($EVC, $article_id);
+					$db_data_photo_id = isset($db_data["photo_id"]) ? $db_data["photo_id"] : null;
 					
-					$delete_photo = !$data["photo_id"] || $data["photo_id"] != $db_data["photo_id"]; //bc of the default_value that could be set
+					$delete_photo = !$data["photo_id"] || $data["photo_id"] != $db_data_photo_id; //bc of the default_value that could be set
 					
 					if ($delete_photo)
 						AttachmentUtil::deleteFileByObject($EVC, ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id, self::ARTICLE_PHOTO_GROUP_ID, $brokers);
 				}
 				
-				if ($file["tmp_name"]) {
+				if (!empty($file["tmp_name"])) {
 					//insert or update photo
 					$photo_id = AttachmentUtil::replaceObjectFile($EVC, $file, $data["photo_id"], ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id, self::ARTICLE_PHOTO_GROUP_ID, 0, $brokers, $is_local_file);
 					
@@ -767,13 +771,13 @@ class ArticleUtil {
 			$status = false;
 					
 			$data["published"] = empty($data["published"]) ? 0 : 1;
-			$data["photo_id"] = empty($data["photo_id"]) ? 0 : $data["photo_id"];
+			$data["photo_id"] = empty($data["photo_id"]) ? 0 : (isset($data["photo_id"]) ? $data["photo_id"] : null);
 			$data["allow_comments"] = empty($data["allow_comments"]) ? 0 : 1;
 			
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
-			$article_id = $data["article_id"];
+			$article_id = isset($data["article_id"]) ? $data["article_id"] : null;
 			$is_insert = !$article_id;
 			
 			foreach ($brokers as $broker) {
@@ -788,10 +792,10 @@ class ArticleUtil {
 					break;
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["title"] = addcslashes($data["title"], "\\'");
-					$data["sub_title"] = addcslashes($data["sub_title"], "\\'");
-					$data["summary"] = addcslashes($data["summary"], "\\'");
-					$data["content"] = addcslashes($data["content"], "\\'");
+					$data["title"] = isset($data["title"]) ? addcslashes($data["title"], "\\'") : "";
+					$data["sub_title"] = isset($data["sub_title"]) ? addcslashes($data["sub_title"], "\\'") : "";
+					$data["summary"] = isset($data["summary"]) ? addcslashes($data["summary"], "\\'") : "";
+					$data["content"] = isset($data["content"]) ? addcslashes($data["content"], "\\'") : "";
 					$data["published"] = is_numeric($data["published"]) ? $data["published"] : 0;
 					$data["photo_id"] = is_numeric($data["photo_id"]) ? $data["photo_id"] : 0;
 					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
@@ -811,9 +815,10 @@ class ArticleUtil {
 					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
 					
 					$Article = $broker->callObject("module/article", "Article", array("no_cache" => true));
+					$ids = null;
 					$status = $Article->insertOrUpdate($data, $ids);
 				
-					if ($status && !$article_id && $ids["article_id"])
+					if ($status && !$article_id && !empty($ids["article_id"]))
 						$article_id = $ids["article_id"];
 					
 					break;
@@ -824,10 +829,10 @@ class ArticleUtil {
 					$data["allow_comments"] = is_numeric($data["allow_comments"]) ? $data["allow_comments"] : 1;
 					
 					$article_data = array(
-						"title" => $data["title"], 
-						"sub_title" => $data["sub_title"], 
-						"summary" => $data["summary"], 
-						"content" => $data["content"], 
+						"title" => isset($data["title"]) ? $data["title"] : null, 
+						"sub_title" => isset($data["sub_title"]) ? $data["sub_title"] : null, 
+						"summary" => isset($data["summary"]) ? $data["summary"] : null, 
+						"content" => isset($data["content"]) ? $data["content"] : null, 
 						"published" => $data["published"], 
 						"photo_id" => $data["photo_id"], 
 						"allow_comments" => $data["allow_comments"], 
@@ -847,7 +852,9 @@ class ArticleUtil {
 			}
 			
 			if ($status && $article_id) {
-				$status = TagUtil::updateObjectTags($broker, $data["tags"], ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id) && self::updateObjectArticlesByArticleId(array($broker), $article_id, $data);
+				$tags = isset($data["tags"]) ? $data["tags"] : null;
+				
+				$status = TagUtil::updateObjectTags($broker, $tags, ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id) && self::updateObjectArticlesByArticleId(array($broker), $article_id, $data);
 			
 				return $status ? $article_id : false;
 			}
@@ -933,21 +940,21 @@ class ArticleUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/article", "count_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$Article = $broker->callObject("module/article", "Article");
 					$result = $Article->callSelect("count_articles_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					$sql = ArticleDBDAOUtil::count_articles_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 				
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -1000,7 +1007,7 @@ class ArticleUtil {
 					$cond = self::getSQLConditions($conditions, $conditions_join, "a");
 					
 					$result = $broker->callSelect("module/article", "count_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -1008,7 +1015,7 @@ class ArticleUtil {
 					
 					$Article = $broker->callObject("module/article", "Article");
 					$result = $Article->callSelect("count_articles_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$group = is_numeric($group) ? $group : 0;
@@ -1016,7 +1023,7 @@ class ArticleUtil {
 					$sql = ArticleDBDAOUtil::count_articles_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "conditions" => $cond));
 				
 					$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 			}
 		}
@@ -1030,32 +1037,32 @@ class ArticleUtil {
 	/* OBJECT ARTICLE FUNCTIONS */
 
 	public static function insertObjectArticle($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["article_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+		if (is_array($brokers) && isset($data["article_id"]) && is_numeric($data["article_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/article", "ObjectArticleService.insertObjectArticle", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callInsert("module/article", "insert_object_article", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");
 					return $ObjectArticle->insert($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->insertObject("ma_object_article", array(
 							"article_id" => $data["article_id"], 
@@ -1072,31 +1079,31 @@ class ArticleUtil {
 	}
 
 	public static function updateObjectArticle($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["new_article_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_article_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+		if (is_array($brokers) && isset($data["new_article_id"]) && is_numeric($data["new_article_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_article_id"]) && is_numeric($data["old_article_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 		
 			foreach ($brokers as $broker) {
 				if (is_a($broker, "IBusinessLogicBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 					
 					return $broker->callBusinessLogic("module/article", "ObjectArticleService.updateObjectArticle", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 					return $broker->callUpdate("module/article", "update_object_article", $data);
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");
 					return $ObjectArticle->updatePrimaryKeys($data);
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
-					$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-					$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+					$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+					$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 					
 					return $broker->updateObject("ma_object_article", array(
 							"article_id" => $data["new_article_id"], 
@@ -1119,10 +1126,10 @@ class ArticleUtil {
 		if (is_array($brokers) && is_numeric($article_id)) {
 			if (self::deleteObjectArticlesByArticleId($brokers, $article_id)) {
 				$status = true;
-				$object_articles = is_array($data["object_articles"]) ? $data["object_articles"] : array();
+				$object_articles = isset($data["object_articles"]) && is_array($data["object_articles"]) ? $data["object_articles"] : array();
 				
 				foreach ($object_articles as $object_article) {
-					if (is_numeric($object_article["object_type_id"]) && is_numeric($object_article["object_id"])) {
+					if (isset($object_article["object_type_id"]) && is_numeric($object_article["object_type_id"]) && isset($object_article["object_id"]) && is_numeric($object_article["object_id"])) {
 						$object_article["article_id"] = $article_id;
 					
 						if (!self::insertObjectArticle($brokers, $object_article)) {
@@ -1281,7 +1288,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/article", "get_object_article", array("article_id" => $article_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");
@@ -1289,7 +1296,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$result = $broker->findObjects("ma_object_article", null, array("article_id" => $article_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-					return $result[0];
+					return isset($result[0]) ? $result[0] : null;
 				}
 			}
 		}
@@ -1333,7 +1340,7 @@ class ArticleUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/article", "count_object_articles_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");
@@ -1378,7 +1385,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/article", "count_all_object_articles", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");
@@ -1423,7 +1430,7 @@ class ArticleUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/article", "count_object_articles_by_article_id", array("article_id" => $article_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$ObjectArticle = $broker->callObject("module/article", "ObjectArticle");

@@ -205,7 +205,7 @@ var menu_item_html = \'' . addcslashes(str_replace("\n", "", $menu_item_html), "
 		<div id="els_ptl" class="ptl">
 			<!-- LAYOUT UI EDITOR -->
 			<?php
-				$reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+				$reverse_class = isset($_COOKIE["main_navigator_side"]) && $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
 			?>
 			<div class="layout-ui-editor els_ui <?= $reverse_class ?> fixed-side-properties hide-template-widgets-options">
 				<ul class="menu-widgets hidden">

@@ -18,6 +18,7 @@ include_once $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $head = '
 
 <!-- Add Layout CSS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/layout.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/layout.js"></script>
 
 <!-- Add local Responsive Iframe CSS and JS -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/presentation/responsive_iframe.css" type="text/css" charset="utf-8" />
@@ -29,13 +30,13 @@ include_once $EVC->getUtilPath("CMSPresentationLayerUIHandler"); $head = '
 
 <script>
 </script>'; $main_content = '<div class="title' . ($popup ? " inside_popup_title" : "") . '">Templates Regions Html</div>
-<div class="templates_regions_html_obj' . ($popup ? " in_popup" : "") . '">'; if ($available_templates_regions) { $main_content .= '<ul>'; foreach ($available_templates_regions as $template => $regions) { $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/src/template/" . $template . ".php"; $main_content .= '
+<div class="templates_regions_html_obj' . ($popup ? " in_popup" : "") . '">'; if (!empty($available_templates_regions)) { $main_content .= '<ul>'; foreach ($available_templates_regions as $template => $regions) { $template_samples_url = $project_url_prefix . "phpframework/presentation/template_samples?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$selected_project_id/src/template/" . $template . ".php"; $main_content .= '
 		<li class="template">
 			<div class="header"><span class="icon view" onClick="openTemplateSamples(this)" title="View Template" template_samples_url="' . $template_samples_url . '">Info</span> ' . $template . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>
 			<ul class="content">'; foreach ($regions as $region_name => $region_samples) { $main_content .= '
 			<li class="region">
 				<div class="header">' . $region_name . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>
-				<ul class="content">'; foreach ($region_samples as $sample_name => $sample_data) { $sample_path = $sample_data["sample_path"]; $template_path = $sample_data["template_path"]; $html = $sample_data["html"]; $sample_url = $project_url_prefix . "phpframework/presentation/template_region_sample?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$template_path&region=$region_name&sample_path=$sample_path"; $main_content .= '<li class="sample">
+				<ul class="content">'; foreach ($region_samples as $sample_name => $sample_data) { $sample_path = isset($sample_data["sample_path"]) ? $sample_data["sample_path"] : null; $template_path = isset($sample_data["template_path"]) ? $sample_data["template_path"] : null; $html = isset($sample_data["html"]) ? $sample_data["html"] : null; $sample_url = $project_url_prefix . "phpframework/presentation/template_region_sample?bean_name=$bean_name&bean_file_name=$bean_file_name&path=$template_path&region=$region_name&sample_path=$sample_path"; $main_content .= '<li class="sample">
 					<div class="header"><input type="radio" name="template_region" value="1" />' . $sample_name . ' <span class="icon maximize" onClick="toggleContent(this)">Maximize</span></div>
 					
 					<div class="content">

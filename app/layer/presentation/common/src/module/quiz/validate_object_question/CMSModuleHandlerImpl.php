@@ -4,6 +4,7 @@ namespace CMSModule\quiz\validate_object_question;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -12,15 +13,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		if (is_numeric($settings["group"]))
+		$question_id = isset($settings["question_id"]) ? $settings["question_id"] : null;
+		$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		
+		if (isset($settings["group"]) && is_numeric($settings["group"]))
 			$result = \QuizUtil::getObjectQuestionsByConditions($brokers, array(
-				"question_id" => $settings["question_id"], 
-				"object_type_id" => $settings["object_type_id"], 
-				"object_id" => $settings["object_id"],
+				"question_id" => $question_id, 
+				"object_type_id" => $object_type_id, 
+				"object_id" => $object_id,
 				"group" => $settings["group"],
 			), null);
 		else
-			$result = \QuizUtil::getObjectQuestion($brokers, $settings["question_id"], $settings["object_type_id"], $settings["object_id"]);
+			$result = \QuizUtil::getObjectQuestion($brokers, $question_id, $object_type_id, $object_id);
 		
 		$status = !empty($result);
 		

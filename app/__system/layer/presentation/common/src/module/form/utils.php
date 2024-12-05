@@ -3,11 +3,13 @@
 function getActionHtml($action, $with_options = 1) {
 	$label = ucwords(str_replace(array("-", "_"), " ", $action));
 	$parts = explode("_", $action);
+	$part_1 = isset($parts[1]) ? $parts[1] : null;
+	$title = "";
 	
 	if ($parts[0] == "single")
-		$title = $label . ": action to " . $parts[1] . " a single item.";
+		$title = $label . ": action to " . $part_1 . " a single item.";
 	else if ($parts[0] == "multiple")
-		$title = $label . ": action to " . ($action == "multiple_insert_update" ? "insert and update" : $parts[1]) . " multiple items at once.";
+		$title = $label . ": action to " . ($action == "multiple_insert_update" ? "insert and update" : $part_1) . " multiple items at once.";
 	
 	$html = '
 	<div class="action action_' . str_replace(array(" ", "-"), "_", $action) . '">

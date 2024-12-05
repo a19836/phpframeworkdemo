@@ -30,13 +30,16 @@ class TranslatorUtil extends TranslatorSettings {
 	/* CATEGORY METHODS */
 	
 	public static function insertCategory($EVC, $data) {
+		$category = isset($data["category"]) ? $data["category"] : null;
 		$TextTranslator = self::getTextTranslatorObject($EVC);
-		return $TextTranslator->insertCategory($data["category"]);
+		return $TextTranslator->insertCategory($category);
 	}
 	
 	public static function updateCategory($EVC, $data) {
+		$old_category = isset($data["old_category"]) ? $data["old_category"] : null;
+		$new_category = isset($data["new_category"]) ? $data["new_category"] : null;
 		$TextTranslator = self::getTextTranslatorObject($EVC);
-		return $TextTranslator->updateCategory($data["old_category"], $data["new_category"]);
+		return $TextTranslator->updateCategory($old_category, $new_category);
 	}
 	
 	public static function deleteCategory($EVC, $category) {
@@ -68,13 +71,18 @@ class TranslatorUtil extends TranslatorSettings {
 	/* LANGUAGES METHODS */
 	
 	public static function insertLanguage($EVC, $data) {
+		$category = isset($data["category"]) ? $data["category"] : null;
+		$language = isset($data["language"]) ? $data["language"] : null;
 		$TextTranslator = self::getTextTranslatorObject($EVC);
-		return $TextTranslator->insertLanguage($data["language"], $data["category"]);
+		return $TextTranslator->insertLanguage($language, $category);
 	}
 	
 	public static function updateLanguage($EVC, $data) {
+		$category = isset($data["category"]) ? $data["category"] : null;
+		$old_language = isset($data["old_language"]) ? $data["old_language"] : null;
+		$new_language = isset($data["new_language"]) ? $data["new_language"] : null;
 		$TextTranslator = self::getTextTranslatorObject($EVC);
-		return $TextTranslator->updateLanguage($data["old_language"], $data["new_language"], $data["category"]);
+		return $TextTranslator->updateLanguage($old_language, $new_language, $category);
 	}
 	
 	public static function deleteLanguage($EVC, $lang, $category) {

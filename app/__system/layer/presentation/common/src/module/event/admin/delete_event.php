@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("event/EventUtil", $common_project_name);
 	
-	if (EventUtil::deleteEvent($PEVC, $_GET["event_id"], $brokers)) {
+	if (isset($_GET["event_id"]) && EventUtil::deleteEvent($PEVC, $_GET["event_id"], $brokers)) {
 		echo "1";
 	}
 }

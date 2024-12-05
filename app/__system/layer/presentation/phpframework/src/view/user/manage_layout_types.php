@@ -37,14 +37,14 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 			<th class="table_header buttons">
 				<a class="icon add" href="' . $project_url_prefix . 'user/edit_layout_type" title="Add">Add</a>
 			</th>
-		</tr>'; $t = count($layout_types); for ($i = 0; $i < $t; $i++) { $layout_type = $layout_types[$i]; $type = $available_types[ $layout_type["type_id"] ]; $main_content .= '<tr>
-		<td class="layout_type_id">' . $layout_type["layout_type_id"] . '</td>
-		<td class="type_id">' . ($type ? $type : $layout_type["type_id"]) . '</td>
-		<td class="name">' . $layout_type["name"] . '</td>
-		<td class="created_date">' . $layout_type["created_date"] . '</td>
-		<td class="modified_date">' . $layout_type["modified_date"] . '</td>
+		</tr>'; $t = count($layout_types); for ($i = 0; $i < $t; $i++) { $layout_type = $layout_types[$i]; $layout_type_id = isset($layout_type["layout_type_id"]) ? $layout_type["layout_type_id"] : null; $av_type_id = isset($layout_type["type_id"]) ? $layout_type["type_id"] : null; $type = isset($available_types[$av_type_id]) ? $available_types[$av_type_id] : null; $main_content .= '<tr>
+		<td class="layout_type_id">' . $layout_type_id . '</td>
+		<td class="type_id">' . ($type ? $type : $av_type_id) . '</td>
+		<td class="name">' . (isset($layout_type["name"]) ? $layout_type["name"] : "") . '</td>
+		<td class="created_date">' . (isset($layout_type["created_date"]) ? $layout_type["created_date"] : "") . '</td>
+		<td class="modified_date">' . (isset($layout_type["modified_date"]) ? $layout_type["modified_date"] : "") . '</td>
 		<td class="buttons">
-			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_layout_type?layout_type_id=' . $layout_type["layout_type_id"] . '" title="Edit">Edit</a>
+			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_layout_type?layout_type_id=' . $layout_type_id . '" title="Edit">Edit</a>
 		</td>
 	</tr>'; } $main_content .= '</table>
 	</div>

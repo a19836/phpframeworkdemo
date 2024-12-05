@@ -29,7 +29,7 @@ function onQuestionCatalogUpdatePTLFromFieldsSettings(elm, settings, code, exter
 			"\n" + '	<ptl:if is_array(\\$input)>' +
 			"\n" + '		<ptl:foreach \\$input i question>' +
 			"\n" + '			<li class="question">' + 
-			"\n" + '				<a href="' + (question_properties_url != "" ? question_properties_url : '?question_id=') + '<ptl:echo \\$question[question_id]/>' + '">' +
+			"\n" + '				<a href="' + (question_properties_url != "" ? question_properties_url : '?question_id=') + '<ptl:echo @\\$question[question_id]/>' + '">' +
 			"\n" + '					' + code.replace(/\n/g, "\n\t\t\t\t\t") +
 			"\n" + '				</a>' +
 			"\n" + '			</li>' +

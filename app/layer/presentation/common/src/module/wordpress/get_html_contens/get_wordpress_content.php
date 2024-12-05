@@ -9,7 +9,7 @@ include_once $EVC->getModulePath("wordpress/WordPressSettings", $EVC->getCommonP
 $encryption_key = WordPressSettings::getConstantVariable("WORDPRESS_REQUEST_CONTENT_ENCRYPTION_KEY_HEX");
 $is_user_authenticated = false;
 
-$post_data = $_POST["phpframework_wordpress_data"];
+$post_data = isset($_POST["phpframework_wordpress_data"]) ? $_POST["phpframework_wordpress_data"] : null;
 unset($_POST["phpframework_wordpress_data"]);
 unset($_REQUEST["phpframework_wordpress_data"]);
 
@@ -17,7 +17,7 @@ if ($encryption_key) {
 	$is_user_authenticated = true;
 	
 	$key = CryptoKeyHandler::hexToBin($encryption_key);
-	$cipher_text = $post_data["data"];
+	$cipher_text = isset($post_data["data"]) ? $post_data["data"] : null;
 	$cipher_bin = CryptoKeyHandler::hexToBin($cipher_text);
 	$str = CryptoKeyHandler::decryptText($cipher_bin, $key);
 	
@@ -38,17 +38,17 @@ if ($encryption_key) {
 }
 
 if ($post_data) {
-	$settings = $post_data["settings"];
-	$block_id = $post_data["block_id"];
-	$url_query = $post_data["url_query"];
-	$options = $post_data["options"];
+	$settings = isset($post_data["settings"]) ? $post_data["settings"] : null;
+	$block_id = isset($post_data["block_id"]) ? $post_data["block_id"] : null;
+	$url_query = isset($post_data["url_query"]) ? $post_data["url_query"] : null;
+	$options = isset($post_data["options"]) ? $post_data["options"] : null;
 	
-	if ($options["request_method"]) {
-		$orig_request_method = $_SERVER['REQUEST_METHOD'];
+	if (!empty($options["request_method"])) {
+		$orig_request_method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : null;
 		$_SERVER['REQUEST_METHOD'] = $options["request_method"];
 		
 		if ($options["request_method"] == "GET") {
-			$orig_post = $_POST;
+			$orig_post = isset($_POST) ? $_POST : null;
 			$_POST = array();
 		}
 	}
@@ -56,9 +56,9 @@ if ($post_data) {
 	$WordPressCMSBlockHandler = new \WordPressCMSBlockHandler($EVC, $settings, $is_user_authenticated); //$is_user_authenticated must be false, bc this page is public accessable
 	$content = $WordPressCMSBlockHandler->getBlockContentDirectly($block_id, $url_query, $options);
 	
-	if ($options["request_method"]) {
-		$_SERVER['REQUEST_METHOD'] = $orig_request_method;
-		$_POST = $orig_post;
+	if (!empty($options["request_method"])) {
+		$_SERVER['REQUEST_METHOD'] = isset($orig_request_method) ? $orig_request_method : null;
+		$_POST = isset($orig_post) ? $orig_post : null;
 	}
 	
 	echo serialize($content);

@@ -72,7 +72,7 @@ class CommonModuleTableExtraAttributesUtil {
 				$d = $this->getPreparedData($data);
 				
 				$attributes = array_filter($d, function($k) {
-					return $k && $this->extra_attributes[$k]; 
+					return $k && !empty($this->extra_attributes[$k]); 
 	    			}, ARRAY_FILTER_USE_KEY);
 				
 				$status = $broker->insertObject($this->extra_attributes_table_name, $attributes);
@@ -119,10 +119,10 @@ class CommonModuleTableExtraAttributesUtil {
 				$d = $this->getPreparedData($data);
 				
 				$attributes = array_filter($d, function($k) {
-					return $k && $this->extra_attributes[$k]; 
+					return $k && !empty($this->extra_attributes[$k]); 
 	    			}, ARRAY_FILTER_USE_KEY);
 	    			$conditions = array_filter($d, function($k) {
-					return $k && $this->extra_pks[$k]; 
+					return $k && !empty($this->extra_pks[$k]); 
 	    			}, ARRAY_FILTER_USE_KEY);
 				
 				$status = $conditions && $broker->updateObject($this->extra_attributes_table_name, $attributes, $conditions);
@@ -172,7 +172,7 @@ class CommonModuleTableExtraAttributesUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$conditions = array_filter($data, function($k) {
-						return $k && $this->extra_pks[$k];
+						return $k && !empty($this->extra_pks[$k]);
 		    			}, ARRAY_FILTER_USE_KEY);
 		    			
 					$status = $conditions && $broker->deleteObject($this->extra_attributes_table_name, $conditions);
@@ -186,13 +186,13 @@ class CommonModuleTableExtraAttributesUtil {
 	private function getPreparedData($data, $is_ibatis = false) {
 		if ($this->extra_attributes)
 			foreach ($this->extra_attributes as $attr_name => $attr_settings) {
-				$db_attribute = $attr_settings["db_attribute"];
+				$db_attribute = isset($attr_settings["db_attribute"]) ? $attr_settings["db_attribute"] : null;
 				
 				if ($db_attribute) {
-					$type = $db_attribute["type"];
+					$type = isset($db_attribute["type"]) ? $db_attribute["type"] : null;
 					
-					if (!$db_attribute["primary_key"] && $db_attribute["null"] && (ObjTypeHandler::isDBTypeDate($type) || ObjTypeHandler::isDBTypeNumeric($type))) {
-						$default = $db_attribute["default"];
+					if (empty($db_attribute["primary_key"]) && !empty($db_attribute["null"]) && (ObjTypeHandler::isDBTypeDate($type) || ObjTypeHandler::isDBTypeNumeric($type))) {
+						$default = isset($db_attribute["default"]) ? $db_attribute["default"] : null;
 						
 						if (ObjTypeHandler::isDBAttributeValueACurrentTimestamp($default))
 							$default = date("Y-m-d H:i:s");
@@ -244,20 +244,21 @@ class CommonModuleTableExtraAttributesUtil {
 			$db_data = $this->getTableExtra($data, true);
 			
 			foreach ($this->files_extra_attributes_name as $attr_name) {
-				$delete_attachment = !$data[$attr_name] || $data[$attr_name] != $db_data[$attr_name]; //bc of the default_value that could be set
+				$db_data_attr_name = isset($db_data[$attr_name]) ? $db_data[$attr_name] : null;
+				$delete_attachment = empty($data[$attr_name]) || $data[$attr_name] != $db_data_attr_name; //bc of the default_value that could be set
 				
 				if ($delete_attachment) {
-					if (AttachmentUtil::deleteFile($this->EVC, $db_data[$attr_name], array($this->selected_broker)))
+					if (AttachmentUtil::deleteFile($this->EVC, $db_data_attr_name, array($this->selected_broker)))
 						$data[$attr_name] = null;
 				}
 				
-				if ($files && $files[$attr_name] && $files[$attr_name]["tmp_name"]) {
+				if ($files && !empty($files[$attr_name]) && !empty($files[$attr_name]["tmp_name"])) {
 					//check if file is valid
-					$file_type = $this->extra_attributes[$attr_name]["file_type"];
+					$file_type = isset($this->extra_attributes[$attr_name]["file_type"]) ? $this->extra_attributes[$attr_name]["file_type"] : null;
 					$s = true;
 					
 					if ($file_type == "image") {
-						$mime_type = $files[$attr_name]["type"] ? $files[$attr_name]["type"] : MimeTypeHandler::getFileMimeType($files[$attr_name]["tmp_name"]);
+						$mime_type = !empty($files[$attr_name]["type"]) ? $files[$attr_name]["type"] : MimeTypeHandler::getFileMimeType($files[$attr_name]["tmp_name"]);
 						
 						if (!MimeTypeHandler::isImageMimeType($mime_type))
 							$s = false;
@@ -265,11 +266,12 @@ class CommonModuleTableExtraAttributesUtil {
 					
 					if ($s) {
 						//insert or update attachment
-						$attachment_id = AttachmentUtil::replaceFile($this->EVC, $files[$attr_name], $data[$attr_name], array($this->selected_broker));
+						$data_attr_name = isset($data[$attr_name]) ? $data[$attr_name] : null;
+						$attachment_id = AttachmentUtil::replaceFile($this->EVC, $files[$attr_name], $data_attr_name, array($this->selected_broker));
 						
 						if (!$attachment_id)
 							$status = false;
-						else if ($attachment_id != $data[$attr_name]) //update attachment_id in data if different
+						else if ($attachment_id != $data_attr_name) //update attachment_id in data if different
 							$data[$attr_name] = $attachment_id;
 					}
 					else
@@ -286,7 +288,7 @@ class CommonModuleTableExtraAttributesUtil {
 		
 		if ($this->files_extra_attributes_name)
 			foreach ($this->files_extra_attributes_name as $attr_name)
-				if ($data[$attr_name] && !AttachmentUtil::deleteFile($this->EVC, $data[$attr_name], array($this->selected_broker)))
+				if (!empty($data[$attr_name]) && !AttachmentUtil::deleteFile($this->EVC, $data[$attr_name], array($this->selected_broker)))
 					$status = false;
 		
 		return $status;
@@ -298,12 +300,13 @@ class CommonModuleTableExtraAttributesUtil {
 		
 		if ($data) {
 			$broker = $this->selected_broker;
+			$result = null;
 			
 			if (is_a($broker, "IBusinessLogicBrokerClient"))
 				$result = $broker->callBusinessLogic("module/" . $this->group_module_id, $this->extra_attributes_object_name . "Service.get", $data, array("no_cache" => $no_cache));
 			else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 				$result = $broker->callSelect("module/" . $this->group_module_id, "get_" . $this->extra_attributes_query_name, $data, array("no_cache" => $no_cache));
-				$result = $result[0];
+				$result = $result ? $result[0] : null;
 			}
 			else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 				$obj = $broker->callObject("module/" . $this->group_module_id, $this->extra_attributes_object_name);
@@ -311,7 +314,7 @@ class CommonModuleTableExtraAttributesUtil {
 			}
 			else if (is_a($broker, "IDBBrokerClient")) {
 				$conditions = array_filter($data, function($k) {
-					return $k && $this->extra_pks[$k]; 
+					return $k && !empty($this->extra_pks[$k]); 
 	    			}, ARRAY_FILTER_USE_KEY);
 	    			
 				$result = $conditions && $broker->findObjects($this->extra_attributes_table_name, null, $conditions, array("no_cache" => $no_cache));
@@ -321,12 +324,13 @@ class CommonModuleTableExtraAttributesUtil {
 			//preparing file fields with attachments
 			if ($result && $this->files_extra_attributes_name)
 				foreach ($this->files_extra_attributes_name as $attr_name)
-					if ($result[$attr_name]) {
+					if (!empty($result[$attr_name])) {
 						$attachment_data = AttachmentUtil::getAttachmentsByConditions(array($broker), array("attachment_id" => $result[$attr_name]), null, null, $no_cache);
+						$attachment_data_path = isset($attachment_data[0]["path"]) ? $attachment_data[0]["path"] : null;
 						
-						$result[$attr_name . "_path"] = AttachmentUtil::getAttachmentsFolderPath($this->EVC) . $attachment_data[0]["path"];
-						$result[$attr_name . "_url"] = AttachmentUtil::getAttachmentsFolderUrl($this->EVC) . $attachment_data[0]["path"];
-						$result[$attr_name . "_name"] = $attachment_data[0]["name"];
+						$result[$attr_name . "_path"] = AttachmentUtil::getAttachmentsFolderPath($this->EVC) . $attachment_data_path;
+						$result[$attr_name . "_url"] = AttachmentUtil::getAttachmentsFolderUrl($this->EVC) . $attachment_data_path;
+						$result[$attr_name . "_name"] = isset($attachment_data[0]["name"]) ? $attachment_data[0]["name"] : null;
 					}
 			
 			return $result;
@@ -371,7 +375,7 @@ class CommonModuleTableExtraAttributesUtil {
 		else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 			$cond = DB::getSQLConditions($conditions, $conditions_join);
 			$result = $broker->callSelect("module/" . $this->group_module_id, "count_" . $this->extra_attributes_query_name . "_items", array("conditions" => $cond), array("no_cache" => $no_cache));
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 			$obj = $broker->callObject("module/" . $this->group_module_id, $this->extra_attributes_object_name);
@@ -412,7 +416,7 @@ class CommonModuleTableExtraAttributesUtil {
 			foreach ($items as $idx => $item) 
 				if ($item) {
 					if ($unique_pk) {
-						$v = $item[ $pks_name[0] ];
+						$v = isset($item[ $pks_name[0] ]) ? $item[ $pks_name[0] ] : null;
 						$buckets[$bucket_index][] = $v;
 						$pks_key = $v;
 					}
@@ -421,7 +425,7 @@ class CommonModuleTableExtraAttributesUtil {
 						$pks_key = "";
 						
 						foreach ($pks_name as $pk_name) {
-							$v = $item[$pk_name];
+							$v = isset($item[$pk_name]) ? $item[$pk_name] : null;
 							$data[$pk_name] = $v;
 							$pks_key .= "_" . $v;
 						}
@@ -451,11 +455,11 @@ class CommonModuleTableExtraAttributesUtil {
 					foreach ($items_extra as $item_extra) 
 						if ($item_extra) {
 							if ($unique_pk)
-								$pks_key = $item_extra[ $pks_name[0] ];
+								$pks_key = isset($item_extra[ $pks_name[0] ]) ? $item_extra[ $pks_name[0] ] : null;
 							else {
 								$pks_key = "";
 								foreach ($pks_name as $pk_name)
-									$pks_key .= "_" . $item_extra[$pk_name];
+									$pks_key .= "_" . (isset($item_extra[$pk_name]) ? $item_extra[$pk_name] : null);
 							}
 							
 							$idx = $items_index_by_id[$pks_key];
@@ -481,10 +485,10 @@ class CommonModuleTableExtraAttributesUtil {
 			
 			foreach ($result as $idx => $item) {
 				foreach ($this->files_extra_attributes_name as $attr_name)
-					if ($item[$attr_name])
+					if (!empty($item[$attr_name]))
 						$buckets[$bucket_index][] = $item[$attr_name];
 				
-				if ($buckets[$bucket_index] && count($buckets[$bucket_index]) > $bucket_limit) {
+				if (!empty($buckets[$bucket_index]) && count($buckets[$bucket_index]) > $bucket_limit) {
 					$buckets_start_end[$bucket_index]["end"] = $idx;
 					$bucket_index++;
 					$buckets_start_end[$bucket_index]["start"] = $idx + 1;
@@ -496,28 +500,32 @@ class CommonModuleTableExtraAttributesUtil {
 			$url = AttachmentUtil::getAttachmentsFolderUrl($this->EVC);
 			
 			foreach ($buckets as $bucket_index => $attachment_ids) {
-				$start = $buckets_start_end[$bucket_index]["start"];
-				$end = $buckets_start_end[$bucket_index]["end"];
+				$start = isset($buckets_start_end[$bucket_index]["start"]) ? $buckets_start_end[$bucket_index]["start"] : null;
+				$end = isset($buckets_start_end[$bucket_index]["end"]) ? $buckets_start_end[$bucket_index]["end"] : null;
 				
 				$attachments = AttachmentUtil::getAttachmentsByIds(array($this->selected_broker), $attachment_ids, $no_cache);
 				
 				if ($attachments) {
 					$attachment_paths_by_id = array();
-					foreach ($attachments as $attachment)
-						$attachment_paths_by_id[ $attachment["attachment_id"] ] = $attachment["path"];
+					foreach ($attachments as $attachment) {
+						$attachment_id = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
+						$attachment_path = isset($attachment["path"]) ? $attachment["path"] : null;
+						
+						$attachment_paths_by_id[$attachment_id] = $attachment_path;
+					}
 					
 					for ($i = $start; $i < $end; $i++) {
 						$item = $result[$i];
 						
 						if ($item)
 							foreach ($this->files_extra_attributes_name as $attr_name)
-								if ($item[$attr_name]) {
+								if (!empty($item[$attr_name])) {
 									$path = $attachment_paths_by_id[ $item[$attr_name] ];
 									
 									if ($path) {
 										$result[$i][$attr_name . "_path"] = $folder_path . $path;
 										$result[$i][$attr_name . "_url"] = $url . $path;
-										$result[$i][$attr_name . "_name"] = $attachment["name"];
+										$result[$i][$attr_name . "_name"] = isset($attachment["name"]) ? $attachment["name"] : null;
 									}
 								}
 					}
@@ -531,7 +539,7 @@ class CommonModuleTableExtraAttributesUtil {
 			$fields = array();
 			
 			foreach ($this->extra_attributes as $attr_name => $attr_settings)
-				$fields[$attr_name] = $data[$attr_name];
+				$fields[$attr_name] = isset($data[$attr_name]) ? $data[$attr_name] : null;
 			
 			return CommonModuleUI::checkIfEmptyFields($settings, $fields, $files);
 		}
@@ -540,7 +548,7 @@ class CommonModuleTableExtraAttributesUtil {
 	public function prepareFieldsWithNewData($settings, &$data, $old_data, $new_data) {
 		if ($this->enabled && $this->extra_attributes)
 			foreach ($this->extra_attributes as $attr_name => $attr_settings)
-				$data[$attr_name] = $settings["show_$attr_name"] ? $new_data[$attr_name] : $old_data[$attr_name];
+				$data[$attr_name] = !empty($settings["show_$attr_name"]) ? (isset($new_data[$attr_name]) ? $new_data[$attr_name] : null) : (isset($old_data[$attr_name]) ? $old_data[$attr_name] : null);
 	}
 	
 	//Only check the files fields, bc all the others will be already checked by CommonModuleUI::areFieldsValid method.
@@ -549,17 +557,17 @@ class CommonModuleTableExtraAttributesUtil {
 		
 		if ($this->enabled && $this->files_extra_attributes_name && $files) {
 			foreach ($this->files_extra_attributes_name as $attr_name)
-				if ($settings["show_$attr_name"]) {
-					$input_settings = $settings["fields"][$attr_name]["field"]["input"];
+				if (!empty($settings["show_$attr_name"])) {
+					$input_settings = isset($settings["fields"][$attr_name]["field"]["input"]) ? $settings["fields"][$attr_name]["field"]["input"] : null;
 					
-					if ($input_settings["type"] == "file" && $files[$attr_name] && $files[$attr_name]["tmp_name"]) {
-						$file_type = $this->extra_attributes[$attr_name]["file_type"];
+					if (isset($input_settings["type"]) && $input_settings["type"] == "file" && !empty($files[$attr_name]) && !empty($files[$attr_name]["tmp_name"])) {
+						$file_type = isset($this->extra_attributes[$attr_name]["file_type"]) ? $this->extra_attributes[$attr_name]["file_type"] : null;
 						
 						if ($file_type == "image") {
-							$mime_type = $files[$attr_name]["type"] ? $files[$attr_name]["type"] : MimeTypeHandler::getFileMimeType($files[$attr_name]["tmp_name"]);
+							$mime_type = !empty($files[$attr_name]["type"]) ? $files[$attr_name]["type"] : MimeTypeHandler::getFileMimeType($files[$attr_name]["tmp_name"]);
 							
 							if (!MimeTypeHandler::isImageMimeType($mime_type)) {
-								if ($input_settings["validation_message"]) 
+								if (!empty($input_settings["validation_message"])) 
 									$error_message = translateProjectText($EVC, $input_settings["validation_message"]);
 								else 
 									$error_message = CommonModuleUI::getFieldValidationMessage($EVC, $settings, $attr_name);
@@ -579,7 +587,7 @@ class CommonModuleTableExtraAttributesUtil {
 			$reload = false;
 			
 			foreach ($this->files_extra_attributes_name as $attr_name) 
-				if ($settings["show_$attr_name"]) {
+				if (!empty($settings["show_$attr_name"])) {
 					$reload = true;
 					break;
 				}
@@ -590,21 +598,21 @@ class CommonModuleTableExtraAttributesUtil {
 				if ($db_data)
 					foreach ($this->files_extra_attributes_name as $attr_name) {
 						if ($old_data) {
-							$old_data[$attr_name] = $db_data[$attr_name];
-							$old_data[$attr_name . "_url"] = $db_data[$attr_name . "_url"];
-							$old_data[$attr_name . "_path"] = $db_data[$attr_name . "_path"];
-							$old_data[$attr_name . "_name"] = $db_data[$attr_name . "_name"];
+							$old_data[$attr_name] = isset($db_data[$attr_name]) ? $db_data[$attr_name] : null;
+							$old_data[$attr_name . "_url"] = isset($db_data[$attr_name . "_url"]) ? $db_data[$attr_name . "_url"] : null;
+							$old_data[$attr_name . "_path"] = isset($db_data[$attr_name . "_path"]) ? $db_data[$attr_name . "_path"] : null;
+							$old_data[$attr_name . "_name"] = isset($db_data[$attr_name . "_name"]) ? $db_data[$attr_name . "_name"] : null;
 						}
 						
 						if ($new_data) {
-							$new_data[$attr_name] = $db_data[$attr_name];
-							$new_data[$attr_name . "_url"] = $db_data[$attr_name . "_url"];
-							$new_data[$attr_name . "_path"] = $db_data[$attr_name . "_path"];
-							$new_data[$attr_name . "_name"] = $db_data[$attr_name . "_name"];
+							$new_data[$attr_name] = isset($db_data[$attr_name]) ? $db_data[$attr_name] : null;
+							$new_data[$attr_name . "_url"] = isset($db_data[$attr_name . "_url"]) ? $db_data[$attr_name . "_url"] : null;
+							$new_data[$attr_name . "_path"] = isset($db_data[$attr_name . "_path"]) ? $db_data[$attr_name . "_path"] : null;
+							$new_data[$attr_name . "_name"] = isset($db_data[$attr_name . "_name"]) ? $db_data[$attr_name . "_name"] : null;
 						}
 						
 						if ($post_data && array_key_exists($attr_name, $post_data))
-							$post_data[$attr_name] = $db_data[$attr_name];
+							$post_data[$attr_name] = isset($db_data[$attr_name]) ? $db_data[$attr_name] : null;
 					}
 			}
 		}
@@ -613,30 +621,30 @@ class CommonModuleTableExtraAttributesUtil {
 	public function prepareFileFieldsSettings($EVC, &$settings) {
 		if ($this->enabled && $this->files_extra_attributes_name)
 			foreach ($this->files_extra_attributes_name as $attr_name) 
-				if ($settings["show_$attr_name"]) {
-					$input_settings = $settings["fields"][$attr_name]["field"]["input"];
+				if (!empty($settings["show_$attr_name"])) {
+					$input_settings = isset($settings["fields"][$attr_name]["field"]["input"]) ? $settings["fields"][$attr_name]["field"]["input"] : null;
 					
-					if ($input_settings["type"] == "file") {
+					if (isset($input_settings["type"]) && $input_settings["type"] == "file") {
 						$attr_settings = $this->extra_attributes[$attr_name];
 						
 						//set input hidden field
-						$allow_null = $input_settings["allow_null"];
-						$extra_attributes = $input_settings["extra_attributes"];
-						$class = $input_settings["class"];
-						$title = $input_settings["title"];
-						$validation_label = $input_settings["validation_label"];
-						$validation_message = $input_settings["validation_message"];
+						$allow_null = isset($input_settings["allow_null"]) ? $input_settings["allow_null"] : null;
+						$extra_attributes = isset($input_settings["extra_attributes"]) ? $input_settings["extra_attributes"] : null;
+						$class = isset($input_settings["class"]) ? $input_settings["class"] : null;
+						$title = isset($input_settings["title"]) ? $input_settings["title"] : null;
+						$validation_label = isset($input_settings["validation_label"]) ? $input_settings["validation_label"] : null;
+						$validation_message = isset($input_settings["validation_message"]) ? $input_settings["validation_message"] : null;
 						
 						$input_settings["type"] = "text"; //Do not add hidden here, otherwise the parent div will be hidden too
 						$input_settings["extra_attributes"] = array( array("name" => "style", "value" => "display:none") );
-						$input_settings["validation_type"] = $attr_settings["validation_type"];
+						$input_settings["validation_type"] = isset($attr_settings["validation_type"]) ? $attr_settings["validation_type"] : null;
 						$input_settings["class"] = $input_settings["title"] = $input_settings["allow_null"] = $input_settings["validation_label"] = $input_settings["validation_message"] = $input_settings["validation_regex"] = $input_settings["validation_func"] = $input_settings["min_length"] = $input_settings["max_length"] = $input_settings["min_value"] = $input_settings["max_value"] = $input_settings["min_words"] = $input_settings["max_words"] = null;
 						
 						//set input file field
 						if (!$validation_label)
 							$validation_label = translateProjectText($EVC, CommonModuleUI::getFieldLabel($settings, $attr_name));
 						
-						$name = $input_settings["name"] ? $input_settings["name"] : $attr_name;
+						$name = !empty($input_settings["name"]) ? $input_settings["name"] : $attr_name;
 						$html = '<input type="file" name="' . $name . '" data-validation-label="' . $validation_label . '"';
 						
 						if ($class)
@@ -651,8 +659,8 @@ class CommonModuleTableExtraAttributesUtil {
 						if ($extra_attributes) {
 							if(is_array($extra_attributes))
 								foreach ($extra_attributes as $f)
-									if (is_array($f) && $f["name"])
-										$html .= ' ' . $f["name"] . '="' . $f["value"] . '"';
+									if (is_array($f) && !empty($f["name"]))
+										$html .= ' ' . $f["name"] . '="' . (isset($f["value"]) ? $f["value"] : "") . '"';
 							else
 								$html .= ' ' . $extra_attributes;
 						}
@@ -690,7 +698,7 @@ class CommonModuleTableExtraAttributesUtil {
 		
 		if ($this->extra_attributes) 
 			foreach ($this->extra_attributes as $attr_name => $attr_settings) 
-				if ($settings["show_$attr_name"]) {
+				if (!empty($settings["show_$attr_name"])) {
 					$this->enabled = true;
 					break;
 				}
@@ -746,11 +754,11 @@ class CommonModuleTableExtraAttributesUtil {
 		if (file_exists($fp)) {
 			include $fp;
 			
-			$this->extra_attributes = $table_extra_attributes_settings; //only contains the names of the attributes
+			$this->extra_attributes = isset($table_extra_attributes_settings) ? $table_extra_attributes_settings : null; //only contains the names of the attributes
 			
 			if ($this->extra_attributes) {
 				$this->extra_pks = array_filter($this->extra_attributes, function($v) {
-					return $v && $v["db_attribute"] && $v["db_attribute"]["primary_key"];
+					return $v && !empty($v["db_attribute"]) && !empty($v["db_attribute"]["primary_key"]);
 				});
 				
 				$attachment_util_fp = $this->EVC->getModulePath("attachment/AttachmentUtil", $this->EVC->getCommonProjectName());
@@ -759,7 +767,7 @@ class CommonModuleTableExtraAttributesUtil {
 					include_once $attachment_util_fp;
 					
 					foreach ($this->extra_attributes as $attr_name => $attr_settings)
-						if ($attr_settings["file_type"])
+						if (!empty($attr_settings["file_type"]))
 							$this->files_extra_attributes_name[] = $attr_name;
 				}
 			}

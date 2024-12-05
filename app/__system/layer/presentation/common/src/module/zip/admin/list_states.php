@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("zip/admin/ZipAdminUtil", $common_project_name);
 	
 	$ZipAdminUtil = new ZipAdminUtil($CommonModuleAdminUtil);
@@ -14,7 +14,8 @@ if ($PEVC) {
 	$ZipAdminUtil->initZips($brokers);
 	$available_countries = $ZipAdminUtil->getAvailableCountries();
 	
-	$country_id = $_GET["country_id"];
+	$country_id = isset($_GET["country_id"]) ? $_GET["country_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($country_id) {
 		$total = ZipUtil::countStatesByConditions($brokers, array("country_id" => $country_id), null, true);

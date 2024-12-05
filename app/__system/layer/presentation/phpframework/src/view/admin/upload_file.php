@@ -47,7 +47,7 @@ $(function() {
 		}
 	});
 });
-</script>'; $main_content .= '
+</script>'; $main_content = '
 <div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
 		<div class="title" title="' . $path . '">Upload Files into  in ' . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $obj) . '</div>

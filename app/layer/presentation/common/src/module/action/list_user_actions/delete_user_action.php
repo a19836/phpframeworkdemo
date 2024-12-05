@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (ActionUtil::deleteUserAction($brokers, $_GET["user_id"], $_GET["action_id"], $_GET["object_type_id"], $_GET["object_id"], $_GET["time"])) {
+if (isset($_GET["user_id"]) && isset($_GET["action_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && ActionUtil::deleteUserAction($brokers, $_GET["user_id"], $_GET["action_id"], $_GET["object_type_id"], $_GET["object_id"], $_GET["time"])) {
 	echo "1";
 }
 ?>

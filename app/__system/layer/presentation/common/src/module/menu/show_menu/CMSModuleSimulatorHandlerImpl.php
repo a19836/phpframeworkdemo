@@ -6,7 +6,7 @@ class CMSModuleSimulatorHandlerImpl extends \CMSModuleSimulatorHandler {
 	public function simulate(&$settings = false, &$editable_settings = false) {
 		$s = $settings;
 		
-		if (!$s["items_type"] && !$s["template_type"])
+		if (empty($s["items_type"]) && empty($s["template_type"]))
 			$editable_settings = array(
 				"elements" => array(
 					".module_menu > ul.module_menu_ul li.module_menu_li > a > label" => "xxx",

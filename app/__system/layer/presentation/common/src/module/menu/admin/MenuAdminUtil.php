@@ -89,33 +89,39 @@ class MenuAdminUtil {
 	
 	public function getAvailableGroups() {
 		$available_groups = array();
-		foreach ($this->groups as $group) {
-			$available_groups[ $group["group_id"] ] = $group["name"];
-		}
+		foreach ($this->groups as $group)
+			if (isset($group["group_id"]))
+				$available_groups[ $group["group_id"] ] = isset($group["name"]) ? $group["name"] : null;
+		
 		return $available_groups;
 	}
 	
 	public function getAvailableItems() {
 		$available_items = array();
-		foreach ($this->items as $item) {
-			$available_items[ $item["item_id"] ] = $item["item_id"] . "- " . $item["label"];
-		}
+		foreach ($this->items as $item)
+			if (isset($item["item_id"]))
+				$available_items[ $item["item_id"] ] = $item["item_id"] . "- " . (isset($item["label"]) ? $item["label"] : null);
+		
 		return $available_items;
 	}
 	
 	public function getAvailableObjectTypes() {
 		$available_object_types = array();
-		foreach ($this->object_types as $object_type) {
-			$available_object_types[ $object_type["object_type_id"] ] = $object_type["name"];
-		}
+		foreach ($this->object_types as $object_type)
+			if (isset($object_type["object_type_id"]))
+				$available_object_types[ $object_type["object_type_id"] ] = isset($object_type["name"]) ? $object_type["name"] : null;
+		
 		return $available_object_types;
 	}
 	
 	public function getGroupOptions() {
 		$group_options = array();
-		foreach ($this->groups as $group) {
-			$group_options[] = array("value" => $group["group_id"], "label" => $group["name"]);
-		}
+		foreach ($this->groups as $group)
+			$group_options[] = array(
+				"value" => isset($group["group_id"]) ? $group["group_id"] : null, 
+				"label" => isset($group["name"]) ? $group["name"] : null
+			);
+		
 		return $group_options;
 	}
 	
@@ -125,16 +131,25 @@ class MenuAdminUtil {
 		);
 		
 		foreach ($this->items as $item) {
-			$item_options[] = array("value" => $item["item_id"], "label" => $item["item_id"] . "- " . $item["label"]);
+			$item_id = isset($item["item_id"]) ? $item["item_id"] : null;
+			
+			$item_options[] = array(
+				"value" => $item_id, 
+				"label" => $item_id . "- " . (isset($item["label"]) ? $item["label"] : null)
+			);
 		}
+		
 		return $item_options;
 	}
 	
 	public function getObjectTypeOptions() {
 		$object_type_options = array();
-		foreach ($this->object_types as $object_type) {
-			$object_type_options[] = array("value" => $object_type["object_type_id"], "label" => $object_type["name"]);
-		}
+		foreach ($this->object_types as $object_type)
+			$object_type_options[] = array(
+				"value" => isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null, 
+				"label" => isset($object_type["name"]) ? $object_type["name"] : null
+			);
+		
 		return $object_type_options;
 	}
 }

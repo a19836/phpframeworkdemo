@@ -37,12 +37,12 @@ include $EVC->getUtilPath("UserAuthenticationUIHandler"); $head = '
 				<a class="icon add" href="' . $project_url_prefix . 'user/edit_permission" title="Add">Add</a>
 			</th>
 		</tr>'; $t = count($permissions); for ($i = 0; $i < $t; $i++) { $permission = $permissions[$i]; $main_content .= '<tr>
-		<td class="permission_id">' . $permission["permission_id"] . '</td>
-		<td class="name">' . $permission["name"] . '</td>
-		<td class="created_date">' . $permission["created_date"] . '</td>
-		<td class="modified_date">' . $permission["modified_date"] . '</td>
+		<td class="permission_id">' . (isset($permission["permission_id"]) ? $permission["permission_id"] : "") . '</td>
+		<td class="name">' . (isset($permission["name"]) ? $permission["name"] : "") . '</td>
+		<td class="created_date">' . (isset($permission["created_date"]) ? $permission["created_date"] : "") . '</td>
+		<td class="modified_date">' . (isset($permission["modified_date"]) ? $permission["modified_date"] : "") . '</td>
 		<td class="buttons">
-			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_permission?permission_id=' . $permission["permission_id"] . '" title="Edit">Edit</a>
+			<a class="icon edit" href="' . $project_url_prefix . 'user/edit_permission?permission_id=' . (isset($permission["permission_id"]) ? $permission["permission_id"] : "") . '" title="Edit">Edit</a>
 		</td>
 	</tr>'; } $main_content .= '</table>
 	</div>

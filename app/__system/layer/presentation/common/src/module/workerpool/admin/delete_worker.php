@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("workerpool/WorkerPoolUtil", $common_project_name);
 	
-	if (WorkerPoolUtil::deleteWorker($brokers, $_GET["worker_id"])) {
+	if (isset($_GET["worker_id"]) && WorkerPoolUtil::deleteWorker($brokers, $_GET["worker_id"])) {
 		echo "1";
 	}
 }

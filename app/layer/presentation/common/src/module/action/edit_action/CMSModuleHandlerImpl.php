@@ -4,6 +4,7 @@ namespace CMSModule\action\edit_action;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,35 +15,37 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		//Getting Action Details
-		$action_id = $_GET["action_id"];
+		$action_id = isset($_GET["action_id"]) ? $_GET["action_id"] : null;
 		$data = $action_id ? \ActionUtil::getActionsByConditions($brokers, array("action_id" => $action_id), null, true) : null;
-		$data = $data[0];
+		$data = isset($data[0]) ? $data[0] : null;
 		
 		//Preparing Action
-		if ($_POST) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
-				$status = !$data || \ActionUtil::deleteAction($brokers, $data["action_id"]);
+		if (!empty($_POST)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
+				$data_action_id = isset($data["action_id"]) ? $data["action_id"] : null;
+				
+				$status = !$data || \ActionUtil::deleteAction($brokers, $data_action_id);
 			}
-			else if ($_POST["save"]) {
-				$name = $_POST["name"];
+			else if (!empty($_POST["save"])) {
+				$name = isset($_POST["name"]) ? $_POST["name"] : null;
 				
 				if (\CommonModuleUI::checkIfEmptyField($settings, "name", $name)) {
 					$error_message = \CommonModuleUI::getFieldValidationMessage($EVC, $settings, "name");
 				}
 				else {
 					$new_data = $data;
-					$new_data["name"] = $settings["show_name"] ? $name : $new_data["name"];
+					$new_data["name"] = !empty($settings["show_name"]) ? $name : (isset($new_data["name"]) ? $new_data["name"] : null);
 					
 					\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
 					
 					if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message)) {
-						if ($settings["allow_insertion"] && empty($data["action_id"])) {
+						if (!empty($settings["allow_insertion"]) && empty($data["action_id"])) {
 							$status = \ActionUtil::insertAction($brokers, $new_data);
-							if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
-								$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "action_id=$status";
+							if (isset($settings["on_insert_ok_action"]) && strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								$settings["on_insert_ok_redirect_url"] .= (isset($settings["on_insert_ok_redirect_url"]) && strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "action_id=$status";
 							}
 						}
-						else if ($settings["allow_update"] && $data["action_id"]) {
+						else if (!empty($settings["allow_update"]) && !empty($data["action_id"])) {
 							$status = \ActionUtil::updateAction($brokers, $new_data);
 						}
 					}
@@ -50,27 +53,27 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
-		if ($_POST["save"]) {
+		if (!empty($_POST["save"])) {
 			$form_data = array(
-				"action_id" => $settings["show_action_id"] ? $action_id : $data["action_id"],
-				"name" => $settings["show_name"] ? $name : $data["name"],
+				"action_id" => !empty($settings["show_action_id"]) ? $action_id : $data["action_id"],
+				"name" => !empty($settings["show_name"]) ? (isset($name) ? $name : null) : $data["name"],
 			);
-			$form_data = $new_data ? array_merge($new_data, $form_data) : ($settings["allow_view"] && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+			$form_data = !empty($new_data) ? array_merge($new_data, $form_data) : (!empty($settings["allow_view"]) && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		}
 		else {
-			$form_data = $settings["allow_view"] && $data ? $data : array();
+			$form_data = !empty($settings["allow_view"]) && $data ? $data : array();
 		}
 		
 		$settings["data"] = $data;
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/action/edit_action.css';
 		$settings["class"] = "module_edit_action";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		
-		$is_insertion = $settings["allow_insertion"] && !$data;
+		$is_insertion = !empty($settings["allow_insertion"]) && !$data;
 		
-		if ($settings["show_action_id"])
+		if (!empty($settings["show_action_id"]))
 			$settings["fields"]["action_id"]["field"]["input"]["type"] = $is_insertion ? "hidden" : "label";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "action/edit_action", $settings);

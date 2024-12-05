@@ -4,10 +4,11 @@ namespace CMSModule\article\properties;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
-		$article_id = is_numeric($settings["article_id"]) ? $settings["article_id"] : null;
+		$article_id = isset($settings["article_id"]) && is_numeric($settings["article_id"]) ? $settings["article_id"] : null;
 		
 		include $EVC->getConfigPath("config");
 		include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesUtil", $common_project_name);
@@ -16,16 +17,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("comment/CommentUI", $common_project_name);
 		include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler");
 		
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "article");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "article");
+		
+		$html = "";
 		
 		if (empty($settings["style_type"])) {
 			$html = '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/article/properties.css" type="text/css" charset="utf-8" />';
 		}
 		
-		$html .= ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		$html .= (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 		
-		<div class="module_article ' . ($settings["block_class"]) . '">';
+		<div class="module_article ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
 		if ($article_id) {
 			$data = \ArticleUtil::getArticleProperties($EVC, $article_id, true);
@@ -45,10 +48,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			), "This join point's method/function can change the \$settings or \$data variables. \$data contains the article properties.");
 			
 			if ($data) {
-				if (!$data["published"] && !$settings["allow_not_published"]) {
+				if (empty($data["published"]) && empty($settings["allow_not_published"])) {
 					$html .= '<h3 class="article_error">' . translateProjectText($EVC, "Article not Published!") . '</h3>';
 				}
-				else if ($settings["fields"]) {
+				else if (!empty($settings["fields"])) {
 					$form_settings = array(
 						"with_form" => 0,
 						"form_containers" => array(
@@ -61,22 +64,22 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					);
 					
 					$attachments_html = '';
-					if ($settings["show_attachments"]) {
+					if (!empty($settings["show_attachments"])) {
 						$attachments_settings = array(
-							"style_type" => $settings["style_type"],
-							"class" => $settings["fields"]["attachments"]["field"]["class"],
-							"title" => $settings["fields"]["attachments"]["field"]["label"]["value"],
+							"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+							"class" => isset($settings["fields"]["attachments"]["field"]["class"]) ? $settings["fields"]["attachments"]["field"]["class"] : null,
+							"title" => isset($settings["fields"]["attachments"]["field"]["label"]["value"]) ? $settings["fields"]["attachments"]["field"]["label"]["value"] : null,
 						);
 						$attachments_html = \AttachmentUI::getObjectAttachmentsHtml($EVC, $attachments_settings, \ObjectUtil::ARTICLE_OBJECT_TYPE_ID, $article_id, \ArticleUtil::ARTICLE_ATTACHMENTS_GROUP_ID) . '<div class="clear"></div>';
 					}
 					
 					$comments_html = '';
-					if ($settings["show_comments"]) {
+					if (!empty($settings["show_comments"])) {
 						$comments_settings = array(
-							"style_type" => $settings["style_type"],
-							"class" => $settings["fields"]["comments"]["field"]["class"],
-							"title" => $settings["fields"]["comments"]["field"]["label"]["value"],
-							"add_comment_url" => $data["allow_comments"] ? $settings["fields"]["comments"]["field"]["add_comment_url"] : null,
+							"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+							"class" => isset($settings["fields"]["comments"]["field"]["class"]) ? $settings["fields"]["comments"]["field"]["class"] : null,
+							"title" => isset($settings["fields"]["comments"]["field"]["label"]["value"]) ? $settings["fields"]["comments"]["field"]["label"]["value"] : null,
+							"add_comment_url" => !empty($data["allow_comments"]) && isset($settings["fields"]["comments"]["field"]["add_comment_url"]) ? $settings["fields"]["comments"]["field"]["add_comment_url"] : null,
 						);
 						
 						//Add join point initting the $settings[comments_users] with the correspondent users' data array for the article comments.
@@ -94,14 +97,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "article/properties", $settings);
 					
 					$HtmlFormHandler = null;
-					if ($settings["ptl"])
+					if (!empty($settings["ptl"])) {
+						$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 						$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
+					}
 					
 					$container_idx = 0;
 					foreach ($settings["fields"] as $field_id => $field) {
-						if ($settings["show_" . $field_id]) {
+						if (!empty($settings["show_" . $field_id])) {
 							//Preparing ptl
-							if ($settings["ptl"]) {
+							if (!empty($settings["ptl"])) {
 								if ($field_id == "attachments")
 									$settings["ptl"]["code"] = preg_replace('/<ptl:block:field:attachments\s*\/?>/', $attachments_html, $settings["ptl"]["code"]);
 								else if ($field_id == "comments")
@@ -125,7 +130,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					}
 					
 					//add ptl to form_settings
-					if ($settings["ptl"]) {
+					if (!empty($settings["ptl"])) {
 						\CommonModuleUI::cleanBlockPTLCode($settings["ptl"]["code"]);
 						$form_settings["form_containers"][$container_idx]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 					}

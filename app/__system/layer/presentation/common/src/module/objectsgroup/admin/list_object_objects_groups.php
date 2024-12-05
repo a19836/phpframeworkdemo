@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("objectsgroup/admin/ObjectsGroupAdminUtil", $common_project_name);
 	
 	$ObjectsGroupAdminUtil = new ObjectsGroupAdminUtil($CommonModuleAdminUtil);
@@ -14,7 +14,8 @@ if ($PEVC) {
 	$ObjectsGroupAdminUtil->initObjectObjectsGroups($brokers);
 	$available_object_types = $ObjectsGroupAdminUtil->getAvailableObjectTypes();
 	
-	$objects_group_id = $_GET["objects_group_id"];
+	$objects_group_id = isset($_GET["objects_group_id"]) ? $_GET["objects_group_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($objects_group_id) {
 		$total = ObjectsGroupUtil::countObjectObjectsGroupsByObjectsGroupId($brokers, $objects_group_id, true);

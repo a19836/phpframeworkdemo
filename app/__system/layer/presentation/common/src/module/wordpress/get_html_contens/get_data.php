@@ -4,11 +4,11 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include_once get_lib("org.phpframework.cms.wordpress.WordPressCMSBlockHandler");
 	
-	$wordpress_installation_name = $_GET["wordpress_installation_name"] ? $_GET["wordpress_installation_name"] : $GLOBALS["default_db_driver"];
-	$action = $_GET["action"];
+	$wordpress_installation_name = !empty($_GET["wordpress_installation_name"]) ? $_GET["wordpress_installation_name"] : (isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null);
+	$action = isset($_GET["action"]) ? $_GET["action"] : null;
 	
 	if ($wordpress_installation_name) {
 		$WordPressCMSBlockHandler = new \WordPressCMSBlockHandler($PEVC, array(
@@ -17,34 +17,34 @@ if ($PEVC) {
 		));
 		
 		if ($action == "get_widget_options") {
-			$widget_id = $_GET["widget_id"];
+			$widget_id = isset($_GET["widget_id"]) ? $_GET["widget_id"] : null;
 			
 			if ($widget_id) {
 				//prepare widget_instance
-				$widget_instance = $_POST["widget_instance"];
+				$widget_instance = isset($_POST["widget_instance"]) ? $_POST["widget_instance"] : null;
 				
-				if (!isset($widget_instance) && $_POST["widget_options"]) {
-					$widget_options = $_POST["widget_options"];
-					$id_base = $widget_options["id_base"];
-					$multi_number = $widget_options["multi_number"];
-					$widget_instance = $widget_options["widget-" . $id_base];
+				if (!isset($widget_instance) && !empty($_POST["widget_options"])) {
+					$widget_options = isset($_POST["widget_options"]) ? $_POST["widget_options"] : null;
+					$id_base = isset($widget_options["id_base"]) ? $widget_options["id_base"] : null;
+					$multi_number = isset($widget_options["multi_number"]) ? $widget_options["multi_number"] : null;
+					$widget_instance = isset($widget_options["widget-" . $id_base]) ? $widget_options["widget-" . $id_base] : null;
 					
 					if (is_array($widget_instance) && isset($multi_number)) 
-						$widget_instance = $widget_instance[$multi_number];
+						$widget_instance = isset($widget_instance[$multi_number]) ? $widget_instance[$multi_number] : null;
 				}
 				
 				//get widget control options html
 				$options = array(
 					"widget_options" => array("widget_id" => $widget_id, "widget_instance" => $widget_instance),
 				);
-				$content = $WordPressCMSBlockHandler->getBlockContent("", $url_query, $options);
-				$results = $content && $content["results"] ? $content["results"] : null;
+				$content = $WordPressCMSBlockHandler->getBlockContent("", isset($url_query) ? $url_query : null, $options);
+				$results = $content && !empty($content["results"]) ? $content["results"] : null;
 				//print_r($results);
 				
 				if ($results)
 					$data = array(
 						"widget_id" => $widget_id,
-						"widget_options" => $results["widget_options"],
+						"widget_options" => isset($results["widget_options"]) ? $results["widget_options"] : null,
 					);
 			}
 		}
@@ -67,31 +67,33 @@ if ($PEVC) {
 				array("name" => "getAvailableThemes"),
 			);
 			
-			$content = $WordPressCMSBlockHandler->getBlockContent("", $url_query, array(
+			$content = $WordPressCMSBlockHandler->getBlockContent("", isset($url_query) ? $url_query : null, array(
 				"functions" => $functions,
 			));
-			$results = $content && $content["results"] ? $content["results"]["functions"] : null;
+			$results = $content && !empty($content["results"]) && isset($content["results"]["functions"]) ? $content["results"]["functions"] : null;
 			//print_r($results);
 			
 			if ($results) {
-				$pages = $results[0];
-				$categories = $results[1];
-				$tags = $results[2];
-				$posts = $results[3];
-				$widgets = $results[4];
-				$side_bars = $results[5];
-				$menus = $results[6];
-				$menu_locations = $results[7];
-				$site_url = $results[8];
-				$themes = $results[9];
+				$pages = isset($results[0]) ? $results[0] : null;
+				$categories = isset($results[1]) ? $results[1] : null;
+				$tags = isset($results[2]) ? $results[2] : null;
+				$posts = isset($results[3]) ? $results[3] : null;
+				$widgets = isset($results[4]) ? $results[4] : null;
+				$side_bars = isset($results[5]) ? $results[5] : null;
+				$menus = isset($results[6]) ? $results[6] : null;
+				$menu_locations = isset($results[7]) ? $results[7] : null;
+				$site_url = isset($results[8]) ? $results[8] : null;
+				$themes = isset($results[9]) ? $results[9] : null;
 				$dates = array();
 				
 				if ($pages) {
 					$new_pages = array();
 					
 					foreach ($pages as $wp_post_obj)
-						//$new_pages[ $wp_post_obj->ID ] = $wp_post_obj->post_title;
-						$new_pages[ $wp_post_obj->post_name ] = $wp_post_obj->post_title;
+						if (isset($wp_post_obj->post_name))
+							$new_pages[ $wp_post_obj->post_name ] = isset($wp_post_obj->post_title) ? $wp_post_obj->post_title : null;
+						//if (isset($wp_post_obj->ID))
+							//$new_pages[ $wp_post_obj->ID ] = isset($wp_post_obj->post_title) ? $wp_post_obj->post_title : null;
 					
 					$pages = $new_pages;
 				}
@@ -100,8 +102,10 @@ if ($PEVC) {
 					$new_categories = array();
 					
 					foreach ($categories as $wp_term_obj)
-						//$new_categories[ $wp_term_obj->term_id ] = $wp_term_obj->name;
-						$new_categories[ $wp_term_obj->slug ] = $wp_term_obj->name;
+						if (isset($wp_term_obj->slug))
+							$new_categories[ $wp_term_obj->slug ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
+						//if (isset($wp_term_obj->term_id))
+							//$new_categories[ $wp_term_obj->term_id ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
 					
 					$categories = $new_categories;
 				}
@@ -110,8 +114,10 @@ if ($PEVC) {
 					$new_tags = array();
 					
 					foreach ($tags as $wp_term_obj)
-						//$new_tags[ $wp_term_obj->term_id ] = $wp_term_obj->name;
-						$new_tags[ $wp_term_obj->slug ] = $wp_term_obj->name;
+						if (isset($wp_term_obj->slug))
+							$new_tags[ $wp_term_obj->slug ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
+						//if (isset($wp_term_obj->term_id))
+							//$new_tags[ $wp_term_obj->term_id ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
 					
 					$tags = $new_tags;
 				}
@@ -120,10 +126,12 @@ if ($PEVC) {
 					$new_posts = array();
 					
 					foreach ($posts as $wp_post_obj) {
-						//$new_posts[ $wp_post_obj->ID ] = $wp_post_obj->post_title;
-						$new_posts[ $wp_post_obj->post_name ] = $wp_post_obj->post_title;
+						if (isset($wp_post_obj->post_name))
+							$new_posts[ $wp_post_obj->post_name ] = isset($wp_post_obj->post_title) ? $wp_post_obj->post_title : null;
+						//if (isset($wp_post_obj->ID))
+							//$new_posts[ $wp_post_obj->ID ] = isset($wp_post_obj->post_title) ? $wp_post_obj->post_title : null;
 						
-						if ($wp_post_obj->post_date) {
+						if (!empty($wp_post_obj->post_date)) {
 							$date = substr($wp_post_obj->post_date, 0, 10);
 							$dates[$date] = $date;
 						}
@@ -136,7 +144,7 @@ if ($PEVC) {
 					$new_widgets = array();
 					
 					foreach ($widgets as $widget_id => $widget_props)
-						$new_widgets[ $widget_id ] = $widget_props["name"];
+						$new_widgets[ $widget_id ] = isset($widget_props["name"]) ? $widget_props["name"] : null;
 					
 					$widgets = $new_widgets;
 				}
@@ -145,7 +153,7 @@ if ($PEVC) {
 					$new_side_bars = array();
 					
 					foreach ($side_bars as $side_bar_id => $side_bar_props)
-						$new_side_bars[ $side_bar_id ] = $side_bar_props["name"];
+						$new_side_bars[ $side_bar_id ] = isset($side_bar_props["name"]) ? $side_bar_props["name"] : null;
 					
 					$side_bars = $new_side_bars;
 				}
@@ -154,8 +162,10 @@ if ($PEVC) {
 					$new_menus = array();
 					
 					foreach ($menus as $wp_term_obj)
-						//$new_menus[ $wp_term_obj->term_id ] = $wp_term_obj->name;
-						$new_menus[ $wp_term_obj->slug ] = $wp_term_obj->name;
+						if (isset($wp_term_obj->slug))
+							$new_menus[ $wp_term_obj->slug ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
+						//if (isset($wp_term_obj->term_id))
+							//$new_menus[ $wp_term_obj->term_id ] = isset($wp_term_obj->name) ? $wp_term_obj->name : null;
 					
 					$menus = $new_menus;
 				}
@@ -190,5 +200,5 @@ if ($PEVC) {
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);
 
-echo $data ? json_encode($data) : "";
+echo !empty($data) ? json_encode($data) : "";
 ?>

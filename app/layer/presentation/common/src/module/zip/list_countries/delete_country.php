@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (/*ZipUtil::deleteZipsByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteZonesByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteCitiesByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteStatesByCountryId($brokers, $_GET["country_id"]) && */ZipUtil::deleteCountry($brokers, $_GET["country_id"])) {
+if (isset($_GET["country_id"]) && /*ZipUtil::deleteZipsByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteZonesByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteCitiesByCountryId($brokers, $_GET["country_id"]) && ZipUtil::deleteStatesByCountryId($brokers, $_GET["country_id"]) && */ZipUtil::deleteCountry($brokers, $_GET["country_id"])) {
 	echo "1";
 }
 ?>

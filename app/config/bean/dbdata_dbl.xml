@@ -23,7 +23,7 @@
 		</function>
 
 		<function name="setDefaultBrokerName">
-			<parameter value="&lt;?php echo $GLOBALS['default_db_driver']; ?>" />
+			<parameter value="&lt;?php echo isset($GLOBALS['default_db_driver']) ? $GLOBALS['default_db_driver'] : ''; ?>" />
 		</function>
 	</bean>
 	

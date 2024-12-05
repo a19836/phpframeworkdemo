@@ -7,7 +7,7 @@
  */
 ?><div class="add_region_block_task_html">
 	<div class="broker_method_obj" title="Write here the CMS Block Layer variable">
-		<label>CMS Block Layer Obj:</label>
+		<label>Template Obj:</label>
 		<select onChange="BrokerOptionsUtilObj.onBrokerChange(this)"></select>
 		<input type="text" class="task_property_field" name="method_obj" />
 		<span class="icon add_variable inline" onClick="BrokerOptionsUtilObj.chooseCreatedBrokerVariable(this)">Search</span>
@@ -32,6 +32,8 @@
 			<option value="">code</option>
 		</select>
 	</div>
+	
+	<?php include dirname(dirname($file_path)) . "/common/CommentsHtml.php"; ?>
 		
 	<div class="task_property_exit" exit_id="default_exit" exit_color="#426efa"></div>
 </div>

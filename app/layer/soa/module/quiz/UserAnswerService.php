@@ -20,7 +20,7 @@ class UserAnswerService extends \soa\CommonService {
 	 * @param (name=data[answer_id], type=bigint, not_null=1, length=19)
 	 */
 	public function insertUserAnswer($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -52,7 +52,7 @@ class UserAnswerService extends \soa\CommonService {
 	 * @param (name=data[old_answer_id], type=bigint, not_null=1, length=19)
 	 */
 	public function updateUserAnswerPks($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -85,7 +85,7 @@ class UserAnswerService extends \soa\CommonService {
 	public function deleteUserAnswer($data) {
 		$user_id = $data["user_id"];
 		$answer_id = $data["answer_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -107,7 +107,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function deleteUserAnswersByUserId($data) {
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -130,7 +130,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function deleteUserAnswersByAnswerId($data) {
 		$answer_id = $data["answer_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -153,7 +153,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function deleteUserAnswersByQuestionIds($data) {
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($question_ids) {
@@ -189,7 +189,7 @@ class UserAnswerService extends \soa\CommonService {
 	public function deleteUserAnswersByUserAndQuestionIds($data) {
 		$question_ids = $data["question_ids"];
 		$user_id = $data["user_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($user_id && $question_ids) {
@@ -225,13 +225,13 @@ class UserAnswerService extends \soa\CommonService {
 	public function getUserAnswer($data) {
 		$user_id = $data["user_id"];
 		$answer_id = $data["answer_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/quiz", "get_user_answer", array("user_id" => $user_id, "answer_id" => $answer_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserAnswer = $this->getUserAnswerHbnObj($b, $options);
@@ -239,7 +239,7 @@ class UserAnswerService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mq_user_answer", null, array("user_id" => $user_id, "answer_id" => $answer_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/quiz", "UserAnswerService.getUserAnswer", $data, $options);
@@ -250,14 +250,15 @@ class UserAnswerService extends \soa\CommonService {
 	 * @param (name=data[conditions][answer_id], type=bigint|array, length=19)
 	 */
 	public function getUserAnswersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/quiz", "get_user_answers_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -267,7 +268,7 @@ class UserAnswerService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mq_user_answer", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -280,25 +281,26 @@ class UserAnswerService extends \soa\CommonService {
 	 * @param (name=data[conditions][answer_id], type=bigint|array, length=19)
 	 */
 	public function countUserAnswersByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/quiz", "count_user_answers_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$UserAnswer = $this->getUserAnswerHbnObj($b, $options);
-				return $UserAnswer->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $UserAnswer->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mq_user_answer", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -307,7 +309,7 @@ class UserAnswerService extends \soa\CommonService {
 	}
 	
 	public function getAllUserAnswers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -325,13 +327,13 @@ class UserAnswerService extends \soa\CommonService {
 	}
 	
 	public function countAllUserAnswers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/quiz", "count_all_user_answers", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$UserAnswer = $this->getUserAnswerHbnObj($b, $options);
@@ -349,7 +351,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function getUserAnswersByQuestionIds($data) {
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($question_ids) {
@@ -385,7 +387,7 @@ class UserAnswerService extends \soa\CommonService {
 	public function getUserAnswersByUserAndQuestionIds($data) {
 		$user_id = $data["user_id"];
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($user_id && $question_ids) {
@@ -421,7 +423,7 @@ class UserAnswerService extends \soa\CommonService {
 	public function getUserAnswersByQuestionObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -445,7 +447,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function getUserAnswersByQuestionIdsGroupedByUsers($data) {
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($question_ids) {
@@ -479,7 +481,7 @@ class UserAnswerService extends \soa\CommonService {
 	 */
 	public function countUserAnswersByQuestionIdsGroupedByUsers($data) {
 		$question_ids = $data["question_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($question_ids) {
@@ -493,18 +495,18 @@ class UserAnswerService extends \soa\CommonService {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 					$result = $b->callSelect("module/quiz", "count_user_answers_by_question_ids_grouped_by_users", array("question_ids" => $question_ids_str), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 					$UserAnswer = $this->getUserAnswerHbnObj($b, $options);
 					$result = $UserAnswer->callSelect("module/quiz", "count_user_answers_by_question_ids_grouped_by_users", array("question_ids" => $question_ids_str), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
 					$sql = UserAnswerDBDAOServiceUtil::count_user_answers_by_question_ids_grouped_by_users(array("question_ids" => $question_ids_str));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/quiz", "UserAnswerService.countUserAnswersByQuestionIdsGroupedByUsers", $data, $options);

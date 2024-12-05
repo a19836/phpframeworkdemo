@@ -2,7 +2,7 @@
 include get_lib("lib.vendor.captcha.simple-php-captcha");
 include_once $EVC->getModulePath("user/UserUtil", $EVC->getCommonProjectName());
 
-$session_id = $_GET["session_id"];
+$session_id = isset($_GET["session_id"]) ? $_GET["session_id"] : null;
 
 if ($session_id) {
 	$captcha = simple_php_captcha();
@@ -23,7 +23,7 @@ if ($session_id) {
 		'shadow_offset_y' => 1
 	));*/
 	
-	if ($captcha["code"]) { 
+	if (!empty($captcha["code"])) { 
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		UserUtil::updateUserSessionCaptchaBySessionId($brokers, array("session_id" => $session_id, "captcha" => $captcha["code"]));
 	}

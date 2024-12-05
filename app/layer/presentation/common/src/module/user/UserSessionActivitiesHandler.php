@@ -41,23 +41,24 @@ class UserSessionActivitiesHandler {
 		if ($this->session_id) {
 			$this->user_session = \UserUtil::isLoggedIn($brokers, $this->session_id, \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL"));
 			
-			if ($this->user_session["user_id"]) {
-				$ttl = time() - $this->user_session["login_time"] + \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL");
+			if (!empty($this->user_session["user_id"])) {
+				$login_time = isset($this->user_session["login_time"]) ? $this->user_session["login_time"] : 0;
+				$ttl = time() - $login_time + \UserUtil::getConstantVariable("DEFAULT_USER_SESSION_EXPIRATION_TTL");
 				$UserCacheHandler->config($ttl, true);
 				$cached_file_name = $this->getSessionCacheFileName($this->session_id);
 				
 				if ($UserCacheHandler->isValid($cached_file_name)) {
 					$aux = $UserCacheHandler->read($cached_file_name);
 					
-					$this->user = $aux["user"];
-					$this->available_activities = $aux["available_activities"];
-					$this->available_object_types = $aux["available_object_types"];
-					$this->user_user_types = $aux["user_user_types"];
-					$this->user_type_activities = $aux["user_type_activities"];
+					$this->user = isset($aux["user"]) ? $aux["user"] : null;
+					$this->available_activities = isset($aux["available_activities"]) ? $aux["available_activities"] : null;
+					$this->available_object_types = isset($aux["available_object_types"]) ? $aux["available_object_types"] : null;
+					$this->user_user_types = isset($aux["user_user_types"]) ? $aux["user_user_types"] : null;
+					$this->user_type_activities = isset($aux["user_type_activities"]) ? $aux["user_type_activities"] : null;
 				}
 				else {
 					$users = \UserUtil::getUsersByConditions($brokers, array("user_id" => $this->user_session["user_id"]), null);
-					$this->user = $users[0];
+					$this->user = isset($users[0]) ? $users[0] : null;
 					unset($this->user["password"]);
 					unset($this->user["security_question_1"]);
 					unset($this->user["security_answer_1"]);
@@ -66,18 +67,26 @@ class UserSessionActivitiesHandler {
 					unset($this->user["security_question_3"]);
 					unset($this->user["security_answer_3"]);
 					
-					if ($this->user["user_id"]) {
+					if (!empty($this->user["user_id"])) {
 						$this->available_activities = array();
 						$activities = \UserUtil::getAllActivities($brokers);
 						if ($activities)
-							foreach ($activities as $activity)
-								$this->available_activities[ $activity["name"] ] = $activity["activity_id"];
-						
+							foreach ($activities as $activity) {
+								$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
+								$activity_name = isset($activity["name"]) ? $activity["name"] : null;
+								
+								$this->available_activities[$activity_name] = $activity_id;
+							}
+							
 						$this->available_object_types = array();
 						$object_types = \ObjectUtil::getAllObjectTypes($brokers);
 						if ($object_types)
-							foreach ($object_types as $object_type)
-								$this->available_object_types[ $object_type["name"] ] = $object_type["object_type_id"];
+							foreach ($object_types as $object_type) {
+								$object_type_id = isset($object_type["activity_id"]) ? $object_type["activity_id"] : null;
+								$object_type_name = isset($object_type["name"]) ? $object_type["name"] : null;
+								
+								$this->available_object_types[$object_type_name] = $object_type_id;
+							}
 						
 						$this->user_user_types = array();
 						$this->user_type_activities = array();
@@ -85,12 +94,17 @@ class UserSessionActivitiesHandler {
 						$user_user_types = \UserUtil::getUserUserTypesByConditions($brokers, array("user_id" => $this->user["user_id"]), null);
 						if ($user_user_types) {
 							foreach ($user_user_types as $user_user_type) 
-								$this->user_user_types[] = $user_user_type["user_type_id"];
+								$this->user_user_types[] = isset($user_user_type["user_type_id"]) ? $user_user_type["user_type_id"] : null;
 						
 							$user_type_activities = \UserUtil::getUserTypeActivityObjectsByUserTypeIds($brokers, $this->user_user_types);
-							foreach ($user_type_activities as $user_type_activity) 
-								$this->user_type_activities[ $user_type_activity["object_type_id"] ][ $user_type_activity["object_id"] ][ $user_type_activity["activity_id"] ] = true;
-						
+							foreach ($user_type_activities as $user_type_activity) {
+								$user_type_activity_object_type_id = isset($user_type_activity["object_type_id"]) ? $user_type_activity["object_type_id"] : null;
+								$user_type_activity_object_id = isset($user_type_activity["object_id"]) ? $user_type_activity["object_id"] : null;
+								$user_type_activity_activity_id = isset($user_type_activity["activity_id"]) ? $user_type_activity["activity_id"] : null;
+								
+								$this->user_type_activities[$user_type_activity_object_type_id][$user_type_activity_object_id][$user_type_activity_activity_id] = true;
+							}
+							
 							$this->user["user_type_ids"] = $this->user_user_types;
 						}
 					}
@@ -119,8 +133,13 @@ class UserSessionActivitiesHandler {
 			$user_type_activities = \UserUtil::getUserTypeActivityObjectsByConditions($brokers, array("user_type_id" => \UserUtil::PUBLIC_USER_TYPE_ID), null);
 			
 			if ($user_type_activities)
-				foreach ($user_type_activities as $user_type_activity)
-					$this->public_user_type_activities[ $user_type_activity["object_type_id"] ][ $user_type_activity["object_id"] ][ $user_type_activity["activity_id"] ] = true;
+				foreach ($user_type_activities as $user_type_activity) {
+					$user_type_activity_object_type_id = isset($user_type_activity["object_type_id"]) ? $user_type_activity["object_type_id"] : null;
+					$user_type_activity_object_id = isset($user_type_activity["object_id"]) ? $user_type_activity["object_id"] : null;
+					$user_type_activity_activity_id = isset($user_type_activity["activity_id"]) ? $user_type_activity["activity_id"] : null;
+					
+					$this->public_user_type_activities[$user_type_activity_object_type_id][$user_type_activity_object_id][$user_type_activity_activity_id] = true;
+				}
 			
 			$UserCacheHandler->write($cached_file_name, $this->public_user_type_activities);
 		}
@@ -151,7 +170,7 @@ class UserSessionActivitiesHandler {
 			
 			if ($user_sessions) 
 				foreach ($user_sessions as $user_session) 
-					if ($user_session["session_id"]) {
+					if (!empty($user_session["session_id"])) {
 					    	$cached_file_name = $this->getSessionCacheFileName($user_session["session_id"]);
 					
 						if (!$UserCacheHandler->delete($cached_file_name))
@@ -211,7 +230,7 @@ class UserSessionActivitiesHandler {
 		if ($object_type_id == "current_page")
 			$object_type_id = \ObjectUtil::PAGE_OBJECT_TYPE_ID;
 		else if (!is_numeric($object_type_id))
-			$object_type_id = $this->available_object_types[$object_type_id];
+			$object_type_id = isset($this->available_object_types[$object_type_id]) ? $this->available_object_types[$object_type_id] : null;
 		
 		if (($object_type_id == \ObjectUtil::PAGE_OBJECT_TYPE_ID || $object_type_id == \ObjectUtil::MODULE_OBJECT_TYPE_ID) && !is_numeric($object_id)) 
 			$object_id = \UserUtil::getObjectIdFromFilePath($object_id);
@@ -221,15 +240,15 @@ class UserSessionActivitiesHandler {
 			
 			foreach ($activity_ids as $activity_id) {
 				if (!is_numeric($activity_id))
-					$activity_id = $this->available_activities[$activity_id];
+					$activity_id = isset($this->available_activities[$activity_id]) ? $this->available_activities[$activity_id] : null;
 				
 				$status = false;
 				if ($activity_id) {
 					if ($this->user_type_activities)
-						$status = $this->user_type_activities[$object_type_id][$object_id][$activity_id];
+						$status = isset($this->user_type_activities[$object_type_id][$object_id][$activity_id]) ? $this->user_type_activities[$object_type_id][$object_id][$activity_id] : null;
 					
 					if (!$status && $this->public_user_type_activities)
-						$status = $this->public_user_type_activities[$object_type_id][$object_id][$activity_id];
+						$status = isset($this->public_user_type_activities[$object_type_id][$object_id][$activity_id]) ? $this->public_user_type_activities[$object_type_id][$object_id][$activity_id] : null;
 				}
 				
 				//returns false if $activity_id is empty or if there is no permission in $this->user_type_activities or $this->public_user_type_activities

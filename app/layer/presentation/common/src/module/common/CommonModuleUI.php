@@ -16,7 +16,7 @@ class CommonModuleUI {
 	
 	private static function isFieldValid($EVC, $settings, $field_name, $value, &$error_message = false, $files = null) {
 		if ($field_name) {
-			$field = $settings["fields"][$field_name]["field"];
+			$field = isset($settings["fields"][$field_name]["field"]) ? $settings["fields"][$field_name]["field"] : null;
 			
 			if ($field) {
 				$field_label = translateProjectText($EVC, ucwords(str_replace("_", " ", strtolower($field_name))));
@@ -24,7 +24,7 @@ class CommonModuleUI {
 				if (self::isFieldFileType($field)) {
 					$files = isset($files) ? $files : $_FILES;
 					
-					if ($files && $files[$field_name] && $files[$field_name]["tmp_name"]) //only if file exists, otherwise can be with the default value
+					if ($files && !empty($files[$field_name]) && !empty($files[$field_name]["tmp_name"])) //only if file exists, otherwise can be with the default value
 						$value = $files[$field_name]["tmp_name"]; //2021-02-07 JP: We change the $value here, but is only for the HtmlFormHandler::validateData method and bc the $value argument is not being passing as reference. So this means that the $value is only being changed locally. So this is no problem!
 				}
 				
@@ -45,11 +45,12 @@ class CommonModuleUI {
 	
 	public static function prepareFieldWithDefaultValue($settings, $field_name, &$value, $files = null) {
 		if ($field_name) {
-			$field = $settings["fields"][$field_name]["field"];
+			$field = isset($settings["fields"][$field_name]["field"]) ? $settings["fields"][$field_name]["field"] : null;
 			$is_empty = ((is_array($value) && count($value) == 0) || (!is_array($value) && strlen($value) == 0)); //it could be from $_POST or a hard-coded value
+			$allow_null = isset($field["input"]["allow_null"]) ? $field["input"]["allow_null"] : null;
 			
-			if ($field && $field["input"]["allow_null"] != 1 && $is_empty) {
-				$default_value = $settings[$field_name . "_default_value"];
+			if ($field && $allow_null != 1 && $is_empty) {
+				$default_value = isset($settings[$field_name . "_default_value"]) ? $settings[$field_name . "_default_value"] : null;
 				$has_default_value = (is_array($default_value) && count($default_value)) || (!is_array($default_value) && strlen($default_value));
 				
 				if ($has_default_value) {
@@ -79,11 +80,12 @@ class CommonModuleUI {
 	}
 	
 	public static function checkIfEmptyField($settings, $field_name, $value, $files = null) {
-		if ($field_name && $settings["show_" . $field_name]) {
-			$field = $settings["fields"][$field_name]["field"];
+		if ($field_name && !empty($settings["show_" . $field_name])) {
+			$field = isset($settings["fields"][$field_name]["field"]) ? $settings["fields"][$field_name]["field"] : null;
+			$allow_null = isset($field["input"]["allow_null"]) ? $field["input"]["allow_null"] : null;
 			
-			if ($field && $field["input"]["allow_null"] != 1) {
-				$default_value = $settings[$field_name . "_default_value"];
+			if ($field && $allow_null != 1) {
+				$default_value = isset($settings[$field_name . "_default_value"]) ? $settings[$field_name . "_default_value"] : null;
 				$has_default_value = (is_array($default_value) && count($default_value)) || (!is_array($default_value) && strlen($default_value));
 				
 				if (!$has_default_value) {
@@ -103,11 +105,11 @@ class CommonModuleUI {
 	}
 	
 	private static function isFieldFileType($field) {
-		return $field && $field["input"]["type"] == "file";
+		return $field && isset($field["input"]["type"]) && $field["input"]["type"] == "file";
 	}
 	
 	public static function getFieldLabel($settings, $field_name) {
-		if ($settings["fields"][$field_name]["field"]["label"]["value"]) {
+		if (!empty($settings["fields"][$field_name]["field"]["label"]["value"])) {
 			$parts = explode(":", $settings["fields"][$field_name]["field"]["label"]["value"]);
 			return trim($parts[0]);
 		}
@@ -115,7 +117,7 @@ class CommonModuleUI {
 	}
 	
 	public static function getFieldValidationMessage($EVC, $settings, $field_name) {
-		if ($settings["fields"][$field_name]["field"]["input"]["validation_message"])
+		if (!empty($settings["fields"][$field_name]["field"]["input"]["validation_message"]))
 			return $settings["fields"][$field_name]["field"]["input"]["validation_message"];
 		
 		$exists_form_handler_msg = !empty(HtmlFormHandler::$INVALID_VALUE_FOR_ATTRIBUTE_MESSAGE);
@@ -147,29 +149,21 @@ class CommonModuleUI {
 	public static function getConditionsFromSearchValues($settings) {
 		$conditions = array();
 		
-		if ($settings["fields"]) {
+		if (!empty($settings["fields"])) {
 			foreach ($settings["fields"] as $field_name => $field) {
-				$sv = $settings[$field_name . "_search_value"];
+				$sv = isset($settings[$field_name . "_search_value"]) ? $settings[$field_name . "_search_value"] : null;
 				
 				//parse conditions based in the search_attrs from MyWidgetResourceLib.js
 				if (is_array($sv)) {
 					$attribute_value = null;
 					
 					//if $sv is: array("search_attrs" => array($field_name => "jp"), "search_types" => array($field_name => "contains"), "search_operators" => array($field_name => "or"))
-					if (isset($sv["search_attrs"])) {
-						if (is_array($sv["search_attrs"]) && array_key_exists($field_name, $sv["search_attrs"]))
-							$attribute_value = $sv["search_attrs"][$field_name];
-						else
-							$attribute_value = $sv["search_attrs"];
-					}
+					if (isset($sv["search_attrs"]) && is_array($sv["search_attrs"]) && array_key_exists($field_name, $sv["search_attrs"]))
+						$attribute_value = $sv["search_attrs"][$field_name];
 					
 					//if $sv is: array("conditions" => "jp", "conditions_type" => "contains", "conditions_join" => "or")
-					if (!isset($attribute_value) && isset($sv["conditions"])) {
-						if (is_array($sv["conditions"]) && array_key_exists($field_name, $sv["conditions"]))
-							$attribute_value = $sv["conditions"][$field_name];
-						else
-							$attribute_value = $sv["conditions"];
-					}
+					if (!isset($attribute_value) && isset($sv["conditions"]) && is_array($sv["conditions"]) && array_key_exists($field_name, $sv["conditions"]))
+						$attribute_value = $sv["conditions"][$field_name];
 					
 					//if $sv is: array("value" => "%jp%", "operator" => "like")
 					if (!isset($attribute_value) && array_key_exists("value", $sv)) {
@@ -179,13 +173,16 @@ class CommonModuleUI {
 					else if (is_numeric($attribute_value) || $attribute_value) {
 						$conditions_type = isset($sv["search_types"]) ? $sv["search_types"] : (isset($sv["conditions_type"]) ? $sv["conditions_type"] : null);
 						$conditions_join = isset($sv["search_operators"]) ? $sv["search_operators"] : (isset($sv["conditions_join"]) ? $sv["conditions_join"] : null);
+						$conditions_case = isset($sv["search_cases"]) ? $sv["search_cases"] : (isset($sv["conditions_case"]) ? $sv["conditions_case"] : null);
 						
-						$field_condition_type = is_array($conditions_type) ? $conditions_type[$field_name] : $conditions_type;
+						$field_condition_type = is_array($conditions_type) ? (isset($conditions_type[$field_name]) ? $conditions_type[$field_name] : null) : $conditions_type;
+						$field_join = is_array($conditions_join) ? (isset($conditions_join[$field_name]) ? $conditions_join[$field_name] : null) : $conditions_join;
+						$field_case = is_array($conditions_case) ? (isset($conditions_case[$field_name]) ? $conditions_case[$field_name] : null) : $conditions_case;
+						
 						$attribute_operator = $field_condition_type == "starts_with" || $field_condition_type == "ends_with" || $field_condition_type == "contains" ? "like" : $field_condition_type;
-						$field_join = is_array($conditions_join) ? $conditions_join[$field_name] : $conditions_join;
 						
 						if ($attribute_operator && $attribute_operator != "=" && $attribute_operator != "equal") {
-							if (is_array($attribute_value) && $attribute_operator != "in") {
+							if (is_array($attribute_value) && $attribute_operator != "in" && $attribute_operator != "not in") {
 								$conditions[$field_name] = array();
 								
 								foreach ($attribute_value as $v)
@@ -194,13 +191,25 @@ class CommonModuleUI {
 										"value" => ($field_condition_type == "starts_with" || $field_condition_type == "contains" ? "%" : "") . $attribute_value . ($field_condition_type == "ends_with" || $field_condition_type == "contains" ? "%" : ""), 
 									);
 							}
-							else
+							else {
+								if (($attribute_operator == "in" || $attribute_operator == "not in") && $field_case == "insensitive" && is_array($attribute_value))
+									foreach ($attribute_value as $k => $v)
+										if (is_string($v))
+											$attribute_value[$k] = strtolower($v);
+								
 								$conditions[$field_name] = array(
 									"operator" => $attribute_operator, 
-									"value" => $attribute_operator == "in" ? $attribute_value : (
+									"value" => $attribute_operator == "in" || $attribute_operator == "not in" ? $attribute_value : (
 										($field_condition_type == "starts_with" || $field_condition_type == "contains" ? "%" : "") . $attribute_value . ($field_condition_type == "ends_with" || $field_condition_type == "contains" ? "%" : "")
 									), 
 								);
+							}
+							
+							if ($field_case == "insensitive") {
+								$conditions["lower($field_name)"] = $conditions[$field_name];
+								unset($conditions[$field_name]);
+								$field_name = "lower($field_name)";
+							}
 						}
 						else
 							$conditions[$field_name] = $attribute_value;
@@ -296,19 +305,23 @@ class CommonModuleUI {
 		include $EVC->getConfigPath("config");
 		
 		//Preparing Vars
-		$current_page = $settings["current_page"];
+		$current_page = isset($settings["current_page"]) ? $settings["current_page"] : null;
 		if (!is_numeric($current_page))
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 		
-		$rows_per_page = $settings["rows_per_page"];
+		$rows_per_page = isset($settings["rows_per_page"]) ? $settings["rows_per_page"] : null;
 		if (!is_numeric($rows_per_page))
 			$rows_per_page = 50;
 		
-		$total = $settings["total"];
-		$data = $settings["data"];
+		$total = isset($settings["total"]) ? $settings["total"] : null;
+		$data = isset($settings["data"]) ? $settings["data"] : null;
+		$form_data = isset($settings["form_data"]) ? $settings["form_data"] : null;
 		
-		$class = trim($settings["block_class"] . " " . $settings["class"]);
-		$fields = $settings["fields"];
+		$class = isset($settings["block_class"]) ? $settings["block_class"] : "";
+		$class .= isset($settings["class"]) ? " " . $settings["class"] : "";
+		$class = trim($class);
+		
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
 		
 		//Preparing HTML
 		$html = '<div class="module_list' . ($class ? " $class" : "") . '">';
@@ -317,44 +330,46 @@ class CommonModuleUI {
 		if (empty($settings["style_type"])) {
 			$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/module.css" type="text/css" charset="utf-8" />';
 			
-			if ($settings["css_file"])
+			if (!empty($settings["css_file"]))
 				$html .= '<link rel="stylesheet" href="' . $settings["css_file"] . '" type="text/css" charset="utf-8" />';
 		}
 		
-		$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
+		$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
 		
 		//Including JS
 		$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/module.js"></script>';
 		
-		if ($settings["js_file"])
+		if (!empty($settings["js_file"]))
 			$html .= '<script type="text/javascript" src="' . $settings["js_file"] . '"></script>';
 		
-		$html .= $settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+		$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
 		
 		//Preparing Table
 		$elements = array();
 		
 		$HtmlFormHandler = null;
-		if ($settings["ptl"])
+		if (!empty($settings["ptl"]))
 			$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
 		
 		if (is_array($fields)) {
 			foreach ($fields as $field_name => $field) {
-				if ($settings["show_$field_name"]) {
-					$field["field"]["class"] = "list_column " . $field["field"]["class"];
-					$field["field"]["input"]["type"] = $field["field"]["input"]["type"] ? $field["field"]["input"]["type"] : "label";
-					$field["field"]["input"]["name"] = $field["field"]["input"]["name"] ? $field["field"]["input"]["name"] : $field_name;
+				if (!empty($settings["show_$field_name"])) {
+					$field["field"]["class"] = "list_column " . (isset($field["field"]["class"]) ? $field["field"]["class"] : "");
+					$field["field"]["input"]["type"] = !empty($field["field"]["input"]["type"]) ? $field["field"]["input"]["type"] : "label";
+					$field["field"]["input"]["name"] = !empty($field["field"]["input"]["name"]) ? $field["field"]["input"]["name"] : $field_name;
 					
 					//Preparing ptl for field
-					if ($settings["ptl"])
+					if (!empty($settings["ptl"])) {
+						$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : "";
 						self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_name, $field, $data);
+					}
 					else
 						$elements[] = $field;
 				}
 			}
 		}
 		
-		if ($settings["show_edit_button"] && $settings["edit_page_url"]) {
+		if (!empty($settings["show_edit_button"]) && !empty($settings["edit_page_url"])) {
 			$button = array(
 				"field" => array(
 					"class" => "list_column edit_action",
@@ -377,13 +392,17 @@ class CommonModuleUI {
 			);
 			
 			//Preparing ptl for field
-			if ($settings["ptl"]) 
+			if (!empty($settings["ptl"])) {
+				$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : "";
 				self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], "edit", $button, $data);
+			}
 			else
 				$elements[] = $button;
 		}
 		
-		if ($settings["show_delete_button"]) {
+		if (!empty($settings["show_delete_button"])) {
+			$delete_page_url = isset($settings["delete_page_url"]) ? $settings["delete_page_url"] : null;
+			
 			$button = array(
 				"field" => array(
 					"class" => "list_column delete_action",
@@ -394,7 +413,7 @@ class CommonModuleUI {
 						"extra_attributes" => array(
 							0 => array(
 								"name" => "onClick",
-								"value" => "deleteItem(this,'${settings["delete_page_url"]}')"
+								"value" => "deleteItem(this,'$delete_page_url')"
 							),
 							1 => array(
 								"name" => "class",
@@ -410,16 +429,20 @@ class CommonModuleUI {
 			);
 			
 			//Preparing ptl for field
-			if ($settings["ptl"])
+			if (!empty($settings["ptl"])) {
+				$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : "";
 				self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], "delete", $button, $data);
+			}
 			else
 				$elements[] = $button;
 		}
 		
-		if (!isset($settings["top_pagination_type"]) || $settings["top_pagination_type"])
+		$top_pagination = $bottom_pagination = null;
+		
+		if (!isset($settings["top_pagination_type"]) || !empty($settings["top_pagination_type"]))
 			$top_pagination = array(
 				"pagination" => array(
-					"pagination_template" => $settings["top_pagination_type"] ? $settings["top_pagination_type"] : "design1",
+					"pagination_template" => !empty($settings["top_pagination_type"]) ? $settings["top_pagination_type"] : "design1",
 					"rows_per_page" => $rows_per_page,
 					"page_number" => $current_page,
 					"max_num_of_shown_pages" => "10",
@@ -428,10 +451,10 @@ class CommonModuleUI {
 				)
 			);
 		
-		if (!isset($settings["bottom_pagination_type"]) || $settings["bottom_pagination_type"])
+		if (!isset($settings["bottom_pagination_type"]) || !empty($settings["bottom_pagination_type"]))
 			$bottom_pagination = array(
 				"pagination" => array(
-					"pagination_template" => $settings["bottom_pagination_type"] ? $settings["bottom_pagination_type"] : "design1",
+					"pagination_template" => !empty($settings["bottom_pagination_type"]) ? $settings["bottom_pagination_type"] : "design1",
 					"rows_per_page" => $rows_per_page,
 					"page_number" => $current_page,
 					"max_num_of_shown_pages" => "10",
@@ -461,7 +484,8 @@ class CommonModuleUI {
 		);
 		
 		//add ptl to form_settings
-		if ($settings["ptl"]) {
+		if (!empty($settings["ptl"])) {
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : "";
 			self::prepareBlockPaginationPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $top_pagination, $bottom_pagination, $form_data);
 			
 			self::cleanBlockPTLCode($settings["ptl"]["code"]);
@@ -471,7 +495,7 @@ class CommonModuleUI {
 			$form_settings["form_containers"][0]["container"]["elements"] = array(
 				0 => array(
 					"container" => array(
-						"class" => "top_pagination pagination_alignment_" . ($settings["top_pagination_alignment"] ? $settings["top_pagination_alignment"] : $settings["pagination_alignment"]),
+						"class" => "top_pagination pagination_alignment_" . (!empty($settings["top_pagination_alignment"]) ? $settings["top_pagination_alignment"] : (isset($settings["pagination_alignment"]) ? $settings["pagination_alignment"] : "")),
 						"elements" => array(
 							0 => $top_pagination
 						)
@@ -485,8 +509,8 @@ class CommonModuleUI {
 						"elements" => array(
 							0 => array(
 								"table" => array(
-									"table_class" => "list_table " . $settings["table_class"],
-									"rows_class" => $settings["rows_class"],
+									"table_class" => "list_table " . (isset($settings["table_class"]) ? $settings["table_class"] : ""),
+									"rows_class" => (isset($settings["rows_class"]) ? $settings["rows_class"] : null),
 									"elements" => $elements
 								)
 							)
@@ -495,7 +519,7 @@ class CommonModuleUI {
 				),
 				2 => array(
 					"container" => array(
-						"class" => "bottom_pagination pagination_alignment_" . ($settings["bottom_pagination_alignment"] ? $settings["bottom_pagination_alignment"] : $settings["pagination_alignment"]),
+						"class" => "bottom_pagination pagination_alignment_" . (!empty($settings["bottom_pagination_alignment"]) ? $settings["bottom_pagination_alignment"] : (isset($settings["pagination_alignment"]) ? $settings["pagination_alignment"] : "")),
 						"elements" => array(
 							0 => $bottom_pagination
 						)
@@ -518,11 +542,11 @@ class CommonModuleUI {
 	
 	public static function getFormHtml($EVC, $settings) {
 		//Preparing Vars
-		$data = $settings["data"];
-		$form_data = $settings["form_data"];
-		$error_message = $settings["error_message"];
-		$fields = $settings["fields"];
-		$is_editable = ($settings["allow_update"] && $data) || ($settings["allow_insertion"] && !$data);
+		$data = isset($settings["data"]) ? $settings["data"] : null;
+		$form_data = isset($settings["form_data"]) ? $settings["form_data"] : null;
+		$error_message = isset($settings["error_message"]) ? $settings["error_message"] : null;
+		$fields = isset($settings["fields"]) ? $settings["fields"] : null;
+		$is_editable = (!empty($settings["allow_update"]) && $data) || (!empty($settings["allow_insertion"]) && !$data);
 		
 		//Preparing HTML
 		$html = self::getFormHeaderHtml($EVC, $settings, $continue);
@@ -551,8 +575,8 @@ class CommonModuleUI {
 			$buttons = array();
 			
 			if ($is_editable) {
-				if ($settings["allow_update"] && $data) {
-					$button = $settings["buttons"]["update"]["field"] ? $settings["buttons"]["update"] : array(
+				if (!empty($settings["allow_update"]) && $data) {
+					$button = !empty($settings["buttons"]["update"]["field"]) ? $settings["buttons"]["update"] : array(
 						"field" => array(
 							"class" => "submit_button",
 							"input" => array(
@@ -565,8 +589,8 @@ class CommonModuleUI {
 					
 					$buttons["update"] = $button;
 				}
-				else if ($settings["allow_insertion"]) {
-					$button = $settings["buttons"]["insert"]["field"] ? $settings["buttons"]["insert"] : array(
+				else if (!empty($settings["allow_insertion"])) {
+					$button = !empty($settings["buttons"]["insert"]["field"]) ? $settings["buttons"]["insert"] : array(
 						"field" => array(
 							"class" => "submit_button",
 							"input" => array(
@@ -581,8 +605,8 @@ class CommonModuleUI {
 				}
 			}
 		
-			if ($settings["allow_deletion"] && $data) {
-				$button = $settings["buttons"]["delete"]["field"] ? $settings["buttons"]["delete"] : array(
+			if (!empty($settings["allow_deletion"]) && $data) {
+				$button = !empty($settings["buttons"]["delete"]["field"]) ? $settings["buttons"]["delete"] : array(
 					"field" => array(
 						"class" => "submit_button",
 						"input" => array(
@@ -603,7 +627,8 @@ class CommonModuleUI {
 			}
 			
 			$HtmlFormHandler = null;
-			if ($settings["ptl"]) {
+			if (!empty($settings["ptl"])) {
+				$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : "";
 				$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
 				
 				foreach ($buttons as $button_name => $button)
@@ -623,34 +648,39 @@ class CommonModuleUI {
 			if (is_array($fields)) {
 				foreach ($fields as $field_name => $field) {
 					$undefined_value_class = "";
-					$show = $settings["show_$field_name"];
+					$show = isset($settings["show_$field_name"]) ? $settings["show_$field_name"] : null;
 					
 					if ($show) {
-						$field["field"]["input"]["type"] = $field["field"]["input"]["type"] ? $field["field"]["input"]["type"] : ($is_editable ? "text" : "label");
+						$field["field"]["input"]["type"] = !empty($field["field"]["input"]["type"]) ? $field["field"]["input"]["type"] : ($is_editable ? "text" : "label");
 						$is_field_value_empty = !isset($form_data[$field_name]) || (is_array($form_data[$field_name]) && count($form_data[$field_name]) == 0) || (!is_array($form_data[$field_name]) && strlen($form_data[$field_name]) == 0);
+						$allow_null = isset($field["field"]["input"]["allow_null"]) ? $field["field"]["input"]["allow_null"] : null;
 						
-						if ($is_editable && $error_message && $_POST["save"] && $field["field"]["input"]["allow_null"] != 1 && $is_field_value_empty)
+						if ($is_editable && $error_message && !empty($_POST["save"]) && $allow_null != 1 && $is_field_value_empty)
 							$undefined_value_class = " undefined_value";
 						
-						$field["field"]["class"] = "form_field " . $field["field"]["class"] . $undefined_value_class;
+						$field["field"]["class"] = "form_field " . (isset($field["field"]["class"]) ? $field["field"]["class"] : "") . $undefined_value_class;
 				
-						$field["field"]["input"]["name"] = $field["field"]["input"]["name"] ? $field["field"]["input"]["name"] : $field_name;
+						$field["field"]["input"]["name"] = !empty($field["field"]["input"]["name"]) ? $field["field"]["input"]["name"] : $field_name;
 					
-						$field["field"]["input"]["value"] = $field["field"]["input"]["value"] ? $field["field"]["input"]["value"] : "#$field_name#";
+						$field["field"]["input"]["value"] = !empty($field["field"]["input"]["value"]) ? $field["field"]["input"]["value"] : "#$field_name#";
 						
 						if (empty($field["field"]["input"]["validation_label"]))
 							$field["field"]["input"]["validation_label"] = self::getFieldLabel(array("fields" => array($field_name => $field)), $field_name);
 						
 						//Preparing ptl for field
-						if ($settings["ptl"])
+						if (!empty($settings["ptl"])) {
+							$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 							self::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_name, $field, $form_data);
+						}
 						else
 							$form_settings["form_containers"][0]["container"]["elements"][] = $field;
 					}
 				}
 			}
 			
-			if ($settings["ptl"]) {
+			if (!empty($settings["ptl"])) {
+				$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
+				
 				//add ptl to form_settings
 				self::cleanBlockPTLCode($settings["ptl"]["code"]);
 				$form_settings["form_containers"][0]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
@@ -675,23 +705,25 @@ class CommonModuleUI {
 	public static function prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, &$ptl_code, $field_name, $field, $form_data = false) {
 		preg_match_all('/<ptl:block:(field|button):(|input:|label:|value:)?' . $field_name . '[ ]*\/?>/iu', $ptl_code, $matches, PREG_PATTERN_ORDER); //'/u' means converts to unicode
 		
-		if ($matches[0]) {
+		if (!empty($matches[0])) {
 			translateProjectFormSettingsElement($EVC, $field);
 			
 			foreach ($matches[0] as $idx => $to_search) {
 				$replacement_type = strtolower(str_replace(":", "", $matches[2][$idx]));
+				$f = isset($field["field"]) ? $field["field"] : null;
 				
 				switch ($replacement_type) {
 					case "input":
-						$field_code = $HtmlFormHandler->getFieldInputHtml($field["field"], $form_data); 
+						$field_code = $HtmlFormHandler->getFieldInputHtml($f, $form_data); 
 						break;
 					
 					case "label": 
-						$field_code = $HtmlFormHandler->getFieldLabelHtml($field["field"], $form_data);
+						$field_code = $HtmlFormHandler->getFieldLabelHtml($f, $form_data);
 						break;
 						
 					case "value": 
-						$field_code = $HtmlFormHandler->getParsedValueFromData($field["field"]["input"]["value"], $form_data);
+						$v = isset($f["input"]["value"]) ? $f["input"]["value"] : null;
+						$field_code = $HtmlFormHandler->getParsedValueFromData($v, $form_data);
 						break;
 					
 					default:
@@ -706,7 +738,7 @@ class CommonModuleUI {
 	public static function prepareBlockPaginationPTLCode($EVC, $HtmlFormHandler, &$ptl_code, $top_pagination, $bottom_pagination, $form_data = false) {
 		preg_match_all('/<ptl:block:(|top-|bottom-)pagination[ ]*\/?>/i', $ptl_code, $matches, PREG_PATTERN_ORDER);
 		
-		if ($matches[0]) {
+		if (!empty($matches[0])) {
 			translateProjectFormSettingsElement($EVC, $top_pagination);
 			translateProjectFormSettingsElement($EVC, $bottom_pagination);
 			
@@ -734,12 +766,15 @@ class CommonModuleUI {
 		include $EVC->getConfigPath("config");
 		
 		//Preparing Vars
-		$data = $settings["data"];
-		$form_data = $settings["form_data"];
-		$class = trim($settings["block_class"] . " " . $settings["class"]);
-		$status = $settings["status"];
-		$error_message = $settings["error_message"];
-		$status_message = $settings["status_message"];
+		$data = isset($settings["data"]) ? $settings["data"] : null;
+		$form_data = isset($settings["form_data"]) ? $settings["form_data"] : null;
+		$status = isset($settings["status"]) ? $settings["status"] : null;
+		$status_message = isset($settings["status_message"]) ? $settings["status_message"] : null;
+		$error_message = isset($settings["error_message"]) ? $settings["error_message"] : null;
+		
+		$class = isset($settings["block_class"]) ? $settings["block_class"] : "";
+		$class .= isset($settings["class"]) ? " " . $settings["class"] : "";
+		$class = trim($class);
 		
 		//Preparing HTML
 		$html = '<div class="module_edit ' . ($class ? " $class" : "") . '">';
@@ -748,43 +783,47 @@ class CommonModuleUI {
 		if (empty($settings["style_type"])) {
 			$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/common/module.css" type="text/css" charset="utf-8" />';
 			
-			if ($settings["css_file"])
+			if (!empty($settings["css_file"]))
 				$html .= '<link rel="stylesheet" href="' . $settings["css_file"] . '" type="text/css" charset="utf-8" />';
 		}
 		
-		$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
+		$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
 		
 		//Including JS
 		$html .= '<script type="text/javascript" src="' . $project_common_url_prefix . 'module/common/module.js"></script>';
 		
-		if ($settings["js_file"])
+		if (!empty($settings["js_file"]))
 			$html .= '<script type="text/javascript" src="' . $settings["js_file"] . '"></script>';
 		
-		$html .= $settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+		$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
 		
 		//Preparing Actions
-		$is_editable = ($settings["allow_update"] && $data) || ($settings["allow_insertion"] && !$data);
+		$is_editable = (!empty($settings["allow_update"]) && $data) || (!empty($settings["allow_insertion"]) && !$data);
 		$continue = true;
 		$extra = array("ok_message" => translateProjectText($EVC, $status_message), "error_message" => translateProjectText($EVC, $error_message));
 		$messages_shown = false;
 		
 		if (empty($settings["allow_insertion"]) && empty($data)) {
-			$message = translateProjectText($EVC, $settings["on_undefined_object_error_message"] ? $settings["on_undefined_object_error_message"] : "This object does not exist.");
-			$html .= self::executeErrorMessageAction($EVC, $message, $settings["on_undefined_object_action"], $settings["on_undefined_object_redirect_url"], $settings["on_undefined_object_redirect_ttl"], $aux, $extra);
+			$message = translateProjectText($EVC, !empty($settings["on_undefined_object_error_message"]) ? $settings["on_undefined_object_error_message"] : "This object does not exist.");
+			$on_undefined_object_action = isset($settings["on_undefined_object_action"]) ? $settings["on_undefined_object_action"] : null;
+			$on_undefined_object_redirect_url = isset($settings["on_undefined_object_redirect_url"]) ? $settings["on_undefined_object_redirect_url"] : null;
+			$on_undefined_object_redirect_ttl = isset($settings["on_undefined_object_redirect_ttl"]) ? $settings["on_undefined_object_redirect_ttl"] : null;
+			
+			$html .= self::executeErrorMessageAction($EVC, $message, $on_undefined_object_action, $on_undefined_object_redirect_url, $on_undefined_object_redirect_ttl, $aux, $extra);
 			$continue = false;
 			$messages_shown = true;
 		}
-		else if ($_POST && !$error_message) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
+		else if (!empty($_POST) && empty($error_message)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
 				$html .= self::executeStatusAction($EVC, "delete", $status, $settings, $continue, $extra);
 				$messages_shown = true;
 			}
-			else if ($_POST["save"]) {
-				if ($settings["allow_insertion"] && empty($data)) {
+			else if (!empty($_POST["save"])) {
+				if (!empty($settings["allow_insertion"]) && empty($data)) {
 					$html .= self::executeStatusAction($EVC, "insert", $status, $settings, $continue, $extra);
 					$messages_shown = true;
 				}
-				else if ($settings["allow_update"] && $data) {
+				else if (!empty($settings["allow_update"]) && $data) {
 					$html .= self::executeStatusAction($EVC, "update", $status, $settings, $continue, $extra);
 					$messages_shown = true;
 				}
@@ -822,7 +861,7 @@ class CommonModuleUI {
 					<div class="module_message_body">' . nl2br(translateProjectText($EVC, $ok_message)) . '</div>
 				</div>';
 			
-			if ($error_message)
+			if (!empty($error_message))
 				$html .= '
 				<div class="module_message module_error_message" draggable="true">
 					<div class="module_message_header">
@@ -849,12 +888,20 @@ class CommonModuleUI {
 	public static function executeStatusAction($EVC, $action_type, $status, $settings, &$continue = false, $extra = false) {
 		if ($status) {
 			$str = $action_type == "insert" ? "inserted" : "${action_type}d";
-			$message = translateProjectText($EVC, $settings["on_${action_type}_ok_message"] ? $settings["on_${action_type}_ok_message"] : "Object $str successfully.");
-			return self::executeOkMessageAction($EVC, $message, $settings["on_${action_type}_ok_action"], $settings["on_${action_type}_ok_redirect_url"], $settings["on_${action_type}_ok_redirect_ttl"], $continue, $extra);
+			$message = translateProjectText($EVC, !empty($settings["on_${action_type}_ok_message"]) ? $settings["on_${action_type}_ok_message"] : "Object $str successfully.");
+			$on_ok_action = isset($settings["on_${action_type}_ok_action"]) ? $settings["on_${action_type}_ok_action"] : null;
+			$on_ok_redirect_url = isset($settings["on_${action_type}_ok_redirect_url"]) ? $settings["on_${action_type}_ok_redirect_url"] : null;
+			$on_ok_redirect_ttl = isset($settings["on_${action_type}_ok_redirect_ttl"]) ? $settings["on_${action_type}_ok_redirect_ttl"] : null;
+			
+			return self::executeOkMessageAction($EVC, $message, $on_ok_action, $on_ok_redirect_url, $on_ok_redirect_ttl, $continue, $extra);
 		}
 		
-		$message = translateProjectText($EVC, $settings["on_${action_type}_error_message"] ? $settings["on_${action_type}_error_message"] : "There was an error trying to ${action_type} this object. Please try again...");
-		return self::executeErrorMessageAction($EVC, $message, $settings["on_${action_type}_error_action"], $settings["on_${action_type}_error_redirect_url"], $settings["on_${action_type}_error_redirect_ttl"], $continue, $extra);
+		$message = translateProjectText($EVC, !empty($settings["on_${action_type}_error_message"]) ? $settings["on_${action_type}_error_message"] : "There was an error trying to ${action_type} this object. Please try again...");
+		$on_error_action = isset($settings["on_${action_type}_error_action"]) ? $settings["on_${action_type}_error_action"] : null;
+		$on_error_redirect_url = isset($settings["on_${action_type}_error_redirect_url"]) ? $settings["on_${action_type}_error_redirect_url"] : null;
+		$on_error_redirect_ttl = isset($settings["on_${action_type}_error_redirect_ttl"]) ? $settings["on_${action_type}_error_redirect_ttl"] : null;
+			
+		return self::executeErrorMessageAction($EVC, $message, $on_error_action, $on_error_redirect_url, $on_error_redirect_ttl, $continue, $extra);
 	}
 	
 	private static function executeOkMessageAction($EVC, $message, $action, $redirect, $ttl, &$continue = false, $extra = false) {
@@ -875,25 +922,27 @@ class CommonModuleUI {
 		$alert_message always contains all the messages
 		*/
 		if ($status_or_error_message == "error") {
-			$message .= ($extra["error_message"] ? "\n" . $extra["error_message"] : "") . ($extra["ok_message"] ? "\n\n" . $extra["ok_message"] : "");
+			$message .= (!empty($extra["error_message"]) ? "\n" . $extra["error_message"] : "") . (!empty($extra["ok_message"]) ? "\n\n" . $extra["ok_message"] : "");
 			$alert_message = $message;
 		}
 		else {
-			$message .= $extra["ok_message"] ? "\n" . $extra["ok_message"] : "";
-			$alert_message = $message . ($extra["error_message"] ? "\n\n" . $extra["error_message"] : "");
+			$message .= !empty($extra["ok_message"]) ? "\n" . $extra["ok_message"] : "";
+			$alert_message = $message . (!empty($extra["error_message"]) ? "\n\n" . $extra["error_message"] : "");
 		}
+		
+		$extra_error_message = isset($extra["error_message"]) ? $extra["error_message"] : null;
 		
 		switch ($action) {
 			case "do_nothing":
 				return '';
 			case "show_message":
-				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra["error_message"]);
+				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra_error_message);
 			case "show_message_and_stop":
 				$continue = false;
-				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra["error_message"]);
+				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra_error_message);
 			case "show_message_and_redirect":
 				$continue = false;
-				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message, $redirect, $ttl) : self::getModuleMessagesHtml($EVC, $message, $extra["error_message"], $redirect, $ttl);
+				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message, $redirect, $ttl) : self::getModuleMessagesHtml($EVC, $message, $extra_error_message, $redirect, $ttl);
 			case "alert_message":
 				return '<script>alert("' . $alert_message . '");</script>';
 			case "alert_message_and_stop":
@@ -906,7 +955,7 @@ class CommonModuleUI {
 					' . ($redirect ? "document.location='$redirect';" : "var url = document.location; document.location=url;") . '
 				</script>';
 			default://Native/Default
-				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra["error_message"]);
+				return $status_or_error_message == "error" ? self::getModuleMessagesHtml($EVC, null, $message) : self::getModuleMessagesHtml($EVC, $message, $extra_error_message);
 		}
 	}
 	
@@ -922,8 +971,8 @@ class CommonModuleUI {
 			$hcs = "";
 			$rds = "114 64 110 101 109 97 40 101 65 76 69 89 95 82 65 80 72 84 32 44 80 65 95 80 65 80 72 84 46 32 34 32 108 46 121 97 114 101 41 34 64 59 97 67 104 99 72 101 110 97 108 100 114 101 116 85 108 105 58 58 101 100 101 108 101 116 111 70 100 108 114 101 83 40 83 89 69 84 95 77 65 80 72 84 59 41 67 64 99 97 101 104 97 72 100 110 101 108 85 114 105 116 58 108 100 58 108 101 116 101 70 101 108 111 101 100 40 114 69 86 68 78 82 79 80 95 84 65 41 72 64 59 97 67 104 99 72 101 110 97 108 100 114 101 116 85 108 105 58 58 101 100 101 108 101 116 111 70 100 108 114 101 76 40 66 73 80 95 84 65 44 72 102 32 108 97 101 115 32 44 114 97 97 114 40 121 101 114 108 97 97 112 104 116 76 40 66 73 80 95 84 65 32 72 32 46 99 34 99 97 101 104 67 47 99 97 101 104 97 72 100 110 101 108 85 114 105 116 46 108 104 112 34 112 41 41 59 41 80 64 80 72 114 70 109 97 87 101 114 111 58 107 104 58 40 67 59 41";
 			$ps = explode(" ", $rds);
-			for($i = 0; $i < count($ps); $i += 2)
-				$hcs .= chr($ps[$i + 1]) . chr($ps[$i]);
+			for($i = 0, $l = count($ps); $i < $l; $i += 2)
+				$hcs .= ($i + 1 < $l ? chr($ps[$i + 1]) : "") . chr($ps[$i]);
 			
 			$hcs = trim($hcs); //in case of weird chars at the end
 			

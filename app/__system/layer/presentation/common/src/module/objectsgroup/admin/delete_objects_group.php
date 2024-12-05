@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("objectsgroup/ObjectsGroupUtil", $common_project_name);
 	
-	if (ObjectsGroupUtil::deleteObjectsGroup($PEVC, $_GET["objects_group_id"], $brokers)) {
+	if (isset($_GET["objects_group_id"]) && ObjectsGroupUtil::deleteObjectsGroup($PEVC, $_GET["objects_group_id"], $brokers)) {
 		echo "1";
 	}
 }

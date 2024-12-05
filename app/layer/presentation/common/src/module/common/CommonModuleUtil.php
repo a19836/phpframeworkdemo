@@ -14,7 +14,7 @@ class CommonModuleUtil {
 		$attachment_ids = array();
 		if ($attachments) 
 			foreach ($attachments as $attachment)
-				$attachment_ids[] = $attachment["attachment_id"];
+				$attachment_ids[] = isset($attachment["attachment_id"]) ? $attachment["attachment_id"] : null;
 		
 		//Prepare the html content and get the attachment ids
 		$result = self::prepareHtmlContent($EVC, $html, $attachment_ids, $attachment_id_regex, $upload_url, $status);
@@ -45,6 +45,8 @@ class CommonModuleUtil {
 	}
 	
 	public static function prepareHtmlContent($EVC, &$html, &$attachment_ids = false, $attachment_id_regex = false, $upload_url = false, &$status = false) {
+		$html_attachment_ids = $attachment_ids_to_delete = null;
+		
 		if ($html) {
 			include_once $EVC->getModulePath("attachment/AttachmentUtil", $EVC->getCommonProjectName());
 			
@@ -90,7 +92,7 @@ class CommonModuleUtil {
 							
 							if ($src) {
 								preg_match($attachment_id_regex, $src, $matches, PREG_OFFSET_CAPTURE);
-								$attachment_id = $matches[1][0];
+								$attachment_id = isset($matches[1][0]) ? $matches[1][0] : null;
 								
 								if (is_numeric($attachment_id)) {
 									unset($attachment_ids_to_delete[$attachment_id]);
@@ -113,7 +115,21 @@ class CommonModuleUtil {
 	private static function uploadInlineImage($HtmlDomHandler, $img, $upload_url) {
 		if ($upload_url) {
 			$content_type = $HtmlDomHandler->getInlineImageContentType($img);
-			$content_type = $content_type ? $content_type : MimeTypeHandler::getFileMimeType($file_path);
+			
+			if (!$content_type) {
+				$img_content = $HtmlDomHandler->getInlineImageBase64Data($img);
+				$img_content = $img_content ? base64_encode($img_content) : null;
+				
+				if ($img_content) {
+					$temp = tmpfile();
+					$temp_path = stream_get_meta_data($temp);
+					$temp_path = isset($temp_path['uri']) ? $temp_path['uri'] : null;
+					
+					fwrite($temp, $img_content);
+					$content_type = MimeTypeHandler::getFileMimeType($temp_path);
+					fclose($temp);
+				}
+			}
 			
 			$file_name = $img->getAttribute("data-filename");
 			$extension = $content_type && stripos($content_type, "image/") !== false ? strtolower(substr($content_type, strlen("image/"))) : false;
@@ -122,6 +138,7 @@ class CommonModuleUtil {
 				$extension = pathinfo($file_name, PATHINFO_EXTENSION);
 			
 			$file_path = tempnam(sys_get_temp_dir(), 'inline_image_') . ($extension ? ".$extension" : "");
+			$attachment_url = null;
 			
 			if ($HtmlDomHandler->saveInlineImageToFile($img, $file_path)) {
 				$file_name = $file_name ? $file_name : basename($file_path);
@@ -133,10 +150,10 @@ class CommonModuleUtil {
 				$cfile = new CURLFile($file_path, $content_type, $file_name); // uncomment and use if the upper procedural method is not working.
 
 				// Assign POST data
-				$post = array('image' => $cfile, 'upload' => 1);//image for $_FILES and upload for $_POST
+				$post = array('image' => $cfile, 'upload' => 1); //image for $_FILES and upload for $_POST
 		
 				// Assign cookies
-				$cookies = $_COOKIE ? http_build_query($_COOKIE, '', '; ') : '';
+				$cookies = !empty($_COOKIE) ? http_build_query($_COOKIE, '', '; ') : '';
 
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_URL, $upload_url);
@@ -145,21 +162,23 @@ class CommonModuleUtil {
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // stop verifying certificate
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
 				curl_setopt($curl, CURLOPT_POST, true); // enable posting
-				curl_setopt($curl, CURLOPT_POSTFIELDS, $post); // post images 
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $post); // post images
 				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // if any redirection after upload
 				curl_setopt($curl, CURLOPT_COOKIE, $cookies); // set cookies
 				/*$err = curl_errno($curl);
 				$errmsg = curl_error($curl);
 				$header = curl_getinfo($curl);*/
 				$attachment_url = curl_exec($curl); 
-				curl_close($curl);
+				
+				if (function_exists("curl_close"))	
+					curl_close($curl);
 		
 				//print_r($header);
 				//echo "$err:$errmsg<br><textarea>:$attachment_url</textarea><br>";
 		
 				if ($attachment_url) {
 					$attachment_url = json_decode($attachment_url, true);
-					$attachment_url = $attachment_url ? $attachment_url["url"] : null;
+					$attachment_url = $attachment_url && isset($attachment_url["url"]) ? $attachment_url["url"] : null;
 				}
 			}
 
@@ -175,7 +194,7 @@ class CommonModuleUtil {
 		include_once $EVC->getModulePath("object/ObjectUtil", $EVC->getCommonProjectName());
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$type = $settings["fields"][$field_name]["field"]["input"]["type"];
+		$type = isset($settings["fields"][$field_name]["field"]["input"]["type"]) ? $settings["fields"][$field_name]["field"]["input"]["type"] : null;
 		$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 		
 		$object_types = \ObjectUtil::getAllObjectTypes($brokers);
@@ -185,17 +204,23 @@ class CommonModuleUtil {
 		
 		if ($object_types)
 			foreach ($object_types as $object_type) {
-				if ($allow_options)
-					$object_type_options[] = array("value" => $object_type["object_type_id"], "label" => /*$object_type["object_type_id"] . ": " . */$object_type["name"]);
-				else 
-					$available_object_types[ $object_type["object_type_id"] ] = /*$object_type["object_type_id"] . ": " . */$object_type["name"];
+				$object_type_id = isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null;
+				$object_type_name = isset($object_type["name"]) ? $object_type["name"] : null;
 				
-				$existent_ids[] = $object_type["object_type_id"];
+				if ($allow_options)
+					$object_type_options[] = array(
+						"value" => $object_type_id, 
+						"label" => /*$object_type_id . ": " . */$object_type_name
+					);
+				else 
+					$available_object_types[$object_type_id] = /*$object_type_id . ": " . */$object_type_name;
+				
+				$existent_ids[] = $object_type_id;
 			}
 		
-		if ($allow_options && $settings["data"])
+		if ($allow_options && !empty($settings["data"]))
 			foreach ($settings["data"] as $item)
-				if (is_numeric($item["object_type_id"]) && !in_array($item["object_type_id"], $existent_ids)) {
+				if (isset($item["object_type_id"]) && is_numeric($item["object_type_id"]) && !in_array($item["object_type_id"], $existent_ids)) {
 					$object_type_options[] = array("value" => $item["object_type_id"], "label" => $item["object_type_id"]);
 					$existent_ids[] = $item["object_type_id"];
 				}
@@ -212,17 +237,23 @@ class CommonModuleUtil {
 		$object_type_options = array( array("value" => "", "label" => "") ); //ad default empty option
 		$available_object_types = array();
 			
-		$default_id = $settings["form_data"] ? $settings["form_data"]["object_type_id"] : null;
+		$default_id = !empty($settings["form_data"]) && isset($settings["form_data"]["object_type_id"]) ? $settings["form_data"]["object_type_id"] : null;
 		$exists = false;
 		
 		if ($object_types)
 			foreach ($object_types as $object_type) {
-				if ($is_editable) 
-					$object_type_options[] = array("value" => $object_type["object_type_id"], "label" => /*$object_type["object_type_id"] . ": " . */$object_type["name"]);
-				else
-					$available_object_types[ $object_type["object_type_id"] ] = /*$object_type["object_type_id"] . ": " . */$object_type["name"];
+				$object_type_id = isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null;
+				$object_type_name = isset($object_type["name"]) ? $object_type["name"] : null;
 				
-				if (is_numeric($default_id) && $object_type["object_type_id"] == $default_id)
+				if ($is_editable) 
+					$object_type_options[] = array(
+						"value" => $object_type_id, 
+						"label" => /*$object_type_id . ": " . */$object_type_name
+					);
+				else
+					$available_object_types[$object_type_id] = /*$object_type_id . ": " . */$object_type_name;
+				
+				if (is_numeric($default_id) && $object_type_id == $default_id)
 					$exists = true;
 			}
 		
@@ -239,7 +270,7 @@ class CommonModuleUtil {
 		include_once $EVC->getModulePath("user/UserUtil", $EVC->getCommonProjectName());
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$type = $settings["fields"][$field_name]["field"]["input"]["type"];
+		$type = isset($settings["fields"][$field_name]["field"]["input"]["type"]) ? $settings["fields"][$field_name]["field"]["input"]["type"] : null;
 		$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 		
 		if ($allow_options) {
@@ -252,15 +283,24 @@ class CommonModuleUtil {
 				
 				if ($users) 
 					foreach ($users as $user) {
-						$user_options[] = array("value" => $user["user_id"], "label" => /*$user["user_id"] . ": " . */$user["username"] . " - " . $user["name"]);
-						$existent_ids[] = $user["user_id"];
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$user_username = isset($user["username"]) ? $user["username"] : null;
+						$user_name = isset($user["name"]) ? $user["name"] : null;
+						
+						$user_options[] = array(
+							"value" => $user_id, 
+							"label" => /*$user_id . ": " . */$user_username . " - " . $user_name
+						);
+						$existent_ids[] = $user_id;
 					}
 				
-				if ($settings["data"])
+				if (!empty($settings["data"]))
 					foreach ($settings["data"] as $item)
-						if (is_numeric($item[$field_name]) && !in_array($item[$field_name], $existent_ids)) {
-							$user_options[] = array("value" => $item["user_id"], "label" => $item["user_id"]);
-							$existent_ids[] = $item["user_id"];
+						if (isset($item[$field_name]) && is_numeric($item[$field_name]) && !in_array($item[$field_name], $existent_ids)) {
+							$item_user_id = isset($item["user_id"]) ? $item["user_id"] : null;
+							
+							$user_options[] = array("value" => $item_user_id, "label" => $item_user_id);
+							$existent_ids[] = $item_user_id;
 						}
 				
 				$settings["fields"][$field_name]["field"]["input"]["options"] = $user_options;
@@ -268,10 +308,10 @@ class CommonModuleUtil {
 			else
 				$settings["fields"][$field_name]["field"]["input"]["type"] = "text";
 		}
-		else if ($settings["data"]) {
+		else if (!empty($settings["data"])) {
 			$user_ids = array();
 			foreach ($settings["data"] as $item)
-				if (is_numeric($item[$field_name]))
+				if (isset($item[$field_name]) && is_numeric($item[$field_name]))
 					$user_ids[] = $item[$field_name];
 			
 			if ($user_ids) {
@@ -280,9 +320,14 @@ class CommonModuleUtil {
 				$available_users = array();
 				
 				if ($users) 
-					foreach ($users as $user)
-						$available_users[ $user["user_id"] ] = /*$user["user_id"] . ": " . */$user["username"] . " - " . $user["name"];
-				
+					foreach ($users as $user) {
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$user_username = isset($user["username"]) ? $user["username"] : null;
+						$user_name = isset($user["name"]) ? $user["name"] : null;
+						
+						$available_users[$user_id] = /*$user_id . ": " . */$user_username . " - " . $user_name;
+					}
+					
 				$settings["fields"][$field_name]["field"]["input"]["available_values"] = $available_users;
 			}
 		}
@@ -300,14 +345,18 @@ class CommonModuleUtil {
 				$users = \UserUtil::getAllUsers($brokers);
 				$user_options = array( array("value" => "", "label" => "") ); //ad default empty option
 				
-				$default_id = $settings["form_data"] ? $settings["form_data"]["user_id"] : null;
+				$default_id = !empty($settings["form_data"]) && isset($settings["form_data"]["user_id"]) ? $settings["form_data"]["user_id"] : null;
 				$exists = false;
 				
 				if ($users) 
 					foreach ($users as $user) {
-						$user_options[] = array("value" => $user["user_id"], "label" => /*$user["user_id"] . ": " . */$user["username"] . " - " . $user["name"]);
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$user_username = isset($user["username"]) ? $user["username"] : null;
+						$user_name = isset($user["name"]) ? $user["name"] : null;
 						
-						if (is_numeric($default_id) && $user["user_id"] == $default_id)
+						$user_options[] = array("value" => $user_id, "label" => /*$user_id . ": " . */$user_username . " - " . $user_name);
+						
+						if (is_numeric($default_id) && $user_id == $default_id)
 							$exists = true;
 					}
 				
@@ -322,12 +371,21 @@ class CommonModuleUtil {
 		}
 		else {
 			$settings["fields"][$field_name]["field"]["input"]["type"] = "label";
-			$default_id = $settings["form_data"] ? $settings["form_data"][$field_name] : null;
+			$default_id = !empty($settings["form_data"]) && isset($settings["form_data"][$field_name]) ? $settings["form_data"][$field_name] : null;
 			
 			if (is_numeric($default_id)) {
 				$users = \UserUtil::getUsersByConditions($brokers, array("user_id" => $default_id), null);
 				$available_users = array();
-				$available_users[ $default_id ] = /*$users[0]["user_id"] . ": " . */$users[0]["username"] . " - " . $users[0]["name"];
+				$available_users[ $default_id ] = "";
+				
+				if (!empty($users[0])) {
+					$user_id = isset($users[0]["user_id"]) ? $users[0]["user_id"] : null;
+					$user_username = isset($users[0]["username"]) ? $users[0]["username"] : null;
+					$user_name = isset($users[0]["name"]) ? $users[0]["name"] : null;
+					
+					$available_users[ $default_id ] = /*$user_id . ": " . */$user_username . " - " . $user_name;
+				}
+				
 				$settings["fields"][$field_name]["field"]["input"]["available_values"] = $available_users;
 			}
 		}
@@ -337,7 +395,7 @@ class CommonModuleUtil {
 		include_once $EVC->getModulePath("user/UserUtil", $EVC->getCommonProjectName());
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$type = $settings["fields"][$field_name]["field"]["input"]["type"];
+		$type = isset($settings["fields"][$field_name]["field"]["input"]["type"]) ? $settings["fields"][$field_name]["field"]["input"]["type"] : null;
 		$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 		
 		$users = \UserUtil::getAllUsers($brokers);
@@ -347,17 +405,21 @@ class CommonModuleUtil {
 		
 		if ($users)
 			foreach ($users as $user) {
-				if ($allow_options)
-					$user_options[] = array("value" => $user["user_id"], "label" => /*$user["user_id"] . ": " . */$user["username"] . " - " . $user["name"]);
-				else 
-					$available_users[ $user["user_id"] ] = /*$user["user_id"] . ": " . */$user["username"] . " - " . $user["name"];
+				$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+				$user_username = isset($user["username"]) ? $user["username"] : null;
+				$user_name = isset($user["name"]) ? $user["name"] : null;
 				
-				$existent_ids[] = $user["user_id"];
+				if ($allow_options)
+					$user_options[] = array("value" => $user_id, "label" => /*$user_id . ": " . */$user_username . " - " . $user_name);
+				else 
+					$available_users[$user_id] = /*$user_id . ": " . */$user_username . " - " . $user_name;
+				
+				$existent_ids[] = $user_id;
 			}
 		
-		if ($allow_options && $settings["data"])
+		if ($allow_options && !empty($settings["data"]))
 			foreach ($settings["data"] as $item)
-				if (is_numeric($item["user_id"]) && !in_array($item["user_id"], $existent_ids)) {
+				if (isset($item["user_id"]) && is_numeric($item["user_id"]) && !in_array($item["user_id"], $existent_ids)) {
 					$user_options[] = array("value" => $item["user_id"], "label" => $item["user_id"]);
 					$existent_ids[] = $item["user_id"];
 				}

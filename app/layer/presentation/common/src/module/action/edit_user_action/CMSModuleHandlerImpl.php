@@ -4,6 +4,7 @@ namespace CMSModule\action\edit_user_action;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,29 +16,35 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		//Getting User Actions
-		$user_id = $_GET["user_id"];
-		$action_id = $_GET["action_id"];
-		$object_type_id = $_GET["object_type_id"];
-		$object_id = $_GET["object_id"];
-		$time = $_GET["time"];
+		$user_id = isset($_GET["user_id"]) ? $_GET["user_id"] : null;
+		$action_id = isset($_GET["action_id"]) ? $_GET["action_id"] : null;
+		$object_type_id = isset($_GET["object_type_id"]) ? $_GET["object_type_id"] : null;
+		$object_id = isset($_GET["object_id"]) ? $_GET["object_id"] : null;
+		$time = isset($_GET["time"]) ? $_GET["time"] : null;
 		
 		$data = $user_id && $action_id && $object_type_id && $object_id && isset($time) ? \ActionUtil::getUserActionsByConditions($brokers, array("user_id" => $user_id, "action_id" => $action_id, "object_type_id" => $object_type_id, "object_id" => $object_id, "time" => $time), null, null, true) : null;
-		$data = $data[0];
+		$data = isset($data[0]) ? $data[0] : null;
 		
 		//Preparing Action
-		if ($_POST) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
-				$status = !$data || \ActionUtil::deleteUserAction($brokers, $data["user_id"], $data["action_id"], $data["object_type_id"], $data["object_id"], $data["time"]);
-			}
-			else if ($_POST["save"]) {
-				$value = $_POST["value"];
+		if (!empty($_POST)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
+				$data_user_id = isset($data["user_id"]) ? $data["user_id"] : null;
+				$data_action_id = isset($data["action_id"]) ? $data["action_id"] : null;
+				$data_object_type_id = isset($data["object_type_id"]) ? $data["object_type_id"] : null;
+				$data_object_id = isset($data["object_id"]) ? $data["object_id"] : null;
+				$data_time = isset($data["time"]) ? $data["time"] : null;
 				
-				if ($settings["allow_insertion"] && empty($data)) {
-					$user_id = $_POST["user_id"];
-					$action_id = $_POST["action_id"];
-					$object_type_id = $_POST["object_type_id"];
-					$object_id = $_POST["object_id"];
-					$time = $_POST["time"];
+				$status = !$data || \ActionUtil::deleteUserAction($brokers, $data_user_id, $data_action_id, $data_object_type_id, $data_object_id, $data_time);
+			}
+			else if (!empty($_POST["save"])) {
+				$value = isset($_POST["value"]) ? $_POST["value"] : null;
+				
+				if (!empty($settings["allow_insertion"]) && empty($data)) {
+					$user_id = isset($_POST["user_id"]) ? $_POST["user_id"] : null;
+					$action_id = isset($_POST["action_id"]) ? $_POST["action_id"] : null;
+					$object_type_id = isset($_POST["object_type_id"]) ? $_POST["object_type_id"] : null;
+					$object_id = isset($_POST["object_id"]) ? $_POST["object_id"] : null;
+					$time = isset($_POST["time"]) ? $_POST["time"] : null;
 					
 					$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("user_id" => $user_id, "action_id" => $action_id, "object_type_id" => $object_type_id, "object_id" => $object_id, "time" => $time));
 					if ($empty_field_name) {
@@ -57,13 +64,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						
 						if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message)) {
 							$status = \ActionUtil::insertUserAction($brokers, $new_data);
-							if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
-								$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "user_id=$user_id&action_id=$action_id&object_type_id=$object_type_id&object_id=$object_id&time=$time";
+							if (isset($settings["on_insert_ok_action"]) && strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								$settings["on_insert_ok_redirect_url"] .= (isset($settings["on_insert_ok_redirect_url"]) && strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "user_id=$user_id&action_id=$action_id&object_type_id=$object_type_id&object_id=$object_id&time=$time";
 							}
 						}
 					}
 				}
-				else if ($settings["allow_update"] && $data) {
+				else if (!empty($settings["allow_update"]) && $data) {
 					if (\CommonModuleUI::checkIfEmptyField($settings, "value", $value)) {
 						$error_message = \CommonModuleUI::getFieldValidationMessage($EVC, $settings, "value");
 					}
@@ -81,30 +88,30 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
-		if ($_POST["save"]) {
+		if (!empty($_POST["save"])) {
 			$form_data = array(
-				"user_id" => $settings["show_user_id"] ? $user_id : $data["user_id"],
-				"action_id" => $settings["show_action_id"] ? $action_id : $data["action_id"],
-				"object_type_id" => $settings["show_object_type_id"] ? $object_type_id : $data["object_type_id"],
-				"object_id" => $settings["show_object_id"] ? $object_id : $data["object_id"],
-				"time" => $settings["show_time"] ? $time : $data["time"],
-				"value" => $settings["show_value"] ? $value : $data["value"],
+				"user_id" => !empty($settings["show_user_id"]) ? $user_id : (isset($data["user_id"]) ? $data["user_id"] : null),
+				"action_id" => !empty($settings["show_action_id"]) ? $action_id : (isset($data["action_id"]) ? $data["action_id"] : null),
+				"object_type_id" => !empty($settings["show_object_type_id"]) ? $object_type_id : (isset($data["object_type_id"]) ? $data["object_type_id"] : null),
+				"object_id" => !empty($settings["show_object_id"]) ? $object_id : (isset($data["object_id"]) ? $data["object_id"] : null),
+				"time" => !empty($settings["show_time"]) ? $time : (isset($data["time"]) ? $data["time"] : null),
+				"value" => !empty($settings["show_value"]) ? (isset($value) ? $value : null) : (isset($data["value"]) ? $data["value"] : null),
 			);
-			$form_data = $new_data ? array_merge($new_data, $form_data) : ($settings["allow_view"] && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+			$form_data = !empty($new_data) ? array_merge($new_data, $form_data) : (!empty($settings["allow_view"]) && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		}
 		else
-			$form_data = $settings["allow_view"] && $data ? $data : array();
+			$form_data = !empty($settings["allow_view"]) && $data ? $data : array();
 		
 		$settings["data"] = $data;
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/action/edit_user_action.css';
 		$settings["class"] = "module_edit_user_action";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		
-		$is_insertion = $settings["allow_insertion"] && !$data;
+		$is_insertion = !empty($settings["allow_insertion"]) && !$data;
 		
-		if ($settings["show_action_id"]) {
+		if (!empty($settings["show_action_id"])) {
 			$actions = \ActionUtil::getAllActions($brokers);
 			$action_options = array();
 			$available_actions = array();
@@ -112,10 +119,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($actions) {
 				$t = count($actions);
 				for ($i = 0; $i < $t; $i++) {
+					$item_action_id = isset($actions[$i]["action_id"]) ? $actions[$i]["action_id"] : null;
+					$item_action_name = isset($actions[$i]["name"]) ? $actions[$i]["name"] : null;
+					
 					if ($is_insertion) 
-						$action_options[] = array("value" => $actions[$i]["action_id"], "label" => $actions[$i]["name"]);
+						$action_options[] = array("value" => $item_action_id, "label" => $item_action_name);
 					else
-						$available_actions[ $actions[$i]["action_id"] ] = $actions[$i]["name"];
+						$available_actions[$item_action_id] = $item_action_name;
 				}
 			}
 			
@@ -124,16 +134,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$settings["fields"]["action_id"]["field"]["input"]["available_values"] = $available_actions;
 		}
 		
-		if ($settings["show_user_id"]) 
+		if (!empty($settings["show_user_id"])) 
 			\CommonModuleUtil::prepareUserIdFormSettingsField($EVC, $settings, $is_insertion);
 		
-		if ($settings["show_object_type_id"])
+		if (!empty($settings["show_object_type_id"]))
 			\CommonModuleUtil::prepareObjectTypeIdFormSettingsField($EVC, $settings, $is_insertion);
 		
-		if ($settings["show_object_id"])
+		if (!empty($settings["show_object_id"]))
 			$settings["fields"]["object_id"]["field"]["input"]["type"] = $is_insertion ? "text" : "label";
 		
-		if ($settings["show_time"])
+		if (!empty($settings["show_time"]))
 			$settings["fields"]["time"]["field"]["input"]["type"] = $is_insertion ? "text" : "label";
 		
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "action/edit_user_action", $settings);

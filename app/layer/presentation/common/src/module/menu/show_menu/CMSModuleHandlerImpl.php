@@ -4,6 +4,7 @@ namespace CMSModule\menu\show_menu;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -11,9 +12,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("common/CommonModuleUI", $common_project_name);
 		
 		$html = "";
-		$type = $settings["type"];
-		$class = trim($settings["class"] . " " .  $settings["block_class"]);
-		$list_class = "module_menu_ul" . ($settings["list_class"] ? " " . $settings["list_class"] : "");
+		$type = isset($settings["type"]) ? $settings["type"] : null;
+		$class = trim((isset($settings["class"]) ? $settings["class"] : null) .  (!empty($settings["block_class"]) ? " " . $settings["block_class"] : null));
+		$list_class = "module_menu_ul" . (!empty($settings["list_class"]) ? " " . $settings["list_class"] : "");
 		
 		switch ($type) {
 			case "accordion":
@@ -24,9 +25,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			case "accordion_graphite":
 			case "accordion_grey":
 				$list_class .= " accordion";
+				$html_aux = "";
 				
 				if ($type != "accordion") {
-					$accordion_style_class .= str_replace("accordion_", "", $type);
+					$accordion_style_class = str_replace("accordion_", "", $type);
 					$class = trim($accordion_style_class . " $class");
 					
 					$html_aux = '<link href="' . $project_common_url_prefix . 'module/menu/jqueryverticalaccordionmenu/css/skins/' . $accordion_style_class . '.css" rel="stylesheet" type="text/css" />';
@@ -74,6 +76,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			case "horizontal_superfish_navbar":
 			case "vertical_superfish":
 				$list_class .= " sf-menu";
+				$html_aux = "";
 				
 				if ($type == "horizontal_superfish_navbar") {
 					$list_class .= " sf-navbar";
@@ -200,25 +203,25 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				break;
 		}
 		
-		$menus = $settings["items_type"] == "from_db" ? self::getMenuGroupItems($EVC, $settings) : $settings["menus"];
+		$menus = isset($settings["items_type"]) && $settings["items_type"] == "from_db" ? self::getMenuGroupItems($EVC, $settings) : (isset($settings["menus"]) ? $settings["menus"] : null);
 		self::prepareMenus($EVC, $menus);
 		
 		$extra_css = self::getMenuExtraStyles($settings, $class, $list_class);
 		if ($extra_css)
-			$settings["css"] = $extra_css . "\n" . $settings["css"];
+			$settings["css"] = $extra_css . (isset($settings["css"]) ? "\n" . $settings["css"] : null);
 		
-		$html .= ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		$html .= (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 		
 		<div class="module_menu ' . ($class ? $class : "") . '">
-			' . ($settings["title"] ? '<h3>' . translateProjectText($EVC, $settings["title"]) . '</h3>' : '');
+			' . (!empty($settings["title"]) ? '<h3>' . translateProjectText($EVC, $settings["title"]) . '</h3>' : '');
 		
 		$form_settings = array(
 			"CacheHandler" => $EVC->getPresentationLayer()->getPHPFrameWork()->getObject("UserCacheHandler")
 		);
 		
-		if ($settings["template_type"] == "user_defined") {
-			$form_settings["ptl"] = $settings["ptl"];
+		if (isset($settings["template_type"]) && $settings["template_type"] == "user_defined") {
+			$form_settings["ptl"] = isset($settings["ptl"]) ? $settings["ptl"] : null;
 			
 			if ($form_settings["ptl"]) {
 				$external_vars = !empty($form_settings["ptl"]["external_vars"]) ? $form_settings["ptl"]["external_vars"] : array();
@@ -255,19 +258,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$css_main_class = '.module_menu' . ($class ? "." . implode(".", explode(" ", $class)) : "");
 		$css_main_ul_class = $css_main_class . ' ' . ($list_class ? "." . implode(".", explode(" ", $list_class)) : "");
 		
-		if ($settings["menu_background_color"])
+		if (!empty($settings["menu_background_color"]))
 			$css .= '
 ' . $css_main_class . ' {
 	background-color:' . $settings["menu_background_color"] . ';
 }';
 		
-		if ($settings["menu_background_image"])
+		if (!empty($settings["menu_background_image"]))
 			$css .= '
 ' . $css_main_class . ' {
 	background-image:url("' . addcslashes($settings["menu_background_image"], '"') . '");
 }';
 		
-		if ($settings["menu_text_color"])
+		if (!empty($settings["menu_text_color"]))
 			$css .= '
 ' . $css_main_ul_class . ' li,
   ' . $css_main_ul_class . ' li a,
@@ -276,7 +279,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	color:' . $settings["menu_text_color"] . ';
 }';
 		
-		if ($settings["sub_menu_background_color"])
+		if (!empty($settings["sub_menu_background_color"]))
 			$css .= '
 ' . $css_main_ul_class . ' li ul,
   ' . $css_main_ul_class . ' li nav,
@@ -288,7 +291,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	background-color:' . $settings["sub_menu_background_color"] . ';
 }';
 		
-		if ($settings["sub_menu_background_image"])
+		if (!empty($settings["sub_menu_background_image"]))
 			$css .= '
 ' . $css_main_ul_class . ' li ul,
   ' . $css_main_ul_class . ' li nav,
@@ -300,7 +303,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	background-image:url("' . addcslashes($settings["sub_menu_background_image"], '"') . ');
 }';
 		
-		if ($settings["sub_menu_text_color"])
+		if (!empty($settings["sub_menu_text_color"]))
 			$css .= '
 ' . $css_main_ul_class . ' li ul li,
   ' . $css_main_ul_class . ' li ul li a,
@@ -337,53 +340,64 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 	
 		$options = array("sort" => array(array("column" => "order", "order" => "asc")));
+		$menu_query_type = isset($settings["menu_query_type"]) ? $settings["menu_query_type"] : null;
+		$tags = isset($settings["tags"]) ? $settings["tags"] : null;
+		$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		$group = isset($settings["group"]) ? $settings["group"] : null;
 		
-		switch($settings["menu_query_type"]) {
+		switch($menu_query_type) {
 			case "first_menu_by_tag_and":
-				$tags = $settings["tags"];
 				if ($tags) {
 					$data = \MenuUtil::getMenuGroupsWithAllTags($brokers, $tags, array(), null);
-					$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $data[0]["group_id"]), null, $options, true);
+					$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => isset($data[0]["group_id"]) ? $data[0]["group_id"] : null), null, $options, true);
 				}
 				break;
 			case "first_menu_by_tag_or":
-				$tags = $settings["tags"];
 				if ($tags) {
 					$data = \MenuUtil::getMenuGroupsByTags($brokers, $tags, array(), null);
-					$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $data[0]["group_id"]), null, $options, true);
+					$group_id = isset($data[0]["group_id"]) ? $data[0]["group_id"] : null;
+					$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $group_id), null, $options, true);
 				}
 				break;
 			case "first_menu_by_parent":
-				$items = \MenuUtil::getMenuItemsByFirstGroupIdOfObject($brokers, $settings["object_type_id"], $settings["object_id"], $options);
+				$items = \MenuUtil::getMenuItemsByFirstGroupIdOfObject($brokers, $object_type_id, $object_id, $options);
 				break;
 			case "first_menu_by_parent_group":
-				$items = \MenuUtil::getMenuItemsByFirstGroupIdOfObjectGroup($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], $options);
+				$items = \MenuUtil::getMenuItemsByFirstGroupIdOfObjectGroup($brokers, $object_type_id, $object_id, $group, $options);
 				break;
 			case "user_defined":
 			default://selected_menu
-				$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $settings["menu_group_id"]), null, $options);
+				$menu_group_id = isset($settings["menu_group_id"]) ? $settings["menu_group_id"] : null;
+				$items = \MenuUtil::getMenuItemsByConditions($brokers, array("group_id" => $menu_group_id), null, $options);
 		}
 		
-		$item_label = translateProjectText($EVC, $settings["item_label"]);
-		$item_title = translateProjectText($EVC, $settings["item_title"]);
+		$item_label = isset($settings["item_label"]) ? translateProjectText($EVC, $settings["item_label"]) : null;
+		$item_title = isset($settings["item_title"]) ? translateProjectText($EVC, $settings["item_title"]) : null;
 		
 		$HtmlFormHandler = new \HtmlFormHandler();
 		
-		if ($items) {
+		if (!empty($items)) {
+			$item_class = isset($settings["item_class"]) ? $settings["item_class"] : null;
+			$item_url = isset($settings["item_url"]) ? $settings["item_url"] : null;
+			$item_attrs = isset($settings["item_attrs"]) ? $settings["item_attrs"] : null;
+			$item_previous_html = isset($settings["item_previous_html"]) ? $settings["item_previous_html"] : null;
+			$item_next_html = isset($settings["item_next_html"]) ? $settings["item_next_html"] : null;
+			
 			$t = count($items);
 			for ($i = 0; $i < $t; $i++) {
 				$item = $items[$i];
 				
 				$new_items[] = array(
-					"item_id" => $item["item_id"],
-					"parent_id" => $item["parent_id"],
+					"item_id" => isset($item["item_id"]) ? $item["item_id"] : null,
+					"parent_id" => isset($item["parent_id"]) ? $item["parent_id"] : null,
 					"label" => $HtmlFormHandler->getParsedValueFromData($item_label, $item),
 					"title" => $HtmlFormHandler->getParsedValueFromData($item_title, $item),
-					"class" => $HtmlFormHandler->getParsedValueFromData($settings["item_class"], $item),
-					"url" => $HtmlFormHandler->getParsedValueFromData($settings["item_url"], $item),
-					"attrs" => $HtmlFormHandler->getParsedValueFromData($settings["item_attrs"], $item),
-					"previous_html" => $HtmlFormHandler->getParsedValueFromData($settings["item_previous_html"], $item),
-					"next_html" => $HtmlFormHandler->getParsedValueFromData($settings["item_next_html"], $item),
+					"class" => $HtmlFormHandler->getParsedValueFromData($item_class, $item),
+					"url" => $HtmlFormHandler->getParsedValueFromData($item_url, $item),
+					"attrs" => $HtmlFormHandler->getParsedValueFromData($item_attrs, $item),
+					"previous_html" => $HtmlFormHandler->getParsedValueFromData($item_previous_html, $item),
+					"next_html" => $HtmlFormHandler->getParsedValueFromData($item_next_html, $item),
 				);
 			}
 		}
@@ -400,21 +414,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$t = count($menus);
 			for ($i = 0; $i < $t; $i++) {
 				$menu = $menus[$i];
-				
-				$title = $menu["title"] ? 'title="' . $menu["title"] . '"' : "";
-				$class = $menu["class"];
+				$class = isset($menu["class"]) ? $menu["class"] : null;
+				$attrs = isset($menu["attrs"]) ? $menu["attrs"] : null;
+				$label = isset($menu["label"]) ? $menu["label"] : null;
+				$title = !empty($menu["title"]) ? 'title="' . $menu["title"] . '"' : "";
+				$previous_html = isset($menu["previous_html"]) ? $menu["previous_html"] : null;
+				$next_html = isset($menu["next_html"]) ? $menu["next_html"] : null;
 				
 				if (strpos($class, "module_menu_li") === false)
 					$class = "module_menu_li " . $class;
 				
-				$html .= '<li class="' . $menu["class"] . '" ' . $title . ' ' . $menu["attrs"] . '>
-					' . $menu["previous_html"] . '
-					<a href="' . ($menu["url"] ? str_replace(" ", "%20", $menu["url"]) : 'javascript:void(0)') . '"><label>' . $menu["label"] . '</label></a>';
+				$html .= '<li class="' . $class . '" ' . $title . ' ' . $attrs . '>
+					' . $previous_html . '
+					<a href="' . (!empty($menu["url"]) ? str_replace(" ", "%20", $menu["url"]) : 'javascript:void(0)') . '"><label>' . $label . '</label></a>';
 				
-				if ($menu["menus"])
+				if (!empty($menu["menus"]))
 					$html .= '<ul class="module_menu_ul">' . self::getMenusHTML($menu["menus"]) . '</ul>';
 				
-				$html .= $menu["next_html"] . '
+				$html .= $next_html . '
 					</li>';
 			}
 		}
@@ -428,24 +445,24 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			
 			//for ($i = 0, $t = count($menus); $i < $t; $i++) { //cannot use 'for' bc the menus item maybe an associative array with numeric keys floped.
 			foreach ($menus as $menu) {
-				if ($menu["parent_id"]) //to be used by the ptl
+				if (!empty($menu["parent_id"])) //to be used by the ptl
 					$menu["parent-id"] = $menu["parent_id"];
 				
-				if ($menu["previous_html"]) //to be used by the ptl
+				if (!empty($menu["previous_html"])) //to be used by the ptl
 					$menu["previous-html"] = $menu["previous_html"];
 				
-				if ($menu["next_html"]) //to be used by the ptl
+				if (!empty($menu["next_html"])) //to be used by the ptl
 					$menu["next-html"] = $menu["next_html"];
 					
-				if ($menu["title"])
+				if (!empty($menu["title"]))
 					$menu["title"] = translateProjectText($EVC, $menu["title"]);
 			
-				if ($menu["label"])
+				if (!empty($menu["label"]))
 					$menu["label"] = translateProjectText($EVC, $menu["label"]);
 				
-				$menu["class"] = trim("module_menu_li " . $menu["class"]);
+				$menu["class"] = trim("module_menu_li " . (isset($menu["class"]) ? $menu["class"] : null));
 				
-				if ($menu["menus"])
+				if (!empty($menu["menus"]))
 					self::prepareMenus($EVC, $menu["menus"]);
 				
 				$new_menus[] = $menu;

@@ -25,7 +25,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 		public static function checkIfSingleFileFieldsAreValid($files) {
 			if ($files) {
 				foreach ($files as $group => $file) {
-					if (is_array($file["name"]))
+					if (isset($file["name"]) && is_array($file["name"]))
 						return false;
 				}
 			}
@@ -72,7 +72,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 		public static function checkIfMultipleFileFieldsAreValid($files) {
 			if ($files) {
 				foreach ($files as $group => $items) {
-					if (!is_array($items["name"]))
+					if (!isset($items["name"]) || !is_array($items["name"]))
 						return false;
 				
 					foreach ($items["name"] as $i => $item) {
@@ -101,11 +101,11 @@ if (!class_exists("ObjectsGroupUtil")) {
 			if ($files) {
 				foreach ($files as $group => $file) {
 					$new_files[$group] = array(
-						"name" => $file["name"],
-						"type" => $file["type"],
-						"tmp_name" => $file["tmp_name"],
-						"error" => $file["error"],
-						"size" => $file["size"],
+						"name" => isset($file["name"]) ? $file["name"] : null,
+						"type" => isset($file["type"]) ? $file["type"] : null,
+						"tmp_name" => isset($file["tmp_name"]) ? $file["tmp_name"] : null,
+						"error" => isset($file["error"]) ? $file["error"] : null,
+						"size" => isset($file["size"]) ? $file["size"] : null,
 					);
 				}
 			}
@@ -146,11 +146,11 @@ if (!class_exists("ObjectsGroupUtil")) {
 				foreach ($files as $group => $items) {
 					foreach ($items["name"] as $i => $item) {
 						$new_files[$i][$group] = array(
-							"name" => $items["name"][$i],
-							"type" => $items["type"][$i],
-							"tmp_name" => $items["tmp_name"][$i],
-							"error" => $items["error"][$i],
-							"size" => $items["size"][$i],
+							"name" => isset($items["name"][$i]) ? $items["name"][$i] : null,
+							"type" => isset($items["type"][$i]) ? $items["type"][$i] : null,
+							"tmp_name" => isset($items["tmp_name"][$i]) ? $items["tmp_name"][$i] : null,
+							"error" => isset($items["error"][$i]) ? $items["error"][$i] : null,
+							"size" => isset($items["size"][$i]) ? $items["size"][$i] : null,
 						);
 					}
 				}
@@ -174,7 +174,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 						break;
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["object"] = addcslashes(json_encode($data["object"]), "\\'");
+						$data["object"] = isset($data["object"]) ? addcslashes(json_encode($data["object"]), "\\'") : "";
 					
 						$status = $broker->callInsert("module/objectsgroup", "insert_objects_group", $data);
 						$objects_group_id = $status ? $broker->getInsertedId() : $status;
@@ -182,13 +182,14 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
+						$ids = null;
 						$status = $ObjectsGroup->insert($data, $ids);
-						$objects_group_id = $status ? $ids["objects_group_id"] : $status;
+						$objects_group_id = $status ? (isset($ids["objects_group_id"]) ? $ids["objects_group_id"] : null) : $status;
 						break;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$status = $broker->insertObject("mog_object_objects_group", array(
-								"object" => $data["object"], 
+								"object" => isset($data["object"]) ? $data["object"] : null,
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -197,8 +198,10 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				if ($objects_group_id) {
-					$status = TagUtil::updateObjectTags($broker, $data["tags"], ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id) && self::uploadObjectsGroupAttachments($EVC, $data, $files, $objects_group_id, $broker) && self::updateObjectObjectsGroupsByObjectsGroupId(array($broker), $objects_group_id, $data);
+				if (!empty($objects_group_id)) {
+					$tags = isset($data["tags"]) ? $data["tags"] : null;
+					
+					$status = TagUtil::updateObjectTags($broker, $tags, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id) && self::uploadObjectsGroupAttachments($EVC, $data, $files, $objects_group_id, $broker) && self::updateObjectObjectsGroupsByObjectsGroupId(array($broker), $objects_group_id, $data);
 					
 					return $status ? $objects_group_id : false;
 				}
@@ -206,9 +209,10 @@ if (!class_exists("ObjectsGroupUtil")) {
 		}
 	
 		public static function updateObjectsGroup($EVC, $data, $files = null, $brokers = array()) {
+			$status = null;
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
-			if (is_array($brokers) && is_numeric($data["objects_group_id"])) {
+			if (is_array($brokers) && isset($data["objects_group_id"]) && is_numeric($data["objects_group_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
@@ -217,7 +221,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 						break;
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["object"] = addcslashes(json_encode($data["object"]), "\\'");
+						$data["object"] = isset($data["object"]) ? addcslashes(json_encode($data["object"]), "\\'") : "";
 					
 						$status = $broker->callUpdate("module/objectsgroup", "update_objects_group", $data);
 						break;
@@ -229,7 +233,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$status = $broker->updateObject("mog_objects_group", array(
-								"object" => $data["object"], 
+								"object" => isset($data["object"]) ? $data["object"] : null,
 								"modified_date" => $data["modified_date"]
 							), array(
 								"objects_group_id" => $data["objects_group_id"]
@@ -239,7 +243,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 				}
 				
 				if ($status) {
-					$status = TagUtil::updateObjectTags($broker, $data["tags"], ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $data["objects_group_id"]) && self::uploadObjectsGroupAttachments($EVC, $data, $files, $data["objects_group_id"], $broker, true) && self::updateObjectObjectsGroupsByObjectsGroupId(array($broker), $data["objects_group_id"], $data);
+					$tags = isset($data["tags"]) ? $data["tags"] : null;
+					
+					$status = TagUtil::updateObjectTags($broker, $tags, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $data["objects_group_id"]) && self::uploadObjectsGroupAttachments($EVC, $data, $files, $data["objects_group_id"], $broker, true) && self::updateObjectObjectsGroupsByObjectsGroupId(array($broker), $data["objects_group_id"], $data);
 				}
 			}
 			
@@ -253,12 +259,12 @@ if (!class_exists("ObjectsGroupUtil")) {
 				foreach ($files as $group => $file) {
 					$group_id = is_numeric($group) ? $group : HashCode::getHashCodePositive($group);
 					
-					if (!$data[$group] && $is_update)
+					if (empty($data[$group]) && $is_update)
 						AttachmentUtil::deleteFileByObject($EVC, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id, $group_id, array($broker));
 					
-					if ($file["tmp_name"]) {
+					if (!empty($file["tmp_name"])) {
 						//insert or update photo
-						$photo_id = AttachmentUtil::replaceObjectFile($EVC, $file, $data[$group], ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id, $group_id, 0, array($broker));
+						$photo_id = AttachmentUtil::replaceObjectFile($EVC, $file, isset($data[$group]) ? $data[$group] : null, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id, $group_id, 0, array($broker));
 						
 						if (!$photo_id)
 							$status = false;
@@ -270,6 +276,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 	
 		public static function deleteObjectsGroup($EVC, $objects_group_id, $brokers = array()) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
+			$status = null;
 			
 			if (is_array($brokers) && is_numeric($objects_group_id)) {
 				foreach ($brokers as $broker) {
@@ -312,19 +319,19 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$data = $broker->callSelect("module/objectsgroup", "get_objects_group", array("objects_group_id" => $objects_group_id), array("no_cache" => $no_cache));
-						$data["object"] = json_decode($data["object"], true);
+						$data["object"] = isset($data["object"]) ? json_decode($data["object"], true) : null;
 						break;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$data = $ObjectsGroup->findById($objects_group_id, null, array("no_cache" => $no_cache));
-						$data["object"] = json_decode($data["object"], true);
+						$data["object"] = isset($data["object"]) ? json_decode($data["object"], true) : null;
 						break;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$data = $broker->findObjects("mog_objects_group", null, array("objects_group_id" => $objects_group_id), array("no_cache" => $no_cache));
-						$data = $data[0];
-						$data["object"] = json_decode($data["object"], true);
+						$data = isset($data[0]) ? $data[0] : null;
+						$data["object"] = isset($data["object"]) ? json_decode($data["object"], true) : null;
 						break;
 					}
 				}
@@ -332,7 +339,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 				if ($data) {
 					$data["tags"] = TagUtil::getObjectTagsString($broker, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_id);
 					$attachments = self::getObjectsGroupAttachments($EVC, $objects_group_id, array($broker));
-					$data["attachments"] = $attachments[$objects_group_id];
+					$data["attachments"] = isset($attachments[$objects_group_id]) ? $attachments[$objects_group_id] : null;
 				}
 				
 				return $data;
@@ -344,7 +351,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$data = $broker->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.getObjectsGroupsByConditions", array("conditions" => $conditions, "conditions_join" => $conditions_join, "options" => $options), $options);
@@ -371,7 +379,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -388,7 +398,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
@@ -407,7 +417,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$data = $broker->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.getObjectsGroupsByObjectAndConditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $conditions, "conditions_join" => $conditions_join, "options" => $options), $options);
@@ -437,7 +448,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -454,21 +467,21 @@ if (!class_exists("ObjectsGroupUtil")) {
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 					
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -479,8 +492,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
-				$objects_group_ids = is_array($objects_group_ids) ? implode(', ', $objects_group_ids) : $objects_group_ids;
+				$data = null;
+				
+				$objects_group_ids_str = is_array($objects_group_ids) ? implode(', ', $objects_group_ids) : $objects_group_ids;
 				$objects_group_ids_str = str_replace(array("'", "\\"), "", $objects_group_ids_str);
 			
 				foreach ($brokers as $broker) {
@@ -507,7 +521,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -519,7 +535,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -553,7 +570,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -578,18 +597,18 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_tags", array("tags" => $tags_str, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_tags(array("tags" => $tags_str, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -602,7 +621,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -636,7 +656,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -661,18 +683,18 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -680,12 +702,13 @@ if (!class_exists("ObjectsGroupUtil")) {
 	
 		//$tags is a string containing multiple objects_group tags
 		//This method will return the objects_groups that contains at least one tag in $tags
-		public static function getObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group = null, $tags, $brokers = array(), $options = array(), $no_cache = false) {
+		public static function getObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group = null, $tags = null, $brokers = array(), $options = array(), $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -726,14 +749,16 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
 	
 		//$tags is a string containing multiple objects_group tags
 		//This method will return the objects_groups that contains at least one tag in $tags
-		public static function countObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group = null, $tags, $brokers = array(), $no_cache = false) {
+		public static function countObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group = null, $tags = null, $brokers = array(), $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
@@ -755,21 +780,21 @@ if (!class_exists("ObjectsGroupUtil")) {
 						$group = is_numeric($group) ? $group : 0;
 						
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
 						
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -782,7 +807,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -818,7 +844,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 						}
 					}
 				
-					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+					if ($data)
+						self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+
 					return $data;
 				}
 			}
@@ -844,18 +872,18 @@ if (!class_exists("ObjectsGroupUtil")) {
 						}
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 							$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 							$result = $ObjectsGroup->callSelect("count_objects_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							$sql = ObjectsGroupDBDAOUtil::count_objects_groups_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 							
 							$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
@@ -869,7 +897,8 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -886,18 +915,18 @@ if (!class_exists("ObjectsGroupUtil")) {
 							break;
 						}
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-							$data = $broker->callSelect("module/objectsgroup", "get_objects_groups_by_object_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
+							$data = $broker->callSelect("module/objectsgroup", "get_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
 							self::prepareObjectsGroupsListData($data);
 							break;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
-							$data = $ObjectsGroup->callSelect("get_objects_groups_by_object_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
+							$data = $ObjectsGroup->callSelect("get_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
 							self::prepareObjectsGroupsListData($data);
 							break;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
-							$sql = ObjectsGroupDBDAOUtil::get_objects_groups_by_object_and_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
+							$sql = ObjectsGroupDBDAOUtil::get_objects_groups_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 							
 							$data = $broker->getSQL($sql, $options);
 							self::prepareObjectsGroupsListData($data);
@@ -905,7 +934,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 						}
 					}
 				
-					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+					if ($data)
+						self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+					
 					return $data;
 				}
 			}
@@ -930,19 +961,19 @@ if (!class_exists("ObjectsGroupUtil")) {
 							return $broker->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectWithAllTags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, "options" => array("no_cache" => $no_cache)), array("no_cache" => $no_cache));
 						}
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-							$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
-							$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
-							$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_and_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
+							$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 							
 							$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
@@ -951,12 +982,13 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 		//$tags is a string containing multiple objects_group tags
 		//This method will return the objects_groups that contains all $tags
-		public static function getObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group = null, $tags, $brokers = array(), $options = array(), $no_cache = false) {
+		public static function getObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group = null, $tags = null, $brokers = array(), $options = array(), $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				$tags = TagUtil::convertTagsStringToArray($tags);
 				$tags = array_values($tags);
 		
@@ -977,7 +1009,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 							$group = is_numeric($group) ? $group : 0;
 							
-							$data = $broker->callSelect("module/objectsgroup", "get_objects_groups_by_object_group_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
+							$data = $broker->callSelect("module/objectsgroup", "get_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
 							self::prepareObjectsGroupsListData($data);
 							break;
 						}
@@ -985,13 +1017,13 @@ if (!class_exists("ObjectsGroupUtil")) {
 							$group = is_numeric($group) ? $group : 0;
 							
 							$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
-							$data = $ObjectsGroup->callSelect("get_objects_groups_by_object_group_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
+							$data = $ObjectsGroup->callSelect("get_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), $options);
 							self::prepareObjectsGroupsListData($data);
 							break;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							$group = is_numeric($group) ? $group : 0;
-							$sql = ObjectsGroupDBDAOUtil::get_objects_groups_by_object_group_and_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
+							$sql = ObjectsGroupDBDAOUtil::get_objects_groups_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 							
 							$data = $broker->getSQL($sql, $options);
 							self::prepareObjectsGroupsListData($data);
@@ -999,13 +1031,15 @@ if (!class_exists("ObjectsGroupUtil")) {
 						}
 					}
 				
-					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+					if ($data)
+						self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+					
 					return $data;
 				}
 			}
 		}
 	
-		public static function countObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group = null, $tags, $brokers = array(), $no_cache = false) {
+		public static function countObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group = null, $tags = null, $brokers = array(), $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
@@ -1028,22 +1062,22 @@ if (!class_exists("ObjectsGroupUtil")) {
 						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 							$group = is_numeric($group) ? $group : 0;
 							
-							$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_group_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 							$group = is_numeric($group) ? $group : 0;
 							
 							$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
-							$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group_and_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID), array("no_cache" => $no_cache));
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 						else if (is_a($broker, "IDBBrokerClient")) {
 							$group = is_numeric($group) ? $group : 0;
-							$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_group_and_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
+							$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID));
 							
 							$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-							return $result[0]["total"];
+							return isset($result[0]["total"]) ? $result[0]["total"] : null;
 						}
 					}
 				}
@@ -1055,6 +1089,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 			if (is_array($brokers)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
+				$data = null;
 				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -1079,7 +1114,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -1095,7 +1132,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_all_objects_groups", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
@@ -1108,12 +1145,13 @@ if (!class_exists("ObjectsGroupUtil")) {
 			}
 		}
 	
-		public static function getObjectsGroupsByObject($EVC, $object_type_id, $object_id, $brokers = array(), $options, $no_cache = false) {
+		public static function getObjectsGroupsByObject($EVC, $object_type_id, $object_id, $brokers = array(), $options = null, $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-		
+				$data = null;
+				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$data = $broker->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.getObjectsGroupsByObject", array("object_type_id" => $object_type_id, "object_id" => $object_id, "options" => $options), array("no_cache" => $no_cache));
@@ -1139,7 +1177,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -1154,29 +1194,30 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
 		}
 
-		public static function getObjectsGroupsByObjectGroup($EVC, $object_type_id, $object_id, $group = null, $brokers = array(), $options, $no_cache = false) {
+		public static function getObjectsGroupsByObjectGroup($EVC, $object_type_id, $object_id, $group = null, $brokers = array(), $options = null, $no_cache = false) {
 			$brokers = $brokers ? $brokers : $EVC->getPresentationLayer()->getBrokers();
 		
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
-			
+				$data = null;
+				
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$group = is_numeric($group) ? $group : null;
@@ -1209,7 +1250,9 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 				}
 				
-				self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				if ($data)
+					self::prepareObjectsGroupsWithTags($EVC, $data, $broker);
+				
 				return $data;
 			}
 		}
@@ -1228,21 +1271,21 @@ if (!class_exists("ObjectsGroupUtil")) {
 						$group = is_numeric($group) ? $group : 0;
 					
 						$result = $broker->callSelect("module/objectsgroup", "count_objects_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
 					
 						$ObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectsGroup");
 						$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$group = is_numeric($group) ? $group : 0;
 						$sql = ObjectsGroupDBDAOUtil::count_objects_groups_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group));
 						
 						$result = $broker->getSQL($sql, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 				}
 			}
@@ -1251,32 +1294,32 @@ if (!class_exists("ObjectsGroupUtil")) {
 		/* OBJECT OBJECTS GROUP FUNCTIONS */
 
 		public static function insertObjectObjectsGroup($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["objects_group_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+			if (is_array($brokers) && isset($data["objects_group_id"]) && is_numeric($data["objects_group_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/objectsgroup", "ObjectObjectsGroupService.insertObjectObjectsGroup", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callInsert("module/objectsgroup", "insert_object_objects_group", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
 						return $ObjectObjectsGroup->insert($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->insertObject("mog_object_objects_group", array(
 								"objects_group_id" => $data["objects_group_id"], 
@@ -1298,26 +1341,26 @@ if (!class_exists("ObjectsGroupUtil")) {
 		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/objectsgroup", "ObjectObjectsGroupService.updateObjectObjectsGroup", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callUpdate("module/objectsgroup", "update_object_objects_group", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
 						return $ObjectObjectsGroup->updatePrimaryKeys($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->updateObject("mog_object_objects_group", array(
 								"objects_group_id" => $data["new_objects_group_id"], 
@@ -1340,10 +1383,10 @@ if (!class_exists("ObjectsGroupUtil")) {
 			if (is_array($brokers) && is_numeric($objects_group_id)) {
 				if (self::deleteObjectObjectsGroupsByObjectsGroupId($brokers, $objects_group_id)) {
 					$status = true;
-					$object_objects_groups = is_array($data["object_objects_groups"]) ? $data["object_objects_groups"] : array();
+					$object_objects_groups = isset($data["object_objects_groups"]) && is_array($data["object_objects_groups"]) ? $data["object_objects_groups"] : array();
 					
 					foreach ($object_objects_groups as $object_objects_group) {
-						if (is_numeric($object_objects_group["object_type_id"]) && is_numeric($object_objects_group["object_id"])) {
+						if (isset($object_objects_group["object_type_id"]) && is_numeric($object_objects_group["object_type_id"]) && isset($object_objects_group["object_id"]) && is_numeric($object_objects_group["object_id"])) {
 							$object_objects_group["objects_group_id"] = $objects_group_id;
 					
 							if (!self::insertObjectObjectsGroup($brokers, $object_objects_group)) {
@@ -1431,7 +1474,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "get_object_objects_group", array("objects_group_id" => $objects_group_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
@@ -1439,7 +1482,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$result = $broker->findObjects("mog_object_objects_group", null, array("objects_group_id" => $objects_group_id, "object_type_id" => $object_type_id, "object_id" => $object_id), array("no_cache" => $no_cache));
-						return $result[0];
+						return isset($result[0]) ? $result[0] : null;
 					}
 				}
 			}
@@ -1482,7 +1525,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/objectsgroup", "count_object_objects_groups_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
@@ -1527,7 +1570,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_all_object_objects_groups", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
@@ -1572,7 +1615,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/objectsgroup", "count_object_objects_groups_by_objects_group_id", array("objects_group_id" => $objects_group_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectObjectsGroup = $broker->callObject("module/objectsgroup", "ObjectObjectsGroup");
@@ -1591,7 +1634,7 @@ if (!class_exists("ObjectsGroupUtil")) {
 			if ($data) {
 				$t = count($data);
 				for ($i = 0; $i < $t; $i++)
-					$data[$i]["object"] = json_decode($data[$i]["object"], true);
+					$data[$i]["object"] = isset($data[$i]["object"]) ? json_decode($data[$i]["object"], true) : null;
 			}
 		}
 		
@@ -1601,21 +1644,21 @@ if (!class_exists("ObjectsGroupUtil")) {
 				
 				$objects_group_ids = array();
 				for ($i = 0; $i < $t; $i++)
-					$objects_group_ids[$i] = $data[$i]["objects_group_id"];
+					$objects_group_ids[$i] = isset($data[$i]["objects_group_id"]) ? $data[$i]["objects_group_id"] : null;
 				
 				$indexes = array_flip($objects_group_ids);
 				
 				$tags = TagUtil::getObjectsTagsString($broker, ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID, $objects_group_ids);
 				if ($tags)
 					foreach ($tags as $objects_group_id => $objects_group_tags) {
-						$idx = $indexes[$objects_group_id];
+						$idx = isset($indexes[$objects_group_id]) ? $indexes[$objects_group_id] : null;
 						$data[$idx]["tags"] = $objects_group_tags;
 					}
 				
 				$attachments = self::getObjectsGroupAttachments($EVC, $objects_group_ids, array($broker));
 				if ($attachments)
 					foreach ($attachments as $objects_group_id => $objects_group_attachments) {
-						$idx = $indexes[$objects_group_id];
+						$idx = isset($indexes[$objects_group_id]) ? $indexes[$objects_group_id] : null;
 						$data[$idx]["attachments"] = $objects_group_attachments;
 					}
 			}
@@ -1632,19 +1675,20 @@ if (!class_exists("ObjectsGroupUtil")) {
 				$url = AttachmentUtil::getAttachmentsFolderUrl($EVC);
 				
 				foreach ($attachments as $idx => $attachment) {
-					$path = $attachment["path"];
+					$path = isset($attachment["path"]) ? $attachment["path"] : null;
+					$object_id = isset($attachment["object_id"]) ? $attachment["object_id"] : null;
 					
 					if ($path) {
 						$attachment["absolute_path"] = $folder_path . $path;
 						$attachment["url"] = $url . $path;
 					}
 					
-					$group = $attachment["group"];
+					$group = isset($attachment["group"]) ? $attachment["group"] : null;
 					if (strlen($group)) {
-						$new_attachments[ $attachment["object_id"] ][$group][] = $attachment;
+						$new_attachments[$object_id][$group][] = $attachment;
 					}
 					else {
-						$new_attachments[ $attachment["object_id"] ][] = $attachment;
+						$new_attachments[$object_id][] = $attachment;
 					}
 				}
 			}

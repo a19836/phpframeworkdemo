@@ -4,19 +4,19 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include_once get_lib("org.phpframework.util.MimeTypeHandler");
 	include $EVC->getModulePath("translator/admin/TranslatorAdminUtil", $common_project_name);
 	
 	$TranslatorAdminUtil = new TranslatorAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	if ($_POST) {
+	if (!empty($_POST)) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 		
 		$properties = array(
-			"TEXT_TRANSLATOR_DEFAULT_LANGUAGE" => $_POST["TEXT_TRANSLATOR_DEFAULT_LANGUAGE"] ? $_POST["TEXT_TRANSLATOR_DEFAULT_LANGUAGE"] : "",
-			"TEXT_TRANSLATOR_ROOT_FOLDER_PATH" => $_POST["TEXT_TRANSLATOR_ROOT_FOLDER_PATH"] ? $_POST["TEXT_TRANSLATOR_ROOT_FOLDER_PATH"] : "",
+			"TEXT_TRANSLATOR_DEFAULT_LANGUAGE" => !empty($_POST["TEXT_TRANSLATOR_DEFAULT_LANGUAGE"]) ? $_POST["TEXT_TRANSLATOR_DEFAULT_LANGUAGE"] : "",
+			"TEXT_TRANSLATOR_ROOT_FOLDER_PATH" => !empty($_POST["TEXT_TRANSLATOR_ROOT_FOLDER_PATH"]) ? $_POST["TEXT_TRANSLATOR_ROOT_FOLDER_PATH"] : "",
 		);
 		
 		if ($CommonModuleAdminUtil->setModuleSettings($PEVC, "translator/TranslatorSettings", $properties)) {
@@ -37,8 +37,8 @@ if ($PEVC) {
 			"TEXT_TRANSLATOR_ROOT_FOLDER_PATH" => array("type" => "text", "label" => "Default Root Folder Path: "),
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_settings.css" type="text/css" charset="utf-8" />';

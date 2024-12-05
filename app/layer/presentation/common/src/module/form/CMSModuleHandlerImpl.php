@@ -11,9 +11,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$html = '';
 		
 		//load old form settings - Do not remove this code until all the old forms have the new settings
-		if ($settings[0]) {
+		if (!empty($settings[0])) {
 			$form_settings = $settings[0];
-			$input_data = $settings[1];
+			$input_data = isset($settings[1]) ? $settings[1] : null;
 			
 			translateProjectFormSettings($EVC, $form_settings);
 			

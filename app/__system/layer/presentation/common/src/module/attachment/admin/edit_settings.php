@@ -4,24 +4,24 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include_once get_lib("org.phpframework.util.MimeTypeHandler");
 	include $EVC->getModulePath("attachment/admin/AttachmentAdminUtil", $common_project_name);
 	
 	$AttachmentAdminUtil = new AttachmentAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	if ($_POST) {
+	if (!empty($_POST)) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 		
 		$properties = array(
-			"ATTACHMENTS_ABSOLUTE_FOLDER_PATH" => $_POST["ATTACHMENTS_ABSOLUTE_FOLDER_PATH"] ? $_POST["ATTACHMENTS_ABSOLUTE_FOLDER_PATH"] : "",
-			"ATTACHMENTS_RELATIVE_FOLDER_PATH" => $_POST["ATTACHMENTS_RELATIVE_FOLDER_PATH"] ? $_POST["ATTACHMENTS_RELATIVE_FOLDER_PATH"] : "files",
-			"ATTACHMENTS_URL" => $_POST["ATTACHMENTS_URL"],
-			"ALLOWED_MIME_TYPES" => is_array($_POST["ALLOWED_MIME_TYPES"]) ? trim(implode(";", array_unique($_POST["ALLOWED_MIME_TYPES"]))) . ";" : "",
-			"DENIED_MIME_TYPES" => is_array($_POST["DENIED_MIME_TYPES"]) ? trim(implode(";", array_unique($_POST["DENIED_MIME_TYPES"]))) . ";" : "",
-			"ALLOWED_EXTENSIONS" => is_array($_POST["ALLOWED_EXTENSIONS"]) ? trim(implode(";", array_unique($_POST["ALLOWED_EXTENSIONS"]))) . ";" : "",
-			"DENIED_EXTENSIONS" => is_array($_POST["DENIED_EXTENSIONS"]) ? trim(implode(";", array_unique($_POST["DENIED_EXTENSIONS"]))) . ";" : "",
+			"ATTACHMENTS_ABSOLUTE_FOLDER_PATH" => !empty($_POST["ATTACHMENTS_ABSOLUTE_FOLDER_PATH"]) ? $_POST["ATTACHMENTS_ABSOLUTE_FOLDER_PATH"] : "",
+			"ATTACHMENTS_RELATIVE_FOLDER_PATH" => !empty($_POST["ATTACHMENTS_RELATIVE_FOLDER_PATH"]) ? $_POST["ATTACHMENTS_RELATIVE_FOLDER_PATH"] : "files",
+			"ATTACHMENTS_URL" => isset($_POST["ATTACHMENTS_URL"]) ? $_POST["ATTACHMENTS_URL"] : null,
+			"ALLOWED_MIME_TYPES" => isset($_POST["ALLOWED_MIME_TYPES"]) && is_array($_POST["ALLOWED_MIME_TYPES"]) ? trim(implode(";", array_unique($_POST["ALLOWED_MIME_TYPES"]))) . ";" : "",
+			"DENIED_MIME_TYPES" => isset($_POST["DENIED_MIME_TYPES"]) && is_array($_POST["DENIED_MIME_TYPES"]) ? trim(implode(";", array_unique($_POST["DENIED_MIME_TYPES"]))) . ";" : "",
+			"ALLOWED_EXTENSIONS" => isset($_POST["ALLOWED_EXTENSIONS"]) && is_array($_POST["ALLOWED_EXTENSIONS"]) ? trim(implode(";", array_unique($_POST["ALLOWED_EXTENSIONS"]))) . ";" : "",
+			"DENIED_EXTENSIONS" => isset($_POST["DENIED_EXTENSIONS"]) && is_array($_POST["DENIED_EXTENSIONS"]) ? trim(implode(";", array_unique($_POST["DENIED_EXTENSIONS"]))) . ";" : "",
 		);
 		
 		if ($CommonModuleAdminUtil->setModuleSettings($PEVC, "attachment/AttachmentSettings", $properties)) {
@@ -39,7 +39,13 @@ if ($PEVC) {
 	$t = count(MimeTypeHandler::$types);
 	for ($i = 0; $i < $t; $i++) {
 		$item = MimeTypeHandler::$types[$i];
-		$mime_types_options[] = array("label" => '.' . $item["extension"] . " - " . $item["mime_type"], "other_attributes" => 'extension="' . $item["extension"] . '" mime_type="' . $item["mime_type"] . '"');
+		$item_extension = isset($item["extension"]) ? $item["extension"] : null;
+		$item_mime_type = isset($item["mime_type"]) ? $item["mime_type"] : null;
+		
+		$mime_types_options[] = array(
+			"label" => '.' . $item_extension . " - " . $item_mime_type, 
+			"other_attributes" => 'extension="' . $item_extension . '" mime_type="' . $item_mime_type . '"'
+		);
 	}
 	
 	//Preparing HTML
@@ -118,8 +124,8 @@ if ($PEVC) {
 			'),
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_settings.css" type="text/css" charset="utf-8" />
@@ -127,16 +133,16 @@ if ($PEVC) {
 	<script>
 		var available_types_by_mime_types = ' . json_encode(MimeTypeHandler::getAvailableTypesByMimeType()) . ';
 	
-		var allowed_mime_types = \'' . $data["ALLOWED_MIME_TYPES"] . '\';
+		var allowed_mime_types = \'' . (isset($data["ALLOWED_MIME_TYPES"]) ? $data["ALLOWED_MIME_TYPES"] : null) . '\';
 		var allowed_mime_type_html = \'<tr><td class="extension">#extension#</td><td class="mime_type"><input type="hidden" name="ALLOWED_MIME_TYPES[]" value="#mime_type#" />#mime_type#</td><td class="icons"><span class="icon delete" onClick="deleteMimeType(this)">Remove</span></td></tr>\';
 		
-		var denied_mime_types = \'' . $data["DENIED_MIME_TYPES"] . '\';
+		var denied_mime_types = \'' . (isset($data["DENIED_MIME_TYPES"]) ? $data["DENIED_MIME_TYPES"] : null) . '\';
 		var denied_mime_type_html = allowed_mime_type_html.replace("ALLOWED_MIME_TYPES", "DENIED_MIME_TYPES");
 	
-		var allowed_extensions = \'' . $data["ALLOWED_EXTENSIONS"] . '\';
+		var allowed_extensions = \'' . (isset($data["ALLOWED_EXTENSIONS"]) ? $data["ALLOWED_EXTENSIONS"] : null) . '\';
 		var allowed_extension_html = \'<tr><td class="extension"><input type="hidden" name="ALLOWED_EXTENSIONS[]" value="#extension#" />#extension#</td><td class="icons"><span class="icon delete" onClick="deleteExtension(this)">Remove</span></td></tr>\';
 	
-		var denied_extensions = \'' . $data["DENIED_EXTENSIONS"] . '\';
+		var denied_extensions = \'' . (isset($data["DENIED_EXTENSIONS"]) ? $data["DENIED_EXTENSIONS"] : null) . '\';
 		var denied_extension_html = allowed_extension_html.replace("ALLOWED_EXTENSIONS", "DENIED_EXTENSIONS");
 	</script>';
 	$menu_settings = $AttachmentAdminUtil->getMenuSettings();

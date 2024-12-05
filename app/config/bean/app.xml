@@ -28,9 +28,9 @@
 	
 	<var name="log_vars">
 		<list>
-			<item name="log_level">&lt;?php echo $GLOBALS["log_level"]; ?&gt;</item>
-			<item name="log_echo_active">&lt;?php echo $GLOBALS["log_echo_active"]; ?&gt;</item>
-			<item name="log_file_path">&lt;?php echo $GLOBALS["log_file_path"]; ?&gt;</item>
+			<item name="log_level">&lt;?php echo isset($GLOBALS["log_level"] ) ? $GLOBALS["log_level"] : ""; ?&gt;</item>
+			<item name="log_echo_active">&lt;?php echo isset($GLOBALS["log_echo_active"]) ? $GLOBALS["log_echo_active"] : ""; ?&gt;</item>
+			<item name="log_file_path">&lt;?php echo isset($GLOBALS["log_file_path"]) ? $GLOBALS["log_file_path"] : ""; ?&gt;</item>
 			<item name="log_css"><![CDATA[
 				body {
 					overflow:overlay;

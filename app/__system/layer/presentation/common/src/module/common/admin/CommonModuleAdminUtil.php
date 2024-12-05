@@ -61,12 +61,18 @@ class CommonModuleAdminUtil {
 		$file_code_class = PHPCodePrintingHandler::getClassOfFile($file_code);
 		
 		if ($file_code_class) {
-			$settings_class_name = PHPCodePrintingHandler::prepareClassNameWithNameSpace($file_code_class["name"], $file_code_class["namespace"]);
+			$file_code_class_name = isset($file_code_class["name"]) ? $file_code_class["name"] : null;
+			$file_code_class_namespace = isset($file_code_class["namespace"]) ? $file_code_class["namespace"] : null;
+			$settings_class_name = PHPCodePrintingHandler::prepareClassNameWithNameSpace($file_code_class_name, $file_code_class_namespace);
 			
 			$properties = PHPCodePrintingHandler::getClassPropertiesFromFile($settings_file_path, $settings_class_name);
 			
-			foreach ($properties as $property) 
-				$vars[ $property["name"] ] = $property["value"];
+			foreach ($properties as $property) {
+				$property_name = isset($property["name"]) ? $property["name"] : null;
+				$property_value = isset($property["value"]) ? $property["value"] : null;
+				
+				$vars[$property_name] = $property_value;
+			}
 		}
 		
 		//echo "<pre>";print_r($properties);print_r($vars);echo "<textarea>".file_get_contents($settings_file_path)."</textarea>";die();
@@ -78,7 +84,9 @@ class CommonModuleAdminUtil {
 		$file_code_class = PHPCodePrintingHandler::getClassOfFile($file_code);
 		
 		if ($file_code_class) {
-			$settings_class_name = PHPCodePrintingHandler::prepareClassNameWithNameSpace($file_code_class["name"], $file_code_class["namespace"]);
+			$file_code_class_name = isset($file_code_class["name"]) ? $file_code_class["name"] : null;
+			$file_code_class_namespace = isset($file_code_class["namespace"]) ? $file_code_class["namespace"] : null;
+			$settings_class_name = PHPCodePrintingHandler::prepareClassNameWithNameSpace($file_code_class_name, $file_code_class_namespace);
 		
 			$properties = PHPCodePrintingHandler::getClassPropertiesFromFile($settings_file_path, $settings_class_name);
 			
@@ -86,10 +94,10 @@ class CommonModuleAdminUtil {
 				$code = "";
 				
 				foreach ($properties as $prop) {
-					$name = trim($prop["name"]);
-					$type = $prop["type"] ? $prop["type"] : "public";
-					$type = $prop["const"] ? "const" : $type;
-					$static = $prop["static"] ? " static" : "";
+					$name = isset($prop["name"]) ? trim($prop["name"]) : "";
+					$type = !empty($prop["type"]) ? $prop["type"] : "public";
+					$type = !empty($prop["const"]) ? "const" : $type;
+					$static = !empty($prop["static"]) ? " static" : "";
 					
 					if (isset($vars[$name])) {
 						$value = $vars[$name];
@@ -97,8 +105,9 @@ class CommonModuleAdminUtil {
 						unset($vars[$name]);
 					}
 					else {
-						$var_type = $prop["var_type"] ? $prop["var_type"] : "string";
-						$value = $var_type == "string" ? '"' . addcslashes($prop["value"], '"') . '"' : $prop["value"];//Please do not add the addcslashes($prop["value"], '\\"') otherwise it will create an extra \\. The correct is without the \\, because you are editing php code directly.
+						$var_type = !empty($prop["var_type"]) ? $prop["var_type"] : "string";
+						$value = isset($prop["value"]) ? $prop["value"] : null;
+						$value = $var_type == "string" ? '"' . addcslashes($value, '"') . '"' : $value;//Please do not add the addcslashes($prop["value"], '\\"') otherwise it will create an extra \\. The correct is without the \\, because you are editing php code directly.
 					}
 					
 					$name = $type == "const" ? $name : "\$$name";
@@ -138,7 +147,7 @@ class CommonModuleAdminUtil {
 	}
 	
 	public function getListContent($settings) {
-		$settings["class"] = "module_list " . $settings["class"];
+		$settings["class"] = "module_list " . (isset($settings["class"]) ? $settings["class"] : "");
 		$settings["title_class"] = "main_title";
 		$settings["empty_list_message"] = "There are no available items...";
 		
@@ -146,7 +155,7 @@ class CommonModuleAdminUtil {
 	}
 	
 	public function getFormContent($settings) {
-		$settings["class"] = "module_edit " . $settings["class"];
+		$settings["class"] = "module_edit " . (isset($settings["class"]) ? $settings["class"] : "");
 		$settings["title_class"] = "main_title";
 		$settings["status_message_class"] = "module_status_message";
 		$settings["error_message_class"] = "module_error_message";
@@ -217,7 +226,8 @@ class CommonModuleAdminUtil {
 		
 		$available_object_types = array();
 		foreach ($this->object_types as $object_type)
-			$available_object_types[ $object_type["object_type_id"] ] = $object_type["name"];
+			if (isset($object_type["object_type_id"]))
+				$available_object_types[ $object_type["object_type_id"] ] = isset($object_type["name"]) ? $object_type["name"] : null;
 		
 		return $available_object_types;
 	}
@@ -226,13 +236,17 @@ class CommonModuleAdminUtil {
 		$this->initObjectTypes($brokers);
 		
 		$object_type_options = array( array("value" => "", "label" => "") ); //ad default empty option
-		$default_id = $data ? $data["object_type_id"] : null;
+		$default_id = isset($data["object_type_id"]) ? $data["object_type_id"] : null;
 		$exists = false;
 		
 		foreach ($this->object_types as $object_type) {
-			$object_type_options[] = array("value" => $object_type["object_type_id"], "label" => $object_type["name"]);
+			$object_type_id = isset($object_type["object_type_id"]) ? $object_type["object_type_id"] : null;
+			$object_type_options[] = array(
+				"value" => $object_type_id, 
+				"label" => isset($object_type["name"]) ? $object_type["name"] : null
+			);
 			
-			if ($default_id && $object_type["object_type_id"] == $default_id)
+			if ($default_id && $object_type_id == $default_id)
 				$exists = true;
 		}
 		
@@ -261,7 +275,12 @@ class CommonModuleAdminUtil {
 		
 		$available_users = array();
 		foreach ($this->all_users as $user)
-			$available_users[ $user["user_id"] ] = $user["name"] . " - " . $user["username"];
+			if (isset($user["user_id"])) {
+				$user_name = isset($user["name"]) ? $user["name"] : null;
+				$user_username = isset($user["username"]) ? $user["username"] : null;
+				
+				$available_users[ $user["user_id"] ] = $user_name . " - " . $user_username;
+			}
 		
 		return $available_users;
 	}
@@ -274,12 +293,18 @@ class CommonModuleAdminUtil {
 		
 		if ($this->all_users_count < UserUtil::getConstantVariable("MAXIMUM_USERS_RECORDS_IN_COMBO_BOX")) {
 			$exists = false;
-			$default_id = $data ? $data["user_id"] : null;
+			$default_id = isset($data["user_id"]) ? $data["user_id"] : null;
 			
 			foreach ($this->all_users as $user) {
-				$user_options[] = array("value" => $user["user_id"], "label" => $user["name"] . " - " . $user["username"]);
+				$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+				$user_name = isset($user["name"]) ? $user["name"] : null;
+				$user_username = isset($user["username"]) ? $user["username"] : null;
+				$user_options[] = array(
+					"value" => $user_id, 
+					"label" => $user_username . " - " . $user_username
+				);
 				
-				if ($default_id && $user["user_id"] == $default_id)
+				if ($default_id && $user_id == $default_id)
 					$exists = true;
 			}
 			
@@ -298,14 +323,18 @@ class CommonModuleAdminUtil {
 		if ($data) {
 			$user_ids = array();
 			foreach ($data as $item)
-				if ($item["user_id"])
+				if (!empty($item["user_id"]))
 					$user_ids[] = $item["user_id"];
 			
 			if ($user_ids) {
 				if (isset($this->all_users_count)) {
 					foreach ($this->all_users as $user)
-						if (in_array($user["user_id"], $user_ids))
-							$selected_users[ $user["user_id"] ] = $user["name"] . " - " . $user["username"];
+						if (isset($user["user_id"]) && in_array($user["user_id"], $user_ids)) {
+							$user_name = isset($user["name"]) ? $user["name"] : null;
+							$user_username = isset($user["username"]) ? $user["username"] : null;
+							
+							$selected_users[ $user["user_id"] ] = $user_name . " - " . $user_username;
+						}
 				}
 				else {
 					$EVC = $this->EVC;
@@ -313,8 +342,13 @@ class CommonModuleAdminUtil {
 					
 					$users = UserUtil::getUsersByConditions($brokers, array("user_id" => array("value" => $user_ids, "operator" => "in")), null, false, true);
 				
-					foreach ($users as $user) 
-						$selected_users[ $user["user_id"] ] = $user["name"] . " - " . $user["username"];
+					foreach ($users as $user) {
+						$user_id = isset($user["user_id"]) ? $user["user_id"] : null;
+						$user_name = isset($user["name"]) ? $user["name"] : null;
+						$user_username = isset($user["username"]) ? $user["username"] : null;
+						
+						$selected_users[$user_id] = $user_name . " - " . $user_username;
+					}
 				}
 			}
 		}
@@ -329,14 +363,14 @@ class CommonModuleAdminUtil {
 		
 		if ($modules_menu_settings) {
 			if ($menu_settings)
-				$menu_settings["menus"] = $menu_settings["menus"] ? array_merge($menu_settings["menus"], $modules_menu_settings) : $modules_menu_settings;
+				$menu_settings["menus"] = !empty($menu_settings["menus"]) ? array_merge($menu_settings["menus"], $modules_menu_settings) : $modules_menu_settings;
 			else
 				$menu_settings = array(
 					"menus" => $modules_menu_settings
 				);
 		}
 		
-		return '<ul class="dropdown ' . $menu_settings["class"] . '">' . self::getMenusHTML($menu_settings["menus"]) . '</ul>';
+		return '<ul class="dropdown ' . (isset($menu_settings["class"]) ? $menu_settings["class"] : null) . '">' . (isset($menu_settings["menus"]) ? self::getMenusHTML($menu_settings["menus"]) : "") . '</ul>';
 	}
 	
 	private static function getMenusHTML($menus) {
@@ -347,11 +381,11 @@ class CommonModuleAdminUtil {
 			for ($i = 0; $i < $t; $i++) {
 				$menu = $menus[$i];
 				
-				$title = $menu["title"] ? 'title="' . $menu["title"] . '"' : "";
+				$title = !empty($menu["title"]) ? 'title="' . $menu["title"] . '"' : "";
 				
-				$html .= '<li class="' . $menu["class"] . '" ' . $title . '><a href="' . ($menu["url"] ? $menu["url"] : '#') . '"><label>' . $menu["label"] . '</label></a>';
+				$html .= '<li class="' . (isset($menu["class"]) ? $menu["class"] : "") . '" ' . $title . '><a href="' . (!empty($menu["url"]) ? $menu["url"] : '#') . '"><label>' . (isset($menu["label"]) ? $menu["label"] : "") . '</label></a>';
 				
-				if ($menu["menus"])
+				if (!empty($menu["menus"]))
 					$html .= '<ul>' . self::getMenusHTML($menu["menus"]) . '</ul>';
 				
 				$html .= '</li>';
@@ -375,10 +409,10 @@ class CommonModuleAdminUtil {
 			$loaded_modules = MyArray::multisort($loaded_modules, array(array("key" => "group_id")));
 			
 			foreach ($loaded_modules as $module_id => $loaded_module) {
-				if ($loaded_module["admin_path"]) {
-					$group_id = $loaded_module["group_id"];
+				if (!empty($loaded_module["admin_path"])) {
+					$group_id = isset($loaded_module["group_id"]) ? $loaded_module["group_id"] : null;
 					
-					if (!$repeated[$group_id] && $group_id != $this->group_module_id) {
+					if (empty($repeated[$group_id]) && $group_id != $this->group_module_id) {
 						$repeated[$group_id] = true;
 						
 						$items[] = array(

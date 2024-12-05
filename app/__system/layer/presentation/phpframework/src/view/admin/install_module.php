@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$head = '
+$selected_project = isset($selected_project) ? $selected_project : null; $selected_db_driver = isset($selected_db_driver) ? $selected_db_driver : null; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -22,7 +22,8 @@ $head = '
 
 <script>
 var get_store_modules_url = \'' . $project_url_prefix . "phpframework/admin/get_store_type_content?type=modules" . '\';
-var is_zip_file = ' . ($_FILES["zip_file"] && !$_POST["zip_url"] ? 1 : 0) . ';
+var is_zip_file = ' . (!empty($_FILES["zip_file"]) && empty($_POST["zip_url"]) ? 1 : 0) . ';
+var max_file_uploads = ' . ini_get("max_file_uploads") . ';
 </script>
 '; $main_content = '
 <div class="top_bar' . ($popup ? ' in_popup' : '') . '">
@@ -40,30 +41,30 @@ var is_zip_file = ' . ($_FILES["zip_file"] && !$_POST["zip_url"] ? 1 : 0) . ';
 			</li>
 		</ul>
 	</header>
-</div>'; if ($_POST) { if ($messages) { $messages_html = '<div class="messages">
+</div>'; if (!empty($_POST)) { $messages_html = null; if (!empty($messages)) { $messages_html = '<div class="messages">
 		<span class="icon close" onClick="$(this).parent().hide()" title="Close messages"></span>
-		<ul>'; $curr_module = null; foreach ($messages as $module_id => $module_projects) { if ($curr_module && $curr_module != $module_id) $messages_html .= '<li class="space"></li>'; $messages_html .= '<li class="module">' . ucwords($module_id) . ' Module\'s installation</li>'; foreach ($module_projects as $project_name => $msgs) if ($msgs) { $messages_html .= '<li class="project"><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) $messages_html .= '<li class="' . $msg["type"] . '">' . str_replace("\n", "<br/>", trim($msg["msg"])) . '</li>'; $messages_html .= '</ul></li>'; } $curr_module = $module_id; } $messages_html .= '</ul>
-		</div>'; } if (!$status) { $error_message = $error_message ? $error_message : "There was an error trying to install modules. Please try again..."; $main_content .= $messages_html; } else if ($messages_html) { $main_content .= $messages_html . "<script>
+		<ul>'; $curr_module = null; foreach ($messages as $module_id => $module_projects) { if ($curr_module && $curr_module != $module_id) $messages_html .= '<li class="space"></li>'; $messages_html .= '<li class="module">' . ucwords($module_id) . ' Module\'s installation</li>'; foreach ($module_projects as $project_name => $msgs) if ($msgs) { $messages_html .= '<li class="project"><label>' . ucfirst($project_name) . ' project\'s installation:</label><ul>'; foreach ($msgs as $msg) $messages_html .= '<li class="' . (isset($msg["type"]) ? $msg["type"] : "") . '">' . (isset($msg["msg"]) ? str_replace("\n", "<br/>", trim($msg["msg"])) : "") . '</li>'; $messages_html .= '</ul></li>'; } $curr_module = $module_id; } $messages_html .= '</ul>
+		</div>'; } if (empty($status)) { $error_message = !empty($error_message) ? $error_message : "There was an error trying to install modules. Please try again..."; $main_content .= $messages_html; } else if ($messages_html) { $main_content .= $messages_html . "<script>
 			alert('Please do NOT forget to activate this module and go to the \"Manage User Type Permissions\" page and add the new permissions to the correspondent files for this module, otherwise the module may NOT work propertly!');
-		</script>"; } else { die("<script>
+		</script>"; } else { echo "<script>
 			if (window.parent.refreshAndShowLastNodeChilds) 
 				window.parent.refreshAndShowLastNodeChilds();
 			
 			alert('Please do NOT forget to activate this module and go to the \"Manage User Type Permissions\" page and add the new permissions to the correspondent files for this module, otherwise the module may NOT work propertly!');
 			
 			document.location = '" . $project_url_prefix . "phpframework/admin/manage_modules?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout" . ($popup ? "&popup=$popup" : "") . "';
-		</script>"); } } $main_content .= '<div class="install_module">
+		</script>"; die(); } } $main_content .= '<div class="install_module">
 	<div class="project">
 		<select onChange="onChangeProject(this)">
 			<option value="">-- All Projects\' DBS --</option>
-			<option disabled></option>'; if ($projects) { $previous_folder = null; foreach ($projects as $project_name => $project) if ($project["item_type"] != "project_common") { $project_folder = dirname($project_name); $project_folder = $project_folder == "." ? "" : $project_folder; if ($project_folder && $project_folder != $previous_folder) { $main_content .= '<option disabled>' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_folder, '/')) . basename($project_folder) . '</option>'; $previous_folder = $project_folder; } $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . ' value="' . $project_name . '">' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_name, '/')) . ucwords(basename($project_name)) . '\' DBs</option>'; } } $main_content .= '
+			<option disabled></option>'; if (!empty($projects)) { $previous_folder = null; foreach ($projects as $project_name => $project) { $item_type = isset($project["item_type"]) ? $project["item_type"] : null; if ($item_type != "project_common") { $project_folder = dirname($project_name); $project_folder = $project_folder == "." ? "" : $project_folder; if ($project_folder && $project_folder != $previous_folder) { $main_content .= '<option disabled>' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_folder, '/')) . basename($project_folder) . '</option>'; $previous_folder = $project_folder; } $main_content .= '<option' . ($selected_project == $project_name ? ' selected' : '') . ' value="' . $project_name . '">' . str_repeat("&nbsp;&nbsp;&nbsp;", substr_count($project_name, '/')) . ucwords(basename($project_name)) . '\' DBs</option>'; } } } $main_content .= '
 		</select>
 	</div>
 	
 	<div class="db_driver">
 		<select onChange="onChangeDBDriver(this)">
 			<option value="">-- All DB Drivers --</option>
-			<option disabled></option>'; if ($available_db_drivers) { foreach ($available_db_drivers as $db_driver_name => $db_driver_props) $main_content .= '<option' . ($selected_db_driver == $db_driver_name ? ' selected' : '') . ' value="' . $db_driver_name . '">' . ucwords($db_driver_name) . ' Driver</option>'; } $main_content .= '
+			<option disabled></option>'; if (!empty($available_db_drivers)) { foreach ($available_db_drivers as $db_driver_name => $db_driver_props) $main_content .= '<option' . ($selected_db_driver == $db_driver_name ? ' selected' : '') . ' value="' . $db_driver_name . '">' . ucwords($db_driver_name) . ' Driver</option>'; } $main_content .= '
 		</select>
 	</div>
 	

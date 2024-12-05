@@ -6,6 +6,7 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler");
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = $status_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,9 +16,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$form_settings = $settings["form_settings"];
-		$action_settings = $settings["action_settings"];
-		$action_buttons = $action_settings["action_buttons"];
+		$form_settings = isset($settings["form_settings"]) ? $settings["form_settings"] : null;
+		$action_settings = isset($settings["action_settings"]) ? $settings["action_settings"] : null;
+		$action_buttons = isset($action_settings["action_buttons"]) ? $action_settings["action_buttons"] : null;
 		
 		if ($form_settings) {
 			$form_settings["with_form"] = true;
@@ -25,16 +26,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		//Preparing Actions
-		if ($_POST && is_array($action_buttons["action_type"])) {
+		if (!empty($_POST) && isset($action_buttons["action_type"]) && is_array($action_buttons["action_type"])) {
 			foreach ($action_buttons["action_type"] as $idx => $action_type) {
-				$action_variable = $action_buttons["action_variable"][$idx];
+				$action_variable = isset($action_buttons["action_variable"][$idx]) ? $action_buttons["action_variable"][$idx] : null;
 				
-				$object_objects_groups = $settings["action_settings"]["object_to_objects"];
+				$object_objects_groups = isset($settings["action_settings"]["object_to_objects"]) ? $settings["action_settings"]["object_to_objects"] : null;
+				$files = isset($_FILES) ? $_FILES : null;
 				
 				switch($action_type) {
 					case "insert_objects_group"://$action_variable must be an array with the properties of an objects_group object
-						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getSingleFiles($_FILES);
+						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getSingleFiles($files);
 							$action_variable["object_objects_groups"] = $object_objects_groups;
 							$status = \ObjectsGroupUtil::insertObjectsGroup($EVC, $action_variable, $files, $brokers);
 					
@@ -60,8 +62,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 						break;
 					case "insert_objects_groups"://$action_variable must be an array where each item contains the properties for each objects_group object
-						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getMultipleFiles($_FILES);
+						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getMultipleFiles($files);
 							$objects_groups_id = array();
 							
 							if ($action_variable) {
@@ -71,7 +73,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 									$av = $action_variable[$i];
 									$av["object_objects_groups"] = $object_objects_groups;
 									
-									$objects_group_id = \ObjectsGroupUtil::insertObjectsGroup($EVC, $av, $files[$i], $brokers);
+									$objects_group_id = \ObjectsGroupUtil::insertObjectsGroup($EVC, $av, isset($files[$i]) ? $files[$i] : null, $brokers);
 									
 									if ($objects_group_id)
 										$objects_groups_id[] = $objects_group_id;
@@ -102,8 +104,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 						break;
 					case "update_objects_group"://$action_variable must be an array with the properties of an objects_group object
-						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getSingleFiles($_FILES);
+						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getSingleFiles($files);
 							$action_variable["object_objects_groups"] = $object_objects_groups;
 							$status = \ObjectsGroupUtil::updateObjectsGroup($EVC, $action_variable, $files, $brokers);
 							
@@ -114,7 +116,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 								$status = $EVC->getCMSLayer()->getCMSJoinPointLayer()->includeStatusJoinPoint("On successfull objects group updating action", array(
 									"EVC" => &$EVC,
 									"object_type_id" => \ObjectUtil::OBJECTS_GROUP_OBJECT_TYPE_ID,
-									"objects_group_id" => $action_variable["objects_group_id"],
+									"objects_group_id" => isset($action_variable["objects_group_id"]) ? $action_variable["objects_group_id"] : null,
 									"action_variable" => &$action_variable,
 									"object_objects_groups" => &$object_objects_groups,
 									"files" => &$files,
@@ -129,8 +131,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 						break;
 					case "update_objects_groups"://$action_variable must be an array where each item contains the properties for each objects_group object
-						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getMultipleFiles($_FILES);
+						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getMultipleFiles($files);
 							$objects_groups_id = array();
 							
 							if ($action_variable) {
@@ -139,9 +141,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 								for ($i = 0; $i < $t; $i++) {
 									$av = $action_variable[$i];
 									$av["object_objects_groups"] = $object_objects_groups;
-									$objects_groups_id[] = $av["objects_group_id"];
+									$objects_groups_id[] = isset($av["objects_group_id"]) ? $av["objects_group_id"] : null;
 									
-									if (!\ObjectsGroupUtil::updateObjectsGroup($EVC, $av, $files[$i], $brokers))
+									if (!\ObjectsGroupUtil::updateObjectsGroup($EVC, $av, isset($files[$i]) ? $files[$i] : null, $brokers))
 										$status = false;
 								}
 							}
@@ -168,12 +170,11 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 						break;
 					case "save_objects_group"://$action_variable must be an array with the properties of an objects_group object
-						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getSingleFiles($_FILES);
-							$files = \ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($_FILES) ? \ObjectsGroupUtil::getSingleFiles($_FILES) : null;
+						if (\ObjectsGroupUtil::checkIfSingleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getSingleFiles($files);
 							$action_variable["object_objects_groups"] = $object_objects_groups;
 							
-							if ($action_variable["objects_group_id"]) {
+							if (!empty($action_variable["objects_group_id"])) {
 								$status = \ObjectsGroupUtil::updateObjectsGroup($EVC, $action_variable, $files, $brokers);
 								$status = $status ? $action_variable["objects_group_id"] : false;
 							}
@@ -203,8 +204,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						}
 						break;
 					case "save_objects_groups"://$action_variable must be an array where each item contains the properties for each objects_group object
-						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($_FILES)) {
-							$files = \ObjectsGroupUtil::getMultipleFiles($_FILES);
+						if (\ObjectsGroupUtil::checkIfMultipleFileFieldsAreValid($files)) {
+							$files = \ObjectsGroupUtil::getMultipleFiles($files);
 							$objects_groups_id = array();
 							
 							if ($action_variable) {
@@ -214,14 +215,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 									$av = $action_variable[$i];
 									$av["object_objects_groups"] = $object_objects_groups;
 									
-									if ($av["objects_group_id"]) {
+									if (!empty($av["objects_group_id"])) {
 										$objects_groups_id[] = $av["objects_group_id"];
 										
-										if (!\ObjectsGroupUtil::updateObjectsGroup($EVC, $av, $files[$i], $brokers))
+										if (!\ObjectsGroupUtil::updateObjectsGroup($EVC, $av, isset($files[$i]) ? $files[$i] : null, $brokers))
 											$status = false;
 									}
 									else {
-										$objects_group_id = \ObjectsGroupUtil::insertObjectsGroup($EVC, $av, $files[$i], $brokers);
+										$objects_group_id = \ObjectsGroupUtil::insertObjectsGroup($EVC, $av, isset($files[$i]) ? $files[$i] : null, $brokers);
 										
 										if ($objects_group_id)
 											$objects_groups_id[] = $objects_group_id;
@@ -297,74 +298,76 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		//Preparing options
-		$rows_per_page = $action_settings["rows_per_page"] > 0 ? $action_settings["rows_per_page"] : null;
+		$rows_per_page = isset($action_settings["rows_per_page"]) && $action_settings["rows_per_page"] > 0 ? $action_settings["rows_per_page"] : null;
 		$options = array("limit" => $rows_per_page, "sort" => array());
 		
 		//Preparing pagination
-		if ($action_settings["top_pagination_type"] || $action_settings["bottom_pagination_type"]) {
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+		if (!empty($action_settings["top_pagination_type"]) || !empty($action_settings["bottom_pagination_type"])) {
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 			$rows_per_page = $rows_per_page > 0 ? $rows_per_page : 50;
 			$options["start"] = \PaginationHandler::getStartValue($current_page, $rows_per_page);
 		}
 		
 		//Getting objects_groups
-		switch ($action_settings["objects_groups_type"]) {
+		$objects_groups_type = isset($action_settings["objects_groups_type"]) ? $action_settings["objects_groups_type"] : null;
+		$tags = isset($action_settings["tags"]) ? $action_settings["tags"] : null;
+		$object_type_id = isset($action_settings["object_type_id"]) ? $action_settings["object_type_id"] : null;
+		$object_id = isset($action_settings["object_id"]) ? $action_settings["object_id"] : null;
+		$group = isset($action_settings["group"]) ? $action_settings["group"] : null;
+		$total = $objects_groups = null;
+		
+		switch ($objects_groups_type) {
 			case "all":
 				$total = \ObjectsGroupUtil::countAllObjectsGroups($EVC, $brokers);
 				$objects_groups = \ObjectsGroupUtil::getAllObjectsGroups($EVC, $brokers, $options);
 				break;
 			case "tags_and":
-				$tags = $action_settings["tags"];
 				if ($tags) {
 					$total = \ObjectsGroupUtil::countObjectsGroupsWithAllTags($EVC, $tags, $brokers);
 					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsWithAllTags($EVC, $tags, $brokers, $options);
 				}
 				break;
 			case "tags_or":
-				$tags = $action_settings["tags"];
 				if ($tags) {
 					$total = \ObjectsGroupUtil::countObjectsGroupsByTags($EVC, $tags, $brokers);
 					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByTags($EVC, $tags, $brokers, $options);
 				}
 				break;
 			case "parent":
-				$total = \ObjectsGroupUtil::countObjectsGroupsByObject($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $brokers);
-				$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObject($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $brokers, $options);
+				$total = \ObjectsGroupUtil::countObjectsGroupsByObject($EVC, $object_type_id, $object_id, $brokers);
+				$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObject($EVC, $object_type_id, $object_id, $brokers, $options);
 				break;
 			case "parent_group":
-				$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroup($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $brokers);
-				$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroup($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $brokers, $options);
+				$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroup($EVC, $object_type_id, $object_id, $group, $brokers);
+				$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroup($EVC, $object_type_id, $object_id, $group, $brokers, $options);
 				break;
 			case "parent_tags_and":
-				$tags = $action_settings["tags"];
 				if ($tags) {
-					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectWithAllTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $tags, $brokers);
-					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectWithAllTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $tags, $brokers, $options);
+					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectWithAllTags($EVC, $object_type_id, $object_id, $tags, $brokers);
+					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectWithAllTags($EVC, $object_type_id, $object_id, $tags, $brokers, $options);
 				}
 				break;
 			case "parent_tags_or":
-				$tags = $action_settings["tags"];
 				if ($tags) {
-					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectAndTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $tags, $brokers);
-					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectAndTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $tags, $brokers, $options);
+					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectAndTags($EVC, $object_type_id, $object_id, $tags, $brokers);
+					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectAndTags($EVC, $object_type_id, $object_id, $tags, $brokers, $options);
 				}
 				break;
 			case "parent_group_tags_and":
-				$tags = $action_settings["tags"];
 				if ($tags) {
-					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroupWithAllTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $tags, $brokers);
-					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroupWithAllTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $tags, $brokers, $options);
+					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group, $tags, $brokers);
+					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroupWithAllTags($EVC, $object_type_id, $object_id, $group, $tags, $brokers, $options);
 				}
 				break;
 			case "parent_group_tags_or":
-				$tags = $action_settings["tags"];
 				if ($tags) {
-					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroupAndTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $tags, $brokers);
-					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroupAndTags($EVC, $action_settings["object_type_id"], $action_settings["object_id"], $action_settings["group"], $tags, $brokers, $options);
+					$total = \ObjectsGroupUtil::countObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group, $tags, $brokers);
+					$objects_groups = \ObjectsGroupUtil::getObjectsGroupsByObjectGroupAndTags($EVC, $object_type_id, $object_id, $group, $tags, $brokers, $options);
 				}
 				break;
 			case "selected":
-				$objects_group_ids = $action_settings["objects_group_ids"];
+				$objects_group_ids = isset($action_settings["objects_group_ids"]) ? $action_settings["objects_group_ids"] : null;
+				
 				if ($objects_group_ids) {
 					$total = count($objects_group_ids);
 					$items = \ObjectsGroupUtil::getObjectsGroupsByIds($EVC, $objects_group_ids, $brokers, $options);
@@ -375,7 +378,9 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 						$t = count($objects_group_ids);
 						for ($i = 0; $i < $t; $i++) {
 							foreach ($items as $item) {
-								if ($item["objects_group_id"] == $objects_group_ids[$i]) {
+								$item_objects_group_id = isset($item["objects_group_id"]) ? $item["objects_group_id"] : null;
+								
+								if ($item_objects_group_id == $objects_group_ids[$i]) {
 									$objects_groups[] = $item;
 									break;
 								}
@@ -385,7 +390,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 				break;
 			case "specific":
-				$objects_group_id = $action_settings["objects_group_id"];
+				$objects_group_id = isset($action_settings["objects_group_id"]) ? $action_settings["objects_group_id"] : null;
+				
 				if ($objects_group_id) {
 					$total = 1;
 					$objects_groups = \ObjectsGroupUtil::getObjectsGroupProperties($EVC, $objects_group_id, $brokers);
@@ -394,7 +400,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		//Preparing Buttons
-		if ($form_settings && $action_buttons["button_label"]) {
+		if ($form_settings && !empty($action_buttons["button_label"])) {
 			$buttons = array();
 			
 			$t = count($action_buttons["button_label"]);
@@ -422,30 +428,30 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$objects_groups = $objects_groups ? $objects_groups : array();
 		
 		$HtmlFormHandler = new \HtmlFormHandler($form_settings);
-		$class = $HtmlFormHandler->getParsedValueFromData($form_settings["form_containers"][0]["container"]["class"], $objects_groups);
+		$class = isset($form_settings["form_containers"][0]["container"]["class"]) ? $HtmlFormHandler->getParsedValueFromData($form_settings["form_containers"][0]["container"]["class"], $objects_groups) : "";
 		$form_settings["form_containers"][0]["container"]["class"] = "";
 		
 		//Getting Html
-		$html = '<div class="module_show_objects_group ' . $class . ' ' . ($settings["block_class"]) . '">';
+		$html = '<div class="module_show_objects_group ' . $class . ' ' . (isset($settings["block_class"]) ? $settings["block_class"] : "") . '">';
 		
 		$html .= \CommonModuleUI::getModuleMessagesHtml($EVC, $status_message, $error_message);
 		
-		$is_delete_ok = $action_buttons["action_type"]["delete_objects_group"] && $status && !$error_message;
+		$is_delete_ok = !empty($action_buttons["action_type"]["delete_objects_group"]) && $status && !$error_message;
 		
 		//if delete specific element was executed successfully, only show message and don't show form.
 		if (!$is_delete_ok) {
 			//Preparing pagination
-			if ($action_settings["top_pagination_type"] || $action_settings["bottom_pagination_type"]) {
+			if (!empty($action_settings["top_pagination_type"]) || !empty($action_settings["bottom_pagination_type"])) {
 				$PaginationLayout = new \PaginationLayout($total, $rows_per_page, array("current_page" => $current_page), "current_page");
 				$PaginationLayout->show_x_pages_at_once = 10;
 				$pagination_data = $PaginationLayout->data;
 			}
 		
 			//showing top pagination
-			if ($action_settings["top_pagination_type"]) {
-				$pagination_data["style"] = $action_settings["top_pagination_type"];
+			if (!empty($action_settings["top_pagination_type"])) {
+				$pagination_data["style"] = isset($action_settings["top_pagination_type"]) ? $action_settings["top_pagination_type"] : null;
 			
-				$html .= '<div class="top_pagination pagination_alignment_' . $action_settings["top_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="top_pagination pagination_alignment_' . (isset($action_settings["top_pagination_alignment"]) ? $action_settings["top_pagination_alignment"] : "") . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 			
 			translateProjectFormSettings($EVC, $form_settings);
@@ -454,10 +460,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 			$html .= \HtmlFormHandler::createHtmlForm($form_settings, $objects_groups);
 		
-			if ($action_settings["bottom_pagination_type"]) {
-				$pagination_data["style"] = $action_settings["bottom_pagination_type"];
+			if (!empty($action_settings["bottom_pagination_type"])) {
+				$pagination_data["style"] = isset($action_settings["bottom_pagination_type"]) ? $action_settings["bottom_pagination_type"] : null;
 			
-				$html .= '<div class="bottom_pagination pagination_alignment_' . $action_settings["bottom_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="bottom_pagination pagination_alignment_' . (isset($action_settings["bottom_pagination_alignment"]) ? $action_settings["bottom_pagination_alignment"] : "") . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 		}
 		

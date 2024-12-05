@@ -7,15 +7,15 @@ class SendEmailWorkerPoolWork extends WorkerPoolWork {
 	
 	protected function run() {
 		if ($this->args) {
-			$from = $this->args["from"];
-			$to = $this->args["to"];
-			$subject = $this->args["subject"];
-			$content = $this->args["content"];
-			$smtp_host = $this->args["smtp_host"];
-			$smtp_port = $this->args["smtp_port"];
-			$smtp_user = $this->args["smtp_user"];
-			$smtp_pass = $this->args["smtp_pass"];
-			$smtp_secure = $this->args["smtp_secure"];
+			$from = isset($this->args["from"]) ? $this->args["from"] : null;
+			$to = isset($this->args["to"]) ? $this->args["to"] : null;
+			$subject = isset($this->args["subject"]) ? $this->args["subject"] : null;
+			$content = isset($this->args["content"]) ? $this->args["content"] : null;
+			$smtp_host = isset($this->args["smtp_host"]) ? $this->args["smtp_host"] : null;
+			$smtp_port = isset($this->args["smtp_port"]) ? $this->args["smtp_port"] : null;
+			$smtp_user = isset($this->args["smtp_user"]) ? $this->args["smtp_user"] : null;
+			$smtp_pass = isset($this->args["smtp_pass"]) ? $this->args["smtp_pass"] : null;
+			$smtp_secure = isset($this->args["smtp_secure"]) ? $this->args["smtp_secure"] : null;
 			
 			$to_emails = explode(",", $to);
 			
@@ -47,9 +47,9 @@ class SendEmailWorkerPoolWork extends WorkerPoolWork {
         			$args["to"] = implode(",", $failed_emails);
         			
         			$worker = array(
-        				"class" => $this->worker["class"],
+        				"class" => isset($this->worker["class"]) ? $this->worker["class"] : null,
         				"args" => $args,
-        				"description" => "Recreate worker based in worker id: " . $this->worker["worker_id"],
+        				"description" => "Recreate worker based in worker id: " . (isset($this->worker["worker_id"]) ? $this->worker["worker_id"] : null),
         			);
         			return WorkerPoolUtil::insertWorker($this->EVC->getPresentationLayer()->getBrokers(), $worker);
         		}

@@ -19,7 +19,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	 * @param (name=data[object], type=mixed, not_null=1, min_length=1)
 	 */
 	public function insertObjectsGroup($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -34,8 +34,9 @@ class ObjectsGroupService extends \soa\CommonService {
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
+			$ids = null;
 			$status = $ObjectsGroup->insert($data, $ids);
-			return $status ? $ids["objects_group_id"] : $status;
+			return $status ? (isset($ids["objects_group_id"]) ? $ids["objects_group_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$status = $b->insertObject("mog_objects_group", array(
@@ -54,7 +55,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	 * @param (name=data[object], type=mixed, not_null=1, min_length=1)
 	 */
 	public function updateObjectsGroup($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -86,7 +87,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	 */
 	public function deleteObjectsGroup($data) {
 		$objects_group_id = $data["objects_group_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -108,25 +109,25 @@ class ObjectsGroupService extends \soa\CommonService {
 	 */
 	public function getObjectsGroup($data) {
 		$objects_group_id = $data["objects_group_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/objectsgroup", "get_objects_group", array("objects_group_id" => $objects_group_id), $options);
-			$result = $result[0];
-			$result["object"] = json_decode($result["object"], true);
+			$result = isset($result[0]) ? $result[0] : null;
+			$result["object"] = isset($result["object"]) ? json_decode($result["object"], true) : null;
 			return $result;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 			$result = $ObjectsGroup->findById($objects_group_id);
-			$result["object"] = json_decode($result["object"], true);
+			$result["object"] = isset($result["object"]) ? json_decode($result["object"], true) : null;
 			return $result;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$result = $b->findObjects("mog_objects_group", null, array("objects_group_id" => $objects_group_id), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.getObjectsGroup", $data, $options);
@@ -136,14 +137,15 @@ class ObjectsGroupService extends \soa\CommonService {
 	 * @param (name=data[conditions][objects_group_id], type=bigint|array, length=19)
 	 */
 	public function getObjectsGroupsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/objectsgroup", "get_objects_groups_by_conditions", array("conditions" => $cond), $options);
 				self::prepareObjectsGroupsListData($result);
@@ -157,7 +159,7 @@ class ObjectsGroupService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mog_objects_group", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
@@ -169,25 +171,26 @@ class ObjectsGroupService extends \soa\CommonService {
 	 * @param (name=data[conditions][objects_group_id], type=bigint|array, length=19)
 	 */
 	public function countObjectsGroupsByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
-				return $ObjectsGroup->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $ObjectsGroup->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mog_objects_group", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -203,21 +206,22 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByObjectAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/objectsgroup", "get_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
 				self::prepareObjectsGroupsListData($result);
 				return $result;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 				$result = $ObjectsGroup->callSelect("get_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
@@ -225,7 +229,7 @@ class ObjectsGroupService extends \soa\CommonService {
 				return $result;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$sql = ObjectsGroupDBDAOServiceUtil::get_objects_groups_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
@@ -245,31 +249,32 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByObjectAndConditions($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 				$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_and_conditions", array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_and_conditions(array("object_type_id" => $object_type_id, "object_id" => $object_id, "conditions" => $cond));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectAndConditions", $data, $options);
@@ -277,7 +282,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	}
 	
 	public function getAllObjectsGroups($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -300,13 +305,13 @@ class ObjectsGroupService extends \soa\CommonService {
 	}
 	
 	public function countAllObjectsGroups($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/objectsgroup", "count_all_objects_groups", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
@@ -324,7 +329,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	 */
 	public function getObjectsGroupsByIds($data) {
 		$objects_group_ids = $data["objects_group_ids"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($objects_group_ids) {
@@ -363,7 +368,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -403,7 +408,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -415,18 +420,18 @@ class ObjectsGroupService extends \soa\CommonService {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 				$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 				$result = $ObjectsGroup->callSelect("count_objects_groups_by_tags", array("tags" => $tags_str, "object_type_id" => $object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_tags(array("tags" => $tags_str, "object_type_id" => $object_type_id));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
 				return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByTags", $data, $options);
@@ -444,7 +449,7 @@ class ObjectsGroupService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -488,7 +493,7 @@ class ObjectsGroupService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -500,18 +505,18 @@ class ObjectsGroupService extends \soa\CommonService {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 				$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 				$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectAndTags", $data, $options);
@@ -528,10 +533,10 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -574,10 +579,10 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByObjectGroupAndTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($tags) {
@@ -589,18 +594,18 @@ class ObjectsGroupService extends \soa\CommonService {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 				$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 				$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group_and_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_group_and_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "objects_group_object_type_id" => $objects_group_object_type_id));
 				
 				$result = $b->getSQL($sql, $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
 				return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectGroupAndTags", $data, $options);
@@ -614,7 +619,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -658,7 +663,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsWithAllTags($data) {
 		$tags = $data["tags"];
 		$object_type_id = $data["object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -673,18 +678,18 @@ class ObjectsGroupService extends \soa\CommonService {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 					$result = $b->callSelect("module/objectsgroup", "count_objects_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 					$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 					$result = $ObjectsGroup->callSelect("count_objects_groups_with_all_tags", array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
 					$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_with_all_tags(array("tags" => $tags_str, "tags_count" => $tags_count, "object_type_id" => $object_type_id));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsWithAllTags", $data, $options);
@@ -703,7 +708,7 @@ class ObjectsGroupService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -751,7 +756,7 @@ class ObjectsGroupService extends \soa\CommonService {
 		$object_id = $data["object_id"];
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -766,18 +771,18 @@ class ObjectsGroupService extends \soa\CommonService {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 					$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 					$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 					$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
 					$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient"))
 					return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectWithAllTags", $data, $options);
@@ -795,10 +800,10 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -845,10 +850,10 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByObjectGroupWithAllTags($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
+		$group = isset($data["group"]) ? $data["group"] : null;
 		$tags = $data["tags"];
 		$objects_group_object_type_id = $data["objects_group_object_type_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($tags) {
@@ -863,18 +868,18 @@ class ObjectsGroupService extends \soa\CommonService {
 				$b = $this->getBroker($options);
 				if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 					$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 					$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 					$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group_with_all_tags", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id), $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IDBBrokerClient")) {
 					$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_group_with_all_tags(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group, "tags" => $tags_str, "tags_count" => $tags_count, "objects_group_object_type_id" => $objects_group_object_type_id));
 					
 					$result = $b->getSQL($sql, $options);
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($b, "IBusinessLogicBrokerClient")) 
 					return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectGroupWithAllTags", $data, $options);
@@ -889,7 +894,7 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -922,24 +927,24 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByObject($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 			$result = $ObjectsGroup->callSelect("count_objects_groups_by_object", array("object_type_id" => $object_type_id, "object_id" => $object_id), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object(array("object_type_id" => $object_type_id, "object_id" => $object_id));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObject", $data, $options);
@@ -953,8 +958,8 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function getObjectsGroupsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -988,25 +993,25 @@ class ObjectsGroupService extends \soa\CommonService {
 	public function countObjectsGroupsByObjectGroup($data) {
 		$object_type_id = $data["object_type_id"];
 		$object_id = $data["object_id"];
-		$group = $data["group"];
-		$options = $data["options"];
+		$group = isset($data["group"]) ? $data["group"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/objectsgroup", "count_objects_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$ObjectsGroup = $this->getObjectsGroupHbnObj($b, $options);
 			$result = $ObjectsGroup->callSelect("count_objects_groups_by_object_group", array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group), $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$sql = ObjectsGroupDBDAOServiceUtil::count_objects_groups_by_object_group(array("object_type_id" => $object_type_id, "object_id" => $object_id, "group" => $group));
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/objectsgroup", "ObjectsGroupService.countObjectsGroupsByObjectGroup", $data, $options);
@@ -1016,7 +1021,7 @@ class ObjectsGroupService extends \soa\CommonService {
 		if ($data) {
 			$t = count($data);
 			for ($i = 0; $i < $t; $i++)
-				$data[$i]["object"] = json_decode($data[$i]["object"], true);
+				$data[$i]["object"] = isset($data[$i]["object"]) ? json_decode($data[$i]["object"], true) : null;
 		}
 	}
 }

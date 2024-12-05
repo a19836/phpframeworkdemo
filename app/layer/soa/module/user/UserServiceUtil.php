@@ -10,13 +10,13 @@ class UserServiceUtil {
 	}
 	
 	public static function encodeSensitiveUserData(&$data, $extra_attrs = array()) {
-		if ($data["username"] && !is_array($data["username"])) //it could be a condition array
+		if (!empty($data["username"]) && !is_array($data["username"])) //it could be a condition array
 			$data["username"] = \TextShuffler::autoShuffle($data["username"]);
 		
-		if ($data["name"] && !is_array($data["name"])) //it could be a condition array
+		if (!empty($data["name"]) && !is_array($data["name"])) //it could be a condition array
 			$data["name"] = \TextShuffler::autoShuffle($data["name"]);
 		
-		if ($data["email"] && !is_array($data["email"])) //it could be a condition array
+		if (!empty($data["email"]) && !is_array($data["email"])) //it could be a condition array
 			$data["email"] = \TextShuffler::autoShuffle($data["email"]);
 				
 		if ($extra_attrs) {
@@ -29,13 +29,13 @@ class UserServiceUtil {
 	}
 	
 	public static function decodeSensitiveUserData(&$data, $extra_attrs = array()) {
-		if ($data["username"] && !is_array($data["username"])) //it could be a condition array
+		if (!empty($data["username"]) && !is_array($data["username"])) //it could be a condition array
 			$data["username"] = \TextShuffler::autoUnshuffle($data["username"]);
 		
-		if ($data["name"] && !is_array($data["name"])) //it could be a condition array
+		if (!empty($data["name"]) && !is_array($data["name"])) //it could be a condition array
 			$data["name"] = \TextShuffler::autoUnshuffle($data["name"]);
 		
-		if ($data["email"] && !is_array($data["email"])) //it could be a condition array
+		if (!empty($data["email"]) && !is_array($data["email"])) //it could be a condition array
 			$data["email"] = \TextShuffler::autoUnshuffle($data["email"]);
 		
 		if ($extra_attrs) {
@@ -64,7 +64,7 @@ class UserServiceUtil {
 			$sensitive_attrs = array_merge($sensitive_attrs, $extra_attrs);
 		
 		//Based in CommonService::prepareSearch
-		if ($data["searching"] && is_array($data["searching"]) && is_array($data["searching"]["fields"]))
+		if (!empty($data["searching"]) && is_array($data["searching"]) && isset($data["searching"]["fields"]) && is_array($data["searching"]["fields"]))
 			foreach ($data["searching"]["fields"] as $i => $field) {
 				$f = strtolower($field);
 				
@@ -77,7 +77,8 @@ class UserServiceUtil {
 			}
 		
 		//Based in CommonService::prepareInputData and \DB::getSQLConditions
-		self::encodeSearchConditionsSensitiveUserData($data["conditions"], $extra_attrs);
+		if (!empty($data["conditions"]))
+			self::encodeSearchConditionsSensitiveUserData($data["conditions"], $extra_attrs);
 	}
 	
 	//Based in CommonService::prepareInputData and \DB::getSQLConditions

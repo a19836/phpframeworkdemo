@@ -90,11 +90,11 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$WorkFlowUIHandler = new WorkFlowUIHandler($this->WorkFlowTaskHandler, $this->project_url_prefix, $this->project_common_url_prefix, $this->external_libs_url_prefix, $this->user_global_variables_file_path, $this->webroot_cache_folder_path, $this->webroot_cache_folder_url);
 		
 		//prepare DBTableTaskPropertyObj properties 
-		$charsets = $this->db_driver->getTableCharsets();
-		$collations = $this->db_driver->getTableCollations();
-		$storage_engines = $this->db_driver->getStorageEngines();
-		$column_charsets = $this->db_driver->getColumnCharsets();
-		$column_collations = $this->db_driver->getColumnCollations();
+		$charsets = $this->db_driver->listTableCharsets();
+		$collations = $this->db_driver->listTableCollations();
+		$storage_engines = $this->db_driver->listStorageEngines();
+		$column_charsets = $this->db_driver->listColumnCharsets();
+		$column_collations = $this->db_driver->listColumnCollations();
 		$column_column_types = $this->db_driver->getDBColumnTypes();
 		$column_column_simple_types = $this->db_driver->getDBColumnSimpleTypes();
 		$column_numeric_types = $this->db_driver->getDBColumnNumericTypes();
@@ -102,6 +102,8 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$column_types_ignored_props = $this->db_driver->getDBColumnTypesIgnoredProps();
 		$column_types_hidden_props = $this->db_driver->getDBColumnTypesHiddenProps();
 		$valid_allow_javascript_types = $this->db_driver->getDBColumnTextTypes();
+		$allow_modify_table_encoding = $this->db_driver->allowModifyTableEncoding();
+		$allow_modify_table_storage_engine = $this->db_driver->allowModifyTableStorageEngine();
 		
 		$charsets = is_array($charsets) ? $charsets : array();
 		$collations = is_array($collations) ? $collations : array();
@@ -117,7 +119,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		$column_column_types["attachment"] = "Attachment";
 		$column_numeric_types[] = "attachment";
-		$column_types_ignored_props["attachment"] = $column_types_ignored_props["bigint"];
+		$column_types_ignored_props["attachment"] = isset($column_types_ignored_props["bigint"]) ? $column_types_ignored_props["bigint"] : null;
 		
 		foreach ($column_types_ignored_props as $type => $ignored_props) {
 			if (!in_array($type, $valid_allow_javascript_types)) {
@@ -142,13 +144,13 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			"attributes" => $this->extra_attributes
 		);
 		
-		if ($data && $data["attributes"]) {
+		if ($data && !empty($data["attributes"])) {
 			foreach ($data["attributes"] as $idx => $attr)
 				foreach ($attr as $k => $v) {
 					$data["table_attr_" . $k . "s"][$idx] = $v;
 					
 					if ($k == "default")
-						$data["table_attr_has_" . $k . "s"][$idx] = strlen($v) > 0;
+						$data["table_attr_has_" . $k . "s"][$idx] = isset($attr["has_default"]) ? $attr["has_default"] : isset($v);//In the beggining the $data["attributes"][$idx]["default"] can have a specific value or be null. So we need to use the "isset" if there is no POST. DO NOT USE 'strlen($v) > 0' because the default value van be an empty string for varchar types.
 				}
 			
 			//echo "<pre>";print_r($data["attributes"]);die();
@@ -192,6 +194,8 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		DBTableTaskPropertyObj.table_storage_engines = ' . json_encode($storage_engines) . ';
 		DBTableTaskPropertyObj.column_charsets = ' . json_encode($column_charsets) . ';
 		DBTableTaskPropertyObj.column_collations = ' . json_encode($column_collations) . ';
+		DBTableTaskPropertyObj.allow_modify_table_encoding = ' . ($allow_modify_table_encoding ? "true" : "false") . ';
+		DBTableTaskPropertyObj.allow_modify_table_storage_engine = ' . ($allow_modify_table_storage_engine ? "true" : "false") . ';
 		
 		DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.push("allow_javascript");
 		DBTableTaskPropertyObj.task_property_values_table_attr_prop_names.push("file_type");
@@ -218,7 +222,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		foreach ($tasks_settings as $group_id => $group_tasks)
 			foreach ($group_tasks as $task_type => $task_settings)
 				if (is_array($task_settings))
-					$task_contents = $task_settings["task_properties_html"];
+					$task_contents = isset($task_settings["task_properties_html"]) ? $task_settings["task_properties_html"] : null;
 		
 		//$allow_sort = $this->db_driver->allowTableAttributeSorting() && !$this->extra_attributes; //if no extra attributes, then allow sort attributes
 		$allow_sort = $this->db_driver->allowTableAttributeSorting();
@@ -279,17 +283,20 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		if ($this->error_message)
 			$html .= '<div class="module_error_message">' . $this->error_message . ($this->errors ? '<br/>Please see errors bellow...' : '') . '</div>';
-		else if ($this->status_message)
+		else if ($this->status_message) {
+			$query_string = isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : null;
+			
 			$html .= '<div class="module_status_message">' . $this->status_message . '</div>
 			
 			<div class="info">
 				Note that in case of have Layers remotely installed, this is, Layers that are not locally installed and are remotely accessable, and if you wish to access this new data from these Layers, you must then, upload the following files individually into that Layers too:<br/>
 				<ul>
-					<li>Upload the <a href="?' . $_SERVER["QUERY_STRING"] . '&download=businesslogic&file=generic" target="_blank">' . $this->getGenericExtraAttributesTableObjectName() . 'Service.php</a> and <a href="?' . $_SERVER["QUERY_STRING"] . '&download=businesslogic" target="_blank">' . $this->getExtraAttributesTableObjectName() . 'Service.php</a> files to your remotely Business-Logic Layers</li>
-					<li>For remotely Ibatis Data-Access Layers, you should upload the <a href="?' . $_SERVER["QUERY_STRING"] . '&download=ibatis" target="_blank">' . $this->getExtraAttributesTableQueryName() . '.xml</a></li>
-					<li>For remotely Hibernate Data-Access Layers, you should upload the <a href="?' . $_SERVER["QUERY_STRING"] . '&download=hibernate" target="_blank">' . $this->getExtraAttributesTableQueryName() . '.xml</a></li>
+					<li>Upload the <a href="?' . $query_string . '&download=businesslogic&file=generic" target="_blank">' . $this->getGenericExtraAttributesTableObjectName() . 'Service.php</a> and <a href="?' . $query_string . '&download=businesslogic" target="_blank">' . $this->getExtraAttributesTableObjectName() . 'Service.php</a> files to your remotely Business-Logic Layers</li>
+					<li>For remotely Ibatis Data-Access Layers, you should upload the <a href="?' . $query_string . '&download=ibatis" target="_blank">' . $this->getExtraAttributesTableQueryName() . '.xml</a></li>
+					<li>For remotely Hibernate Data-Access Layers, you should upload the <a href="?' . $query_string . '&download=hibernate" target="_blank">' . $this->getExtraAttributesTableQueryName() . '.xml</a></li>
 				</ul>
 			</div>';
+		}
 		
 		if ($this->errors)
 			$html .= '<div class="errors">
@@ -314,11 +321,11 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	public function saveData($post_data) {
 		$table_attrs = $this->extra_attributes;
 		
-		$this->step = $post_data["step"] ? $post_data["step"] : 1;
+		$this->step = !empty($post_data["step"]) ? $post_data["step"] : 1;
 		
 		if ($this->step >= 2) {
-			$this->sql_statements = $post_data["sql_statements"];
-			$this->saved_data = json_decode($post_data["data"], true);
+			$this->sql_statements = isset($post_data["sql_statements"]) ? $post_data["sql_statements"] : null;
+			$this->saved_data = isset($post_data["data"]) ? json_decode($post_data["data"], true) : null;
 			$this->errors = array();
 			
 			if ($this->sql_statements)
@@ -351,7 +358,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			}
 		}
 		else if ($this->step == 1) {
-			$data = json_decode($post_data["data"], true);
+			$data = isset($post_data["data"]) ? json_decode($post_data["data"], true) : null;
 			//$data = $post_data;
 			
 			//echo "<pre>";print_r($post_data);die();
@@ -362,14 +369,16 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			$this->sql_statements_labels = array();
 			
 			//replace attachment type by bigint, remove empty attributes and trim names
-			if ($data && $data["attributes"])
+			if ($data && !empty($data["attributes"]))
 				foreach ($data["attributes"] as $idx => $attr) {
-					if (!trim($attr["name"]))
+					$attr_name = isset($attr["name"]) ? trim($attr["name"]) : null;
+					
+					if (!$attr_name)
 						unset($data["attributes"][$idx]);
 					else {
-						$data["attributes"][$idx]["name"] = trim($attr["name"]); //trim name
+						$data["attributes"][$idx]["name"] = $attr_name; //trim name
 						
-						if ($attr["type"] == "attachment")
+						if (isset($attr["type"]) && $attr["type"] == "attachment")
 							$data["attributes"][$idx]["type"] = "bigint";
 					}
 				}
@@ -382,23 +391,23 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->extra_attributes_table_name)) {
 				$this->extra_pks = $this->main_pks; //set the extra_pks, bc they were not set yet!
 				$new_attributes = array_values($this->extra_pks);
-				$new_attributes = $data["attributes"] ? array_merge($new_attributes, $data["attributes"]) : $new_attributes;
+				$new_attributes = !empty($data["attributes"]) ? array_merge($new_attributes, $data["attributes"]) : $new_attributes;
 				
 				$main_table_name = $this->db_driver->getTableInNamesList($this->available_tables, $this->main_attributes_table_name);
 				$main_table_data = array();
 				
 				$t = count($this->available_tables);
 				for ($i = 0; $i < $t; $i++)
-					if ($this->available_tables[$i]["name"] == $main_table_name) {
+					if (isset($this->available_tables[$i]["name"]) && $this->available_tables[$i]["name"] == $main_table_name) {
 						$main_table_data = $this->available_tables[$i];
 						break;
 					}
 				
 				$table_data = array(
 					"table_name" => $this->extra_attributes_table_name, 
-					"table_storage_engine" => $main_table_data["engine"],
-					"table_charset" => $main_table_data["charset"],
-					"table_collation" => $main_table_data["collation"],
+					"table_storage_engine" => isset($main_table_data["engine"]) ? $main_table_data["engine"] : null,
+					"table_charset" => isset($main_table_data["charset"]) ? $main_table_data["charset"] : null,
+					"table_collation" => isset($main_table_data["collation"]) ? $main_table_data["collation"] : null,
 					"attributes" => $new_attributes,
 				);
 				$this->sql_statements[] = $this->db_driver->getCreateTableStatement($table_data, $this->db_driver->getOptions());
@@ -411,15 +420,15 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			}
 			else { //get attributes to add and modify
 				//remove primary keys or already existent attributes in $this->main_attributes
-				if ($data["attributes"])
+				if (!empty($data["attributes"]))
 					foreach ($data["attributes"] as $idx => $new_attr) {
-						if (!$new_attr["name"] || array_key_exists($new_attr["name"], $this->extra_pks) || array_key_exists($new_attr["name"], $this->main_attributes))
+						if (empty($new_attr["name"]) || array_key_exists($new_attr["name"], $this->extra_pks) || array_key_exists($new_attr["name"], $this->main_attributes))
 							unset($data["attributes"][$idx]);
-						else if ($new_attr["primary_key"]) {
+						else if (!empty($new_attr["primary_key"])) {
 							$new_attr["primary_key"] = false;
 							$new_attr["unique"] = false;
 							$new_attr["auto_increment"] = false;
-							$new_attr["extra"] = preg_replace("/(^|\s)auto_increment($|\s)/i", "", $new_attr["extra"]);
+							$new_attr["extra"] = isset($new_attr["extra"]) ? preg_replace("/(^|\s)auto_increment($|\s)/i", "", $new_attr["extra"]) : null;
 							
 							$data["attributes"][$idx] = $new_attr;
 						}
@@ -427,19 +436,19 @@ class CommonModuleAdminTableExtraAttributesUtil {
 				
 				if ($table_attrs)
 					foreach ($table_attrs as $idx => $attr)
-						if ($attr["primary_key"])
+						if (!empty($attr["primary_key"]))
 							unset($table_attrs[$idx]);
 				
-				$statements = WorkFlowDBHandler::getTableUpdateSQLStatements($this->db_driver, $this->extra_attributes_table_name, $table_attrs, $data["attributes"]);
-				$this->sql_statements = $statements["sql_statements"];
-				$this->sql_statements_labels = $statements["sql_statements_labels"];
+				$statements = WorkFlowDBHandler::getTableUpdateSQLStatements($this->db_driver, $this->extra_attributes_table_name, $table_attrs, isset($data["attributes"]) ? $data["attributes"] : null);
+				$this->sql_statements = isset($statements["sql_statements"]) ? $statements["sql_statements"] : null;
+				$this->sql_statements_labels = isset($statements["sql_statements_labels"]) ? $statements["sql_statements_labels"] : null;
 			}
 			
 			if (empty($this->sql_statements))
 				$this->status_message = "No changes to be made!";
 			
 			//updates extra attributes bc of the saveDataToFile
-			$this->extra_attributes = $data["attributes"] ? $data["attributes"] : array();
+			$this->extra_attributes = !empty($data["attributes"]) ? $data["attributes"] : array();
 			$this->saved_data = $data;
 		}
 	}
@@ -452,7 +461,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$this->available_tables = array();
 		
 		foreach ($tables as $t)
-			if ($t["name"])
+			if (!empty($t["name"]))
 				$this->available_tables[] = $t;
 		
 		if (!$this->db_driver->isTableInNamesList($this->available_tables, $this->main_attributes_table_name)) {
@@ -466,7 +475,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		
 		if ($this->main_attributes)
 			foreach ($this->main_attributes as $attr_name => $attr)
-				if ($attr["primary_key"])
+				if (!empty($attr["primary_key"]))
 					$this->main_pks[ $attr_name ] = $attr;
 		
 		if (!$this->main_pks) {
@@ -481,7 +490,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			
 			if ($attributes) {
 				foreach ($attributes as $attr_name => $attr)
-					if ($attr["primary_key"]) {
+					if (!empty($attr["primary_key"])) {
 						$pks[ $attr_name ] = $attr;
 						unset($attributes[$attr_name]);
 					}
@@ -492,26 +501,26 @@ class CommonModuleAdminTableExtraAttributesUtil {
 				if (file_exists($fp)) {
 					include $fp;
 					
-					if ($table_extra_attributes_settings)
+					if (!empty($table_extra_attributes_settings))
 						foreach ($table_extra_attributes_settings as $attr_name => $attr) {
-							$attributes[$attr_name]["allow_javascript"] = $attr["allow_javascript"];
-							$attributes[$attr_name]["file_type"] = $attr["file_type"];
+							$attributes[$attr_name]["allow_javascript"] = isset($attr["allow_javascript"]) ? $attr["allow_javascript"] : null;
+							$attributes[$attr_name]["file_type"] = isset($attr["file_type"]) ? $attr["file_type"] : null;
 						}
 				}
 			}
 		}
 		
-		$this->extra_attributes = $attributes ? array_values($attributes) : array();
-		$this->extra_pks = $pks ? $pks : array();
+		$this->extra_attributes = !empty($attributes) ? array_values($attributes) : array();
+		$this->extra_pks = !empty($pks) ? $pks : array();
 		
 		//check if download files
-		$download_action = $_GET["download"];
+		$download_action = isset($_GET["download"]) ? $_GET["download"] : null;
 		
 		if ($download_action) {
 			$fn = "undefined_file";
 			$code = "";
 			
-			if ($download_action == "businesslogic" && $_GET["file"] == "generic") {
+			if ($download_action == "businesslogic" && isset($_GET["file"]) && $_GET["file"] == "generic") {
 				$fn = $this->getGenericExtraAttributesTableObjectName() . "Service.php";
 				$code = $this->getGenericExtraAttributesTableBusinessLogicServiceCode();
 			}
@@ -543,9 +552,9 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		//prepare attributes settings to __system layer
 		$column_numeric_types = $this->db_driver->getDBColumnNumericTypes();
 		
-		if ($data["attributes"])
+		if (!empty($data["attributes"]))
 			foreach ($data["attributes"] as $attr)
-				if ($attr["name"] && !array_key_exists($attr["name"], $this->extra_pks) && !array_key_exists($attr["name"], $this->main_attributes)) {
+				if (!empty($attr["name"]) && !array_key_exists($attr["name"], $this->extra_pks) && !array_key_exists($attr["name"], $this->main_attributes)) {
 					$db_attr = $attr;
 					unset($db_attr["allow_javascript"]);
 					unset($db_attr["file_type"]);
@@ -553,18 +562,18 @@ class CommonModuleAdminTableExtraAttributesUtil {
 					$setting = array(
 						"show" => 0,
 						"admin_class" => "extra_attribute",
-						"allow_javascript" => $attr["allow_javascript"],
-						"file_type" => $attr["file_type"],
+						"allow_javascript" => isset($attr["allow_javascript"]) ? $attr["allow_javascript"] : null,
+						"file_type" => isset($attr["file_type"]) ? $attr["file_type"] : null,
 						"db_attribute" => $attr,
 					);
 					
-					if ($attr["has_default"])
+					if (!empty($attr["has_default"]))
 						$setting["default_value"] = $attr["default"];
 					
-					if (in_array($attr["type"], $column_numeric_types)) //if numeric
+					if (isset($attr["type"]) && in_array($attr["type"], $column_numeric_types)) //if numeric
 						$setting["validation_type"] = $attr["type"];
 					
-					if ($attr["null"])
+					if (!empty($attr["null"]))
 						$setting["allow_null"] = $attr["null"];
 					
 					$settings_to_save[ $attr["name"] ] = $setting;
@@ -580,9 +589,9 @@ class CommonModuleAdminTableExtraAttributesUtil {
 			
 			$setting_name_to_ignore = array("type", "default_value", "validation_type", "allow_null");
 			
-			if ($table_extra_attributes_settings)
+			if (!empty($table_extra_attributes_settings))
 				foreach ($settings_to_save as $attr_name => $attr_settings)
-					if ($table_extra_attributes_settings[$attr_name])
+					if (!empty($table_extra_attributes_settings[$attr_name]))
 						foreach ($table_extra_attributes_settings[$attr_name] as $settings_name => $settings_value)
 							if (!in_array($settings_name, $setting_name_to_ignore) && (!$settings_to_save[$attr_name] || !array_key_exists($settings_name, $settings_to_save[$attr_name])))
 								$settings_to_save[$attr_name][$settings_name] = $settings_value;
@@ -730,7 +739,7 @@ class CommonModuleAdminTableExtraAttributesUtil {
 		$EVC = $this->EVC;
 		include $EVC->getConfigPath("config");
 		
-		return FlushCacheHandler::flushCache($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $workflow_paths_id, $user_global_variables_file_path, $user_beans_folder_path, $css_and_js_optimizer_webroot_cache_folder_path, $deployments_temp_folder_path, $programs_temp_folder_path);
+		return FlushCacheHandler::flushCache($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $workflow_paths_id, $user_global_variables_file_path, $user_beans_folder_path, $css_and_js_optimizer_webroot_cache_folder_path, $deployments_temp_folder_path);
 	}
 	
 	private function initGroupModuleId() {
@@ -787,12 +796,12 @@ class CommonModuleAdminTableExtraAttributesUtil {
 	
 	private function getDBDriver() {
 		$brokers_db_drivers = WorkFlowBeansFileHandler::getBrokersDBDrivers($this->user_global_variables_file_path, $this->user_beans_folder_path, $this->brokers, true);
-				
+		
 		if (isset($brokers_db_drivers[$this->default_db_driver]))
 			$db_driver_props = $brokers_db_drivers[$this->default_db_driver];
 		else {
 			$keys = array_keys($brokers_db_drivers);
-			$db_driver_props = $brokers_db_drivers[ $keys[0] ];
+			$db_driver_props = count($keys) > 0 ? $brokers_db_drivers[ $keys[0] ] : null;
 		}
 		
 		if ($db_driver_props) {
@@ -832,7 +841,7 @@ include_once $vars["business_logic_modules_service_common_file_path"];
 class ' . $service_name . ' extends \\CommonService {
 	
 	private function callExtraAttributesTableService($data, $method) {
-		$db_driver = $data["options"] && $data["options"]["db_driver"] ? $data["options"]["db_driver"] : ($GLOBALS["default_db_driver"] ? $GLOBALS["default_db_driver"] : "default");
+		$db_driver = !empty($data["options"]) && !empty($data["options"]["db_driver"]) ? $data["options"]["db_driver"] : (!empty($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : "default");
 		
 		if ($db_driver) {
 			$prefix = str_replace(" ", "", ucwords(str_replace("_", " ", strtolower($db_driver))));;
@@ -882,12 +891,13 @@ class ' . $service_name . ' extends \\CommonService {
 		$attributes = $this->extra_pks;
 		
 		if ($this->extra_attributes)
-			foreach ($this->extra_attributes as $attr) {
-				$attr["add_sql_slashes"] = false;
-				$attr["null"] = $attr["null"] ? true : false; //must set this bc if not selected in UI, it won't exist, so we must set it to false.
-				$attr["sanitize_html"] = empty($attr["allow_javascript"]); //must set this bc if not selected in UI, it won't exist, so we must set it to false.
-				$attributes[ $attr["name"] ] = $attr;
-			}
+			foreach ($this->extra_attributes as $attr) 
+				if (isset($attr["name"])) {
+					$attr["add_sql_slashes"] = false;
+					$attr["null"] = !empty($attr["null"]) ? true : false; //must set this bc if not selected in UI, it won't exist, so we must set it to false.
+					$attr["sanitize_html"] = empty($attr["allow_javascript"]); //must set this bc if not selected in UI, it won't exist, so we must set it to false.
+					$attributes[ $attr["name"] ] = $attr;
+				}
 		
 		$addslashes_vars_code = WorkFlowBusinessLogicHandler::prepareAddcslashesCode($attributes);
 		$pks_addslashes_vars_code = WorkFlowBusinessLogicHandler::prepareAddcslashesCode($this->extra_pks);
@@ -920,7 +930,7 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $insert_update_annotations . '
 	public function insert($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -936,6 +946,7 @@ class ' . $service_name . ' extends \\CommonService {
 			' . $insert_update_hibernate_prepare_vars_code . '
 			
 			$' . $service_name . ' = $this->get' . $service_name . 'HbnObj($b, $options);
+			$ids = null;
 			return $' . $service_name . '->insert($data, $ids, $options);
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
@@ -953,7 +964,7 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $insert_update_annotations . '
 	public function update($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -989,7 +1000,7 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $delete_get_annotations . '
 	public function delete($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -1017,8 +1028,8 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $conditions_annotations . '
 	public function deleteAll($data) {
-		if ($data && ($data["conditions"] || $data["all"])) {
-			$options = $data["options"];
+		if ($data && (!empty($data["conditions"]) || !empty($data["all"]))) {
+			$options = isset($data["options"]) ? $data["options"] : null;
 			$this->mergeOptionsWithBusinessLogicLayer($options);
 			unset($data["options"]);
 			
@@ -1035,9 +1046,9 @@ class ' . $service_name . ' extends \\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
-				$options["all"] = $data["all"];
-				return $b->deleteObject("' . $this->extra_attributes_table_name . '", $data["conditions"], $options);
+				$options["conditions_join"] = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+				$options["all"] = isset($data["all"]) ? $data["all"] : null;
+				return $b->deleteObject("' . $this->extra_attributes_table_name . '", isset($data["conditions"]) ? $data["conditions"] : null, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient"))
 				return $b->callBusinessLogic("module/' . $this->group_module_id . '", "' . $service_name . '.deleteAll", $data, $options);
@@ -1046,7 +1057,7 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $delete_get_annotations . '
 	public function get($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -1056,7 +1067,7 @@ class ' . $service_name . ' extends \\CommonService {
 			' . trim($pks_addslashes_vars_code) . '
 			
 			$result = $b->callSelect("module/' . $this->group_module_id . '", "get_' . $this->getExtraAttributesTableQueryName() . '", $data, $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$' . $service_name . ' = $this->get' . $service_name . 'HbnObj($b, $options);
@@ -1068,7 +1079,7 @@ class ' . $service_name . ' extends \\CommonService {
     			}, ARRAY_FILTER_USE_KEY);
     			
 			$result = $conditions && $b->findObjects("' . $this->extra_attributes_table_name . '", null, $conditions, $options);
-			return $result ? $result[0] : null;
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient"))
 			return $b->callBusinessLogic("module/' . $this->group_module_id . '", "' . $service_name . '.get", $data, $options);
@@ -1076,7 +1087,7 @@ class ' . $service_name . ' extends \\CommonService {
 	
 ' . $conditions_annotations . '
 	public function getAll($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -1093,8 +1104,8 @@ class ' . $service_name . ' extends \\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$options = $options ? $options : array();
-			$options["conditions_join"] = $data["conditions_join"];
-			return $b->findObjects("' . $this->extra_attributes_table_name . '", null, $data["conditions"], $options);
+			$options["conditions_join"] = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+			return $b->findObjects("' . $this->extra_attributes_table_name . '", null, isset($data["conditions"]) ? $data["conditions"] : null, $options);
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/' . $this->group_module_id . '", "' . $service_name . '.getAll", $data, $options);
@@ -1102,7 +1113,7 @@ class ' . $service_name . ' extends \\CommonService {
 
 ' . $conditions_annotations . '
 	public function countAll($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		unset($data["options"]);
 		
@@ -1112,7 +1123,7 @@ class ' . $service_name . ' extends \\CommonService {
 			self::prepareInputData($data);
 			
 			$result = $b->callSelect("module/' . $this->group_module_id . '", "count_' . $this->getExtraAttributesTableQueryName() . '_items", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$' . $service_name . ' = $this->get' . $service_name . 'HbnObj($b, $options);
@@ -1120,8 +1131,8 @@ class ' . $service_name . ' extends \\CommonService {
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$options = $options ? $options : array();
-			$options["conditions_join"] = $data["conditions_join"];
-			return $b->countObjects("' . $this->extra_attributes_table_name . '", $data["conditions"], $options);
+			$options["conditions_join"] = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+			return $b->countObjects("' . $this->extra_attributes_table_name . '", isset($data["conditions"]) ? $data["conditions"] : null, $options);
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/' . $this->group_module_id . '", "' . $service_name . '.countAll", $data, $options);
@@ -1155,7 +1166,7 @@ class ' . $service_name . ' extends \\CommonService {
 			$all_attributes = array_merge($all_attributes, array_values($this->extra_attributes));
 			
 			foreach ($this->extra_attributes as $idx => $attr) {
-				$attr_name = $attr["name"];
+				$attr_name = isset($attr["name"]) ? $attr["name"] : null;
 				
 				$columns[$attr_name] = $attr_name;
 				$insert_attributes[$attr_name] = "#$attr_name#";
@@ -1173,9 +1184,9 @@ class ' . $service_name . ' extends \\CommonService {
 		
 		//remove single quotes in sqls for numeric attributes, this is, replace "'#attr_name#'" by "#attr_name#"
 		foreach ($all_attributes as $idx => $attr) {
-			$attr_name = $attr["name"];
+			$attr_name = isset($attr["name"]) ? $attr["name"] : null;
 			
-			if (in_array($attr["type"], $column_numeric_types)) {
+			if (isset($attr["type"]) && in_array($attr["type"], $column_numeric_types)) {
 				$insert_sql = str_replace("'#$attr_name#'", "#$attr_name#", $insert_sql);
 				$update_sql = str_replace("'#$attr_name#'", "#$attr_name#", $update_sql);
 				$delete_sql = str_replace("'#$attr_name#'", "#$attr_name#", $delete_sql);

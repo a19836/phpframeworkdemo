@@ -29,7 +29,7 @@
 
 <script>
 var get_sub_files_url = \'' . addcslashes($get_sub_files_url, "'") . '\';
-var first_node_to_load = ' . json_encode($_GET) . ';
+var first_node_to_load = ' . (isset($_GET) ? json_encode($_GET) : "null") . ';
 </script>'; $head .= LayoutTypeProjectUIHandler::getHeader(); $main_content = '
 <div class="top_bar">
 	<header>
@@ -42,9 +42,9 @@ var first_node_to_load = ' . json_encode($_GET) . ';
 
 <div class="diff">
 	<div id="file_tree" class="mytree hidden">
-		<ul>'; foreach ($layers as $layer_type_name => $layer_type) foreach ($layer_type as $layer_name => $layer) { $properties = $layer["properties"]; $item_type = $properties["item_type"]; if (!$properties["item_label"]) $properties["item_label"] = $layer_name; $url = str_replace("#folder_type#", "", str_replace("#item_type#", $item_type, str_replace("#path#", $properties["path"], str_replace("#bean_name#", $properties["bean_name"], str_replace("#bean_file_name#", $properties["bean_file_name"], $get_sub_files_url))))); $main_content .= '
-		<li data-jstree=\'{"icon":"main_node main_node_' . $properties["item_type"] . '"}\'>
-			<a bean_name="' . $properties["bean_name"] . '" bean_file_name="' . $properties["bean_file_name"] . '" item_type="' . $properties["item_type"] . '" folder_path="" path_prefix="' . $properties["item_label"] . '"><label>' . $properties["item_label"] . '</label></a>
+		<ul>'; foreach ($layers as $layer_type_name => $layer_type) foreach ($layer_type as $layer_name => $layer) { $properties = isset($layer["properties"]) ? $layer["properties"] : null; $item_type = isset($properties["item_type"]) ? $properties["item_type"] : null; $item_label = isset($properties["item_label"]) ? $properties["item_label"] : null; $layer_path = isset($properties["path"]) ? $properties["path"] : null; $layer_bean_name = isset($properties["bean_name"]) ? $properties["bean_name"] : null; $layer_bean_file_name = isset($properties["bean_file_name"]) ? $properties["bean_file_name"] : null; if ($item_label) $item_label = $layer_name; $url = str_replace("#folder_type#", "", str_replace("#item_type#", $item_type, str_replace("#path#", $layer_path, str_replace("#bean_name#", $layer_bean_name, str_replace("#bean_file_name#", $layer_bean_file_name, $get_sub_files_url))))); $main_content .= '
+		<li data-jstree=\'{"icon":"main_node main_node_' . $item_type . '"}\'>
+			<a bean_name="' . $layer_bean_name . '" bean_file_name="' . $layer_bean_file_name . '" item_type="' . $item_type . '" folder_path="" path_prefix="' . $item_label . '"><label>' . $item_label . '</label></a>
 			<ul url="' . $url . '"></ul>
 		</li>'; } $main_content .= '
 		</ul>

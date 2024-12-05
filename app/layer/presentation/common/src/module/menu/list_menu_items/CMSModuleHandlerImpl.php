@@ -4,6 +4,7 @@ namespace CMSModule\menu\list_menu_items;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,7 +16,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting menu items
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \MenuUtil::countMenuItemsByConditions($brokers, $conditions, null) : \MenuUtil::countAllMenuItems($brokers);
 		
@@ -31,8 +32,8 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "item_id=#[idx][item_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/menu/list_menu_items/delete_menu_item?item_id=#[idx][item_id]#";
 		
-		if ($settings["show_group_id"]) {
-			$type = $settings["fields"]["group_id"]["field"]["input"]["type"];
+		if (!empty($settings["show_group_id"])) {
+			$type = isset($settings["fields"]["group_id"]["field"]["input"]["type"]) ? $settings["fields"]["group_id"]["field"]["input"]["type"] : null;
 			$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 			
 			$groups = \MenuUtil::getAllMenuGroups($brokers);
@@ -42,10 +43,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			if ($groups) {
 				$t = count($groups);
 				for ($i = 0; $i < $t; $i++) {
+					$group_id = isset($groups[$i]["group_id"]) ? $groups[$i]["group_id"] : null;
+					$group_name = isset($groups[$i]["name"]) ? $groups[$i]["name"] : null;
+					
 					if ($allow_options)
-						$group_options[] = array("value" => $groups[$i]["group_id"], "label" => $groups[$i]["name"]);
+						$group_options[] = array("value" => $group_id, "label" => $group_name);
 					else 
-						$available_groups[ $groups[$i]["group_id"] ] = $groups[$i]["name"];
+						$available_groups[$group_id] = $group_name;
 				}
 			}
 			

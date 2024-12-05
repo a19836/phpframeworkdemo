@@ -4,7 +4,7 @@ include_once get_lib("org.phpframework.workflow.WorkFlowTaskHandler");
 include_once $EVC->getUtilPath("WorkFlowUIHandler");
 include_once $EVC->getUtilPath("WorkFlowPresentationHandler");
 
-$reverse_class = $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
+$reverse_class = isset($_COOKIE["main_navigator_side"]) && $_COOKIE["main_navigator_side"] == "main_navigator_reverse" ? "" : "reverse";
 $common_project_name = $EVC->getCommonProjectName();
 $purlp = $project_url_prefix;
 $pcurlp = $project_common_url_prefix;
@@ -13,7 +13,7 @@ include $EVC->getModulePath("common/start_project_module_file", $common_project_
 $project_url_prefix = $purlp;
 $project_common_url_prefix = $pcurlp;
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	//load the createform task, so we can load the programming/common/js/FormFieldsUtilObj.js file, bc this file is used in the LayoutUIEditor.js
 	$allowed_tasks_tag = array("createform");
 	$WorkFlowTaskHandler = new WorkFlowTaskHandler($webroot_cache_folder_path, $webroot_cache_folder_url);
@@ -28,9 +28,10 @@ if ($PEVC) {
 	//prepare init_layout_ui_editor_widget_resource_options
 	include $EVC->getModulePath("common/init_layout_ui_editor_widget_resource_options", $common_project_name);
 	
-	echo '<script>
-	' . $layout_ui_editor_widget_resource_options_js . '
-	</script>';
+	if (!empty($layout_ui_editor_widget_resource_options_js))
+		echo '<script>
+		' . $layout_ui_editor_widget_resource_options_js . '
+		</script>';
 }
 
 include $EVC->getModulePath("common/end_project_module_file", $common_project_name);

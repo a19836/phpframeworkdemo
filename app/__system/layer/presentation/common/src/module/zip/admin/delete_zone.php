@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("zip/ZipUtil", $common_project_name);
 	
-	if (/*ZipUtil::deleteZipsByZoneId($brokers, $_GET["zone_id"]) && */ZipUtil::deleteZone($brokers, $_GET["zone_id"])) {
+	if (isset($_GET["zone_id"]) && /*ZipUtil::deleteZipsByZoneId($brokers, $_GET["zone_id"]) && */ZipUtil::deleteZone($brokers, $_GET["zone_id"])) {
 		echo "1";
 	}
 }

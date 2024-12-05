@@ -7,6 +7,7 @@ include_once get_lib("org.phpframework.util.web.SmtpEmail");
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -14,30 +15,30 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once $EVC->getModulePath("user/UserUtil", $common_project_name);
 		include_once $EVC->getModulePath("common/CommonModuleUI", $common_project_name);
 		
-		$username_attribute_label = $settings["username_attribute_label"] ? $settings["username_attribute_label"] : "Username";
-		$password_attribute_label = $settings["password_attribute_label"] ? $settings["password_attribute_label"] : "Password";
+		$username_attribute_label = !empty($settings["username_attribute_label"]) ? $settings["username_attribute_label"] : "Username";
+		$password_attribute_label = !empty($settings["password_attribute_label"]) ? $settings["password_attribute_label"] : "Password";
 		
-		$step = $_GET["step"];
-		$step = !$settings["show_recover_username_through_email"] && $step == "recover_username_through_email" ? null : $step;
-		$step = !$settings["show_recover_username_through_email_and_security_questions"] && $step == "recover_username_through_email_and_security_questions" ? null : $step;
-		$step = !$settings["show_recover_password_through_email"] && $step == "recover_password_through_email" ? null : $step;
-		$step = !$settings["show_recover_password_through_security_questions"] && $step == "recover_password_through_security_questions" ? null : $step;
+		$step = isset($_GET["step"]) ? $_GET["step"] : null;
+		$step = empty($settings["show_recover_username_through_email"]) && $step == "recover_username_through_email" ? null : $step;
+		$step = empty($settings["show_recover_username_through_email_and_security_questions"]) && $step == "recover_username_through_email_and_security_questions" ? null : $step;
+		$step = empty($settings["show_recover_password_through_email"]) && $step == "recover_password_through_email" ? null : $step;
+		$step = empty($settings["show_recover_password_through_security_questions"]) && $step == "recover_password_through_security_questions" ? null : $step;
 		
 		//Including Stylesheet
 		$html = '';
 		if (empty($settings["style_type"]))
 			$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/user/forgot_credentials.css" type="text/css" charset="utf-8" />';
 		
-		$html .= $settings["css"] ? '<style>' . $settings["css"] . '</style>' : '';
-		$html .= $settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
+		$html .= !empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '';
+		$html .= !empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '';
 		
 		//Preparing HTML
-		$html .= '<div class="module_forgot_credentials ' . ($settings["block_class"]) . '">';
+		$html .= '<div class="module_forgot_credentials ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
 		if ($step) {
-			if ($_GET["answer_to_security_questions"]) {
-				$username = $_POST["username"];
-				$email = $_POST["email"];
+			if (!empty($_GET["answer_to_security_questions"])) {
+				$username = isset($_POST["username"]) ? $_POST["username"] : null;
+				$email = isset($_POST["email"]) ? $_POST["email"] : null;
 				$html .= $this->showSecurityQuestions($settings, $step, $username, $email);
 			}
 			else
@@ -48,22 +49,22 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				<label class="main_label">' . translateProjectText($EVC, "Please choose one of the recovery options") . ':</label>
 				<ul>';
 		
-			if ($settings["show_recover_username_through_email"]) {
+			if (!empty($settings["show_recover_username_through_email"])) {
 				$text = translateProjectText($EVC, "Recover #username_attribute# throught email.");
 				$html .= "<li><a href=\"?step=recover_username_through_email\">" . str_replace("#username_attribute#", $username_attribute_label, $text) . "</a></li>";
 			}
 			
-			if ($settings["show_recover_username_through_email_and_security_questions"]) {
+			if (!empty($settings["show_recover_username_through_email_and_security_questions"])) {
 				$text = translateProjectText($EVC, "Recover #username_attribute# throught email and security questions.");
 				$html .= "<li><a href=\"?step=recover_username_through_email_and_security_questions\">" . str_replace("#username_attribute#", $username_attribute_label, $text) . "</a></li>";
 			}
 			
-			if ($settings["show_recover_password_through_email"]) {
+			if (!empty($settings["show_recover_password_through_email"])) {
 				$text = translateProjectText($EVC, "Recover #password_attribute# throught email.");
 				$html .= "<li><a href=\"?step=recover_password_through_email\">" . str_replace("#password_attribute#", $password_attribute_label, $text) . "</a></li>";
 			}
 			
-			if ($settings["show_recover_password_through_security_questions"]) {
+			if (!empty($settings["show_recover_password_through_security_questions"])) {
 				$text = translateProjectText($EVC, "Recover #password_attribute# throught security questions.");
 				$html .= "<li><a href=\"?step=recover_password_through_security_questions\">" . str_replace("#password_attribute#", $password_attribute_label, $text) . "</a></li>";
 			}
@@ -87,17 +88,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$html .= translateProjectText($EVC, 'Email sent successfully.') . '<br/>' . translateProjectText($EVC, "Please check your email to get your username.");
 				break;
 			case "recover_username_through_email_and_security_questions":
-				$html .= translateProjectText($EVC, 'Your username is') . ': "' . $user_data["username"] . '".';
+				$html .= translateProjectText($EVC, 'Your username is') . ': "' . (isset($user_data["username"]) ? $user_data["username"] : "") . '".';
 				break;
 			case "recover_password_through_email":
 				$html .= translateProjectText($EVC, 'Email sent successfully.') . '<br/>' . translateProjectText($EVC, "Please check your email to get your new password.");
 				break;
 			case "recover_password_through_security_questions": 
-				$html .= translateProjectText($EVC, 'Your password is') . ': "' . $user_data["password"] . '".';
+				$html .= translateProjectText($EVC, 'Your password is') . ': "' . (isset($user_data["password"]) ? $user_data["password"] : "") . '".';
 				break;
 		}
 		
-		if ($settings["redirect_page_url"]) {
+		if (!empty($settings["redirect_page_url"])) {
 			$html .= '<script>setTimeout(function() {document.location=\'' . $settings["redirect_page_url"] . '\';}, 5000);</script>';
 		}
 		
@@ -109,32 +110,36 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	private function showSecurityQuestions($settings, $step, $username, $email) {
 		$EVC = $this->getEVC();
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
+		$user_environments = isset($settings["user_environments"]) ? $settings["user_environments"] : null;
+		$field_name = $field_value = $message = null;
 		
 		//Getting user_data
 		if ($username) {
-			$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("username" => $username), null, null, true);
+			$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("username" => $username), null, null, true);
 			$field_name = "username";
 			$field_value = $username;
 		}
 		else if ($email) {
-			$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array("email" => $email), null, null, true);
+			$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $user_environments, array("email" => $email), null, null, true);
 			$field_name = "email";
 			$field_value = $email;
 		}
 		
-		$user_data = $users[0];
+		$user_data = isset($users[0]) ? $users[0] : null;
 			
-		if (!$user_data["user_id"])
+		if (empty($user_data["user_id"]))
 			return '<div class="error">' . translateProjectText($EVC, "No user detected. Please start again this process from the beginning...") . '</div>';
 		
 		//Preparing POST
-		if ($_POST["security_answers"]) {
-			$security_answers = $_POST["security_answers"];
+		if (!empty($_POST["security_answers"])) {
+			$security_answers = isset($_POST["security_answers"]) ? $_POST["security_answers"] : null;
 			
 			if (is_array($security_answers) && count($security_answers) == 3) {
 				$status = true;
 				foreach ($security_answers as $idx => $security_answer) {
-					if (empty($security_answer) || $security_answer != $user_data["security_answer_$idx"]) {
+					$user_data_security_answer = isset($user_data["security_answer_$idx"]) ? $user_data["security_answer_$idx"] : null;
+					
+					if (empty($security_answer) || $security_answer != $user_data_security_answer) {
 						$status = false;
 						break;
 					}
@@ -145,7 +150,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				else {
 					if ($step == "recover_password_through_security_questions") {
 						$user_data["password"] = uniqid();
-						$user_data["do_not_encrypt_password"] = $settings["do_not_encrypt_password"];
+						$user_data["do_not_encrypt_password"] = isset($settings["do_not_encrypt_password"]) ? $settings["do_not_encrypt_password"] : null;
 						
 						if (!\UserUtil::updateUserPassword($brokers, $user_data)) 
 							$message = translateProjectText($EVC, "There was an error trying to save the new password to the DB. Please try again...");
@@ -215,7 +220,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				"field" => array(
 					"class" => "form_field",
 					"label" => array(
-						"value" => $user_data["security_question_$i"],
+						"value" => isset($user_data["security_question_$i"]) ? $user_data["security_question_$i"] : null,
 					),
 					"input" => array(
 						"type" => "text",
@@ -252,14 +257,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$field = "email";
 		$label = "Email";
+		$message = null;
+		
 		if ($step == "recover_password_through_email" || $step == "recover_password_through_security_questions") {
 			$field = "username";
 			$label = $username_attribute_label;
 		}
 		
 		//Preparing POST
-		if ($_POST) {
-			$username_or_email = $_POST[$field];
+		if (!empty($_POST)) {
+			$username_or_email = isset($_POST[$field]) ? $_POST[$field] : null;
 			
 			if (empty($username_or_email)) {
 				$message = str_replace("#label#", translateProjectText($EVC, $label), translateProjectText($EVC, "#label# cannot be undefined!"));
@@ -268,17 +275,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 				$users = \UserUtil::getUsersByConditionsAccordingWithUserEnvironmentsSettings($brokers, $settings["user_environments"], array($field => $username_or_email), null, null, true);
-				$user_data = $users[0];
+				$user_data = isset($users[0]) ? $users[0] : null;
 				
-				if (!$user_data["user_id"]) {
+				if (empty($user_data["user_id"])) {
 					$message = translateProjectText($EVC, "Error: There is no user with this #label#. Please try again...");
 					$message = str_replace("#label#", translateProjectText($EVC, $label), $message);
 				}
 				else {
+					$email = isset($user_data["email"]) ? $user_data["email"] : null;
+					
 					if ($step == "recover_username_through_email" || $step == "recover_password_through_email") {
-						$email = $user_data["email"];
 						if ($step == "recover_password_through_email") {
-							$email = strpos($user_data["username"], "@") !== false ? $user_data["username"] : $user_data["email"];//gives precedence to the email in the username if applies...
+							$email = isset($user_data["username"]) && strpos($user_data["username"], "@") !== false ? $user_data["username"] : $email;//gives precedence to the email in the username if applies...
 						}
 						
 						if (strpos($email, "@") === false) {
@@ -287,11 +295,17 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					}
 					
 					if (!$message) {
+						$smtp_host = isset($settings["smtp_host"]) ? $settings["smtp_host"] : null;
+						$smtp_port = isset($settings["smtp_port"]) ? $settings["smtp_port"] : null;
+						$smtp_user = isset($settings["smtp_user"]) ? $settings["smtp_user"] : null;
+						$smtp_pass = isset($settings["smtp_pass"]) ? $settings["smtp_pass"] : null;
+						$smtp_secure = isset($settings["smtp_secure"]) ? $settings["smtp_secure"] : null;
+						$admin_email = isset($settings["admin_email"]) ? $settings["admin_email"] : null;
+						
 						if ($step == "recover_username_through_email") {
-							$email_message = translateProjectText($EVC, "Your username is") . ": " . $user_data["username"];
-							
-							$Email = new \SmtpEmail($settings["smtp_host"], $settings["smtp_port"], $settings["smtp_user"], $settings["smtp_pass"], $settings["smtp_secure"]);
-            						$status = $Email->send($settings["admin_email"], null, $settings["admin_email"], null, $email, null, translateProjectText($EVC, "Username recovery..."), $email_message);
+							$email_message = translateProjectText($EVC, "Your username is") . ": " . (isset($user_data["username"]) ? $user_data["username"] : null);
+							$SmtpEmail = new \SmtpEmail($smtp_host, $smtp_port, $smtp_user, $smtp_pass, $smtp_secure);
+            			$status = $SmtpEmail->send($admin_email, null, $admin_email, null, $email, null, translateProjectText($EVC, "Username recovery..."), $email_message);
 							
 							if ($status) {
 								return $this->showSuccessfullMessage($settings, $step, $user_data);
@@ -301,18 +315,18 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							}
 						}
 						else if ($step == "recover_username_through_email_and_security_questions")
-							return $this->showSecurityQuestions($settings, $step, null, $user_data["email"]);
+							return $this->showSecurityQuestions($settings, $step, null, $email);
 						else if ($step == "recover_password_through_email") {
 							$user_data["password"] = uniqid();
-							$user_data["do_not_encrypt_password"] = $settings["do_not_encrypt_password"];
+							$user_data["do_not_encrypt_password"] = isset($settings["do_not_encrypt_password"]) ? $settings["do_not_encrypt_password"] : null;
 							
 							$status = \UserUtil::updateUserPassword($brokers, $user_data);
 							
 							if ($status) {
-								$email_message = translateProjectText($EVC, "Your new password is") . ": " . $user_data["password"];
+								$email_message = translateProjectText($EVC, "Your new password is") . ": " . (isset($user_data["password"]) ? $user_data["password"] : null);
 								
-								$Email = new \SmtpEmail($settings["smtp_host"], $settings["smtp_port"], $settings["smtp_user"], $settings["smtp_pass"], $settings["smtp_secure"]);
-            							$status = $Email->send($settings["admin_email"], null, $settings["admin_email"], null, $email, null, translateProjectText($EVC, "Password recovery..."), $email_message);
+								$SmtpEmail = new \SmtpEmail($smtp_host, $smtp_port, $smtp_user, $smtp_pass, $smtp_secure);
+            				$status = $SmtpEmail->send($admin_email, null, $admin_email, null, $email, null, translateProjectText($EVC, "Password recovery..."), $email_message);
 							}
 							
 							if ($status) {
@@ -323,7 +337,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 							}
 						}
 						else if ($step == "recover_password_through_security_questions") {
-							return $this->showSecurityQuestions($settings, $step, $user_data["username"], null);
+							return $this->showSecurityQuestions($settings, $step, isset($user_data["username"]) ? $user_data["username"] : null, null);
 						}
 					
 					}

@@ -25,9 +25,10 @@ abstract class WorkerPoolWork {
 	
 	protected function log($message, $log_type = null) {
 		$called_class = get_class($this);
-		$called_method = debug_backtrace()[1]['function'];
+		$called_method = debug_backtrace();
+		$called_method = isset($called_method[1]['function']) ? $called_method[1]['function'] : null;
 		
-		debug_log("[WorkerPoolUtil::$called_class::$called_method][" . $this->worker["thread_id"] . "][" . $this->worker["worker_id"] . "] $message", $log_type);
+		debug_log("[WorkerPoolUtil::$called_class::$called_method][" . (isset($this->worker["thread_id"]) ? $this->worker["thread_id"] : null) . "][" . (isset($this->worker["worker_id"]) ? $this->worker["worker_id"] : null) . "] $message", $log_type);
 	}
 	
 	abstract protected function run();

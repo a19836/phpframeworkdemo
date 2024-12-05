@@ -17,7 +17,7 @@ $head = '
 
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/db/db_dump.css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/db_dump.js"></script>'; $main_content .= '<div class="db_dump">
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/db/db_dump.js"></script>'; $main_content = '<div class="db_dump">
 	<div class="top_bar">
 		<header>
 			<div class="title">DB Dump for DB: \'' . $bean_name . '\'</div>
@@ -25,7 +25,7 @@ $head = '
 				<li class="execute" data-title="Execute Dump"><a onClick="submitForm(this)"><i class="icon continue"></i> Execute Dump</a></li>
 			</ul>
 		</header>
-	</div>'; if ($_POST && $error_messsage) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	
+	</div>'; if (!empty($_POST) && !empty($error_messsage)) $main_content .= '<div class="error">' . $error_messsage . '</div>'; $main_content .= '	
 	<form class="with_top_bar_section" method="post">
 		<div class="tables">
 			<label>Select the tables you wish to dump:</label>
@@ -34,8 +34,8 @@ $head = '
 				<a onclick="$(\'.tables ul li input\').removeAttr(\'checked\')">Deselect All</a>
 			</div>
 			
-			<ul>'; if ($tables) foreach ($tables as $table) { $main_content .= '<li title="' . $table["name"] . '">
-				<input type="checkbox" name="tables[]" value="' . $table["name"] . '"' . (!$_POST && (!$selected_table || $selected_table == $table["name"]) ? ' checked' : '') . ' /> ' . $table["name"] . '
+			<ul>'; if (!empty($tables)) foreach ($tables as $table) { $table_name = isset($table["name"]) ? $table["name"] : null; $main_content .= '<li title="' . $table_name . '">
+				<input type="checkbox" name="tables[]" value="' . $table_name . '"' . (empty($_POST) && (empty($selected_table) || $selected_table == $table_name) ? ' checked' : '') . ' /> ' . $table_name . '
 		</li>'; } $main_content .= '
 			</ul>
 		</div>

@@ -6,9 +6,9 @@ include_once $EVC->getModulePath("common/CommonModuleUtil", $EVC->getCommonProje
 class UserModuleUtil extends \CommonModuleUtil {
 	
 	public static function prepareListSettingsFields($EVC, &$settings) {
-		if ($settings && $settings["fields"])
+		if ($settings && !empty($settings["fields"]))
 			foreach ($settings["fields"] as $field_name => $field)
-				if ($settings["show_" . $field_name])
+				if (!empty($settings["show_" . $field_name]))
 					switch ($field_name) {
 						case "activity_id":
 							self::prepareActivityIdListSettingsField($EVC, $settings, $field_name);
@@ -33,9 +33,9 @@ class UserModuleUtil extends \CommonModuleUtil {
 	}
 	
 	public static function prepareFormSettingsFields($EVC, &$settings, $is_editable) {
-		if ($settings && $settings["fields"])
+		if ($settings && !empty($settings["fields"]))
 			foreach ($settings["fields"] as $field_name => $field)
-				if ($settings["show_" . $field_name])
+				if (!empty($settings["show_" . $field_name]))
 					switch ($field_name) {
 						case "activity_id":
 							self::prepareActivityIdFormSettingsField($EVC, $settings, $is_editable, $field_name);
@@ -54,7 +54,7 @@ class UserModuleUtil extends \CommonModuleUtil {
 							break;
 						
 						case "username":
-							self::prepareUsernameFormSettingsField($EVC, $settings, $is_editable, $field_name);
+							self::prepareUserIdFormSettingsField($EVC, $settings, $is_editable, $field_name);
 							break;
 					}
 	}
@@ -62,7 +62,7 @@ class UserModuleUtil extends \CommonModuleUtil {
 	public static function prepareActivityIdListSettingsField($EVC, &$settings, $field_name = "activity_id") {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$type = $settings["fields"][$field_name]["field"]["input"]["type"];
+		$type = isset($settings["fields"][$field_name]["field"]["input"]["type"]) ? $settings["fields"][$field_name]["field"]["input"]["type"] : null;
 		$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 		
 		$activities = \UserUtil::getAllActivities($brokers);
@@ -72,17 +72,20 @@ class UserModuleUtil extends \CommonModuleUtil {
 		
 		if ($activities) 
 			foreach ($activities as $activity) {
-				if ($allow_options)
-					$activity_options[] = array("value" => $activity["activity_id"], "label" => /*$activity["activity_id"] . ": " . */$activity["name"]);
-				else 
-					$available_activities[ $activity["activity_id"] ] = /*$activity["activity_id"] . ": " . */$activity["name"];
+				$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
+				$activity_name = isset($activity["name"]) ? $activity["name"] : null;
 				
-				$existent_ids[] = $activity["activity_id"];
+				if ($allow_options)
+					$activity_options[] = array("value" => $activity_id, "label" => /*$activity_id . ": " . */$activity_name);
+				else 
+					$available_activities[$activity_id] = /*$activity_id . ": " . */$activity_name;
+				
+				$existent_ids[] = $activity_id;
 			}
 		
-		if ($allow_options && $settings["data"])
+		if ($allow_options && !empty($settings["data"]))
 			foreach ($settings["data"] as $item)
-				if (is_numeric($item["activity_id"]) && !in_array($item["activity_id"], $existent_ids)) {
+				if (isset($item["activity_id"]) && is_numeric($item["activity_id"]) && !in_array($item["activity_id"], $existent_ids)) {
 					$activity_options[] = array("value" => $item["activity_id"], "label" => $item["activity_id"]);
 					$existent_ids[] = $item["activity_id"];
 				}
@@ -98,17 +101,20 @@ class UserModuleUtil extends \CommonModuleUtil {
 		$activity_options = array( array("value" => "", "label" => "") ); //ad default empty option
 		$available_activities = array();
 		
-		$default_id = $settings["form_data"] ? $settings["form_data"]["activity_id"] : null;
+		$default_id = isset($settings["form_data"]["activity_id"]) ? $settings["form_data"]["activity_id"] : null;
 		$exists = false;
 		
 		if ($activities)
 			foreach ($activities as $activity) {
-				if ($is_editable) 
-					$activity_options[] = array("value" => $activity["activity_id"], "label" => /*$activity["activity_id"] . ": " . */$activity["name"]);
-				else
-					$available_activities[ $activity["activity_id"] ] = /*$activity["activity_id"] . ": " . */$activity["name"];
+				$activity_id = isset($activity["activity_id"]) ? $activity["activity_id"] : null;
+				$activity_name = isset($activity["name"]) ? $activity["name"] : null;
 				
-				if (is_numeric($default_id) && $activity["activity_id"] == $default_id)
+				if ($is_editable) 
+					$activity_options[] = array("value" => $activity_id, "label" => /*$activity_id . ": " . */$activity_name);
+				else
+					$available_activities[$activity_id] = /*$activity_id . ": " . */$activity_name;
+				
+				if (is_numeric($default_id) && $activity_id == $default_id)
 					$exists = true;
 			}
 		
@@ -123,7 +129,7 @@ class UserModuleUtil extends \CommonModuleUtil {
 	public static function prepareUserTypeIdListSettingsField($EVC, &$settings, $field_name = "user_type_id") {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		$type = $settings["fields"][$field_name]["field"]["input"]["type"];
+		$type = isset($settings["fields"][$field_name]["field"]["input"]["type"]) ? $settings["fields"][$field_name]["field"]["input"]["type"] : null;
 		$allow_options = $type == "select" || $type == "radio" || $type == "checkbox";
 		
 		$user_types = \UserUtil::getAllUserTypes($brokers);
@@ -133,17 +139,20 @@ class UserModuleUtil extends \CommonModuleUtil {
 		
 		if ($user_types)
 			foreach ($user_types as $user_type) {
-				if ($allow_options)
-					$user_type_options[] = array("value" => $user_type["user_type_id"], "label" => /*$user_type["user_type_id"] . ": " . */$user_type["name"]);
-				else 
-					$available_user_types[ $user_type["user_type_id"] ] = /*$user_type["user_type_id"] . ": " . */$user_type["name"];
+				$user_type_id = isset($user_type["user_type_id"]) ? $user_type["user_type_id"] : null;
+				$user_type_name = isset($user_type["name"]) ? $user_type["name"] : null;
 				
-				$existent_ids[] = $user_type["user_type_id"];
+				if ($allow_options)
+					$user_type_options[] = array("value" => $user_type_id, "label" => /*$user_type_id . ": " . */$user_type_name);
+				else 
+					$available_user_types[$user_type_id] = /*$user_type_id . ": " . */$user_type_name;
+				
+				$existent_ids[] = $user_type_id;
 			}
 		
-		if ($allow_options && $settings["data"])
+		if ($allow_options && !empty($settings["data"]))
 			foreach ($settings["data"] as $item)
-				if (is_numeric($item["user_type_id"]) && !in_array($item["user_type_id"], $existent_ids)) {
+				if (isset($item["user_type_id"]) && is_numeric($item["user_type_id"]) && !in_array($item["user_type_id"], $existent_ids)) {
 					$user_type_options[] = array("value" => $item["user_type_id"], "label" => $item["user_type_id"]);
 					$existent_ids[] = $item["user_type_id"];
 				}
@@ -159,17 +168,20 @@ class UserModuleUtil extends \CommonModuleUtil {
 		$user_type_options = array( array("value" => "", "label" => "") ); //ad default empty option
 		$available_user_types = array();
 		
-		$default_id = $settings["form_data"] ? $settings["form_data"]["user_type_id"] : null;
+		$default_id = !empty($settings["form_data"]) ? $settings["form_data"]["user_type_id"] : null;
 		$exists = false;
 		
 		if ($user_types) 
 			foreach ($user_types as $user_type) {
-				if ($is_editable) 
-					$user_type_options[] = array("value" => $user_type["user_type_id"], "label" => /*$user_type["user_type_id"] . ": " . */$user_type["name"]);
-				else
-					$available_user_types[ $user_type["user_type_id"] ] = /*$user_type["user_type_id"] . ": " . */$user_type["name"];
+				$user_type_id = isset($user_type["user_type_id"]) ? $user_type["user_type_id"] : null;
+				$user_type_name = isset($user_type["name"]) ? $user_type["name"] : null;
 				
-				if (is_numeric($default_id) && $user_type["user_type_id"] == $default_id)
+				if ($is_editable) 
+					$user_type_options[] = array("value" => $user_type_id, "label" => /*$user_type_id . ": " . */$user_type_name);
+				else
+					$available_user_types[$user_type_id] = /*$user_type_id . ": " . */$user_type_name;
+				
+				if (is_numeric($default_id) && $user_type_id == $default_id)
 					$exists = true;
 			}
 		

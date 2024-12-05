@@ -46,10 +46,10 @@
 	
 	<link rel="stylesheet" href="<?php echo $project_common_url_prefix; ?>module/common/admin.css" type="text/css" charset="utf-8" />
 
-	<?= $head;?>
+	<?= isset($head) ? $head : "";?>
 </head>
-<body<?= ' class="' . $_COOKIE["theme_layout"] . ' ' . $_COOKIE["main_navigator_side"] . ($_GET["popup"] ? " in_popup" : "") . '"'; ?>>
-	<div class="main_content"><? echo $main_content; ?></div>
+<body<?= ' class="' . (!empty($_COOKIE["theme_layout"]) ? $_COOKIE["theme_layout"] : "") . (!empty($_COOKIE["main_navigator_side"]) ? ' ' . $_COOKIE["main_navigator_side"] : "") . (!empty($_GET["popup"]) ? " in_popup" : "") . '"'; ?>>
+	<div class="main_content"><?= isset($main_content) ? $main_content : ""; ?></div>
 </body>
 </html>
 

@@ -48,7 +48,7 @@ namespace __system\businesslogic; include_once $vars["current_business_logic_mod
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[username], type=varchar, not_null=1, min_length=1, max_length=50)
-	 */ public function isUserBlocked($data) { $v342a134247 = $this->get($data); if (empty($data["maximum_failed_attempts"])) $data["maximum_failed_attempts"] = 3; if (empty($data["expired_time"])) $data["expired_time"] = 3600; $v310a246730 = isset($v342a134247["failed_login_attempts"]) ? $v342a134247["failed_login_attempts"] : null; $v238f974121 = isset($v342a134247["failed_login_time"]) ? $v342a134247["failed_login_time"] : null; return $v310a246730 > $data["maximum_failed_attempts"] && $v238f974121 + $data["expired_time"] >= time(); } /**
+	 */ public function isUserBlocked($data) { $v342a134247 = $this->get($data); if (empty($data["maximum_failed_attempts"])) $data["maximum_failed_attempts"] = 3; if (empty($data["expired_time"])) $data["expired_time"] = 3600; $v310a246730 = isset($v342a134247["failed_login_attempts"]) ? $v342a134247["failed_login_attempts"] : null; $v238f974121 = isset($v342a134247["failed_login_time"]) ? $v342a134247["failed_login_time"] : null; return ($v310a246730 > $data["maximum_failed_attempts"]) && ($v238f974121 + $data["expired_time"] >= time()); } /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 */ public function getAll($data) { $this->initLocalDBTableHandler($data); return $this->LocalDBTableHandler->getItems("login_control"); } } ?>

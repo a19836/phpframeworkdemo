@@ -110,17 +110,21 @@ class ZipAdminUtil {
 	
 	public function getAvailableCountries() {
 		$available_countries = array();
-		foreach ($this->countries as $country) {
-			$available_countries[ $country["country_id"] ] = $country["name"];
-		}
+		foreach ($this->countries as $country)
+			if (isset($country["country_id"]))
+				$available_countries[ $country["country_id"] ] = isset($country["name"]) ? $country["name"] : null;
+		
 		return $available_countries;
 	}
 	
 	public function getCountryOptions() {
 		$country_options = array();
-		foreach ($this->countries as $country) {
-			$country_options[] = array("value" => $country["country_id"], "label" => $country["name"]);
-		}
+		foreach ($this->countries as $country)
+			$country_options[] = array(
+				"value" => isset($country["country_id"]) ? $country["country_id"] : null, 
+				"label" => isset($country["name"]) ? $country["name"] : null
+			);
+		
 		return $country_options;
 	}
 }

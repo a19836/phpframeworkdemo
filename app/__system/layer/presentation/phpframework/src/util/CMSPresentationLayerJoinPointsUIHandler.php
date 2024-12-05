@@ -5,16 +5,16 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-class CMSPresentationLayerJoinPointsUIHandler { public static function convertBlockSettingsArrayToObj($pfb662071) { $v972f1a5c2b = array(); if (is_array($pfb662071)) { $v43dd7d0051 = 0; foreach ($pfb662071 as $v342a134247) { if (!$v342a134247["key"] && $v342a134247["key_type"] == "null") { if (isset($v342a134247["items"])) $v972f1a5c2b[$v43dd7d0051] = self::convertBlockSettingsArrayToObj($v342a134247["items"]); else $v972f1a5c2b[$v43dd7d0051] = array("value" => $v342a134247["value"], "value_type" => $v342a134247["value_type"]); $v43dd7d0051++; } else { $pe5c5e2fe = $v342a134247["key"]; $v972f1a5c2b[$pe5c5e2fe] = $v342a134247; if (isset($v972f1a5c2b[$pe5c5e2fe]["items"])) $v972f1a5c2b[$pe5c5e2fe]["items"] = self::convertBlockSettingsArrayToObj($v972f1a5c2b[$pe5c5e2fe]["items"]); if (is_numeric($pe5c5e2fe) && (int)$pe5c5e2fe >= $v43dd7d0051) $v43dd7d0051 = (int)$pe5c5e2fe + 1; } } } return $v972f1a5c2b; } public static function getHeader() { return '
+class CMSPresentationLayerJoinPointsUIHandler { public static function convertBlockSettingsArrayToObj($pfb662071) { $v972f1a5c2b = array(); if (is_array($pfb662071)) { $v43dd7d0051 = 0; foreach ($pfb662071 as $v342a134247) { if (empty($v342a134247["key"]) && isset($v342a134247["key_type"]) && $v342a134247["key_type"] == "null") { if (isset($v342a134247["items"])) $v972f1a5c2b[$v43dd7d0051] = self::convertBlockSettingsArrayToObj($v342a134247["items"]); else $v972f1a5c2b[$v43dd7d0051] = array( "value" => isset($v342a134247["value"]) ? $v342a134247["value"] : null, "value_type" => isset($v342a134247["value_type"]) ? $v342a134247["value_type"] : null ); $v43dd7d0051++; } else { $pe5c5e2fe = isset($v342a134247["key"]) ? $v342a134247["key"] : null; $v972f1a5c2b[$pe5c5e2fe] = $v342a134247; if (isset($v972f1a5c2b[$pe5c5e2fe]["items"])) $v972f1a5c2b[$pe5c5e2fe]["items"] = self::convertBlockSettingsArrayToObj($v972f1a5c2b[$pe5c5e2fe]["items"]); if (is_numeric($pe5c5e2fe) && (int)$pe5c5e2fe >= $v43dd7d0051) $v43dd7d0051 = (int)$pe5c5e2fe + 1; } } } return $v972f1a5c2b; } public static function getHeader() { return '
 		<script>
 			var join_points_html = \'' . addcslashes(str_replace("\n", "", self::getJoinPointMethodHtml()), "\\'") . '\';
 			var input_mapping_from_join_point_to_method_item_html = \'' . addcslashes(str_replace("\n", "", self::getInputMappingFromJoinPointToMethodHtml()), "\\'") . '\';
 			var method_arg_html = \'' . addcslashes(str_replace("\n", "", self::getMethodArgHtml()), "\\'") . '\';
 			var output_mapping_from_method_to_join_point_item_html = \'' . addcslashes(str_replace("\n", "", self::getOutputMappingFromMethodToJoinPointHtml()), "\\'") . '\';
-		</script>'; } public static function getRegionBlocksJoinPointsJavascriptObjs($v63208850d1) { $v66e18e6931 = array(); if (is_array($v63208850d1)) { foreach ($v63208850d1 as $v9b9b8653bc => $pb0f26d6a) { foreach ($pb0f26d6a as $peebaaf55 => $pf9d1c559) { foreach ($pf9d1c559 as $pe603f3eb => $v0fa547ce72) { foreach ($v0fa547ce72 as $pc5f2e454) { $v34bca6a112 = $pc5f2e454["join_point_name"]; if ($v34bca6a112) { $v77784c4ecd = isset($pc5f2e454["join_point_settings"]["key"]) ? array($pc5f2e454["join_point_settings"]) : $pc5f2e454["join_point_settings"]; $v221de5d5ea = self::convertBlockSettingsArrayToObj($v77784c4ecd); $v66e18e6931[$v9b9b8653bc][$peebaaf55][$pe603f3eb][$v34bca6a112][] = $v221de5d5ea; } } } } } } return '
+		</script>'; } public static function getRegionBlocksJoinPointsJavascriptObjs($v63208850d1) { $v66e18e6931 = array(); if (is_array($v63208850d1)) { foreach ($v63208850d1 as $v9b9b8653bc => $pb0f26d6a) { foreach ($pb0f26d6a as $peebaaf55 => $pf9d1c559) { foreach ($pf9d1c559 as $pe603f3eb => $v0fa547ce72) { foreach ($v0fa547ce72 as $pc5f2e454) { $v34bca6a112 = isset($pc5f2e454["join_point_name"]) ? $pc5f2e454["join_point_name"] : null; if ($v34bca6a112) { $v77784c4ecd = isset($pc5f2e454["join_point_settings"]["key"]) ? array($pc5f2e454["join_point_settings"]) : (isset($pc5f2e454["join_point_settings"]) ? $pc5f2e454["join_point_settings"] : null); $v221de5d5ea = self::convertBlockSettingsArrayToObj($v77784c4ecd); $v66e18e6931[$v9b9b8653bc][$peebaaf55][$pe603f3eb][$v34bca6a112][] = $v221de5d5ea; } } } } } } return '
 		<script>
 			var blocks_join_points_settings_objs = prepareBlocksJoinPointsSettingsObjs(' . json_encode($v66e18e6931) . ');
-		</script>'; } public static function getBlockJoinPointsJavascriptObjs($v0fa547ce72, $v12d5543831 = null) { $pc26bab42 = array(); if (is_array($v0fa547ce72)) { foreach ($v0fa547ce72 as $pc5f2e454) { $v34bca6a112 = $pc5f2e454["join_point_name"]; if ($v34bca6a112) { $v77784c4ecd = isset($pc5f2e454["join_point_settings"]["key"]) ? array($pc5f2e454["join_point_settings"]) : $pc5f2e454["join_point_settings"]; $v221de5d5ea = self::convertBlockSettingsArrayToObj($v77784c4ecd); $pc26bab42[$v34bca6a112][] = $v221de5d5ea; } } } $v7edb8f4e8e = array(); if (is_array($v12d5543831)) { foreach ($v12d5543831 as $pee21e4cf) { if ($pee21e4cf["join_point_name"]) { $v7edb8f4e8e[ $pee21e4cf["join_point_name"] ] = true; } } } return '
+		</script>'; } public static function getBlockJoinPointsJavascriptObjs($v0fa547ce72, $v12d5543831 = null) { $pc26bab42 = array(); if (is_array($v0fa547ce72)) { foreach ($v0fa547ce72 as $pc5f2e454) { $v34bca6a112 = isset($pc5f2e454["join_point_name"]) ? $pc5f2e454["join_point_name"] : null; if ($v34bca6a112) { $v77784c4ecd = isset($pc5f2e454["join_point_settings"]["key"]) ? array($pc5f2e454["join_point_settings"]) : (isset($pc5f2e454["join_point_settings"]) ? $pc5f2e454["join_point_settings"] : null); $v221de5d5ea = self::convertBlockSettingsArrayToObj($v77784c4ecd); $pc26bab42[$v34bca6a112][] = $v221de5d5ea; } } } $v7edb8f4e8e = array(); if (is_array($v12d5543831)) { foreach ($v12d5543831 as $pee21e4cf) { if (!empty($pee21e4cf["join_point_name"])) { $v7edb8f4e8e[ $pee21e4cf["join_point_name"] ] = true; } } } return '
 		<script>
 			var block_join_points_settings_objs = prepareBlockJoinPointsSettingsObjs(' . json_encode($pc26bab42) . ');
 			var available_block_local_join_point = ' . json_encode($v7edb8f4e8e) . ';
@@ -25,7 +25,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 						<span class="icon close" onClick="closeModuleSourceCode(this)"></span>
 						<textarea readonly="readonly"></textarea>
 					</div>'; } $pf8ed4912 .= '
-					<div class="join_points">'; $pc37695cb = count($pd84094b3); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v5d2ebe3c1a = $pd84094b3[$v43dd7d0051]; $v34bca6a112 = $v5d2ebe3c1a["join_point_name"]; if ($v34bca6a112) { $pdcf670f6 = 'join_point[' . $v34bca6a112 . ']'; $pf8ed4912 .= '
+					<div class="join_points">'; $pc37695cb = count($pd84094b3); for ($v43dd7d0051 = 0; $v43dd7d0051 < $pc37695cb; $v43dd7d0051++) { $v5d2ebe3c1a = $pd84094b3[$v43dd7d0051]; $v34bca6a112 = isset($v5d2ebe3c1a["join_point_name"]) ? $v5d2ebe3c1a["join_point_name"] : null; if ($v34bca6a112) { $v53c74ba347 = isset($v5d2ebe3c1a["join_point_description"]) ? $v5d2ebe3c1a["join_point_description"] : null; $pa0812472 = isset($v5d2ebe3c1a["method"]) ? $v5d2ebe3c1a["method"] : null; $v77784c4ecd = isset($v5d2ebe3c1a["join_point_settings"]) ? $v5d2ebe3c1a["join_point_settings"] : null; $pdcf670f6 = 'join_point[' . $v34bca6a112 . ']'; $pf8ed4912 .= '
 							<div class="join_point" joinPointName="' . $v34bca6a112 . '" prefix="' . $pdcf670f6 . '">
 								<label><span>' . $v34bca6a112 . '</span></label>
 								<select class="module_join_points_property join_point_active" name="' . $pdcf670f6 . '[active]" onChange="onChangeJoinPointActive(this);">
@@ -38,10 +38,10 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 								<span class="icon info" onClick="showJoinPointDetails(this)" title="Show join point details">Info</span>
 								<div class="join_point_details">
 									<div class="join_point_description">
-										<label>Join Point Description: "' . $v5d2ebe3c1a["join_point_description"] . '"</label>
+										<label>Join Point Description: "' . $v53c74ba347 . '"</label>
 									</div>
 									<div class="join_point_method_type">
-										<label>Join Point Method Type: "' . $v5d2ebe3c1a["method"] . '"</label>
+										<label>Join Point Method Type: "' . $pa0812472 . '"</label>
 									</div>
 									<div class="join_point_args">
 										<label>Join Point Method Args: </label>
@@ -50,7 +50,7 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 												<th class="table_header key">Key</th>
 												<th class="table_header value">Value</th>
 												<th class="table_header type">Type</th>
-											</tr>'; if (is_array($v5d2ebe3c1a["join_point_settings"])) { $v77784c4ecd = self::convertBlockSettingsArrayToObj($v5d2ebe3c1a["join_point_settings"]); foreach ($v77784c4ecd as $pd164db70 => $pf725626e) { $v67db1bd535 = $pf725626e["items"] ? json_encode($pf725626e["items"]) : $pf725626e["value"]; $pc3e857ed = $pf725626e["items"] ? "array" : $pf725626e["value_type"]; $pc3e857ed = !$pc3e857ed && is_numeric($v67db1bd535) ? "numeric" : $pc3e857ed; $pf8ed4912 .= '		<tr>
+											</tr>'; if (is_array($v77784c4ecd)) { $v77784c4ecd = self::convertBlockSettingsArrayToObj($v77784c4ecd); foreach ($v77784c4ecd as $pd164db70 => $pf725626e) { $v8a527eb5f1 = isset($pf725626e["items"]) ? $pf725626e["items"] : null; $pd9a52f65 = isset($pf725626e["value"]) ? $pf725626e["value"] : null; $padb01f1d = isset($pf725626e["value_type"]) ? $pf725626e["value_type"] : null; $v67db1bd535 = $v8a527eb5f1 ? json_encode($v8a527eb5f1) : $pd9a52f65; $pc3e857ed = $v8a527eb5f1 ? "array" : $padb01f1d; $pc3e857ed = !$pc3e857ed && is_numeric($v67db1bd535) ? "numeric" : $pc3e857ed; $pf8ed4912 .= '		<tr>
 												<td class="key">' . $pd164db70 . '</td>
 												<td class="value">' . $v67db1bd535 . '</td>
 												<td class="type">' . $pc3e857ed . '</td>
@@ -161,14 +161,14 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 		<tr>
 			<td class="join_point_input">
 				$input["
-				<input class="module_join_points_property" type="text" name="#prefix#[join_point_input]" value="' . $v539082ff30["join_point_input"] . '" />
+				<input class="module_join_points_property" type="text" name="#prefix#[join_point_input]" value="' . (isset($v539082ff30["join_point_input"]) ? $v539082ff30["join_point_input"] : "") . '" />
 				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="from_to">=&gt;</td>
 			<td class="method_input">
 				$input["
-				<input class="module_join_points_property" type="text" name="#prefix#[method_input]" value="' . $v539082ff30["method_input"] . '" />
+				<input class="module_join_points_property" type="text" name="#prefix#[method_input]" value="' . (isset($v539082ff30["method_input"]) ? $v539082ff30["method_input"] : "") . '" />
 				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
@@ -178,17 +178,17 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 			<td class="icons">
 				<span class="icon delete" onClick="removeJoinPointTableItem(this)" title="Remove">Remove</span>
 			</td>
-		</tr>'; } public static function getMethodArgHtml($v539082ff30 = null) { return '
+		</tr>'; } public static function getMethodArgHtml($v539082ff30 = null) { $v3fb9f41470 = isset($v539082ff30["type"]) ? $v539082ff30["type"] : null; return '
 		<tr>
 			<td class="value">
-				<input class="module_join_points_property" type="text" name="#prefix#[value]" value="' . $v539082ff30["value"] . '" />
+				<input class="module_join_points_property" type="text" name="#prefix#[value]" value="' . (isset($v539082ff30["value"]) ? $v539082ff30["value"] : "") . '" />
 				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 			</td>
 			<td class="type">
 				<select class="module_join_points_property" name="#prefix#[type]">
 					<option value="">code</option>
-					<option ' . ($v539082ff30["type"] == "string" ? "selected" : "") . '>string</option>
-					<option ' . ($v539082ff30["type"] == "variable" ? "selected" : "") . '>variable</option>
+					<option ' . ($v3fb9f41470 == "string" ? "selected" : "") . '>string</option>
+					<option ' . ($v3fb9f41470 == "variable" ? "selected" : "") . '>variable</option>
 				</select>
 			</td>
 			<td class="icons">
@@ -198,14 +198,14 @@ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBl
 		<tr>
 			<td class="method_output">
 				$output["
-				<input class="module_join_points_property" type="text" name="#prefix#[method_output]" value="' . $v539082ff30["method_output"] . '" />
+				<input class="module_join_points_property" type="text" name="#prefix#[method_output]" value="' . (isset($v539082ff30["method_output"]) ? $v539082ff30["method_output"] : "") . '" />
 				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>
 			<td class="from_to">=&gt;</td>
 			<td class="join_point_output">
 				$output["
-				<input class="module_join_points_property" type="text" name="#prefix#[join_point_output]" value="' . $v539082ff30["join_point_output"] . '" />
+				<input class="module_join_points_property" type="text" name="#prefix#[join_point_output]" value="' . (isset($v539082ff30["join_point_output"]) ? $v539082ff30["join_point_output"] : "") . '" />
 				<span class="icon add_variable small inline" onclick="onProgrammingTaskChooseCreatedVariable(this)" title="Choose a variable">Search Variable</span>
 				"]
 			</td>

@@ -22,6 +22,7 @@ class WorkerPoolHandler {
 		$start_time = microtime(true);
 		$status = true;
 		$continue = true;
+		$thread_id = null;
 		
 		$is_windows_os = strtoupper(substr(PHP_OS, 0, 3)) === "WIN";//Detect if OS is Windows
 		
@@ -65,13 +66,13 @@ class WorkerPoolHandler {
 						foreach ($processes as $process) {
 							$parts = explode(" ", trim($process));
 							$pid = $parts[0];
-							$week_day = $parts[1];
-							$month = $parts[2];
-							$day = $parts[3];
-							$hour = $parts[4];
-							$minute = $parts[5];
-							$second = $parts[6];
-							$year = $parts[7];
+							$week_day = isset($parts[1]) ? $parts[1] : null;
+							$month = isset($parts[2]) ? $parts[2] : null;
+							$day = isset($parts[3]) ? $parts[3] : null;
+							$hour = isset($parts[4]) ? $parts[4] : null;
+							$minute = isset($parts[5]) ? $parts[5] : null;
+							$second = isset($parts[6]) ? $parts[6] : null;
+							$year = isset($parts[7]) ? $parts[7] : null;
 							
 							$time = strtotime("$year-$month-$day $hour:$minute:$second");
 							
@@ -128,6 +129,7 @@ class WorkerPoolHandler {
 			$t = $workers ? count($workers) : 0;
 			for ($i = 0; $i < $t && $continue; $i++) {
 				$worker = $workers[$i];
+				$worker["worker_id"] = isset($worker["worker_id"]) ? $worker["worker_id"] : null;
 				
 				debug_log("[WorkerPoolUtil::startWorkerPool][$thread_id] Parseing worker: " . json_encode($worker), "info");
 				
@@ -186,7 +188,7 @@ class WorkerPoolHandler {
 								else 
 									$create_repeated_worker = true;
 							}
-							else if ($WORKER_FAILED_ATTEMPTS_MAXIMUM_NUMBER && $worker["failed_attempts"] + 1 >= $WORKER_FAILED_ATTEMPTS_MAXIMUM_NUMBER) {
+							else if ($WORKER_FAILED_ATTEMPTS_MAXIMUM_NUMBER && isset($worker["failed_attempts"]) && $worker["failed_attempts"] + 1 >= $WORKER_FAILED_ATTEMPTS_MAXIMUM_NUMBER) {
 								//Update DB Worker with status=3 (failed status) 
 								if (!WorkerPoolUtil::updateFailedWorker($brokers, $worker["worker_id"]))
 									$status = false;
@@ -228,7 +230,8 @@ class WorkerPoolHandler {
 	//class: /var/www/html/xxx/SendMessage.php or lib.util.SendMessage
 	//If class contains / in the beggining must be absolute path, otherwise must have the import style (this is: lib.xxx.yy.Foo)
 	private function executeWorker($worker) {
-		$path = trim($worker["class"]);
+		$path = isset($worker["class"]) ? trim($worker["class"]) : null;
+		$status = null;
 		
 		if (substr($path, 0, 1) != "/")
 			$path = get_lib($path);
@@ -244,6 +247,9 @@ class WorkerPoolHandler {
 				//echo "obj:".get_class($obj)."\n";
 				
 				if ($obj) {
+					$worker["args"] = isset($worker["args"]) ? $worker["args"] : null;
+					$worker["thread_id"] = isset($worker["thread_id"]) ? $worker["thread_id"] : null;
+					
 					debug_log("[WorkerPoolUtil::executeWorker][{$worker['thread_id']}] Executing work with path: $path", "info");
 					
 					$obj->setEVC($EVC);

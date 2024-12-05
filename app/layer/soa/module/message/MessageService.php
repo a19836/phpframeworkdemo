@@ -24,7 +24,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_status], type=tinyint, default=1)
 	 */
 	public function insertMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["created_date"] = date("Y-m-d H:i:s");
@@ -32,10 +32,10 @@ class MessageService extends \soa\CommonService {
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-			$data["subject"] = addcslashes($data["subject"], "\\'");
-			$data["content"] = addcslashes($data["content"], "\\'");
+			$data["subject"] = isset($data["subject"]) ? addcslashes($data["subject"], "\\'") : "";
+			$data["content"] = isset($data["content"]) ? addcslashes($data["content"], "\\'") : "";
 			
-			if ($data["message_id"]) {
+			if (!empty($data["message_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$status = $b->callInsert("module/message", "insert_message_with_ai_pk", $data, $options);
 				return $status ? $data["message_id"] : $status;
@@ -45,32 +45,33 @@ class MessageService extends \soa\CommonService {
 			return $status ? $b->getInsertedId($options) : $status;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
-			if (!$data["message_id"]) 
+			if (empty($data["message_id"]))
 				unset($data["message_id"]);
 			
 			$Message = $this->getMessageHbnObj($b, $options);
+			$ids = null;
 			$status = $Message->insert($data, $ids);
-			return $status ? $ids["message_id"] : $status;
+			return $status ? (isset($ids["message_id"]) ? $ids["message_id"] : null) : $status;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$attributes = array(
 				"from_user_id" => $data["from_user_id"], 
 				"to_user_id" => $data["to_user_id"], 
-				"subject" => $data["subject"], 
-				"content" => $data["content"], 
-				"from_user_status" => $data["from_user_status"], 
-				"to_user_status" => $data["to_user_status"], 
+				"subject" => isset($data["subject"]) ? $data["subject"] : null, 
+				"content" => isset($data["content"]) ? $data["content"] : null, 
+				"from_user_status" => isset($data["from_user_status"]) ? $data["from_user_status"] : null, 
+				"to_user_status" => isset($data["to_user_status"]) ? $data["to_user_status"] : null, 
 				"created_date" => $data["created_date"], 
 				"modified_date" => $data["modified_date"]
 			);
 			
-			if ($data["message_id"]) {
+			if (!empty($data["message_id"])) {
 				$options["hard_coded_ai_pk"] = true;
 				$attributes["message_id"] = $data["message_id"];
 			}
 			
 			$status = $b->insertObject("mmsg_message", $attributes, $options);
-			return $status ? ($data["message_id"] ? $data["message_id"] : $b->getInsertedId($options)) : $status;
+			return $status ? (!empty($data["message_id"]) ? $data["message_id"] : $b->getInsertedId($options)) : $status;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/message", "MessageService.insertMessage", $data, $options);
@@ -83,7 +84,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[seen_date], type=timestamp, not_null=1, min_length=1)
 	 */
 	public function updateMessageSeenDate($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -118,7 +119,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[from_user_status], type=tinyint, not_null=1)
 	 */
 	public function updateMessagesFromUserStatus($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -158,7 +159,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_status], type=tinyint, not_null=1)
 	 */
 	public function updateMessagesToUserStatus($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$data["modified_date"] = date("Y-m-d H:i:s");
@@ -198,7 +199,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function deleteMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -220,7 +221,7 @@ class MessageService extends \soa\CommonService {
 	}
 	
 	public function deleteExpiredMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -249,7 +250,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function deleteUserMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -284,13 +285,13 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/message", "get_message", $data, $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Message = $this->getMessageHbnObj($b, $options);
@@ -302,7 +303,7 @@ class MessageService extends \soa\CommonService {
 					"from_user_id" => $data["from_user_id"], 
 					"to_user_id" => $data["to_user_id"]
 				), $options);
-			return $result[0];
+			return isset($result[0]) ? $result[0] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/message", "MessageService.getMessage", $data, $options);
@@ -319,14 +320,15 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[conditions][to_user_status], type=tinyint|array)
 	 */
 	public function getMessagesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 	
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				return $b->callSelect("module/message", "get_messages_by_conditions", array("conditions" => $cond), $options);
 			}
@@ -336,7 +338,7 @@ class MessageService extends \soa\CommonService {
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->findObjects("mmsg_message", null, $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -355,25 +357,26 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[conditions][to_user_status], type=tinyint|array)
 	 */
 	public function countMessagesByConditions($data) {
-		$conditions = $data["conditions"];
-		$options = $data["options"];
+		$conditions = isset($data["conditions"]) ? $data["conditions"] : null;
+		$conditions_join = isset($data["conditions_join"]) ? $data["conditions_join"] : null;
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		if ($conditions) {
 			$b = $this->getBroker($options);
 			if (is_a($b, "IIbatisDataAccessBrokerClient")) {
-				$cond = \DB::getSQLConditions($conditions, $data["conditions_join"]);
+				$cond = \DB::getSQLConditions($conditions, $conditions_join);
 				$cond = $cond ? $cond : "1=1";
 				$result = $b->callSelect("module/message", "count_messages_by_conditions", array("conditions" => $cond), $options);
-				return $result[0]["total"];
+				return isset($result[0]["total"]) ? $result[0]["total"] : null;
 			}
 			else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 				$Message = $this->getMessageHbnObj($b, $options);
-				return $Message->count(array("conditions" => $conditions, "conditions_join" => $data["conditions_join"]), $options);
+				return $Message->count(array("conditions" => $conditions, "conditions_join" => $conditions_join), $options);
 			}
 			else if (is_a($b, "IDBBrokerClient")) {
 				$options = $options ? $options : array();
-				$options["conditions_join"] = $data["conditions_join"];
+				$options["conditions_join"] = $conditions_join;
 				return $b->countObjects("mmsg_message", $conditions, $options);
 			}
 			else if (is_a($b, "IBusinessLogicBrokerClient")) 
@@ -382,7 +385,7 @@ class MessageService extends \soa\CommonService {
 	}
 	
 	public function getAllMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -400,13 +403,13 @@ class MessageService extends \soa\CommonService {
 	}
 	
 	public function countAllMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/message", "count_all_messages", null, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Message = $this->getMessageHbnObj($b, $options);
@@ -424,7 +427,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getChatMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -448,24 +451,24 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[to_user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function countChatMessages($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/message", "count_chat_messages", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Message = $this->getMessageHbnObj($b, $options);
 			$result = $Message->callSelect("count_chat_messages", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$sql = MessageDBDAOServiceUtil::count_chat_messages($data);
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/message", "MessageService.countChatMessages", $data, $options);
@@ -477,7 +480,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[message_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getPreviousChatMessagesFromMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -502,24 +505,24 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[message_id], type=bigint, not_null=1, length=19)
 	 */
 	public function countPreviousChatMessagesFromMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/message", "count_previous_chat_messages_from_message", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Message = $this->getMessageHbnObj($b, $options);
 			$result = $Message->callSelect("count_previous_chat_messages_from_message", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$sql = MessageDBDAOServiceUtil::count_previous_chat_messages_from_message($data);
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/message", "MessageService.countPreviousChatMessagesFromMessage", $data, $options);
@@ -531,7 +534,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[message_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getNextChatMessagesFromMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -556,24 +559,24 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[message_id], type=bigint, not_null=1, length=19)
 	 */
 	public function countNextChatMessagesFromMessage($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
 		if (is_a($b, "IIbatisDataAccessBrokerClient")) {
 			$result = $b->callSelect("module/message", "count_next_chat_messages_from_message", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IHibernateDataAccessBrokerClient")) {
 			$Message = $this->getMessageHbnObj($b, $options);
 			$result = $Message->callSelect("count_next_chat_messages_from_message", $data, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IDBBrokerClient")) {
 			$sql = MessageDBDAOServiceUtil::count_next_chat_messages_from_message($data);
 			
 			$result = $b->getSQL($sql, $options);
-			return $result[0]["total"];
+			return isset($result[0]["total"]) ? $result[0]["total"] : null;
 		}
 		else if (is_a($b, "IBusinessLogicBrokerClient")) 
 			return $b->callBusinessLogic("module/message", "MessageService.countNextChatMessagesFromMessage", $data, $options);
@@ -583,7 +586,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getUserChatUsers($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);
@@ -606,7 +609,7 @@ class MessageService extends \soa\CommonService {
 	 * @param (name=data[user_id], type=bigint, not_null=1, length=19)
 	 */
 	public function getUserLastUniqueChats($data) {
-		$options = $data["options"];
+		$options = isset($data["options"]) ? $data["options"] : null;
 		$this->mergeOptionsWithBusinessLogicLayer($options);
 		
 		$b = $this->getBroker($options);

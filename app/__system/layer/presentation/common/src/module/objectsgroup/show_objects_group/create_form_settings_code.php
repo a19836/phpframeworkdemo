@@ -3,7 +3,8 @@ include get_lib("org.phpframework.workflow.WorkFlowTaskHandler");
 
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$settings = $_POST["settings"];
+$settings = isset($_POST["settings"]) ? $_POST["settings"] : null;
+$code = null;
 
 if (is_array($settings)) {
 	MyArray::arrKeysToLowerCase($settings, true);
@@ -18,7 +19,7 @@ if (is_array($settings)) {
 	$settings["form_input_data_type"] = "";
 	
 	$task = $WorkFlowTaskHandler->getTasksByTag("createform");
-	$task = $task[0];
+	$task = isset($task[0]) ? $task[0] : null;
 	$task["properties"] = $settings;
 	$task["obj"]->data = $task;
 	
@@ -29,7 +30,7 @@ if (is_array($settings)) {
 	$form_settings_code = substr($form_settings_code, 0, strrpos($form_settings_code, ","));//remove ", null);"
 	
 	//Preparing action_settings code
-	$action_settings_code = MyArray::arrayToString($settings["action_settings"]);
+	$action_settings_code = MyArray::arrayToString(isset($settings["action_settings"]) ? $settings["action_settings"] : null);
 	$action_settings_code = $action_settings_code == "''" ? "null" : $action_settings_code;
 	
 	$code = "array(\"form_settings\" => $form_settings_code, \n\t\"action_settings\" => $action_settings_code\n)";

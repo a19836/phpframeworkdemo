@@ -23,7 +23,10 @@ var selected_project_id = "' . $selected_project_id . '";
 var show_programs_on_add_project = ' . ($get_store_programs_url ? "true" : "false") . ';
 
 $(function () {
-	updateLayerProjects("' . $folder_to_filter . '");
+	if (!$.isEmptyObject(layers_props))
+		updateLayerProjects("' . $folder_to_filter . '");
+	else //if no layers_props, it menas there is no presentation layer
+		alert("Error: No presentation layer has been created. The framework installation may not have been completed. If so, please complete the framework setup.");
 });
 </script>'; $head .= HeatMapHandler::getHtml($project_url_prefix); $main_content = '
 <div class="choose_available_project' . ($popup ? " in_popup" : "") . '' . (count($layers_projects) == 1 ? ' single_presentation_layer' : '') . ($projects_exists ? '' : ' no_projects') . '">
@@ -40,7 +43,7 @@ $(function () {
 	<div class="layer">
 		<label>Presentation Layer:</label>
 		<select onChange="updateLayerProjects(\'\')">'; foreach ($layers_projects as $bean_name => $layer_props) { $main_content .= '
-				<option bean_name="' . $bean_name . '" bean_file_name="' . $layer_props["bean_file_name"] . '" layer_bean_folder_name="' . $layer_props["layer_bean_folder_name"] . '">' . $layer_props["item_label"] . '</option>'; } $main_content .= '
+				<option bean_name="' . $bean_name . '" bean_file_name="' . (isset($layer_props["bean_file_name"]) ? $layer_props["bean_file_name"] : "") . '" layer_bean_folder_name="' . (isset($layer_props["layer_bean_folder_name"]) ? $layer_props["layer_bean_folder_name"] : "") . '">' . (isset($layer_props["item_label"]) ? $layer_props["item_label"] : "") . '</option>'; } $main_content .= '
 		</select>
 	</div>'; } $main_content .= '
 	<div class="projects_list_type">

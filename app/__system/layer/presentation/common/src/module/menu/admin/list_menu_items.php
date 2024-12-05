@@ -4,7 +4,7 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("menu/admin/MenuAdminUtil", $common_project_name);
 	
 	$MenuAdminUtil = new MenuAdminUtil($CommonModuleAdminUtil);
@@ -17,7 +17,8 @@ if ($PEVC) {
 	$MenuAdminUtil->initMenuItems($brokers);
 	$available_items = $MenuAdminUtil->getAvailableItems();
 	
-	$group_id = $_GET["group_id"];
+	$group_id = isset($_GET["group_id"]) ? $_GET["group_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($group_id) {
 		$total = MenuUtil::countMenuItemsByConditions($brokers, array("group_id" => $group_id), null, true);
@@ -31,7 +32,7 @@ if ($PEVC) {
 	$pks = "item_id=#[\$idx][item_id]#";
 	
 	$list_settings = array(
-		"title" => "Menu Items List" . ($group_id ? " for group: '" . $available_groups[$group_id] . "'" : ""),
+		"title" => "Menu Items List" . ($group_id ? " for group: '" . (isset($available_groups[$group_id]) ? $available_groups[$group_id] : null) . "'" : ""),
 		"edit_url" => $CommonModuleAdminUtil->getAdminFileUrl("edit_menu_item") . $pks,
 		"delete_url" => $CommonModuleAdminUtil->getAdminFileUrl("delete_menu_item") . $pks,
 		"fields" => array(

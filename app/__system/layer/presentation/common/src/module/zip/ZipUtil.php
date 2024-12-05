@@ -10,7 +10,7 @@ class ZipUtil {
 	/* ZIP FUNCTIONS */
 	
 	public static function insertZip($brokers, $data) {
-		if (is_array($brokers) && $data["zip_id"] && is_numeric($data["country_id"]) && is_numeric($data["zone_id"])) {
+		if (is_array($brokers) && !empty($data["zip_id"]) && isset($data["country_id"]) && isset($data["zone_id"]) && is_numeric($data["country_id"]) && is_numeric($data["zone_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
@@ -24,6 +24,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Zip = $broker->callObject("module/zip", "Zip");
+					$ids = null;
 					$status = $Zip->insert($data, $ids);
 					return $status ? $data["zip_id"] : $status;
 				}
@@ -42,7 +43,7 @@ class ZipUtil {
 	}
 	
 	public static function updateZip($brokers, $data) {
-		if (is_array($brokers) && $data["zip_id"] && is_numeric($data["country_id"]) && is_numeric($data["zone_id"])) {
+		if (is_array($brokers) && !empty($data["zip_id"]) && isset($data["country_id"]) && isset($data["zone_id"]) && is_numeric($data["country_id"]) && is_numeric($data["zone_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -130,7 +131,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = ZipDBDAOUtil::delete_zips_by_city_id(array("city_id" => $city_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -151,7 +152,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = ZipDBDAOUtil::delete_zips_by_state_id(array("state_id" => $state_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -172,7 +173,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = ZipDBDAOUtil::delete_zips_by_country_id(array("country_id" => $country_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -210,7 +211,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/zip", "count_all_zips", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Zip = $broker->callObject("module/zip", "Zip");
@@ -258,7 +259,7 @@ class ZipUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/zip", "count_zips_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Zip = $broker->callObject("module/zip", "Zip");
@@ -275,7 +276,7 @@ class ZipUtil {
 	/* ZONE FUNCTIONS */
 	
 	public static function insertZone($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["city_id"])) {
+		if (is_array($brokers) && isset($data["city_id"]) && is_numeric($data["city_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			$options = array();
@@ -285,9 +286,9 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "ZoneService.insertZone", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-					if ($data["zone_id"]) {
+					if (!empty($data["zone_id"])) {
 						$options = array("hard_coded_ai_pk" => true);
 						$status = $broker->callInsert("module/zip", "insert_zone_with_ai_pk", $data, $options);
 						return $status ? $data["zone_id"] : $status;
@@ -297,35 +298,36 @@ class ZipUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					if (!$data["zone_id"]) 
+					if (empty($data["zone_id"]))
 						unset($data["zone_id"]);
 					
 					$Zone = $broker->callObject("module/zip", "Zone");
+					$ids = null;
 					$status = $Zone->insert($data, $ids);
-					return $status ? $ids["zone_id"] : $status;
+					return $status ? (isset($ids["zone_id"]) ? $ids["zone_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$attributes = array(
 						"city_id" => $data["city_id"], 
-						"name" => $data["name"],
+						"name" => isset($data["name"]) ? $data["name"] : null,
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
 					);
 					
-					if ($data["zone_id"]) {
+					if (!empty($data["zone_id"])) {
 						$options["hard_coded_ai_pk"] = true;
 						$attributes["zone_id"] = $data["zone_id"];
 					}
 					
 					$status = $broker->insertObject("mz_zone", $attributes, $options);
-					return $status ? ($data["zone_id"] ? $data["zone_id"] : $broker->getInsertedId($options)) : $status;
+					return $status ? (!empty($data["zone_id"]) ? $data["zone_id"] : $broker->getInsertedId($options)) : $status;
 				}
 			}
 		}
 	}
 	
 	public static function updateZone($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["zone_id"]) && is_numeric($data["city_id"])) {
+		if (is_array($brokers) && isset($data["zone_id"]) && isset($data["city_id"]) && is_numeric($data["zone_id"]) && is_numeric($data["city_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -333,7 +335,7 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "ZoneService.updateZone", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					return $broker->callUpdate("module/zip", "update_zone", $data);
 				}
@@ -344,7 +346,7 @@ class ZipUtil {
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mz_zone", array(
 							"city_id" => $data["city_id"], 
-							"name" => $data["name"],
+							"name" => isset($data["name"]) ? $data["name"] : null,
 							"modified_date" => $data["modified_date"]
 						), array(
 							"zone_id" => $data["zone_id"]
@@ -415,7 +417,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = ZoneDBDAOUtil::delete_zones_by_state_id(array("state_id" => $state_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -436,7 +438,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = ZoneDBDAOUtil::delete_zones_by_country_id(array("country_id" => $country_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -474,7 +476,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/zip", "count_all_zones", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Zone = $broker->callObject("module/zip", "Zone");
@@ -522,7 +524,7 @@ class ZipUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/zip", "count_zones_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Zone = $broker->callObject("module/zip", "Zone");
@@ -538,7 +540,7 @@ class ZipUtil {
 	/* CITY FUNCTIONS */
 	
 	public static function insertCity($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["state_id"])) {
+		if (is_array($brokers) && isset($data["state_id"]) && is_numeric($data["state_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			$options = array();
@@ -548,9 +550,9 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "CityService.insertCity", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-					if ($data["city_id"]) {
+					if (!empty($data["city_id"])) {
 						$options = array("hard_coded_ai_pk" => true);
 						$status = $broker->callInsert("module/zip", "insert_city_with_ai_pk", $data, $options);
 						return $status ? $data["city_id"] : $status;
@@ -560,35 +562,36 @@ class ZipUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					if (!$data["city_id"])
+					if (empty($data["city_id"]))
 						unset($data["city_id"]);
 					
 					$City = $broker->callObject("module/zip", "City");
+					$ids = null;
 					$status = $City->insert($data, $ids);
-					return $status ? $ids["city_id"] : $status;
+					return $status ? (isset($ids["city_id"]) ? $ids["city_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$attributes = array(
 						"state_id" => $data["state_id"], 
-						"name" => $data["name"], 
+						"name" => isset($data["name"]) ? $data["name"] : null, 
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
 					);
 					
-					if ($data["city_id"]) {
+					if (!empty($data["city_id"])) {
 						$options["hard_coded_ai_pk"] = true;
 						$attributes["city_id"] = $data["city_id"];
 					}
 					
 					$status = $broker->insertObject("mz_city", $attributes, $options);
-					return $status ? ($data["city_id"] ? $data["city_id"] : $broker->getInsertedId($options)) : $status;
+					return $status ? (!empty($data["city_id"]) ? $data["city_id"] : $broker->getInsertedId($options)) : $status;
 				}
 			}
 		}
 	}
 	
 	public static function updateCity($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["city_id"]) && is_numeric($data["state_id"])) {
+		if (is_array($brokers) && isset($data["city_id"]) && isset($data["state_id"]) && is_numeric($data["city_id"]) && is_numeric($data["state_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -596,7 +599,7 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "CityService.updateCity", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					return $broker->callUpdate("module/zip", "update_city", $data);
 				}
@@ -607,7 +610,7 @@ class ZipUtil {
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mz_city", array(
 							"state_id" => $data["state_id"], 
-							"name" => $data["name"],
+							"name" => isset($data["name"]) ? $data["name"] : null,
 							"modified_date" => $data["modified_date"]
 						), array(
 							"city_id" => $data["city_id"], 
@@ -678,7 +681,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$sql = CityDBDAOUtil::delete_cities_by_country_id(array("country_id" => $country_id));
-					return $b->setSQL($sql);
+					return $broker->setSQL($sql);
 				}
 			}
 		}
@@ -716,7 +719,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/zip", "count_all_cities", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$City = $broker->callObject("module/zip", "City");
@@ -764,7 +767,7 @@ class ZipUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/zip", "count_cities_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$City = $broker->callObject("module/zip", "City");
@@ -781,7 +784,7 @@ class ZipUtil {
 	/* STATE FUNCTIONS */
 	
 	public static function insertState($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["country_id"])) {
+		if (is_array($brokers) && isset($data["country_id"]) && is_numeric($data["country_id"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			$options = array();
@@ -791,9 +794,9 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "StateService.insertState", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-					if ($data["state_id"]) {
+					if (!empty($data["state_id"])) {
 						$options = array("hard_coded_ai_pk" => true);
 						$status = $broker->callInsert("module/zip", "insert_state_with_ai_pk", $data, $options);
 						return $status ? $data["state_id"] : $status;
@@ -803,22 +806,23 @@ class ZipUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					if (!$data["state_id"]) 
+					if (empty($data["state_id"])) 
 						unset($data["state_id"]);
 					
 					$State = $broker->callObject("module/zip", "State");
+					$ids = null;
 					$status = $State->insert($data, $ids);
-					return $status ? $ids["state_id"] : $status;
+					return $status ? (isset($ids["state_id"]) ? $ids["state_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$attributes = array(
 						"country_id" => $data["country_id"], 
-						"name" => $data["name"], 
+						"name" => isset($data["name"]) ? $data["name"] : null, 
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
 					);
 					
-					if ($data["state_id"]) {
+					if (!empty($data["state_id"])) {
 						$options["hard_coded_ai_pk"] = true;
 						$attributes["state_id"] = $data["state_id"];
 					}
@@ -831,7 +835,7 @@ class ZipUtil {
 	}
 	
 	public static function updateState($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["state_id"]) && is_numeric($data["country_id"])) {
+		if (is_array($brokers) && isset($data["state_id"]) && isset($data["country_id"]) && is_numeric($data["state_id"]) && is_numeric($data["country_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -839,7 +843,7 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "StateService.updateState", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					return $broker->callUpdate("module/zip", "update_state", $data);
 				}
@@ -850,7 +854,7 @@ class ZipUtil {
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mz_state", array(
 							"country_id" => $data["country_id"], 
-							"name" => $data["name"],
+							"name" => isset($data["name"]) ? $data["name"] : null,
 							"modified_date" => $data["modified_date"]
 						), array(
 							"state_id" => $data["state_id"]
@@ -938,7 +942,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/zip", "count_all_states", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$State = $broker->callObject("module/zip", "State");
@@ -986,7 +990,7 @@ class ZipUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/zip", "count_states_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$State = $broker->callObject("module/zip", "State");
@@ -1012,9 +1016,9 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "CountryService.insertCountry", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
-					if ($data["country_id"]) {
+					if (!empty($data["country_id"])) {
 						$options = array("hard_coded_ai_pk" => true);
 						$status = $broker->callInsert("module/zip", "insert_country_with_ai_pk", $data, $options);
 						return $status ? $data["country_id"] : $status;
@@ -1024,34 +1028,35 @@ class ZipUtil {
 					return $status ? $broker->getInsertedId($options) : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-					if (!$data["country_id"]) 
+					if (empty($data["country_id"])) 
 						unset($data["country_id"]);
 					
 					$Country = $broker->callObject("module/zip", "Country");
+					$ids = null;
 					$status = $Country->insert($data, $ids);
-					return $status ? $ids["country_id"] : $status;
+					return $status ? (isset($ids["country_id"]) ? $ids["country_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$attributes = array(
-						"name" => $data["name"], 
+						"name" => isset($data["name"]) ? $data["name"] : null, 
 						"created_date" => $data["created_date"], 
 						"modified_date" => $data["modified_date"]
 					);
 					
-					if ($data["country_id"]) {
+					if (!empty($data["country_id"])) {
 						$options["hard_coded_ai_pk"] = true;
 						$attributes["country_id"] = $data["country_id"];
 					}
 					
 					$status = $broker->insertObject("mz_country", $attributes, $options);
-					return $status ? ($data["country_id"] ? $data["country_id"] : $broker->getInsertedId($options)) : $status;
+					return $status ? (!empty($data["country_id"]) ? $data["country_id"] : $broker->getInsertedId($options)) : $status;
 				}
 			}
 		}
 	}
 	
 	public static function updateCountry($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["country_id"])) {
+		if (is_array($brokers) && isset($data["country_id"]) && is_numeric($data["country_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -1059,7 +1064,7 @@ class ZipUtil {
 					return $broker->callBusinessLogic("module/zip", "CountryService.updateCountry", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					return $broker->callUpdate("module/zip", "update_country", $data);
 				}
@@ -1069,7 +1074,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mz_country", array(
-							"name" => $data["name"],
+							"name" => isset($data["name"]) ? $data["name"] : "",
 							"modified_date" => $data["modified_date"]
 						), array(
 							"country_id" => $data["country_id"], 
@@ -1153,7 +1158,7 @@ class ZipUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/zip", "count_all_countries", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Country = $broker->callObject("module/zip", "Country");
@@ -1201,7 +1206,7 @@ class ZipUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/zip", "count_countries_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Country = $broker->callObject("module/zip", "Country");

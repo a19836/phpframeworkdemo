@@ -4,10 +4,11 @@ namespace CMSModule\event\show_event;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
-		$event_id = is_numeric($settings["event_id"]) ? $settings["event_id"] : null;
+		$event_id = isset($settings["event_id"]) && is_numeric($settings["event_id"]) ? $settings["event_id"] : null;
 		
 		include $EVC->getConfigPath("config");
 		include_once $EVC->getModulePath("common/CommonModuleTableExtraAttributesUtil", $common_project_name);
@@ -20,7 +21,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler");
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
-		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, $GLOBALS["default_db_driver"], $settings, "event");
+		$CommonModuleTableExtraAttributesUtil = new \CommonModuleTableExtraAttributesUtil($this, isset($GLOBALS["default_db_driver"]) ? $GLOBALS["default_db_driver"] : null, $settings, "event");
 		
 		$html = '
 		<!-- Fancy LighBox -->
@@ -35,14 +36,14 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			$html .= '<link rel="stylesheet" href="' . $project_common_url_prefix . 'module/event/show_event.css" type="text/css" charset="utf-8" />';
 		}
 		
-		$html .= ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		$html .= (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 		
 		<script>
 			var jquery_lib_url = jquery_lib_url ? jquery_lib_url : \'' . $project_common_url_prefix . 'vendor/jquery/js/jquery-1.8.1.min.js\';
 		</script>
 		
-		<div class="module_event ' . ($settings["block_class"]) . '">';
+		<div class="module_event ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
 		if ($event_id) {
 			$data = \EventUtil::getEventProperties($EVC, $event_id, true);
@@ -65,33 +66,33 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			), "This join point's method/function can change the \$settings or \$data variables. \$data contains the event properties.");
 			
 			if ($data) {
-				if (!$data["published"] && !$settings["allow_not_published"]) {
+				if (empty($data["published"]) && empty($settings["allow_not_published"])) {
 					$html .= '<h3 class="event_error">' . translateProjectText($EVC, "Event not Published!") . '</h3>';
 				}
-				else if ($settings["fields"]) {
-					if (!$data["end_date"] && $settings["show_end_date"])
+				else if (!empty($settings["fields"])) {
+					if (empty($data["end_date"]) && !empty($settings["show_end_date"]))
 						$settings["show_end_date"] = false;
 					
-					if ($data["country_id"]) {
+					if (!empty($data["country_id"])) {
 						$countries = \ZipUtil::getAllCountries($brokers);
 						
 						if ($countries)
 							foreach ($countries as $country) 
-								if ($country["country_id"] == $data["country_id"]) {
-									$data["country"] = $country["name"];
+								if (isset($country["country_id"]) && $country["country_id"] == $data["country_id"]) {
+									$data["country"] = isset($country["name"]) ? $country["name"] : null;
 									break;
 								}
 					}
 					
 					//Preparing user data
-					if ($settings["show_user"]) {
-						$object_events = \EventUtil::getObjectEventsByConditions($brokers, array("event_id" => $data["event_id"], "object_type_id" => \ObjectUtil::USER_OBJECT_TYPE_ID), null);
+					if (!empty($settings["show_user"])) {
+						$object_events = \EventUtil::getObjectEventsByConditions($brokers, array("event_id" => $event_id, "object_type_id" => \ObjectUtil::USER_OBJECT_TYPE_ID), null);
 						
-						if ($object_events[0]) {
+						if (isset($object_events[0]["object_id"])) {
 							include_once $EVC->getModulePath("user/UserUtil", $common_project_name);
 						
 							$user_data = \UserUtil::getUsersByConditions($brokers, array("user_id" => $object_events[0]["object_id"]), null);
-							$data["user"] = $user_data[0];
+							$data["user"] = isset($user_data[0]) ? $user_data[0] : null;
 						}
 					}
 					
@@ -114,22 +115,22 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					);
 					
 					$attachments_html = '';
-					if ($settings["show_attachments"]) {
+					if (!empty($settings["show_attachments"])) {
 						$attachments_settings = array(
-							"style_type" => $settings["style_type"],
-							"class" => $settings["fields"]["attachments"]["field"]["class"],
-							"title" => $settings["fields"]["attachments"]["field"]["label"]["value"],
+							"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+							"class" => isset($settings["fields"]["attachments"]["field"]["class"]) ? $settings["fields"]["attachments"]["field"]["class"] : null,
+							"title" => isset($settings["fields"]["attachments"]["field"]["label"]["value"]) ? $settings["fields"]["attachments"]["field"]["label"]["value"] : null,
 						);
 						$attachments_html = \AttachmentUI::getObjectAttachmentsHtml($EVC, $attachments_settings, \ObjectUtil::EVENT_OBJECT_TYPE_ID, $event_id, \EventUtil::EVENT_ATTACHMENTS_GROUP_ID) . '<div class="clear"></div>';
 					}
 					
 					$comments_html = '';
-					if ($settings["show_comments"]) {
+					if (!empty($settings["show_comments"])) {
 						$comments_settings = array(
-							"style_type" => $settings["style_type"],
-							"class" => $settings["fields"]["comments"]["field"]["class"],
-							"title" => $settings["fields"]["comments"]["field"]["label"]["value"],
-							"add_comment_url" => $data["allow_comments"] ? $settings["fields"]["comments"]["field"]["add_comment_url"] : null,
+							"style_type" => isset($settings["style_type"]) ? $settings["style_type"] : null,
+							"class" => isset($settings["fields"]["comments"]["field"]["class"]) ? $settings["fields"]["comments"]["field"]["class"] : null,
+							"title" => isset($settings["fields"]["comments"]["field"]["label"]["value"]) ? $settings["fields"]["comments"]["field"]["label"]["value"] : null,
+							"add_comment_url" => !empty($data["allow_comments"]) && isset($settings["fields"]["comments"]["field"]["add_comment_url"]) ? $settings["fields"]["comments"]["field"]["add_comment_url"] : null,
 						);
 						
 						//Add join point initting the $settings[comments_users] with the correspondent users' data array for the event comments.
@@ -147,14 +148,16 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "event/show_event", $settings);
 					
 					$HtmlFormHandler = null;
-					if ($settings["ptl"])
+					if (!empty($settings["ptl"])) {
+						$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
 						$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
+					}
 					
 					$container_idx = 0;
 					foreach ($settings["fields"] as $field_id => $field) {
-						if ($settings["show_" . $field_id]) {
+						if (!empty($settings["show_" . $field_id])) {
 							//Preparing ptl
-							if ($settings["ptl"]) {
+							if (!empty($settings["ptl"])) {
 								if ($field_id == "attachments")
 									$settings["ptl"]["code"] = preg_replace('/<ptl:block:field:attachments\s*\/?>/', $attachments_html, $settings["ptl"]["code"]);
 								else if ($field_id == "comments")
@@ -178,7 +181,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 					}
 					
 					//add ptl to form_settings
-					if ($settings["ptl"]) {
+					if (!empty($settings["ptl"])) {
 						\CommonModuleUI::cleanBlockPTLCode($settings["ptl"]["code"]);
 						$form_settings["form_containers"][$container_idx]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 					}

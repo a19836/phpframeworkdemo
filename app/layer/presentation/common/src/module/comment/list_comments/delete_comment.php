@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (CommentUtil::deleteComment($brokers, $_GET["comment_id"])) {
+if (isset($_GET["comment_id"]) && CommentUtil::deleteComment($brokers, $_GET["comment_id"])) {
 	echo "1";
 }
 ?>

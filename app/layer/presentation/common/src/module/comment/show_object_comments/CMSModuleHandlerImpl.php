@@ -4,10 +4,15 @@ namespace CMSModule\comment\show_object_comments;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		
 		include_once $EVC->getModulePath("object/ObjectUtil", $EVC->getCommonProjectName());
 		include_once $EVC->getModulePath("comment/CommentUI", $EVC->getCommonProjectName());
+		
+		$settings["object_type_id"] = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$settings["object_id"] = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		$settings["group"] = isset($settings["group"]) ? $settings["group"] : null;
 		
 		//Add join point initting the $settings[comments_users] with the correspondent users' data array for the object comments.
 		$EVC->getCMSLayer()->getCMSJoinPointLayer()->includeJoinPoint("Preparing object comments settings", array(

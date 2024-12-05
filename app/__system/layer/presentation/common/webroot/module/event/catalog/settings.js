@@ -28,7 +28,7 @@ function onEventCatalogUpdatePTLFromFieldsSettings(elm, settings, code, external
 			"\n" + '	<ptl:if is_array(\\$input)>' +
 			"\n" + '		<ptl:foreach \\$input i event>' +
 			"\n" + '			<li class="event">' + 
-			"\n" + '				<a href="' + (event_properties_url != "" ? event_properties_url : '?event_id=') + '<ptl:echo \\$event[event_id]/>' + '">' +
+			"\n" + '				<a href="' + (event_properties_url != "" ? event_properties_url : '?event_id=') + '<ptl:echo @\\$event[event_id]/>' + '">' +
 			"\n" + '					' + code.replace(/\n/g, "\n\t\t\t\t\t") +
 			"\n" + '				</a>' +
 			"\n" + '			</li>' +

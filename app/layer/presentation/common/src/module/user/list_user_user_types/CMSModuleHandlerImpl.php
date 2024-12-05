@@ -4,6 +4,7 @@ namespace CMSModule\user\list_user_user_types;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,7 +17,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \UserUtil::countUserUserTypesByConditions($brokers, $conditions, null) : \UserUtil::countAllUserUserTypes($brokers);
 		
@@ -29,7 +30,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$settings["css_file"] = $project_common_url_prefix . 'module/user/list_user_user_types.css';
 		$settings["class"] = "module_list_user_user_types";
-		$settings["edit_page_url"] .= (strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "user_id=#[idx][user_id]#&user_type_id=#[idx][user_type_id]#";
+		$settings["edit_page_url"] .= (isset($settings["edit_page_url"]) && strpos($settings["edit_page_url"], "?") !== false ? "&" : "?") . "user_id=#[idx][user_id]#&user_type_id=#[idx][user_type_id]#";
 		$settings["delete_page_url"] = "{$project_url_prefix}module/user/list_user_user_types/delete_user_user_type?user_id=#[idx][user_id]#&user_type_id=#[idx][user_type_id]#";
 		
 		\CMSModule\user\UserModuleUtil::prepareListSettingsFields($EVC, $settings);

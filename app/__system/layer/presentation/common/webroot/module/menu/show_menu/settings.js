@@ -22,20 +22,20 @@ function setDefaultTemplatePTL() {
 		"\n" + '	<ptl:function:getMenusHTML_' + r + ' list_class menus>' +
 		"\n" + '		<ptl:if is_array(\\$menus)>' +
 		"\n" + '			<ptl:foreach \\$menus i item>' +
-		"\n" + '				<li class="<ptl:echo \\$item[class]/>" title="<ptl:echo \\$item[title]/>" <ptl:echo \\$item[attrs]/> >' +
-		"\n" + '					<ptl:echo \\$item[previous_html]/>' +
+		"\n" + '				<li class="<ptl:echo @\\$item[class]/>" title="<ptl:echo @\\$item[title]/>" <ptl:echo @\\$item[attrs]/> >' +
+		"\n" + '					<ptl:echo @\\$item[previous_html]/>' +
 		"\n" + '					' +
-		"\n" + '					<a href="<ptl:if \\$item[url]><ptl:echo \\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>">' +
-		"\n" + '						<label><ptl:echo \\$item[label]/></label>' +
+		"\n" + '					<a href="<ptl:if @\\$item[url]><ptl:echo @\\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>">' +
+		"\n" + '						<label><ptl:echo @\\$item[label]/></label>' +
 		"\n" + '					</a>' +
 		"\n" + '					' +
-		"\n" + '					<ptl:if is_array(\\$item[menus])>' +
+		"\n" + '					<ptl:if is_array(@\\$item[menus])>' +
 		"\n" + '						<ul class="<ptl:echo \\$list_class/>">' +
-		"\n" + '							<ptl:getMenusHTML_' + r + ' \\$list_class \\$item[menus]>' +
+		"\n" + '							<ptl:getMenusHTML_' + r + ' \\$list_class @\\$item[menus]>' +
 		"\n" + '						</ul>' +
 		"\n" + '					</ptl:if>' +
 		"\n" + '					' +
-		"\n" + '					<ptl:echo \\$item[next-html]/>' +
+		"\n" + '					<ptl:echo @\\$item[next-html]/>' +
 		"\n" + '				</li>' +
 		"\n" + '			</ptl:foreach>' +
 		"\n" + '		</ptl:if>' +
@@ -51,29 +51,29 @@ function setDefaultTemplatePTL() {
 	var ptl =   '<ptl:if !function_exists("getMenuItemHTML_' + r + '")>' +
 		"\n" + '	<ptl:function:getMenuItemHTML_' + r + ' list_class item prefix>' +
 		"\n" + '		<ptl:if is_array(\\$item)>' +
-		"\n" + '			<li class="nav-item <ptl:echo \\$item[class]/>" <ptl:echo \\$item[attrs]/> >' +
-		"\n" + '				<ptl:echo \\$item[previous_html]/>' +
+		"\n" + '			<li class="nav-item <ptl:echo @\\$item[class]/>" <ptl:echo @\\$item[attrs]/> >' +
+		"\n" + '				<ptl:echo @\\$item[previous_html]/>' +
 		"\n" + '				' +
 		"\n" + '				<ptl:if !empty(\\$item[menus]) && is_array(\\$item[menus])>' +
-		"\n" + '					<a class="nav-link dropdown-item collapsed" href="javascript:void(0)" data-toggle="collapse" data-toggle="collapse" data-target="#collapseLayouts-<ptl:echo \\$prefix/>" aria-expanded="false" aria-controls="collapseLayouts-<ptl:echo \\$prefix/>" title="<ptl:echo \\$item[title]/>">' +
+		"\n" + '					<a class="nav-link dropdown-item collapsed" href="javascript:void(0)" data-toggle="collapse" data-toggle="collapse" data-target="#collapseLayouts-<ptl:echo \\$prefix/>" aria-expanded="false" aria-controls="collapseLayouts-<ptl:echo \\$prefix/>" title="<ptl:echo @\\$item[title]/>">' +
 		"\n" + '						<span class="sb-nav-link-icon"><i class="fas fa-table"></i></span>' +
-		"\n" + '						<span><ptl:echo \\$item[label]/></span>' +
+		"\n" + '						<span><ptl:echo @\\$item[label]/></span>' +
 		"\n" + '						<span class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></span>' +
 		"\n" + '					</a>' +
-		"\n" + '					<ptl:echo \\$item[next_html]/>' +
+		"\n" + '					<ptl:echo @\\$item[next_html]/>' +
 		"\n" + '					<div class="collapse" id="collapseLayouts-<ptl:echo \\$prefix/>" aria-labelledby="headingOne">' +
 		"\n" + '						<ul class="sb-sidenav-menu-nested nav flex-column ml-0 <ptl:echo \\$list_class/>">' +
-		"\n" + '							<ptl:foreach \\$item[menus] j sub_item>' +
+		"\n" + '							<ptl:foreach @\\$item[menus] j sub_item>' +
 		"\n" + '								<ptl:getMenuItemHTML_' + r + ' \\$list_class \\$sub_item "{\\$prefix}_\\$j">' +
 		"\n" + '							</ptl:foreach>' +
 		"\n" + '						</ul>' +
 		"\n" + '					</div>' +
 	    	"\n" + '				<ptl:else>' +
-	    	"\n" + '					<a class="nav-link dropdown-item" href="<ptl:if \\$item[url]><ptl:echo \\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>" title="<ptl:echo \\$item[title]/>">' +
+	    	"\n" + '					<a class="nav-link dropdown-item" href="<ptl:if @\\$item[url]><ptl:echo @\\$item[url]/><ptl:else><ptl:echo \'javascript:void(0)\'/></ptl:if>" title="<ptl:echo @\\$item[title]/>">' +
 		"\n" + '						<span class="sb-nav-link-icon"><i class="fas fa-table"></i></span>' +
-		"\n" + '						<span><ptl:echo \\$item[label]/></span>' +
+		"\n" + '						<span><ptl:echo @\\$item[label]/></span>' +
 		"\n" + '					</a>' +
-	    	"\n" + '					<ptl:echo \\$item[next_html]/>' +
+	    	"\n" + '					<ptl:echo @\\$item[next_html]/>' +
 		"\n" + '				</ptl:if>' +
 		"\n" + '			</li>' +
 		"\n" + '		</ptl:if>' +

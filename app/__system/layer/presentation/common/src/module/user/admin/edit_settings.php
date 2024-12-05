@@ -4,18 +4,18 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("user/admin/UserAdminUtil", $common_project_name);
 	
 	$UserAdminUtil = new UserAdminUtil($CommonModuleAdminUtil);
 	
 	//Preparing Data
-	if ($_POST) {
+	if (!empty($_POST)) {
 		$UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "write");
 		
 		$properties = array(
-			"DEFAULT_USER_SESSION_EXPIRATION_TTL" => is_numeric($_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"]) ? $_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"] : 86400,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
-			"DEFAULT_USER_SESSION_BLOCKED_TTL" => is_numeric($_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"]) ? $_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"] : 3600,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
+			"DEFAULT_USER_SESSION_EXPIRATION_TTL" => isset($_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"]) && is_numeric($_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"]) ? $_POST["DEFAULT_USER_SESSION_EXPIRATION_TTL"] : 86400,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
+			"DEFAULT_USER_SESSION_BLOCKED_TTL" => isset($_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"]) && is_numeric($_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"]) ? $_POST["DEFAULT_USER_SESSION_BLOCKED_TTL"] : 3600,//60 secs => 1 min; 3600 secs => 1 hour; 86400 secs => 1 day.
 		);
 		
 		if ($CommonModuleAdminUtil->setModuleSettings($PEVC, "user/UserSettings", $properties)) {
@@ -36,8 +36,8 @@ if ($PEVC) {
 			"DEFAULT_USER_SESSION_BLOCKED_TTL" => array("type" => "text", "label" => "Default login blocked TTL (secs): "),
 		),
 		"data" => $data,
-		"status_message" => $status_message,
-		"error_message" => $error_message,
+		"status_message" => isset($status_message) ? $status_message : null,
+		"error_message" => isset($error_message) ? $error_message : null,
 	);
 	
 	$head = '<link rel="stylesheet" href="' . $CommonModuleAdminUtil->getWebrootAdminFolderUrl() . 'edit_settings.css" type="text/css" charset="utf-8" />';

@@ -5,9 +5,9 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $peb014cfd, $v9431023a8c = null) { return '
+class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $peb014cfd, $v9431023a8c = null) { $pd97bc935 = isset($pdf77ee66->auth["user_data"]["username"]) ? $pdf77ee66->auth["user_data"]["username"] : null; return '
 		<ul>
-			<li class="current_user">Current User: "' . $pdf77ee66->auth["user_data"]["username"] . '"</li>
+			<li class="current_user">Current User: "' . $pd97bc935 . '"</li>
 			<li class="manage_menu_item' . ($v9431023a8c == "user/manage_users" ? ' active' : '') . '"><a href="' . $peb014cfd . 'user/manage_users">Manage Users</a></li>
 			<!--li' . ($v9431023a8c == "user/edit_user" ? ' class="active"' : '') . '><a href="' . $peb014cfd . 'user/edit_user">Add User</a></li-->
 			
@@ -37,4 +37,5 @@ class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $
 			' . ($pdf77ee66->isLocalDB() ? '<li class="manage_menu_item change_db_keys' . ($v9431023a8c == "user/change_db_keys" ? ' active' : '') . '"><a href="' . $peb014cfd . 'user/change_db_keys">Change DB Keys</a></li>' : '') . '
 			
 			<li class="manage_menu_item change_auth_settings' . ($v9431023a8c == "user/change_auth_settings" ? ' active' : '') . '"><a href="' . $peb014cfd . 'user/change_auth_settings">Change Auth Settings</a></li>
+			<li class="manage_menu_item change_other_settings' . ($v9431023a8c == "user/change_other_settings" ? ' active' : '') . '"><a href="' . $peb014cfd . 'user/change_other_settings">Change Other Settings</a></li>
 		</ul>'; } } ?>

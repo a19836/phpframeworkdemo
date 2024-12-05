@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("comment/CommentUtil", $common_project_name);
 	
-	if (CommentUtil::deleteObjectComment($brokers, $_GET["comment_id"], $_GET["object_type_id"], $_GET["object_id"])) {
+	if (isset($_GET["comment_id"]) && isset($_GET["object_type_id"]) && isset($_GET["object_id"]) && CommentUtil::deleteObjectComment($brokers, $_GET["comment_id"], $_GET["object_type_id"], $_GET["object_id"])) {
 		echo "1";
 	}
 }

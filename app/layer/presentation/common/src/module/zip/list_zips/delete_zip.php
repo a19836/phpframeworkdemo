@@ -6,7 +6,7 @@ validateModuleUserActivity($EVC, "delete", $module_path);
 
 $brokers = $EVC->getPresentationLayer()->getBrokers();
 
-if (ZipUtil::deleteZip($brokers, $_GET["zip_id"], $_GET["country_id"])) {
+if (isset($_GET["zip_id"]) && ZipUtil::deleteZip($brokers, $_GET["zip_id"], isset($_GET["country_id"]) ? $_GET["country_id"] : null)) {
 	echo "1";
 }
 ?>

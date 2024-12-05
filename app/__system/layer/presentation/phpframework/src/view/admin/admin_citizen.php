@@ -5,17 +5,17 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (!$is_admin_ui_citizen_allowed) { echo '<script>
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); if (empty($is_admin_ui_citizen_allowed)) { echo '<script>
 		alert("You don\'t have permission to access this Workspace!");
 		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+	</script>'; die(); } $filter_by_layout = isset($filter_by_layout) ? $filter_by_layout : null; $filter_by_layout_permission = isset($filter_by_layout_permission) ? $filter_by_layout_permission : null; $project = isset($project) ? $project : null; $db_driver_layer_folder_name = isset($db_driver_layer_folder_name) ? $db_driver_layer_folder_name : null; $db_driver_bean_name = isset($db_driver_bean_name) ? $db_driver_bean_name : null; $db_driver_bean_file_name = isset($db_driver_bean_file_name) ? $db_driver_bean_file_name : null; $db_driver_layer_bean_file_name = isset($db_driver_layer_bean_file_name) ? $db_driver_layer_bean_file_name : null; $db_driver_layer_bean_name = isset($db_driver_layer_bean_name) ? $db_driver_layer_bean_name : null; $db_driver_broker_name = isset($db_driver_broker_name) ? $db_driver_broker_name : null; $switch_project_url = $project_url_prefix . "admin?bean_name=$bean_name&bean_file_name=$bean_file_name&project=#project#"; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_citizen.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_citizen.js"></script>
 
 <script>
-menu_item_properties = ' . json_encode($menu_item_properties) . ';
-</script>'; $main_content = ''; if (!$projects) $main_content .= '<script>alert("Error: No projects available! Please contact your sysadmin...");</script>'; $main_content .= '
+menu_item_properties = ' . (isset($menu_item_properties) ? json_encode($menu_item_properties) : "null") . ';
+</script>'; $main_content = ''; if (empty($projects)) $main_content .= '<script>alert("Error: No projects available! Please contact your sysadmin...");</script>'; $main_content .= '
 <div id="selected_menu_properties" class="myfancypopup">
 	<div class="title">Properties</div>
 	<p class="content"></p>
@@ -38,7 +38,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 					</a>
 				</li>
 				
-				' . getProjectsHtml($projects, $switch_project_url) . '
+				' . getProjectsHtml(isset($projects) ? $projects : null, $switch_project_url) . '
 			</ul>
 		</li>
 		<li class="dashboard">
@@ -49,7 +49,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 		</li>
 	</ul>
 	<ul class="dropdown-2">
-		' . ($is_db_layer_allowed ? '
+		' . (!empty($is_db_layer_allowed) ? '
 		<li class="db with_sub_menu">
 			<a class="item_header" href="javascript:void(0)" onClick="showSubMenu(this);">
 				<i class="selected"></i>
@@ -111,7 +111,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 			</ul>
 		' : '') . '
 		</li>
-		' . ($layers["presentation_layers"] ? '
+		' . (!empty($layers["presentation_layers"]) ? '
 			<li class="pages">
 				<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">
 					<i class="selected"></i>
@@ -151,7 +151,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 					<label>Webroot</label>
 				</a>
 			</li>
-			' . ($util_exists ? '<li class="utils with_sub_menu">
+			' . (!empty($util_exists) ? '<li class="utils with_sub_menu">
 				<a class="item_header" href="javascript:void(0)" onClick="showSubMenu(this);">
 					<i class="selected"></i>
 					<span class="fas fa-radiation logo"></span>
@@ -185,7 +185,7 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 				<i class="fas fa-chevron-down sub_menu"></i>
 			</a>
 			
-			<ul>'; if ($layers["presentation_layers"]) $main_content .= '
+			<ul>'; if (!empty($layers["presentation_layers"])) $main_content .= '
 				<li class="edit_global_variables">
 					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/edit_project_global_variables?bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project/src/config/pre_init_config.php" . '">
 						<i class="selected"></i>
@@ -213,14 +213,14 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 						<span class="fas fa-list logo"></span>
 						<label>List Blocks</label>
 					</a>
-				</li>'; if ($layers) { if ($layers["data_access_layers"]) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
+				</li>'; if (!empty($layers)) { if (!empty($layers["data_access_layers"])) foreach ($layers["data_access_layers"] as $layer_name => $layer) { $bn = isset($layer["properties"]["bean_name"]) ? $layer["properties"]["bean_name"] : null; $bfn = isset($layer["properties"]["bean_file_name"]) ? $layer["properties"]["bean_file_name"] : null; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
 				<li class="data_access_rules">
 					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$db_driver_broker_name" . '">
 						<i class="selected"></i>
 						<span class="fas fa-list logo"></span>
 						<label>List ' . ucwords($label) . ' Rules</label>
 					</a>
-				</li>'; } if ($layers["business_logic_layers"]) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = $layer["properties"]["bean_name"]; $bfn = $layer["properties"]["bean_file_name"]; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
+				</li>'; } if (!empty($layers["business_logic_layers"])) foreach ($layers["business_logic_layers"] as $layer_name => $layer) { $bn = isset($layer["properties"]["bean_name"]) ? $layer["properties"]["bean_name"] : null; $bfn = isset($layer["properties"]["bean_file_name"]) ? $layer["properties"]["bean_file_name"] : null; $label = WorkFlowBeansFileHandler::getLayerBeanFolderName($user_beans_folder_path . $bfn, $bn, $user_global_variables_file_path); $main_content .= '
 				<li class="business_logic_services">
 					<a class="item_header" href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bn&bean_file_name=$bfn$filter_by_layout_url_query&selected_db_driver=$db_driver_broker_name" . '">
 						<i class="selected"></i>
@@ -235,14 +235,14 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 						<label>Tools</label>
 					</a>
 				</li>
-				' . ($is_switch_admin_ui_allowed ? '<li class="switch_admin_ui">
+				' . (!empty($is_switch_admin_ui_allowed) ? '<li class="switch_admin_ui">
 					<a class="item_header" href="' . $project_url_prefix . 'admin/admin_uis">
 						<i class="selected"></i>
 						<span class="fas fa-th-large logo"></span>
 						<label>Switch Workspace</label>
 					</a>
 				</li>' : '') . '
-				' . ($is_flush_cache_allowed ? '<li class="flush_cache">
+				' . (!empty($is_flush_cache_allowed) ? '<li class="flush_cache">
 					<a class="item_header" href="javascript:void(0)" onClick="flushCacheFromAdmin(\'' . $project_url_prefix . 'admin/flush_cache\');">
 						<i class="selected"></i>
 						<span class="fas fa-broom logo"></span>
@@ -279,8 +279,8 @@ menu_item_properties = ' . json_encode($menu_item_properties) . ';
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-</div>'; function getProjectsHtml($v90b50cf52d, $v593858b53e) { $pf8ed4912 = ''; if ($v90b50cf52d) foreach ($v90b50cf52d as $v29e5d6d712 => $v20dfc6306e) { if ($v20dfc6306e["is_project"]) { $pf8ed4912 .= '<li class="project' . ($v20dfc6306e["is_selected"] ? " shown_project" : "") . '">
-							<a class="item_header" href="' . str_replace("#project#", $v20dfc6306e["element_type_path"], $v593858b53e) . '" title="' . $v29e5d6d712 . '">
+</div>'; function getProjectsHtml($v90b50cf52d, $v593858b53e) { $pf8ed4912 = ''; if ($v90b50cf52d) foreach ($v90b50cf52d as $v29e5d6d712 => $v20dfc6306e) { if (!empty($v20dfc6306e["is_project"])) { $v8c9907baae = isset($v20dfc6306e["element_type_path"]) ? $v20dfc6306e["element_type_path"] : null; $pf8ed4912 .= '<li class="project' . (!empty($v20dfc6306e["is_selected"]) ? " shown_project" : "") . '">
+							<a class="item_header" href="' . str_replace("#project#", $v8c9907baae, $v593858b53e) . '" title="' . $v29e5d6d712 . '">
 								<i class="selected"></i>
 								<span class="fas fa-globe logo"></span>
 								<label>' . $v29e5d6d712 . '</label>

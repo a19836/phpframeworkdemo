@@ -8,10 +8,11 @@ if (!class_exists("CommentUtil")) {
 		/* COMMENT FUNCTIONS */
 	
 		public static function insertComment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["user_id"])) {
+			if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
-			
+				$status = null;
+		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$comment_id = $broker->callBusinessLogic("module/comment", "CommentService.insertComment", $data);
@@ -19,7 +20,7 @@ if (!class_exists("CommentUtil")) {
 						break;
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["comment"] = addcslashes($data["comment"], "\\'");
+						$data["comment"] = isset($data["comment"]) ? addcslashes($data["comment"], "\\'") : "";
 					
 						$status = $broker->callInsert("module/comment", "insert_comment", $data);
 						$comment_id = $status ? $broker->getInsertedId() : $status;
@@ -27,14 +28,15 @@ if (!class_exists("CommentUtil")) {
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$Comment = $broker->callObject("module/comment", "Comment");
+						$ids = null;
 						$status = $Comment->insert($data, $ids);
-						$comment_id = $status ? $ids["comment_id"] : $status;
+						$comment_id = $status ? (isset($ids["comment_id"]) ? $ids["comment_id"] : null) : $status;
 						break;
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$status = $broker->insertObject("mc_comment", array(
 								"user_id" => $data["user_id"], 
-								"comment" => $data["comment"], 
+								"comment" => isset($data["comment"]) ? $data["comment"] : null, 
 								"created_date" => $data["created_date"], 
 								"modified_date" => $data["modified_date"]
 							));
@@ -43,24 +45,25 @@ if (!class_exists("CommentUtil")) {
 					}
 				}
 				
-				if ($status && $comment_id && !self::updateObjectCommentsByCommentId(array($broker), $comment_id, $data))
+				if ($status && !empty($comment_id) && !self::updateObjectCommentsByCommentId(array($broker), $comment_id, $data))
 					$status = false;
 			
-				return $status ? $comment_id : false;
+				return $status && !empty($comment_id) ? $comment_id : false;
 			}
 		}
 	
 		public static function updateComment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["comment_id"]) && is_numeric($data["user_id"])) {
+			if (is_array($brokers) && isset($data["comment_id"]) && is_numeric($data["comment_id"]) && isset($data["user_id"]) && is_numeric($data["user_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
-			
+				$status = null;
+		
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
 						$status = $broker->callBusinessLogic("module/comment", "CommentService.updateComment", $data);
 						break;
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["comment"] = addcslashes($data["comment"], "\\'");
+						$data["comment"] = isset($data["comment"]) ? addcslashes($data["comment"], "\\'") : "";
 					
 						$status = $broker->callUpdate("module/comment", "update_comment", $data);
 						break;
@@ -73,7 +76,7 @@ if (!class_exists("CommentUtil")) {
 					else if (is_a($broker, "IDBBrokerClient")) {
 						$status = $broker->updateObject("mc_comment", array(
 								"user_id" => $data["user_id"], 
-								"comment" => $data["comment"], 
+								"comment" => isset($data["comment"]) ? $data["comment"] : null, 
 								"modified_date" => $data["modified_date"]
 							), array(
 								"comment_id" => $data["comment_id"]
@@ -82,7 +85,7 @@ if (!class_exists("CommentUtil")) {
 					}
 				}
 				
-				if ($status && $data["comment_id"] && !self::updateObjectCommentsByCommentId(array($broker), $data["comment_id"], $data))
+				if ($status && !empty($data["comment_id"]) && !self::updateObjectCommentsByCommentId(array($broker), $data["comment_id"], $data))
 					$status = false;
 			
 				return $status;
@@ -112,32 +115,33 @@ if (!class_exists("CommentUtil")) {
 	
 		public static function deleteCommentsByObject($brokers, $object_type_id, $object_id) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
-					$data = array("object_type_id" => $object_type_id, "object_id" => $object_id);
-					
-					foreach ($brokers as $broker) {
-						if (is_a($broker, "IBusinessLogicBrokerClient")) {
-							$status = $broker->callBusinessLogic("module/comment", "CommentService.deleteCommentsByObject", $data);
-							break;
-						}
-						else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-							$status = $broker->callDelete("module/comment", "delete_comments_by_object", $data);
-							break;
-						}
-						else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-							$Comment = $broker->callObject("module/comment", "Comment");
-							$status = $Comment->callDelete("delete_comments_by_object", $data);
-							break;
-						}
-						else if (is_a($broker, "IDBBrokerClient")) {
-							$sql = CommentDBDAOUtil::delete_comments_by_object($data);
-							
-							$status = $broker->setSQL($sql);
-							break;
-						}
+				$data = array("object_type_id" => $object_type_id, "object_id" => $object_id);
+				$status = null;
+	
+				foreach ($brokers as $broker) {
+					if (is_a($broker, "IBusinessLogicBrokerClient")) {
+						$status = $broker->callBusinessLogic("module/comment", "CommentService.deleteCommentsByObject", $data);
+						break;
 					}
-					
-					if ($status)
-						return self::deleteObjectCommentsByObject(array($broker), $object_type_id, $object_id);
+					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
+						$status = $broker->callDelete("module/comment", "delete_comments_by_object", $data);
+						break;
+					}
+					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
+						$Comment = $broker->callObject("module/comment", "Comment");
+						$status = $Comment->callDelete("delete_comments_by_object", $data);
+						break;
+					}
+					else if (is_a($broker, "IDBBrokerClient")) {
+						$sql = CommentDBDAOUtil::delete_comments_by_object($data);
+						
+						$status = $broker->setSQL($sql);
+						break;
+					}
+				}
+				
+				if ($status)
+					return self::deleteObjectCommentsByObject(array($broker), $object_type_id, $object_id);
 			}
 		}
 	
@@ -173,7 +177,7 @@ if (!class_exists("CommentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/comment", "count_all_comments", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$Comment = $broker->callObject("module/comment", "Comment");
@@ -221,7 +225,7 @@ if (!class_exists("CommentUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/comment", "count_comments_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$Comment = $broker->callObject("module/comment", "Comment");
@@ -246,7 +250,6 @@ if (!class_exists("CommentUtil")) {
 						return $broker->callBusinessLogic("module/comment", "CommentService.getCommentsByIds", array("comment_ids" => $comment_ids, "options" => array("no_cache" => $no_cache)), array("no_cache" => $no_cache));
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						return $broker->callSelect("module/comment", "get_comments_by_ids", array("comment_ids" => $comment_ids_str), array("no_cache" => $no_cache));
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
@@ -283,7 +286,7 @@ if (!class_exists("CommentUtil")) {
 			}
 		}
 	
-		public static function getCommentsByObjectGroup($brokers, $object_type_id, $object_id, $group = null, $options, $no_cache = false) {
+		public static function getCommentsByObjectGroup($brokers, $object_type_id, $object_id, $group = null, $options = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -336,7 +339,7 @@ if (!class_exists("CommentUtil")) {
 			}
 		}
 	
-		public static function getParentObjectCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $object_type_id, $object_id, $group = null, $options, $no_cache = false) {
+		public static function getParentObjectCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $object_type_id, $object_id, $group = null, $options = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($parent_object_type_id) && is_numeric($parent_object_id) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 			
@@ -367,7 +370,7 @@ if (!class_exists("CommentUtil")) {
 			}
 		}
 	
-		public static function getParentObjectGroupCommentsByObject($brokers, $parent_object_type_id, $parent_object_id, $parent_group = null, $object_type_id, $object_id, $no_cache = false) {
+		public static function getParentObjectGroupCommentsByObject($brokers, $parent_object_type_id, $parent_object_id, $parent_group = null, $object_type_id = null, $object_id = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($parent_object_type_id) && is_numeric($parent_object_id) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
@@ -396,7 +399,7 @@ if (!class_exists("CommentUtil")) {
 			}
 		}
 	
-		public static function getParentObjectGroupCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $parent_group = null, $object_type_id, $object_id, $group = null, $options, $no_cache = false) {
+		public static function getParentObjectGroupCommentsByObjectGroup($brokers, $parent_object_type_id, $parent_object_id, $parent_group = null, $object_type_id = null, $object_id = null, $group = null, $options = null, $no_cache = false) {
 			if (is_array($brokers) && is_numeric($parent_object_type_id) && is_numeric($parent_object_id) && is_numeric($object_type_id) && is_numeric($object_id)) {
 				$options["no_cache"] = isset($options["no_cache"]) ? $options["no_cache"] : $no_cache;
 				
@@ -434,32 +437,32 @@ if (!class_exists("CommentUtil")) {
 		/* OBJECT COMMENT FUNCTIONS */
 	
 		public static function insertObjectComment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["comment_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"])) {
+			if (is_array($brokers) && isset($data["comment_id"]) && is_numeric($data["comment_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"])) {
 				$data["created_date"] = date("Y-m-d H:i:s");
 				$data["modified_date"] = $data["created_date"];
 			
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/comment", "ObjectCommentService.insertObjectComment", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 						
 						return $broker->callInsert("module/comment", "insert_object_comment", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectComment = $broker->callObject("module/comment", "ObjectComment");
 						return $ObjectComment->insert($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->insertObject("mc_object_comment", array(
 								"comment_id" => $data["comment_id"], 
@@ -476,31 +479,31 @@ if (!class_exists("CommentUtil")) {
 		}
 	
 		public static function updateObjectComment($brokers, $data) {
-			if (is_array($brokers) && is_numeric($data["new_comment_id"]) && is_numeric($data["new_object_type_id"]) && is_numeric($data["new_object_id"]) && is_numeric($data["old_comment_id"]) && is_numeric($data["old_object_type_id"]) && is_numeric($data["old_object_id"])) {
+			if (is_array($brokers) && isset($data["new_comment_id"]) && is_numeric($data["new_comment_id"]) && isset($data["new_object_type_id"]) && is_numeric($data["new_object_type_id"]) && isset($data["new_object_id"]) && is_numeric($data["new_object_id"]) && isset($data["old_comment_id"]) && is_numeric($data["old_comment_id"]) && isset($data["old_object_type_id"]) && is_numeric($data["old_object_type_id"]) && isset($data["old_object_id"]) && is_numeric($data["old_object_id"])) {
 				$data["modified_date"] = date("Y-m-d H:i:s");
 			
 				foreach ($brokers as $broker) {
 					if (is_a($broker, "IBusinessLogicBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
 						
 						return $broker->callBusinessLogic("module/comment", "ObjectCommentService.updateObjectComment", $data);
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : 0;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : 0;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : 0;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : 0;
 					
 						return $broker->callUpdate("module/comment", "update_object_comment", $data);
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						$ObjectComment = $broker->callObject("module/comment", "ObjectComment");
 						return $ObjectComment->updatePrimaryKeys($data);
 					}
 					else if (is_a($broker, "IDBBrokerClient")) {
-						$data["group"] = is_numeric($data["group"]) ? $data["group"] : null;
-						$data["order"] = is_numeric($data["order"]) ? $data["order"] : null;
+						$data["group"] = isset($data["group"]) && is_numeric($data["group"]) ? $data["group"] : null;
+						$data["order"] = isset($data["order"]) && is_numeric($data["order"]) ? $data["order"] : null;
 						
 						return $broker->updateObject("mc_object_comment", array(
 								"comment_id" => $data["new_comment_id"], 
@@ -523,10 +526,10 @@ if (!class_exists("CommentUtil")) {
 			if (is_array($brokers) && is_numeric($comment_id)) {
 				if (self::deleteObjectCommentsByCommentId($brokers, $comment_id)) {
 					$status = true;
-					$object_comments = is_array($data["object_comments"]) ? $data["object_comments"] : array();
+					$object_comments = isset($data["object_comments"]) && is_array($data["object_comments"]) ? $data["object_comments"] : array();
 				
 					foreach ($object_comments as $object_comment) {
-						if (is_numeric($object_comment["object_type_id"]) && is_numeric($object_comment["object_id"])) {
+						if (isset($data["object_type_id"]) && is_numeric($object_comment["object_type_id"]) && isset($data["object_id"]) && is_numeric($object_comment["object_id"])) {
 							$object_comment["comment_id"] = $comment_id;
 					
 							if (!self::insertObjectComment($brokers, $object_comment)) {
@@ -643,7 +646,7 @@ if (!class_exists("CommentUtil")) {
 						$cond = DB::getSQLConditions($conditions, $conditions_join);
 						$cond = $cond ? $cond : "1=1";
 						$result = $broker->callSelect("module/comment", "count_object_comment_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectComment = $broker->callObject("module/comment", "ObjectComment");
@@ -688,7 +691,7 @@ if (!class_exists("CommentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/comment", "count_object_comments_by_comment_id", array("comment_id" => $comment_id), array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectComment = $broker->callObject("module/comment", "ObjectComment");
@@ -733,7 +736,7 @@ if (!class_exists("CommentUtil")) {
 					}
 					else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 						$result = $broker->callSelect("module/comment", "count_all_object_comments", null, array("no_cache" => $no_cache));
-						return $result[0]["total"];
+						return isset($result[0]["total"]) ? $result[0]["total"] : null;
 					}
 					else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 						$ObjectComment = $broker->callObject("module/comment", "ObjectComment");

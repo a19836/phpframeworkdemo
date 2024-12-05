@@ -4,7 +4,7 @@ include $EVC->getUtilPath("user_session_activities_handler", $EVC->getCommonProj
 
 validateModuleUserActivity($EVC, "delete", $module_path);
 
-if (AttachmentUtil::deleteFile($EVC, $_GET["attachment_id"])) {
+if (isset($_GET["attachment_id"]) && AttachmentUtil::deleteFile($EVC, $_GET["attachment_id"])) {
 	echo "1";
 }
 ?>

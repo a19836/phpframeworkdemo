@@ -4,10 +4,10 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "d
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("attachment/AttachmentUtil", $common_project_name);
 	
-	if (AttachmentUtil::deleteFile($PEVC, $_GET["attachment_id"], $brokers)) {
+	if (isset($_GET["attachment_id"]) && AttachmentUtil::deleteFile($PEVC, $_GET["attachment_id"], $brokers)) {
 		echo "1";
 	}
 }

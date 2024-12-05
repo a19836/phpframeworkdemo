@@ -4,6 +4,7 @@ namespace CMSModule\user\validate_object_user;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -12,15 +13,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
-		if (is_numeric($settings["group"]))
+		$user_id = isset($settings["user_id"]) ? $settings["user_id"] : null;
+		$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		
+		if (isset($settings["group"]) && is_numeric($settings["group"]))
 			$result = \UserUtil::getObjectUsersByConditions($brokers, array(
-				"user_id" => $settings["user_id"], 
-				"object_type_id" => $settings["object_type_id"], 
-				"object_id" => $settings["object_id"],
+				"user_id" => $user_id, 
+				"object_type_id" => $object_type_id, 
+				"object_id" => $object_id,
 				"group" => $settings["group"],
 			), null);
 		else
-			$result = \UserUtil::getObjectUser($brokers, $settings["user_id"], $settings["object_type_id"], $settings["object_id"]);
+			$result = \UserUtil::getObjectUser($brokers, $user_id, $object_type_id, $object_id);
 		
 		$status = !empty($result);
 		

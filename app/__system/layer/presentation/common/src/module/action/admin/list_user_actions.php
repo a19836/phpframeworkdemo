@@ -4,14 +4,15 @@ $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "a
 $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/admin/start_project_module_admin_file", $common_project_name);
 
-if ($PEVC) {
+if (!empty($PEVC)) {
 	include $EVC->getModulePath("action/admin/ActionAdminUtil", $common_project_name);
 	
 	$ActionAdminUtil = new ActionAdminUtil($CommonModuleAdminUtil);
 	
 	include $EVC->getModulePath("common/admin/init_project_module_admin_list", $common_project_name);
 	
-	$action_id = $_GET["action_id"];
+	$action_id = isset($_GET["action_id"]) ? $_GET["action_id"] : null;
+	$options = isset($options) ? $options : null;
 	
 	if ($action_id) {
 		$total = ActionUtil::countUserActionsByActionId($brokers, $action_id, true);
@@ -28,9 +29,10 @@ if ($PEVC) {
 	$available_users = $CommonModuleAdminUtil->getSelectedUsers($brokers, $data);
 	
 	$pks = "user_id=#[\$idx][user_id]#&action_id=#[\$idx][action_id]#&object_type_id=#[\$idx][object_type_id]#&object_id=#[\$idx][object_id]#&time=#[\$idx][time]#";
+	$available_action = isset($available_actions[$action_id]) ? $available_actions[$action_id] : null;
 	
 	$list_settings = array(
-		"title" => "User Actions List" . ($action_id ? " for action: '" . $available_actions[$action_id] . "'" : ""),
+		"title" => "User Actions List" . ($action_id ? " for action: '" . $available_action . "'" : ""),
 		"edit_url" => $CommonModuleAdminUtil->getAdminFileUrl("edit_user_action") . $pks,
 		"delete_url" => $CommonModuleAdminUtil->getAdminFileUrl("delete_user_action") . $pks,
 		"fields" => array(

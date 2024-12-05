@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once get_lib("org.phpframework.db.DB"); $column_types = DB::getAllSharedColumnTypes(); $numeric_column_types = DB::getAllSharedColumnNumericTypes(); $column_types_ignored_props = DB::getAllSharedColumnTypesIgnoredProps(); $column_types_hidden_props = DB::getAllSharedColumnTypesHiddenProps(); $charsets = null; $table_collations = null; $column_collations = null; $table_storage_engines = null; $column_simple_types = DB::getAllSharedColumnSimpleTypes(); echo '<script>
+include_once get_lib("org.phpframework.db.DB"); $column_types = DB::getAllSharedColumnTypes(); $numeric_column_types = DB::getAllSharedColumnNumericTypes(); $column_types_ignored_props = DB::getAllSharedColumnTypesIgnoredProps(); $column_types_hidden_props = DB::getAllSharedColumnTypesHiddenProps(); $charsets = null; $table_collations = null; $column_collations = null; $table_storage_engines = null; $column_simple_types = DB::getAllSharedColumnSimpleTypes(); $allow_modify_table_encoding = false; $allow_modify_table_storage_engine = false; echo '<script>
 //These types will be re-defined again in the diagram.php according with the correspondent DB DRIVER. Only define here, if not yet defined. Note that this will be called everytime that the Task Table Properties gets loaded!
 DBTableTaskPropertyObj.column_types = DBTableTaskPropertyObj.column_types ? DBTableTaskPropertyObj.column_types : ' . json_encode($column_types) . ';
 DBTableTaskPropertyObj.column_simple_types = DBTableTaskPropertyObj.column_simple_types ? DBTableTaskPropertyObj.column_simple_types : ' . json_encode($column_simple_types) . ';
@@ -16,6 +16,8 @@ DBTableTaskPropertyObj.charsets = DBTableTaskPropertyObj.charsets ? DBTableTaskP
 DBTableTaskPropertyObj.table_collations = DBTableTaskPropertyObj.table_collations ? DBTableTaskPropertyObj.table_collations : ' . json_encode($table_collations) . ';
 DBTableTaskPropertyObj.column_collations = DBTableTaskPropertyObj.column_collations ? DBTableTaskPropertyObj.column_collations : ' . json_encode($column_collations) . ';
 DBTableTaskPropertyObj.table_storage_engines = DBTableTaskPropertyObj.table_storage_engines ? DBTableTaskPropertyObj.table_storage_engines : ' . json_encode($table_storage_engines) . ';
+DBTableTaskPropertyObj.allow_modify_table_encoding = DBTableTaskPropertyObj.allow_modify_table_encoding ? DBTableTaskPropertyObj.allow_modify_table_encoding : ' . ($allow_modify_table_encoding ? "true" : "false") . ';
+DBTableTaskPropertyObj.allow_modify_table_storage_engine = DBTableTaskPropertyObj.allow_modify_table_storage_engine ? DBTableTaskPropertyObj.allow_modify_table_storage_engine : ' . ($allow_modify_table_storage_engine ? "true" : "false") . ';
 </script>'; ?>
 <div class="db_table_task_html simple_ui_shown attributes_table_shown">
 	<div class="table_name">

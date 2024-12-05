@@ -5,7 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-$edit_type_label = str_replace("_", " ", $edit_type); $head = '
+$edit_type = isset($edit_type) ? $edit_type : null; $edit_type_label = str_replace("_", " ", $edit_type); $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 
@@ -24,4 +24,4 @@ $edit_type_label = str_replace("_", " ", $edit_type); $head = '
 	</header>
 </div>
 
-<div class="invalid">Error: Could not detect ' . $edit_type . '\'s path.' . ($error_message ? "<br/><br/>" . $error_message : "") . '</div>'; ?>
+<div class="invalid">Error: Could not detect ' . $edit_type . '\'s path.' . (!empty($error_message) ? "<br/><br/>" . $error_message : "") . '</div>'; ?>

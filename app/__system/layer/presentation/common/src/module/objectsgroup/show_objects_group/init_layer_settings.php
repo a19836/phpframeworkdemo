@@ -5,7 +5,9 @@ $common_project_name = $EVC->getCommonProjectName();
 include $EVC->getModulePath("common/start_project_module_file", $common_project_name);
 include $EVC->getUtilPath("WorkFlowPresentationHandler");
 
-if ($PEVC) {
+$presentation_brokers = null;
+
+if (!empty($PEVC)) {
 	//PREPARING BROKERS
 	$layer_brokers_settings = WorkFlowBeansFileHandler::getLayerBrokersSettings($user_global_variables_file_path, $user_beans_folder_path, $brokers, '$EVC->getBroker');
 	

@@ -4,6 +4,7 @@ namespace CMSModule\zip\edit_state;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -15,18 +16,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$brokers = $EVC->getPresentationLayer()->getBrokers();
 		
 		//Getting State Details
-		$state_id = $_GET["state_id"];
+		$state_id = isset($_GET["state_id"]) ? $_GET["state_id"] : null;
 		$data = $state_id ? \ZipUtil::getStatesByConditions($brokers, array("state_id" => $state_id), null, null, true) : null;
-		$data = $data[0];
+		$data = isset($data[0]) ? $data[0] : null;
 		
 		//Preparing State
-		if ($_POST) {
-			if ($_POST["delete"] && $settings["allow_deletion"]) {
-				$status = !$data || (/*\ZipUtil::deleteZipsByStateId($brokers, $data["state_id"]) && \ZipUtil::deleteZonesByStateId($brokers, $data["state_id"]) && \ZipUtil::deleteCitiesByStateId($brokers, $data["state_id"]) && */\ZipUtil::deleteState($brokers, $data["state_id"]));
+		if (!empty($_POST)) {
+			if (!empty($_POST["delete"]) && !empty($settings["allow_deletion"])) {
+				$data_state_id = isset($data["state_id"]) ? $data["state_id"] : null;
+				$status = !$data || (/*\ZipUtil::deleteZipsByStateId($brokers, $data_state_id) && \ZipUtil::deleteZonesByStateId($brokers, $data_state_id) && \ZipUtil::deleteCitiesByStateId($brokers, $data_state_id) && */\ZipUtil::deleteState($brokers, $data_state_id));
 			}
-			else if ($_POST["save"]) {
-				$country_id = $_POST["country_id"];
-				$name = $_POST["name"];
+			else if (!empty($_POST["save"])) {
+				$country_id = isset($_POST["country_id"]) ? $_POST["country_id"] : null;
+				$name = isset($_POST["name"]) ? $_POST["name"] : null;
 				
 				$empty_field_name = \CommonModuleUI::checkIfEmptyFields($settings, array("country_id" => $country_id, "name" => $name));
 				if ($empty_field_name) {
@@ -34,19 +36,19 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				}
 				else {
 					$new_data = $data;
-					$new_data["country_id"] = $settings["show_country_id"] ? $country_id : $new_data["country_id"];
-					$new_data["name"] = $settings["show_name"] ? $name : $new_data["name"];
+					$new_data["country_id"] = !empty($settings["show_country_id"]) ? $country_id : (isset($new_data["country_id"]) ? $new_data["country_id"] : null);
+					$new_data["name"] = !empty($settings["show_name"]) ? $name : (isset($new_data["name"]) ? $new_data["name"] : null);
 					
 					\CommonModuleUI::prepareFieldsWithDefaultValue($settings, $new_data);
 					
 					if (\CommonModuleUI::areFieldsValid($EVC, $settings, $new_data, $error_message)) {
-						if ($settings["allow_insertion"] && empty($data["state_id"])) {
+						if (!empty($settings["allow_insertion"]) && empty($data["state_id"])) {
 							$status = \ZipUtil::insertState($brokers, $new_data);
-							if (strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
-								$settings["on_insert_ok_redirect_url"] .= (strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "state_id=$status";
+							if (isset($settings["on_insert_ok_action"]) && strpos($settings["on_insert_ok_action"], "_redirect") !== false) {
+								$settings["on_insert_ok_redirect_url"] .= (isset($settings["on_insert_ok_redirect_url"]) && strpos($settings["on_insert_ok_redirect_url"], "?") !== false ? "&" : "?") . "state_id=$status";
 							}
 						}
-						else if ($settings["allow_update"] && $data["state_id"]) {
+						else if (!empty($settings["allow_update"]) && !empty($data["state_id"])) {
 							$status = \ZipUtil::updateState($brokers, $new_data);
 						}
 					}
@@ -54,28 +56,28 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			}
 		}
 		
-		if ($_POST["save"]) {
+		if (!empty($_POST["save"])) {
 			$form_data = array(
-				"state_id" => $settings["show_state_id"] ? $state_id : $data["state_id"],
-				"country_id" => $settings["show_country_id"] ? $country_id : $data["country_id"],
-				"name" => $settings["show_name"] ? $name : $data["name"],
+				"state_id" => !empty($settings["show_state_id"]) ? $state_id : (isset($data["state_id"]) ? $data["state_id"] : null),
+				"country_id" => !empty($settings["show_country_id"]) ? $country_id : (isset($data["country_id"]) ? $data["country_id"] : null),
+				"name" => !empty($settings["show_name"]) ? $name : (isset($data["name"]) ? $data["name"] : null),
 			);
-			$form_data = $new_data ? array_merge($new_data, $form_data) : ($settings["allow_view"] && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
+			$form_data = !empty($new_data) ? array_merge($new_data, $form_data) : (!empty($settings["allow_view"]) && $data ? array_merge($data, $form_data) : $form_data);//Just in case there are other fields from the joinpoints or from the field's next_html/previous_html
 		}
 		else {
-			$form_data = $settings["allow_view"] && $data ? $data : array();
+			$form_data = !empty($settings["allow_view"]) && $data ? $data : array();
 		}
 		
 		$settings["data"] = $data;
 		$settings["form_data"] = $form_data;
 		$settings["css_file"] = $project_common_url_prefix . 'module/zip/edit_state.css';
 		$settings["class"] = "module_edit_state";
-		$settings["status"] = $status;
-		$settings["error_message"] = $error_message;
+		$settings["status"] = isset($status) ? $status : null;
+		$settings["error_message"] = isset($error_message) ? $error_message : null;
 		
-		$is_insertion = $settings["allow_insertion"] && !$data;
+		$is_insertion = !empty($settings["allow_insertion"]) && !$data;
 		
-		if ($settings["show_state_id"])
+		if (!empty($settings["show_state_id"]))
 			$settings["fields"]["state_id"]["field"]["input"]["type"] = $is_insertion ? "hidden" : "label";
 		
 		\ZipUI::prepareFieldSettingsWithAvailableCountries($brokers, $settings);

@@ -15,19 +15,20 @@ class ActionUtil {
 					return $broker->callBusinessLogic("module/action", "ActionService.insertAction", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					$status = $broker->callInsert("module/action", "insert_action", $data);
 					return $status ? $broker->getInsertedId() : $status;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Action = $broker->callObject("module/action", "Action");
+					$ids = null;
 					$status = $Action->insert($data, $ids);
-					return $status ? $ids["action_id"] : $status;
+					return $status ? (isset($ids["action_id"]) ? $ids["action_id"] : null) : $status;
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					$status = $broker->insertObject("mact_action", array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -38,7 +39,7 @@ class ActionUtil {
 	}
 	
 	public static function updateAction($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["action_id"])) {
+		if (is_array($brokers) && isset($data["action_id"]) && is_numeric($data["action_id"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -46,7 +47,7 @@ class ActionUtil {
 					return $broker->callBusinessLogic("module/action", "ActionService.updateAction", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["name"] = addcslashes($data["name"], "\\'");
+					$data["name"] = isset($data["name"]) ? addcslashes($data["name"], "\\'") : "";
 					
 					return $broker->callUpdate("module/action", "update_action", $data);
 				}
@@ -56,7 +57,7 @@ class ActionUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mact_action", array(
-							"name" => $data["name"], 
+							"name" => isset($data["name"]) ? $data["name"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"action_id" => $data["action_id"]
@@ -116,7 +117,7 @@ class ActionUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/action", "count_all_actions", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Action = $broker->callObject("module/action", "Action");
@@ -161,7 +162,7 @@ class ActionUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/action", "count_actions_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$Action = $broker->callObject("module/action", "Action");
@@ -203,7 +204,7 @@ class ActionUtil {
 	/* USER ACTION FUNCTIONS */
 	
 	public static function insertUserAction($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["user_id"]) && is_numeric($data["action_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"]) && is_numeric($data["time"])) {
+		if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["action_id"]) && is_numeric($data["action_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"]) && isset($data["time"]) && is_numeric($data["time"])) {
 			$data["created_date"] = date("Y-m-d H:i:s");
 			$data["modified_date"] = $data["created_date"];
 			
@@ -212,7 +213,7 @@ class ActionUtil {
 					return $broker->callBusinessLogic("module/action", "UserActionService.insertUserAction", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["value"] = addcslashes($data["value"], "\\'");
+					$data["value"] = isset($data["value"]) ? addcslashes($data["value"], "\\'") : "";
 					
 					return $broker->callInsert("module/action", "insert_user_action", $data);
 				}
@@ -227,7 +228,7 @@ class ActionUtil {
 							"object_type_id" => $data["object_type_id"], 
 							"object_id" => $data["object_id"], 
 							"time" => $data["time"], 
-							"value" => $data["value"], 
+							"value" => isset($data["value"]) ? $data["value"] : null, 
 							"created_date" => $data["created_date"], 
 							"modified_date" => $data["modified_date"]
 						));
@@ -237,7 +238,7 @@ class ActionUtil {
 	}
 	
 	public static function updateUserAction($brokers, $data) {
-		if (is_array($brokers) && is_numeric($data["user_id"]) && is_numeric($data["action_id"]) && is_numeric($data["object_type_id"]) && is_numeric($data["object_id"]) && is_numeric($data["time"])) {
+		if (is_array($brokers) && isset($data["user_id"]) && is_numeric($data["user_id"]) && isset($data["action_id"]) && is_numeric($data["action_id"]) && isset($data["object_type_id"]) && is_numeric($data["object_type_id"]) && isset($data["object_id"]) && is_numeric($data["object_id"]) && isset($data["time"]) && is_numeric($data["time"])) {
 			$data["modified_date"] = date("Y-m-d H:i:s");
 			
 			foreach ($brokers as $broker) {
@@ -245,7 +246,7 @@ class ActionUtil {
 					return $broker->callBusinessLogic("module/action", "UserActionService.updateUserAction", $data);
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
-					$data["value"] = addcslashes($data["value"], "\\'");
+					$data["value"] = isset($data["value"]) ? addcslashes($data["value"], "\\'") : "";
 					
 					return $broker->callUpdate("module/action", "update_user_action", $data);
 				}
@@ -255,7 +256,7 @@ class ActionUtil {
 				}
 				else if (is_a($broker, "IDBBrokerClient")) {
 					return $broker->updateObject("mact_user_action", array(
-							"value" => $data["value"], 
+							"value" => isset($data["value"]) ? $data["value"] : null, 
 							"modified_date" => $data["modified_date"]
 						), array(
 							"user_id" => $data["user_id"], 
@@ -394,7 +395,7 @@ class ActionUtil {
 					$cond = DB::getSQLConditions($conditions, $conditions_join);
 					$cond = $cond ? $cond : "1=1";
 					$result = $broker->callSelect("module/action", "count_user_action_by_conditions", array("conditions" => $cond), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$UserAction = $broker->callObject("module/action", "UserAction");
@@ -439,7 +440,7 @@ class ActionUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/action", "count_user_actions_by_action_id", array("action_id" => $action_id), array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$UserAction = $broker->callObject("module/action", "UserAction");
@@ -484,7 +485,7 @@ class ActionUtil {
 				}
 				else if (is_a($broker, "IIbatisDataAccessBrokerClient")) {
 					$result = $broker->callSelect("module/action", "count_all_user_actions", null, array("no_cache" => $no_cache));
-					return $result[0]["total"];
+					return isset($result[0]["total"]) ? $result[0]["total"] : null;
 				}
 				else if (is_a($broker, "IHibernateDataAccessBrokerClient")) {
 					$UserAction = $broker->callObject("module/action", "UserAction");

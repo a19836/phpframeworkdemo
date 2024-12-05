@@ -3,11 +3,10 @@ include_once $EVC->getUtilPath("SequentialLogicalActivitySettingsCodeCreator");
 
 $UserAuthenticationHandler->checkPresentationFileAuthentication($module_path, "access");
 
-$settings = $_POST["settings"];
+$settings = isset($_POST["settings"]) ? $_POST["settings"] : null;
+$code = "";
 
 if (is_array($settings)) {
-	$code = "";
-	
 	if ($settings)
 		foreach ($settings as $type => $value) {
 			$type = strtolower($type);

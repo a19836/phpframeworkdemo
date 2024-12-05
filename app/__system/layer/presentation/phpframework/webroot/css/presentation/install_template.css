@@ -57,21 +57,21 @@ body,
 
 .install_template > .layer,
   .install_template > .project {
-	width:315px;
+	width:375px;
 	margin:5px auto;
 	text-align:right;
 	color:#999;
 }
 .install_template > .layer label,
   .install_template > .project label {
-	width:100px;
+	width:150px;
 	font-weight:normal;
 	display:inline-block;
 	text-align:left;
 }
 .install_template > .layer select,
   .install_template > .project select {
-	width:calc(100% - 110px);
+	width:calc(100% - 160px);
 	margin-right:5px;
 	font-size:inherit;
 	color:inherit;
@@ -194,12 +194,12 @@ body,
 	background: #fff;
 	border:1px solid var(--main-iframe-bg, #ccc);
 	border-radius:5px;
-	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 5%);
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 50%);
 	position:relative;
 	font-size:10px;
 }
 .install_template > .install_store_template ul li:not(.loading):not(.empty):hover {
-	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 20%);
+	box-shadow:0px 0px 5px 5px rgb(200 200 200 / 70%);
 }
 .install_template > .install_store_template ul li.hidden {
 	display:none !important;

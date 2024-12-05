@@ -4,6 +4,7 @@ namespace CMSModule\user\list_user_sessions;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -16,7 +17,7 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
 		//Getting actions
-		$settings["current_page"] = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
+		$settings["current_page"] = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : null;
 		$settings["rows_per_page"] = 50;
 		$settings["total"] = $conditions ? \UserUtil::countUserSessionsByConditions($brokers, $conditions, null) : \UserUtil::countAllUserSessions($brokers);
 		
@@ -30,13 +31,13 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		if ($data) {
 			$t = count($data);
 			for ($i = 0; $i < $t; $i++) {
-				if ($data[$i]["login_time"])
+				if (!empty($data[$i]["login_time"]))
 					$data[$i]["login_time"] = date("Y-m-d H:i:s", $data[$i]["login_time"]);
 				
-				if ($data[$i]["logout_time"])
+				if (!empty($data[$i]["logout_time"]))
 					$data[$i]["logout_time"] = date("Y-m-d H:i:s", $data[$i]["logout_time"]);
 				
-				if ($data[$i]["failed_login_time"])
+				if (!empty($data[$i]["failed_login_time"]))
 					$data[$i]["failed_login_time"] = date("Y-m-d H:i:s", $data[$i]["failed_login_time"]);
 			}
 		}

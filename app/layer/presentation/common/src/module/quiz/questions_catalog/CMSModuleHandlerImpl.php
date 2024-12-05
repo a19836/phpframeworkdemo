@@ -4,6 +4,7 @@ namespace CMSModule\quiz\questions_catalog;
 class CMSModuleHandlerImpl extends \CMSModuleHandler {
 	
 	public function execute(&$settings = false) {
+		$status = $error_message = null;
 		$EVC = $this->getEVC();
 		$common_project_name = $EVC->getCommonProjectName();
 		
@@ -20,83 +21,91 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		
 		$html .= '
-		' . ($settings["css"] ? '<style>' . $settings["css"] . '</style>' : '') . '
-		' . ($settings["js"] ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
+		' . (!empty($settings["css"]) ? '<style>' . $settings["css"] . '</style>' : '') . '
+		' . (!empty($settings["js"]) ? '<script type="text/javascript">' . $settings["js"] . '</script>' : '') . '
 
-		<div class="module_questions_catalog ' . ($settings["block_class"]) . '">';
+		<div class="module_questions_catalog ' . (isset($settings["block_class"]) ? $settings["block_class"] : null) . '">';
 		
-		$catalog_title = $settings["catalog_title"];
+		$catalog_title = isset($settings["catalog_title"]) ? $settings["catalog_title"] : null;
 		if ($catalog_title)
 			$html .= '<h1 class="catalog_title">' . translateProjectText($EVC, $catalog_title) . '</h1>';
 		
 		//Preparing options
-		$rows_per_page = $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
+		$rows_per_page = isset($settings["rows_per_page"]) && $settings["rows_per_page"] > 0 ? $settings["rows_per_page"] : null;
 		$options = array("limit" => $rows_per_page, "sort" => array());
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			include_once get_lib("org.phpframework.util.web.html.pagination.PaginationLayout");
 			
-			$current_page = is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
+			$current_page = isset($_GET["current_page"]) && is_numeric($_GET["current_page"]) ? $_GET["current_page"] : 0;
 			$rows_per_page = $rows_per_page > 0 ? $rows_per_page : 50;
 			$options["start"] = \PaginationHandler::getStartValue($current_page, $rows_per_page);
 		}
 		
 		//Getting questions
-		if ($settings["catalog_sort_column"])
-			$options["sort"][] = array("column" => $settings["catalog_sort_column"], "order" => $settings["catalog_sort_order"]);
+		if (!empty($settings["catalog_sort_column"]))
+			$options["sort"][] = array("column" => $settings["catalog_sort_column"], "order" => isset($settings["catalog_sort_order"]) ? $settings["catalog_sort_order"] : null);
 		
 		$conditions = \CommonModuleUI::getConditionsFromSearchValues($settings);
 		
-		if ($settings["filter_by_published"])
+		if (!empty($settings["filter_by_published"]))
 			$conditions["published"] = 1;
 		
 		//Getting questions
-		switch ($settings["questions_type"]) {
+		$questions_type = isset($settings["questions_type"]) ? $settings["questions_type"] : null;
+		$object_type_id = isset($settings["object_type_id"]) ? $settings["object_type_id"] : null;
+		$object_id = isset($settings["object_id"]) ? $settings["object_id"] : null;
+		$group = isset($settings["group"]) ? $settings["group"] : null;
+		$total = $questions = null;
+		
+		switch ($questions_type) {
 			case "all":
 				$total = $conditions ? \QuizUtil::countQuestionsByConditions($brokers, $conditions, null) : \QuizUtil::countAllQuestions($brokers);
 				$questions = $conditions ? \QuizUtil::getQuestionsByConditions($brokers, $conditions, null, $options) : \QuizUtil::getAllQuestions($brokers, $options);
 				break;
 			case "parent":
-				$total = \QuizUtil::countQuestionsByObject($brokers, $settings["object_type_id"], $settings["object_id"], $conditions, null);
-				$questions = \QuizUtil::getQuestionsByObject($brokers, $settings["object_type_id"], $settings["object_id"], $conditions, null, $options);
+				$total = \QuizUtil::countQuestionsByObject($brokers, $object_type_id, $object_id);
+				$questions = \QuizUtil::getQuestionsByObject($brokers, $object_type_id, $object_id, null, $options);
 				break;
 			case "parent_group":
-				$total = \QuizUtil::countQuestionsByObjectGroup($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], $conditions, null);
-				$questions = \QuizUtil::getQuestionsByObjectGroup($brokers, $settings["object_type_id"], $settings["object_id"], $settings["group"], $conditions, null, $options);
+				$total = \QuizUtil::countQuestionsByObjectGroup($brokers, $object_type_id, $object_id, $group);
+				$questions = \QuizUtil::getQuestionsByObjectGroup($brokers, $object_type_id, $object_id, $group, $options);
 				break;
 		}
 		
 		//Preparing pagination
-		if ($settings["top_pagination_type"] || $settings["bottom_pagination_type"]) {
+		if (!empty($settings["top_pagination_type"]) || !empty($settings["bottom_pagination_type"])) {
 			$PaginationLayout = new \PaginationLayout($total, $rows_per_page, array("current_page" => $current_page), "current_page");
 			$PaginationLayout->show_x_pages_at_once = 10;
 			$pagination_data = $PaginationLayout->data;
 		}
 		
-		$catalog_type = $settings["catalog_type"];
+		$catalog_type = isset($settings["catalog_type"]) ? $settings["catalog_type"] : null;
 		
 		//prepare settings with selected template html if apply
 		\CommonModuleUI::prepareSettingsWithSelectedTemplateModuleHtml($this, "quiz/questions_catalog", $settings);
 		
 		//execute user list with ptl
-		if ($catalog_type == "user_list" && $settings["ptl"]) {
+		if ($catalog_type == "user_list" && !empty($settings["ptl"])) {
 			$form_settings = array("ptl" => $settings["ptl"]);
-			$questions_item_input_data_var_name = $form_settings["ptl"]["external_vars"]["questions_item_input_data_var_name"]; //this should contain "article" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i article>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "questions_item_input_data_var_name" to "item" too.
+			$questions_item_input_data_var_name = isset($form_settings["ptl"]["external_vars"]["questions_item_input_data_var_name"]) ? $form_settings["ptl"]["external_vars"]["questions_item_input_data_var_name"] : null; //this should contain "article" by default, but is not mandatory. This value should be the same than the following foreach-item-value-name: <ptl:foreach $input i article>, but only if the user doesn't change this value. If the user changes the foreach to <ptl:foreach $input i item>, he must change the external var "questions_item_input_data_var_name" to "item" too.
 			if ($questions_item_input_data_var_name)
 				$form_settings["ptl"]["input_data_var_name"] = $questions_item_input_data_var_name;
 			$HtmlFormHandler = new \HtmlFormHandler($form_settings);
 			
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
+			
 			foreach ($settings["fields"] as $field_id => $field) 
-				if ($settings["show_" . $field_id])
+				if (!empty($settings["show_" . $field_id]))
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $questions);
 			
-			if ($settings["top_pagination_type"]) {
+			if (!empty($settings["top_pagination_type"])) {
 				$pagination_data["style"] = $settings["top_pagination_type"];
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:top-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
 			
-			if ($settings["bottom_pagination_type"]) {
+			if (!empty($settings["bottom_pagination_type"])) {
 				$pagination_data["style"] = $settings["bottom_pagination_type"];
 				$settings["ptl"]["code"] = preg_replace('/<ptl:block:bottom-pagination\s*\/?>/i', $PaginationLayout->designWithStyle(1, $pagination_data), $settings["ptl"]["code"]);
 			}
@@ -112,10 +121,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 		}
 		else { //execute blog and normal list or user list with no ptl
 			//showing top pagination
-			if ($settings["top_pagination_type"]) {
+			if (!empty($settings["top_pagination_type"])) {
 				$pagination_data["style"] = $settings["top_pagination_type"];
 				
-				$html .= '<div class="top_pagination pagination_alignment_' . $settings["top_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="top_pagination pagination_alignment_' . (isset($settings["top_pagination_alignment"]) ? $settings["top_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 			
 			//showing catalog
@@ -127,10 +136,10 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 				$html .= '<li><h3 class="no_questions">' . translateProjectText($EVC, "There are no available questions...") . '</h3></li>';
 			$html .= '</ul>';
 			
-			if ($settings["bottom_pagination_type"]) {
+			if (!empty($settings["bottom_pagination_type"])) {
 				$pagination_data["style"] = $settings["bottom_pagination_type"];
 				
-				$html .= '<div class="bottom_pagination pagination_alignment_' . $settings["bottom_pagination_alignment"] . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
+				$html .= '<div class="bottom_pagination pagination_alignment_' . (isset($settings["bottom_pagination_alignment"]) ? $settings["bottom_pagination_alignment"] : null) . '">' . $PaginationLayout->designWithStyle(1, $pagination_data) . '</div>';
 			}
 		}
 		
@@ -153,24 +162,27 @@ class CMSModuleHandlerImpl extends \CMSModuleHandler {
 			)
 		);
 		
-		if ($settings["question_properties_url"])
-			$form_settings["form_containers"][0]["container"]["href"] = $settings["question_properties_url"] . $question["question_id"];
+		if (!empty($settings["question_properties_url"]))
+			$form_settings["form_containers"][0]["container"]["href"] = $settings["question_properties_url"] . (isset($question["question_id"]) ? $question["question_id"] : null);
 		
 		$HtmlFormHandler = null;
-		if ($settings["ptl"])
+		if (!empty($settings["ptl"])) {
+			$settings["ptl"]["code"] = isset($settings["ptl"]["code"]) ? $settings["ptl"]["code"] : null;
+			
 			$HtmlFormHandler = new \HtmlFormHandler(array("ptl" => $settings["ptl"]));
+		}
 		
 		foreach ($settings["fields"] as $field_id => $field)
-			if ($settings["show_" . $field_id] && $question[$field_id]) {
+			if (!empty($settings["show_" . $field_id]) && !empty($question[$field_id])) {
 				//Preparing ptl
-				if ($settings["ptl"])
+				if (!empty($settings["ptl"]))
 					\CommonModuleUI::prepareBlockFieldPTLCode($EVC, $HtmlFormHandler, $settings["ptl"]["code"], $field_id, $field, $question);
 				else
 					$form_settings["form_containers"][0]["container"]["elements"][] = $field;
 			}
 		
 		//add ptl to form_settings
-		if ($settings["ptl"]) {
+		if (!empty($settings["ptl"])) {
 			\CommonModuleUI::cleanBlockPTLCode($settings["ptl"]["code"]);
 			$form_settings["form_containers"][0]["container"]["elements"][] = array("ptl" => $settings["ptl"]);
 		}
