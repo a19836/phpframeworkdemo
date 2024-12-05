@@ -117,7 +117,7 @@ function createSQLEditor() {
 	}
 	
 	//prepare chatbot
-	editor.system_message = getAISystemMessage;
+	editor.system_message = getCodeChatBotSystemMessage;
 	editor.showCodeEditorChatBot = openCodeChatBot;
 	
 	sql_text_area.find("textarea.ace_text-input").removeClass("ace_text-input"); //fixing problem with scroll up, where when focused or pressed key inside editor the page scrolls to top.
@@ -182,7 +182,8 @@ function generateSQL(elm) {
 			var msg = StatusMessageHandler.showMessage("AI loading. Wait a while...", "", "bottom_messages", 60000);
 			StatusMessageHandler.getMessageHtmlObj()[0].style.setProperty("z-index", zindex, "important"); //move error to front of filemanager popup
 			
-			var system_instructions = getAISystemMessage();
+			var editor = $(".sql_text_area").data("editor");
+			var system_instructions = getCodeChatBotSystemMessage(editor);
 			var url = manage_ai_action_url + (manage_ai_action_url.indexOf("?") != -1 ? "" : "?") + "&action=generate_sql";
 			
 			MyFancyPopup.showLoading();
@@ -292,8 +293,9 @@ function openCodeChatBot() {
 	}
 }
 
-function getAISystemMessage() {
-	var system_message = "Current selected table: `" + table + "`";
+function getCodeChatBotSystemMessage(editor) {
+	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
+	system_message += "Current selected table: `" + table + "`";
 	
 	if (table_attrs) {
 		system_message += ", with following attributes:"

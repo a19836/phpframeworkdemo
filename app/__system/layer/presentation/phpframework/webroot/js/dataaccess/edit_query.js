@@ -3045,7 +3045,7 @@ function setQuerySqlEditor(selector) {
 			});
 			
 			//prepare chatbot
-			editor.system_message = getAISystemMessage;
+			editor.system_message = getCodeChatBotSystemMessage;
 			editor.showCodeEditorChatBot = openCodeChatBot;
 			
 			//set blur function for sql editor
@@ -4017,7 +4017,11 @@ function generateSQL(elm) {
 			var msg = StatusMessageHandler.showMessage("AI loading. Wait a while...", "", "bottom_messages", 60000);
 			StatusMessageHandler.getMessageHtmlObj()[0].style.setProperty("z-index", zindex, "important"); //move error to front of filemanager popup
 			
-			var system_instructions = getAISystemMessage();
+			var ul = $(".data_access_obj .relationships .query > ul.tabs");
+			var query_sql_elm_selector = ul.children(".query_sql_tab").children("a").attr("href");
+			var query_sql_elm = $(query_sql_elm_selector);
+			var editor = getQuerySqlEditor(query_sql_elm_selector);
+			var system_instructions = getCodeChatBotSystemMessage(editor);
 			var url = manage_ai_action_url + (manage_ai_action_url.indexOf("?") != -1 ? "" : "?") + "&action=generate_sql";
 			
 			MyFancyPopup.showLoading();
@@ -4140,9 +4144,9 @@ function openCodeChatBot() {
 	}
 }
 
-function getAISystemMessage() {
+function getCodeChatBotSystemMessage(editor) {
+	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
 	var tables = {};
-	var system_message = "";
 		
 	$.each(db_brokers_drivers_tables_attributes, function(db_broker, broker_drivers) {
 		$.each(broker_drivers, function(db_driver, driver_types) {

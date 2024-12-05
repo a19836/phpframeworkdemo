@@ -1050,28 +1050,19 @@ function setCodeEditorInlineAI(editor) {
 	});
 }
 
-function showCodeEditorChatBot(editor) {
-	if (typeof manage_ai_action_url != "undefined") {
-		showChatBotPopup();
-		
+function getCodeEditorChatBotDefaultSystemMessage(editor) {
+	var system_message = "";
+	
+	if (editor) {
 		//prepare system_message with selected text and range
 		var mode = editor.session.$modeId; //eg: ace/mode/javascript, ace/mode/php, ace/mode/html
 		mode = mode ? mode.replace("ace/mode/", "") : "";
 		
-		var system_message = "You are an expert in " + mode + (mode == "php" ? " and html" : "") + ".";
 		var all_code = editor.getValue();
-		var selected_code = editor.getSelectedText();
+		var selected_code = editor.getSelectedText(); //TODO: the selection must be detected everytime the user input gets sent to the openAI. and not only when the popup gets open.
 		var selected_range = editor.getSelectionRange();
 		
-		var extra_system_message = "";
-		
-		if (typeof editor.system_message == "function")
-			extra_system_message = editor.system_message();
-		else if (typeof editor.system_message == "string")
-			extra_system_message = editor.system_message;
-		
-		if (extra_system_message)
-			system_message += "\n\n" + extra_system_message;
+		system_message = "You are an expert in " + mode + (mode == "php" ? " and html" : "") + ".";
 		
 		if (selected_code)
 			system_message += "\n\nCode of user selection:\n" + selected_code;
@@ -1087,10 +1078,27 @@ function showCodeEditorChatBot(editor) {
 		
 		if (all_code)
 			system_message += "\n\nAll code in the editor:\n" + all_code; 
+	}
+	
+	return system_message;
+}
+
+function showCodeEditorChatBot(editor) {
+	if (typeof manage_ai_action_url != "undefined") {
+		showChatBotPopup();
+		
+		//prepare system_message with selected text and range
+		var system_message = "";
+		
+		if (typeof editor.system_message == "function")
+			system_message = editor.system_message(editor);
+		else if (typeof editor.system_message == "string" && editor.system_message.length > 0)
+			system_message = editor.system_message;
+		else
+			system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
 		
 		var popup = MyFancyPopup.settings.elementToShow;
 		var chat_bot_elm = popup.children(".chat_bot");
-		
 		chat_bot_elm.data("system_message", system_message);
 		
 		//Disable auto save, when on code editor, because the systems focus the editor everytime runs the save function, meaning that if the user is writing at the same time in the '.user_input' field, the cursor will move to the editor, getting out from the popup and giving a bad user experience. So we need to disable auto_save temporary, so the user can write freely in the user_input.
