@@ -294,7 +294,7 @@ function openCodeChatBot() {
 }
 
 function getCodeChatBotSystemMessage(editor) {
-	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
+	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor) + "\n\n";
 	system_message += "Current selected table: `" + table + "`";
 	
 	if (table_attrs) {

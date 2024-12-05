@@ -1088,37 +1088,32 @@ function showCodeEditorChatBot(editor) {
 		showChatBotPopup();
 		
 		//prepare system_message with selected text and range
-		var system_message = "";
-		
-		if (typeof editor.system_message == "function")
-			system_message = editor.system_message(editor);
-		else if (typeof editor.system_message == "string" && editor.system_message.length > 0)
-			system_message = editor.system_message;
-		else
-			system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
-		
 		var popup = MyFancyPopup.settings.elementToShow;
 		var chat_bot_elm = popup.children(".chat_bot");
-		chat_bot_elm.data("system_message", system_message);
+		chat_bot_elm[0].system_message = function() {
+			if (typeof editor.system_message == "function")
+				return editor.system_message(editor);
+			else if (typeof editor.system_message == "string" && editor.system_message.length > 0)
+				return editor.system_message;
+			else
+				return getCodeEditorChatBotDefaultSystemMessage(editor);
+		};
 		
 		//Disable auto save, when on code editor, because the systems focus the editor everytime runs the save function, meaning that if the user is writing at the same time in the '.user_input' field, the cursor will move to the editor, getting out from the popup and giving a bad user experience. So we need to disable auto_save temporary, so the user can write freely in the user_input.
 		chat_bot_elm.find(" > .user_box > .user_input").on("focus", function(event) {
 			if (!this.enable_auto_save_on_blur) {
-				console.log("before auto_save:"+auto_save);
 				if (auto_save) {
 					this.enable_auto_save_on_blur = true;
 					auto_save = false;
 				}
 				else
 					this.enable_auto_save_on_blur = false;
-				console.log("after auto_save:"+auto_save);
 			}
 		})
 		.on("blur", function(event) {
 			if (this.enable_auto_save_on_blur) {
 				this.enable_auto_save_on_blur = false;
 				auto_save = true;
-			console.log("blur auto_save:"+auto_save);
 			}
 		})
 	}
@@ -1271,9 +1266,14 @@ function getChatBotElm() {
 		if (!current_session)
 			chat_bot_elm.initializeNewSession();
 		
-		var system_message = chat_bot_elm.data("system_message");
 		var user_message = user_input.val().trim();
-
+		var system_message = "";
+		
+		if (typeof chat_bot_elm[0].system_message == "function")
+			system_message = chat_bot_elm[0].system_message();
+		else if (typeof chat_bot_elm[0].system_message == "string" && chat_bot_elm[0].system_message.length > 0)
+			system_message = chat_bot_elm[0].system_message;
+		
 		if (!user_message || !current_session)
 			return;
 

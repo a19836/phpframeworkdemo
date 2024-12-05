@@ -4145,7 +4145,7 @@ function openCodeChatBot() {
 }
 
 function getCodeChatBotSystemMessage(editor) {
-	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor);
+	var system_message = getCodeEditorChatBotDefaultSystemMessage(editor) + "\n\n";
 	var tables = {};
 		
 	$.each(db_brokers_drivers_tables_attributes, function(db_broker, broker_drivers) {
