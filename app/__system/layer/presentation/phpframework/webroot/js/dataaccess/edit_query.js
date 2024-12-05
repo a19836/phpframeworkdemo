@@ -4017,6 +4017,7 @@ function generateSQL(elm) {
 			var msg = StatusMessageHandler.showMessage("AI loading. Wait a while...", "", "bottom_messages", 60000);
 			StatusMessageHandler.getMessageHtmlObj()[0].style.setProperty("z-index", zindex, "important"); //move error to front of filemanager popup
 			
+			var system_instructions = getAISystemMessage();
 			var url = manage_ai_action_url + (manage_ai_action_url.indexOf("?") != -1 ? "" : "?") + "&action=generate_sql";
 			
 			MyFancyPopup.showLoading();
@@ -4031,6 +4032,7 @@ function generateSQL(elm) {
 					type: type,
 					db_table: db_table,
 					instructions: instructions,
+					system_instructions: system_instructions
 				},
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
@@ -4103,7 +4105,7 @@ function explainSQL() {
 					msg.remove();
 					
 					if (message) {
-						var new_sql = "--" + message.replace(/\n/g, "\n--") + "\n" + sql;
+						var new_sql = "-- " + message.replace(/\n/g, "\n--") + "\n" + sql;
 						setQuerySqlEditorValue(query_sql_elm_selector, new_sql);
 						
 						StatusMessageHandler.showMessage("SQL explanation:\n" + message + "\n\nSQL:\n" + sql, "", "", 600000); //1 hour
