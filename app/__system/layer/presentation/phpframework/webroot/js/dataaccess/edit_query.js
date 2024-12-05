@@ -4105,7 +4105,7 @@ function explainSQL() {
 					msg.remove();
 					
 					if (message) {
-						var new_sql = "-- " + message.replace(/\n/g, "\n--") + "\n" + sql;
+						var new_sql = "-- " + message.replace(/\n/g, "\n-- ") + "\n" + sql;
 						setQuerySqlEditorValue(query_sql_elm_selector, new_sql);
 						
 						StatusMessageHandler.showMessage("SQL explanation:\n" + message + "\n\nSQL:\n" + sql, "", "", 600000); //1 hour
