@@ -847,7 +847,7 @@ function setCodeEditorInlineAI(editor) {
 						var pos = m.index + prefix.length;
 						var instructions = text_cursor.substr(pos);
 						
-						if (!instructions) {
+						if (!instructions && e.command.name === "insertstring" && e.args !== "\n") {
 							//console.log("afterExec insertstring");
 							editor.showGhostText(" write 'chatbot' to open the chat-bot popup or describe what code would you like, and then press enter key.");
 							

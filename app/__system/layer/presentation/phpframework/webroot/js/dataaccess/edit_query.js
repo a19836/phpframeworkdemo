@@ -4032,12 +4032,14 @@ function generateSQL(elm) {
 					db_table: db_table,
 					instructions: instructions,
 				},
-				dataType : "html",
-				success : function(sql, textStatus, jqXHR) {
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
 					//console.log(sql);
 					MyFancyPopup.hideLoading();
 					button.show();
 					msg.remove();
+					
+					var sql = $.isPlainObject(data) && data.hasOwnProperty("sql") ? data["sql"] : null;
 					
 					if (sql) {
 						var query = $(".data_access_obj .relationships .query");

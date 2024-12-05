@@ -153,6 +153,7 @@
 								me.AIHtmlFancyPopup.hidePopup();
 								
 								textarea.val("");
+								popup.find("input[type=file]").val("");
 							}
 						},
 					});
@@ -181,7 +182,7 @@
 							type : "post",
 							url : url,
 							processData: false,
-							contentType: user_image ? false : 'text/plain', // Let the browser set the Content-Type
+							contentType: false, // Let the browser set the Content-Type. Do not use 'text/plain', otherwise I cannot get the POST variables from the server side.
 							data: formData,
 							dataType : "json",
 							success : function(data, textStatus, jqXHR) {
@@ -189,7 +190,7 @@
 								
 								msg.remove();
 								
-								var html = data.hasOwnProperty("html") ? data["html"] : "";
+								var html = $.isPlainObject(data) && data.hasOwnProperty("html") ? data["html"] : "";
 								html = html.replace(/\\n/g, "\n");
 								
 								if (html.replace(/(^\s+|\s+$)/g, "")) {

@@ -5,35 +5,35 @@
 		<width>568</width>
 		<height>150</height>
 		<left>1</left>
-		<top>0</top>
+		<top>0.399993896484375</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
 		<width>568</width>
 		<height>150</height>
 		<left>1</left>
-		<top>149</top>
+		<top>150.39999389648438</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
 		<width>568</width>
 		<height>150</height>
 		<left>1</left>
-		<top>298</top>
+		<top>299.3999938964844</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
 		<width>568</width>
 		<height>150</height>
 		<left>1</left>
-		<top>448</top>
+		<top>449.3999938964844</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
 		<width>568</width>
 		<height>122</height>
 		<left>1</left>
-		<top>598</top>
+		<top>599.3999938964844</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
