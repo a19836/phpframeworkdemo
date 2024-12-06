@@ -821,7 +821,7 @@ function setCodeEditorGhostText(editor) {
 
 function setCodeEditorInlineAI(editor) {
 	editor.commands.on("afterExec", function (e) {
-		if (typeof manage_ai_action_url != "undefined" && manage_ai_action_url) {
+		if (typeof manage_ai_action_url != "undefined") {
 			var mode = editor.session.$modeId; //eg: ace/mode/javascript, ace/mode/php, ace/mode/html
 			mode = mode ? mode.replace("ace/mode/", "") : "";
 			
@@ -876,7 +876,11 @@ function setCodeEditorInlineAI(editor) {
 							var pos = m.index + prefix.length;
 							var instructions = text_before_cursor.substr(pos);
 							
-							if (instructions) {
+							if (instructions.replace(/\s*/, "") == "")
+									StatusMessageHandler.showError("There are no instructions to be interpreted. Please write something after '" + text_before_cursor.substr(0, pos) + "' and only after press enter key.", "", "bottom_messages", 10000);
+							else if (!manage_ai_action_url)
+									StatusMessageHandler.showError("Artificial Intelligence is disabled. To enable it, please add your OpenAI Key in the 'Manage Permissions/Users' panel.", "", "bottom_messages", 10000);
+							else {
 								//console.log(instructions);
 								//remove new line recently added
 								var Range = ace.require("ace/range").Range;
@@ -895,7 +899,7 @@ function setCodeEditorInlineAI(editor) {
 								editor.session.insert({row: cursor.row, column: 0}, "\n");
 								editor.selection.moveCursorTo(cursor.row, cursor.column);
 								
-								if (instructions.match(/\s*chat(\s|_|\-)*bot\s*/)) {
+								if (instructions.match(/^\s*chat(\s|_|\-)*bot\s*/)) {
 									if (typeof editor.showCodeEditorChatBot == "function")
 										editor.showCodeEditorChatBot(editor);
 									else
