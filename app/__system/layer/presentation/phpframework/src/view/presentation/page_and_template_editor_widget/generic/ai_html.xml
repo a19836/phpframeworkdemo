@@ -119,7 +119,7 @@
 									+ '<div class="sub_title">Create automatic <strong>HTML</strong> through Artificial Intelligence.<br/>Please write below in natural language which type of interface you are looking for:</div>'
 									+ '<textarea></textarea>'
 									+ '<div class="image">Or upload a mockup/wireframe image and AI will try to translate it into HTML: <input type="file"/></div>'
-									+ '<button onClick="' + ui_creator.obj_var_name + '.menu_widgets_objs[\'ai-html\'].AIHtmlFancyPopup.settings.sendFunction(this)">Send</button>'
+									+ '<button onClick="' + ui_creator.obj_var_name + '.menu_widgets_objs[\'ai-html\'].AIHtmlFancyPopup.settings.sendFunction(this)">Generate</button>'
 									+ '<div class="instructions">Additional instructions:<br/>' + me.getFirstInstructions(widget) + "<br/>" + me.getLastInstructions(widget) + '</div>'
 								+ '</div>');
 						
@@ -305,8 +305,10 @@
 										var item = items[idx];
 										var url = $.isPlainObject(item) && item.hasOwnProperty("url") ? item["url"] : null;
 										
-										if (url)
+										if (url) {
 											image.setAttribute("src", url);
+											$(image).css("max-width", "100%");
+										}
 									}
 								});
 							}

@@ -908,8 +908,9 @@ function setCodeEditorInlineAI(editor) {
 									var ghost_text_feature_exists = typeof editor.showGhostText == "function";
 									var system_instructions = "";
 									
-									if (typeof editor.system_message == "function")
-										system_instructions = editor.system_message();
+									if (typeof editor.system_message == "function") {
+										system_instructions = editor.system_message(editor);
+									}
 									else if (typeof editor.system_message == "string")
 										system_instructions = editor.system_message;
 									
@@ -949,6 +950,8 @@ function setCodeEditorInlineAI(editor) {
 													if (!new_code && new_code !== 0)
 														StatusMessageHandler.showError("Error: AI didn't return any code.");
 													else {
+														new_code = new_code.replace(/\\n/g, "\n"); //replace all \n in code bc AI sometimes returns the code with escaped end lines.
+														
 														var replacement_type = data["replacement_type"];
 														var replacement_range = data["replacement_range"];
 														
@@ -1059,7 +1062,7 @@ function getCodeEditorChatBotDefaultSystemMessage(editor) {
 		mode = mode ? mode.replace("ace/mode/", "") : "";
 		
 		var all_code = editor.getValue();
-		var selected_code = editor.getSelectedText(); //TODO: the selection must be detected everytime the user input gets sent to the openAI. and not only when the popup gets open.
+		var selected_code = editor.getSelectedText();
 		var selected_range = editor.getSelectionRange();
 		
 		system_message = "You are an expert in " + mode + (mode == "php" ? " and html" : "") + ".";
@@ -1067,14 +1070,12 @@ function getCodeEditorChatBotDefaultSystemMessage(editor) {
 		if (selected_code)
 			system_message += "\n\nCode of user selection:\n```" + mode + "\n" + selected_code + "\n```";
 		
-		if (selected_range && selected_range.start && (selected_range.start.row != selected_range.end.row || selected_range.start.column != selected_range.end.column))
+		if (selected_range && $.isPlainObject(selected_range.start) && $.isPlainObject(selected_range.end) && (selected_range.start.row != selected_range.end.row || selected_range.start.column != selected_range.end.column))
 			system_message += "\n\nRange of user selection:"
 						+ "\n- start row: " + selected_range.start.row + ";"
 						+ "\n- start column: " + selected_range.start.column + ";"
-						+ (selected_range.end ? 
-							  "\n- end row: " + selected_range.end.row + ";"
-							+ "\n- end column: " + selected_range.end.column + ";"
-						: "");
+						+ "\n- end row: " + selected_range.end.row + ";"
+						+ "\n- end column: " + selected_range.end.column + ";";
 		
 		if (all_code)
 			system_message += "\n\nAll code in the editor:\n```" + mode + "\n" + all_code + "\n```"; 
