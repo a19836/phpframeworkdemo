@@ -28,7 +28,7 @@ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include 
 			<header>
 				<div class="title">Change DB Keys Automatically</div>
 				<ul>
-					<li class="save" data-title="Change DB Keys"><a onClick="$(this).addClass(\'loading\'); submitForm(this)"><i class="icon save"></i> Save</a></li>
+					<li class="save" data-title="Change DB Keys"><a onClick="submitForm(this)"><i class="icon save"></i> Save</a></li>
 				</ul>
 			</header>
 		</div>'; if ($is_local_db) { $main_content .= '<div class="label">In order to proceed, please confirm the current DB keys and your CMS login:</div>'; $main_content .= HtmlFormHandler::createHtmlForm($form_settings, $data); $main_content .= '<div class="info">Clicking the "Save" button enables the system to validate the keys, ensuring they are correct and currently in use. If validated, the system will update the new keys in the User Authentication Database. This action should only be performed for security purposes.</div>'; } else { $main_content .= '<div class="label">You can only change the DB\'s keys if the Authentication DB is a local DB.</div>'; } $main_content .= '
