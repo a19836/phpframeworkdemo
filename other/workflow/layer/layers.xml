@@ -2,38 +2,38 @@
 <tasks>
 	<container>
 		<id><![CDATA[layer_presentations]]></id>
-		<width>596</width>
+		<width>816</width>
 		<height>150</height>
 		<left>1</left>
 		<top>0</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_bls]]></id>
-		<width>596</width>
+		<width>816</width>
 		<height>150</height>
 		<left>1</left>
-		<top>150</top>
+		<top>149</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dals]]></id>
-		<width>596</width>
+		<width>816</width>
 		<height>150</height>
 		<left>1</left>
-		<top>297</top>
+		<top>298</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_dbs]]></id>
-		<width>596</width>
+		<width>816</width>
 		<height>150</height>
 		<left>1</left>
-		<top>447</top>
+		<top>448</top>
 	</container>
 	<container>
 		<id><![CDATA[layer_drivers]]></id>
-		<width>596</width>
-		<height>123</height>
+		<width>816</width>
+		<height>122</height>
 		<left>1</left>
-		<top>597</top>
+		<top>598</top>
 	</container>
 	<task>
 		<label><![CDATA[mysql]]></label>
@@ -41,7 +41,7 @@
 		<type><![CDATA[f99a69c9]]></type>
 		<tag><![CDATA[dbdriver]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>636</offset_top>
+		<offset_top>638</offset_top>
 		<width>108</width>
 		<height>72</height>
 		<properties>
@@ -70,7 +70,7 @@
 		<type><![CDATA[14b5bd7e]]></type>
 		<tag><![CDATA[db]]></tag>
 		<offset_left>279</offset_left>
-		<offset_top>478</offset_top>
+		<offset_top>480</offset_top>
 		<width>108</width>
 		<height>72</height>
 		<properties>
@@ -99,7 +99,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>120</offset_left>
-		<offset_top>322</offset_top>
+		<offset_top>324</offset_top>
 		<width>108</width>
 		<height>72</height>
 		<properties>
@@ -134,7 +134,7 @@
 		<type><![CDATA[c9c0af26]]></type>
 		<tag><![CDATA[dataaccess]]></tag>
 		<offset_left>395</offset_left>
-		<offset_top>322</offset_top>
+		<offset_top>324</offset_top>
 		<width>108</width>
 		<height>72</height>
 		<properties>
@@ -169,7 +169,7 @@
 		<type><![CDATA[9a89b3f5]]></type>
 		<tag><![CDATA[businesslogic]]></tag>
 		<offset_left>260</offset_left>
-		<offset_top>174</offset_top>
+		<offset_top>176</offset_top>
 		<width>108</width>
 		<height>72</height>
 		<properties>
