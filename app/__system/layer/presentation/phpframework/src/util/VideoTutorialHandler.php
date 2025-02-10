@@ -5,7 +5,24 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-class VideoTutorialHandler { public static function getFeaturedTutorialsHtml($v68927135d0) { $pf8ed4912 = ""; if ($v68927135d0) foreach ($v68927135d0 as $v20f9a15b0d) { if (!empty($v20f9a15b0d["items"])) $pf8ed4912 .= self::getFeaturedTutorialsHtml($v20f9a15b0d["items"]); else if (!empty($v20f9a15b0d["video"])) { $v9cd205cadb = explode("/embed/", $v20f9a15b0d["video"]); $v295cdec340 = isset($v9cd205cadb[1]) ? $v9cd205cadb[1] : null; if ($v295cdec340) { $pc0148842 = isset($v20f9a15b0d["title"]) ? $v20f9a15b0d["title"] : null; $v0b1f91b475 = isset($v20f9a15b0d["description"]) ? $v20f9a15b0d["description"] : null; $pf8ed4912 .= '<div class="featured_tutorial">
+class VideoTutorialHandler { public static function getFeaturedTutorialsSectionHtml($v68927135d0, $v976b9ab224) { $v6c80105873 = self::getFeaturedTutorialsHtml($v68927135d0); if ($v6c80105873) { $pf8ed4912 = '<div class="featured_header">
+							<div class="featured_header_tip">Start here</div>
+							<div class="featured_header_title">Build your app with confidence</div>
+							<div class="featured_header_sub_title">Unlock your potential with these essential tools and guides for beginners.</div>
+						</div>
+						' . $v6c80105873 . '
+						<div class="featured_buttons">
+							<button onClick="openWindow(this, \'url\', \'videos\')" url="' . $v976b9ab224 . 'video/simple"><span class="icon video"></span> Click here to watch more videos</button>
+							<button onClick="openWindow(this, \'url\', \'documentation\')" url="' . $v976b9ab224 . '"><span class="icon tutorials"></span> Click here to read our documentation</button>
+						</div>'; $v3db870d9e7 = '<script>
+			var videos_html = \'' . addcslashes(str_replace(array("\n", "\r"), "", $pf8ed4912), "\\'") . '\';
+			
+			$(function() {
+				setTimeout(function() { //very important, so the pages that call this function, load faster and do NOT need to wait until all videos be loaded.
+					$(".featured_tutorials").html(videos_html);
+				}, 1000);
+			});
+			</script>'; return '<div class="featured_tutorials"></div>' . $v3db870d9e7; } return ""; } public static function getFeaturedTutorialsHtml($v68927135d0) { $pf8ed4912 = ""; if ($v68927135d0) foreach ($v68927135d0 as $v20f9a15b0d) { if (!empty($v20f9a15b0d["items"])) $pf8ed4912 .= self::getFeaturedTutorialsHtml($v20f9a15b0d["items"]); else if (!empty($v20f9a15b0d["video"])) { $v9cd205cadb = explode("/embed/", $v20f9a15b0d["video"]); $v295cdec340 = isset($v9cd205cadb[1]) ? $v9cd205cadb[1] : null; if ($v295cdec340) { $pc0148842 = isset($v20f9a15b0d["title"]) ? $v20f9a15b0d["title"] : null; $v0b1f91b475 = isset($v20f9a15b0d["description"]) ? $v20f9a15b0d["description"] : null; $pf8ed4912 .= '<div class="featured_tutorial">
 										<iframe src="https://www.youtube.com/embed/' . $v295cdec340 . '" title="' . str_replace('"', "&quot;", $pc0148842) . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 										<div class="tutorial_title">
 											<span class="icon video"></span>
