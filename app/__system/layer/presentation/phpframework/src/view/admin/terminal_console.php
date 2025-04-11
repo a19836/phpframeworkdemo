@@ -25,6 +25,7 @@ $head = '
 <script>
 var is_popup = ' . ($popup ? 1 : 0) . ';
 var is_allowed = ' . ($is_allowed ? 1 : 0) . ';
+var hide_dir_prefix = "' . CMS_PATH . '";
 </script>'; $main_content = '
 <div class="top_bar' . ($popup ? " in_popup" : "") . '">
 	<header>
@@ -57,4 +58,4 @@ var is_allowed = ' . ($is_allowed ? 1 : 0) . ';
 		<ul>
 			<li>"upload" to upload files to the current directory.</li>
 		</ul>
-	</div>'; } else $main_content .= '<div class="error">Error: shell_exec function is disabled. To allow terminal access through this page, please talk with your SysAdmin to enable this function.</div>'; $main_content .= '</div>'; ?>
+	</div>'; } else $main_content .= '<div class="error">Error: ' . ShellCmdHandler::FUNCTION_NAME . ' function is disabled. To allow terminal access through this page, please talk with your SysAdmin to enable this function.</div>'; $main_content .= '</div>'; ?>
