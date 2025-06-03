@@ -236,9 +236,13 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 			$attributes = $this->getTableAttributes();
 			$pks = $do_not_include_pks ? self::getTablePrimaryKeys() : array();
 			
-			foreach ($data as $k => $v)
-				if (!in_array($k, $attributes) || in_array($k, $pks))
+			foreach ($data as $k => $v) {
+				$is_attribute = in_array($k, $attributes) || preg_match("/(^|\(|\.|`)(" . implode("|", $attributes) . ")($|\)|`)/", $k);
+				$is_pk = in_array($k, $pks) || preg_match("/(^|\(|\.|`)(" . implode("|", $pks) . ")($|\)|`)/", $k);
+				
+				if (!$is_attribute || $is_pk)
 					unset($data[$k]);
+			}
 		}
 		
 		return $data;
@@ -266,6 +270,29 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		}
 		
 		return $data;
+	}
+	
+	private function filterConditionsByTableAttributes($conditions) {
+		if ($conditions) {
+			$attributes = $this->getTableAttributes();
+			$joins = array("or", "and", "&&", "||");
+			
+			foreach ($conditions as $k => $v) {
+				if (in_array(strtolower($k), $joins) || is_numeric($k)) {
+					if (is_array($v))
+						$conditions[$k] = $this->filterConditionsByTableAttributes($v);
+					//else leave it as it is. For more info check DBSQLConverter::getSQLConditions method
+				}
+				else {
+					$is_attribute = in_array($k, $attributes) || preg_match("/(^|\(|\.|`)(" . implode("|", $attributes) . ")($|\)|`)/", $k);
+					
+					if (!$is_attribute)
+						unset($conditions[$k]);
+				}
+			}
+		}
+		
+		return $conditions;
 	}
 	' . prepareTableNodes($pfa9a25ae, $pab752e34, $v872f5b4dbb, $v8b13fa2358, $v5e053dece2, $v8c5df8072b, $v1612a5ddce, $v96235e0cbf, $pa3585c80, $v0674ea4a10, $v887e85c917) . '
 }
@@ -318,7 +345,7 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		\$conditions = isset(\$data[\"conditions\"]) ? \$data[\"conditions\"] : null;
 		
 		if (\$conditions)
-			\$conditions = \$this->filterDataByTableAttributes(\$conditions, false);
+			\$conditions = \$this->filterConditionsByTableAttributes(\$conditions);
 		
 		\$options[\"all\"] = isset(\$data[\"all\"]) ? \$data[\"all\"] : null;
 		\$result = {$pa8d2aaca}->updateObject(\$this->getTableName(), \$attributes, \$conditions, \$options);"; else if ($v5e813b295b == "updatePrimaryKeys") $v68745269c7 .= "\$attributes = \$conditions = array();
@@ -347,12 +374,12 @@ class ' . $v1335217393 . ($v7c3c74d27f ? "" : "Service") . ' extends ' . ($v3a2d
 		\$result = {$pa8d2aaca}->updateObject(\$this->getTableName(), \$attributes, \$conditions, \$options);"; } $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; case "delete": $v5e813b295b = stripos($v5e813b295b, "delete") !== false || stripos($v5e813b295b, "remove") !== false ? $v5e813b295b : "delete" . ucfirst($v5e813b295b); $v5e813b295b = $v5e813b295b == "delete$v1335217393" ? "delete" : $v5e813b295b; $v5e813b295b = $v5e813b295b == "deleteAll{$v1335217393}Items" ? "deleteAll" : $v5e813b295b; $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareSQLStatementCode($v50819961ef, $v987a981e39, $pfa9a25ae, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $v9367d5be85); WorkFlowBusinessLogicHandler::disableAddSqlSlashesInParameters($v9367d5be85); $pe12d2a7d = ""; $v6bb8b59263 = true; if (!empty($v0674ea4a10[$pd98df87c])) foreach ($v0674ea4a10[$pd98df87c] as $v1b0cfa478b) if (!empty($v1b0cfa478b["primary_key"])) { $v6bb8b59263 = false; break; } $pf81e7d81 = null; if ($v5e813b295b != "deleteAll") { if ($v6bb8b59263) { $v4ee1771324 = $v9367d5be85; foreach ($v4ee1771324 as $v67ccb03f4c => $v518ca67314) $v4ee1771324[$v67ccb03f4c]["mandatory"] = true; $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v4ee1771324, true, true, true, false, true, false, false); } else $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, true, false, true, false, true, false, false); } else { $pa02649b9 = $v9367d5be85; prepareSelectAllSQLParameters($v50819961ef, $v987a981e39, $pfa9a25ae, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $pa02649b9, $v8c5df8072b); WorkFlowBusinessLogicHandler::disableAddSqlSlashesInParameters($pa02649b9); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($pa02649b9, true, true, false, false, true, false, true); } if ($v5e813b295b == "deleteAll") $v68745269c7 .= "\$conditions = isset(\$data[\"conditions\"]) ? \$data[\"conditions\"] : null;
 		
 		if (\$conditions)
-			\$conditions = \$this->filterDataByTableAttributes(\$conditions, false);
+			\$conditions = \$this->filterConditionsByTableAttributes(\$conditions);
 		
 		\$options[\"all\"] = isset(\$data[\"all\"]) ? \$data[\"all\"] : null;
 		\$result = {$pa8d2aaca}->deleteObject(\$this->getTableName(), \$conditions, \$options);"; else $v68745269c7 .= "\$conditions = \$this->filterDataByTablePrimaryKeys(\$data);
 		\$result = {$pa8d2aaca}->deleteObject(\$this->getTableName(), \$conditions, \$options);"; $v067674f4e4 .= getBusinessLogicServiceFunctionCode($v5e813b295b, $v9367d5be85, $pe12d2a7d, $v1dc11964f1, $v68745269c7, $pf81e7d81, $pe7720ba3); break; case "select": $v04c7684275 = isCountFunctionName($v5e813b295b); $pa05557b6 = !$v04c7684275 && (stripos($v5e813b295b, "get") !== false || stripos($v5e813b295b, "select") !== false); $v5e813b295b = $v04c7684275 || $pa05557b6 ? $v5e813b295b : "get" . ucfirst($v5e813b295b); $v5e813b295b = $v5e813b295b == "get$v1335217393" ? "get" : $v5e813b295b; $v5e813b295b = $v5e813b295b == "count$v1335217393" ? "count" : $v5e813b295b; $v5e813b295b = $v5e813b295b == "get{$v1335217393}Items" ? "getAll" : $v5e813b295b; $v5e813b295b = $v5e813b295b == "count{$v1335217393}Items" ? "countAll" : $v5e813b295b; $pe7720ba3 = getDBDriverOptionsCode($v872f5b4dbb, $v8b13fa2358); $v1dc11964f1 = prepareSQLStatementCode($v50819961ef, $v987a981e39, $pfa9a25ae, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $v9367d5be85); WorkFlowBusinessLogicHandler::disableAddSqlSlashesInParameters($v9367d5be85); $pe12d2a7d = ""; $v6bb8b59263 = true; if (!empty($v0674ea4a10[$pd98df87c])) foreach ($v0674ea4a10[$pd98df87c] as $v1b0cfa478b) if (!empty($v1b0cfa478b["primary_key"])) { $v6bb8b59263 = false; break; } if ($v5e813b295b != "getAll" && $v5e813b295b != "countAll") { if ($v6bb8b59263) { $v4ee1771324 = $v9367d5be85; foreach ($v4ee1771324 as $v67ccb03f4c => $v518ca67314) $v4ee1771324[$v67ccb03f4c]["mandatory"] = true; $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v4ee1771324, true, true, true, false, true, false, false); } else $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($v9367d5be85, true, true, true, false, true, false, false); } else { $pa02649b9 = $v9367d5be85; prepareSelectAllSQLParameters($v50819961ef, $v987a981e39, $pfa9a25ae, $pab752e34, $v872f5b4dbb, $v5e053dece2, $v0674ea4a10, $pa3585c80, $pa02649b9, $v8c5df8072b); WorkFlowBusinessLogicHandler::disableAddSqlSlashesInParameters($pa02649b9); $pf81e7d81 = WorkFlowBusinessLogicHandler::getAnnotationsFromParameters($pa02649b9, true, true, false, false, true, false, true); } $v68745269c7 .= "if (!empty(\$data[\"conditions\"]))
-			\$data[\"conditions\"] = \$this->filterDataByTableAttributes(\$data[\"conditions\"], false);
+			\$data[\"conditions\"] = \$this->filterConditionsByTableAttributes(\$data[\"conditions\"]);
 		
 		self::prepareInputData(\$data);
 		
