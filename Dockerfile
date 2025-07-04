@@ -137,7 +137,7 @@ RUN /bin/sed -i "s/127.0.0.1/mysql/g" "other/workflow/layer/layers_simple.xml"
 # Ensure tmp folder exists
 RUN mkdir -p /var/www/html/tmp
 
-# Remove tmp files if exists, otherwise it may contain old and local cache that may cause inconsistencies
+# Remove tmp files if exists, otherwise it may contain old and local cache that may cause inconsistencies. This is important for the bloxtor demo.
 RUN rm -rf /var/www/html/tmp/cache/
 RUN rm -rf /var/www/html/tmp/phpframework.log
 
