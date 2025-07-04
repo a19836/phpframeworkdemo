@@ -151,7 +151,7 @@ RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Expose HTTP port
-EXPOSE 80 8887 8888
+EXPOSE 80 8887 8888 8890
 
 # Print access info
 RUN echo "--------------------------------------------------" \
@@ -160,7 +160,7 @@ RUN echo "--------------------------------------------------" \
 
 RUN echo '#!/bin/bash' > /usr/local/bin/docker-entrypoint.sh && \
     echo 'echo "--------------------------------------------------"' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Bloxtor is ready! Access it at: http://localhost:8887/setup.php or http://localhost:8888/setup.php"' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'echo "Bloxtor is ready! Access it at: http://localhost:8887/__system/admin or http://localhost:8888/__system/admin"' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'echo "Or use your Docker host IP if not running locally."' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'echo "--------------------------------------------------"' >> /usr/local/bin/docker-entrypoint.sh && \
     echo 'exec apachectl -D FOREGROUND' >> /usr/local/bin/docker-entrypoint.sh
