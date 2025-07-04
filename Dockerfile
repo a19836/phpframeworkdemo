@@ -129,6 +129,9 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . /var/www/html/
 
+# Add correct mysql host
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" "app/config/bean/mysql_dbdriver.xml"
+
 # Ensure tmp folder exists
 RUN mkdir -p /var/www/html/tmp
 
