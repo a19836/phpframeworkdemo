@@ -37,12 +37,6 @@ env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_demo up
 	- port: 3306 (optional)
 	- db name: test
 	- user/pass: bloxtor/bloxtor
-
-	Postgres server info:
-	- host: postgres
-	- port: 5432 (optional)
-	- db name: test
-	- user/pass: bloxtor/bloxtor
 	
 	More info at ./docker-compose.yml
 
