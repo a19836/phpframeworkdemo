@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
     libodbc1 \
     icu-devtools \
     libssh2-1-dev \
+    vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -68,7 +69,7 @@ memory_limit = 1024M\n\
 display_errors = On\n\
 display_startup_errors = On\n\
 log_errors = On\n\
-error_log = /var/log/apache2/php_errors.log\n\
+error_log = /var/www/html/tmp/phpframework.log\n\
 \n\
 expose_php = Off\n\
 mail.add_x_header = Off\n\
@@ -98,6 +99,30 @@ LimitRequestFieldSize 10000000\n\
 LimitRequestLine 10000000\n\
 LimitXMLRequestBody 10000000\n" >> /etc/apache2/apache2.conf
 
+# Make Apache listen on 8887 and 8888 because of internal request to the same port.
+RUN echo "Listen 8887" >> /etc/apache2/ports.conf
+RUN echo "Listen 8888" >> /etc/apache2/ports.conf
+
+RUN echo '<VirtualHost *:8887>\n\
+    DocumentRoot /var/www/html\n\
+    <Directory /var/www/html>\n\
+        Options FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>\n' > /etc/apache2/sites-available/8887.conf && \
+    a2ensite 8887.conf
+
+RUN echo '<VirtualHost *:8888>\n\
+    DocumentRoot /var/www/html\n\
+    <Directory /var/www/html>\n\
+        Options FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>\n' > /etc/apache2/sites-available/8888.conf && \
+    a2ensite 8888.conf
+
 # Set document root
 WORKDIR /var/www/html
 
@@ -117,7 +142,7 @@ RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Expose HTTP port
-EXPOSE 80
+EXPOSE 80 8887 8888
 
 # Print access info
 RUN echo "--------------------------------------------------" \

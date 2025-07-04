@@ -21,14 +21,14 @@ Note that installation through docker, doesn't install the mssql server and apac
 Execute the following commands in your terminal:
 1. Build and start all services:
 ```
-docker compose -p bloxtor up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor up --build
 #or
-docker-compose -p bloxtor up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
 
-2. To access your app, please open your browser and go to http://localhost:8888/setup.php (or use your Docker host IP if not running locally), then follow the correspondent instructions... 
+2. To access your app, please open your browser and go to http://localhost:8888/setup.php (or use your Docker host IP if not running locally), then follow the correspondent instructions on **Step 9** below... 
 
 	To login into Bloxtor please use user/pass: admin/admin.
 	
@@ -68,7 +68,7 @@ docker start bloxtor-server
 ```
 
 
-3. To access your app, please open your browser and go to http://localhost:8887/setup.php (or use your Docker host IP if not running locally), then follow the correspondent instructions...
+3. To access your app, please open your browser and go to http://localhost:8887/setup.php (or use your Docker host IP if not running locally), then follow the correspondent instructions on **Step 9** below...
 	
 	To login into Bloxtor please use user/pass: admin/admin.
 	
