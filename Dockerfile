@@ -131,6 +131,8 @@ COPY . /var/www/html/
 
 # Add correct mysql host
 RUN /bin/sed -i "s/127.0.0.1/mysql/g" "app/config/bean/mysql_dbdriver.xml"
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" "other/workflow/layer/layers.xml"
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" "other/workflow/layer/layers_simple.xml"
 
 # Ensure tmp folder exists
 RUN mkdir -p /var/www/html/tmp
