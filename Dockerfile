@@ -99,32 +99,27 @@ LimitRequestFieldSize 10000000\n\
 LimitRequestLine 10000000\n\
 LimitXMLRequestBody 10000000\n" >> /etc/apache2/apache2.conf
 
-# Make Apache listen on 8894, 8895, 8890 and 8892 because of internal request to the same port.
-RUN echo "Listen 8894" >> /etc/apache2/ports.conf
-RUN echo "Listen 8895" >> /etc/apache2/ports.conf
+# Make Apache listen on 8887, 8888, 8890 and 8892 because of internal request to the same port.
+RUN echo "Listen 8887" >> /etc/apache2/ports.conf
+RUN echo "Listen 8888" >> /etc/apache2/ports.conf
 RUN echo "Listen 8890" >> /etc/apache2/ports.conf
 RUN echo "Listen 8892" >> /etc/apache2/ports.conf
 
-RUN echo '<VirtualHost *:8894 *:8895 *:8890 *:8892>\n\
+RUN echo '<VirtualHost *:8887 *:8888 *:8890 *:8892>\n\
     DocumentRoot /var/www/html\n\
     <Directory /var/www/html>\n\
         Options FollowSymLinks\n\
         AllowOverride All\n\
         Require all granted\n\
     </Directory>\n\
-</VirtualHost>\n' > /etc/apache2/sites-available/8894_92.conf && \
-    a2ensite 8894_92.conf
+</VirtualHost>\n' > /etc/apache2/sites-available/8887_92.conf && \
+    a2ensite 8887_92.conf
 
 # Set document root
 WORKDIR /var/www/html
 
 # Copy project files
 COPY . /var/www/html/
-
-# Add correct mysql host
-RUN /bin/sed -i "s/127.0.0.1/mysql/g" "app/config/bean/mysql_dbdriver.xml"
-RUN /bin/sed -i "s/127.0.0.1/mysql/g" "other/workflow/layer/layers.xml"
-RUN /bin/sed -i "s/127.0.0.1/mysql/g" "other/workflow/layer/layers_simple.xml"
 
 # Ensure tmp folder exists
 RUN mkdir -p /var/www/html/tmp
@@ -143,7 +138,7 @@ RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Expose HTTP port
-EXPOSE 80 8894 8895 8890 8892
+EXPOSE 80 8887 8888 8890 8892
 
 # Print access info
 RUN echo "--------------------------------------------------" \
@@ -178,7 +173,7 @@ RUN echo '#!/bin/bash' > /usr/local/bin/docker-entrypoint.sh && \
 	echo '' >> /usr/local/bin/docker-entrypoint.sh && \
 	echo 'echo ""' >> /usr/local/bin/docker-entrypoint.sh && \
 	echo 'echo "--------------------------------------------------"' >> /usr/local/bin/docker-entrypoint.sh && \
-	echo 'echo "Bloxtor is ready! Access it at: http://localhost:8894/__system/admin or http://localhost:8895/__system/admin or http://localhost:8890/__system/admin or http://localhost:8892/__system/admin"' >> /usr/local/bin/docker-entrypoint.sh && \
+	echo 'echo "Bloxtor is ready! Access it at: http://localhost:8887/setup.php or http://localhost:8888/setup.php or http://localhost:8890/setup.php" or http://localhost:8892/setup.php"' >> /usr/local/bin/docker-entrypoint.sh && \
 	echo 'echo "Or use your Docker host IP if not running locally."' >> /usr/local/bin/docker-entrypoint.sh && \
 	echo 'echo "--------------------------------------------------"' >> /usr/local/bin/docker-entrypoint.sh && \
 	echo '' >> /usr/local/bin/docker-entrypoint.sh && \
