@@ -44,6 +44,11 @@
    Order allow,deny
    Deny from all
  </FilesMatch>
+ 
+ # Deny access to .env, .yml, and .cnf files
+<FilesMatch "\.(env|yml|cnf|Dockerfile)$">
+    Require all denied
+</FilesMatch>
 
 # Cache-Control Headers
 <ifModule mod_headers.c>
