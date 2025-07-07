@@ -17,37 +17,60 @@ Bloxtor is lightweight and runs seamlessly on a Raspberry Pi. Any hardware capab
 Note that installation through docker, doesn't install the mssql server and apache security addons.
 
 
-### Demo Installation - using Docker Compose
-To install a demo version with all features and modules available please type the following commands in your terminal:
+### Full Remote Installation - using Docker Compose (faster process)
+To install a version with all features and modules installed, __based in the latest available remote version__, please type the following commands in your terminal:
 
 1. Start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -f docker-compose-demo.yml -p bloxtor_demo up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -f docker-compose-demo.yml -p bloxtor_demo up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker-compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
 
-2. To access the framework, please open your browser and go to http://localhost:8890/__system/admin (or use your Docker host IP if not running locally).
+2. To access the framework, please open your browser and go to http://localhost:8892/__system/admin (or use your Docker host IP if not running locally).
 	
 	To login into Bloxtor framework please use user/pass: admin/admin.
 	
-	More info at [docker-compose-demo.yml](./docker-compose-demo.yml)
+	More info at [docker-compose-remote-full.yml](./docker-compose-remote-full.yml)
 
-### Fresh Installation - using Docker Compose
-To execute a new fresh installation please type the following commands in your terminal:
+### Empty Remote Installation - using Docker Compose (faster process)
+To execute a new fresh and empty installation, without any modules, projects and dependencies installed, __based in the latest available remote version__, please type the following commands in your terminal:
 
 1. Build and start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker-compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
 
-2. Then access the framework, by opening http://localhost:8888/__system/admin (or use your Docker host IP if not running locally). 
+2. Then access the framework, by opening http://localhost:8890/setup.php (or use your Docker host IP if not running locally), and follow the correspondent instructions on **Step 9** below... 
+
+	To login into Bloxtor framework please use user/pass: admin/admin.
+	
+	Mysql server info:
+	- Host: mysql
+	- Port: 3306 (optional)
+	- DB Name, User and Pass: please check the [docker-compose.env](./docker-compose.env) file.
+	
+	More info at [docker-compose-remote-empty.yml](./docker-compose-remote-empty.yml)
+
+### Empty Local Installation - using Docker Compose (slower process)
+To execute a new fresh and empty installation, without any modules, projects and dependencies installed, __based in the current code__, please type the following commands in your terminal:
+
+1. Build and start all services:
+```
+env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor_demo_local up --build
+#or
+env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_demo_local up --build
+
+#you can also add '--force-recreate' at the end of the above commands.
+```
+
+2. Then access the framework, by opening http://localhost:8895/__system/admin (or use your Docker host IP if not running locally).
 
 	To login into Bloxtor framework please use user/pass: admin/admin.
 	
@@ -58,29 +81,29 @@ env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor up --bu
 	
 	More info at [docker-compose.yml](./docker-compose.yml)
 
-### Fresh Installation - using only the Dockerfile (single container)
+### Fresh Installation - using only the Dockerfile (single container - slower process)
 Execute the following commands in your terminal:
 1. Build your Docker image:
 ```
-docker build -t bloxtor .
+docker build -t bloxtor_demo .
 #or
-docker build --no-cache -t bloxtor .
+docker build --no-cache -t bloxtor_demo .
 
 #'--no-cache' is optional.
 ```
 
 2. Run the container:
 ```
-docker run --name bloxtor-server -p 8887:80 bloxtor
+docker run --name bloxtor-demo-server -p 8894:80 bloxtor_demo
 ```
 
 	If already created, just start it:
 ```
-docker start bloxtor-server
+docker start bloxtor-demo-server
 ```
 
 
-3. Then access the framework, by opening http://localhost:8887/__system/admin (or use your Docker host IP if not running locally).
+3. Then access the framework, by opening http://localhost:8894/__system/admin (or use your Docker host IP if not running locally).
 	
 	To login into Bloxtor please use user/pass: admin/admin.
 	

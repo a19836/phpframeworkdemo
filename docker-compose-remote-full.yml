@@ -1,8 +1,8 @@
 services:
   web:
-    build: .
+    image: jplpinto/bloxtor_full-web:1.0
     ports:
-      - "8895:80"   # (optional, but not needed if you want 8895 only)
+      - "8892:80"   # (optional, but not needed if you want 8892 only)
     #volumes:
     #  - .:/var/www/html
     env_file:
@@ -10,7 +10,7 @@ services:
     depends_on:
       - mysql
   mysql:
-    image: mysql:8.0
+    image: jplpinto/bloxtor_full-mysql:1.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DOCKER_COMPOSE_DB_ROOT_PASS}
@@ -18,7 +18,6 @@ services:
       MYSQL_USER: ${DOCKER_COMPOSE_DB_USER}
       MYSQL_PASSWORD: ${DOCKER_COMPOSE_DB_PASS}
     ports:
-      - "8896:3306"
+      - "8893:3306"
     volumes:
       - ./mysql.cnf:/etc/mysql/my.cnf
-      - ./my_first_db.sql.gz:/docker-entrypoint-initdb.d/my_first_db.sql.gz  # Mount init.sql script
