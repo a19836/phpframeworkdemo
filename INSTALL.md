@@ -63,14 +63,14 @@ To execute a new fresh and empty installation, without any modules, projects and
 
 1. Build and start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor_local up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor_demo_local up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_local up --build
+env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_demo_local up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
 
-2. Then access the framework, by opening http://localhost:8888/setup.php (or use your Docker host IP if not running locally), and follow the correspondent instructions on **Step 9** below... 
+2. Then access the framework, by opening http://localhost:8895/__system/admin (or use your Docker host IP if not running locally).
 
 	To login into Bloxtor framework please use user/pass: admin/admin.
 	
@@ -85,25 +85,25 @@ env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_local u
 Execute the following commands in your terminal:
 1. Build your Docker image:
 ```
-docker build -t bloxtor .
+docker build -t bloxtor_demo_local .
 #or
-docker build --no-cache -t bloxtor .
+docker build --no-cache -t bloxtor_demo_local .
 
 #'--no-cache' is optional.
 ```
 
 2. Run the container:
 ```
-docker run --name bloxtor-server -p 8887:80 bloxtor
+docker run --name bloxtor-demo-server -p 8894:80 bloxtor_demo
 ```
 
 	If already created, just start it:
 ```
-docker start bloxtor-server
+docker start bloxtor-demo-server
 ```
 
 
-3. Then access the framework, by opening http://localhost:8887/setup.php (or use your Docker host IP if not running locally), and follow the correspondent instructions on **Step 9** below...
+3. Then access the framework, by opening http://localhost:8894/__system/admin (or use your Docker host IP if not running locally).
 	
 	To login into Bloxtor please use user/pass: admin/admin.
 	
