@@ -40,9 +40,9 @@ To install a fully featured version — __with all__ modules and components prei
 
 1. Start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8892 DB_PORT=8893 docker compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8892 DB_PORT=8893 docker-compose -f docker-compose-remote-full.yml -p bloxtor_remote_full up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
@@ -59,9 +59,9 @@ To launch a fresh and empty installation — __with no__ modules, projects, or d
 
 1. Build and start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8890 DB_PORT=8891 docker compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8890 DB_PORT=8891 docker-compose -f docker-compose-remote-empty.yml -p bloxtor_remote_empty up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
@@ -83,14 +83,14 @@ To run a fresh, empty local installation — __with no__ preinstalled modules, p
 
 1. Build and start all services:
 ```
-env $(grep -v '^#' docker-compose.env | xargs) docker compose -p bloxtor_demo_local up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8895 DB_PORT=8896 docker compose -p bloxtor_demo_local up --build
 #or
-env $(grep -v '^#' docker-compose.env | xargs) docker-compose -p bloxtor_demo_local up --build
+env $(grep -v '^#' docker-compose.env | xargs) WEB_PORT=8895 DB_PORT=8896 docker-compose -p bloxtor_demo_local up --build
 
 #you can also add '--force-recreate' at the end of the above commands.
 ```
 
-2. Then access the framework, by opening http://localhost:8895/__system/admin (or use your Docker host IP if not running locally).
+2. Then access the framework, by opening http://localhost:8895/__system/admin (or use your Docker host IP if not running locally). 
 
 	To login into Bloxtor framework please use user/pass: admin/admin.
 	
@@ -116,16 +116,16 @@ docker build --no-cache -t bloxtor_demo .
 
 2. Run the container:
 ```
-docker run --name bloxtor-demo-server -p 8894:80 bloxtor_demo
+WEB_PORT=8894; docker run --name bloxtor-demo-local-server -e WEB_PORT=$WEB_PORT -p $WEB_PORT:80 bloxtor_demo
 ```
 
 	If already created, just start it:
 ```
-docker start bloxtor-demo-server
+docker start bloxtor-demo-local-server
 ```
 
 
-3. Then access the framework, by opening http://localhost:8894/__system/admin (or use your Docker host IP if not running locally).
+3. Then access the framework, by opening http://localhost:8895/__system/admin (or use your Docker host IP if not running locally).
 	
 	To login into Bloxtor please use user/pass: admin/admin.
 	

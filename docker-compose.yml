@@ -2,9 +2,9 @@ services:
   web:
     build: .
     ports:
-      - "8895:80"   # (optional, but not needed if you want 8895 only)
-    #volumes:
-    #  - .:/var/www/html
+      - "${WEB_PORT}:80"   # (optional, but not needed if you want 8888 only)
+    environment:
+      - WEB_PORT=${WEB_PORT}
     env_file:
       - docker-compose.env
     depends_on:
@@ -18,7 +18,7 @@ services:
       MYSQL_USER: ${DOCKER_COMPOSE_DB_USER}
       MYSQL_PASSWORD: ${DOCKER_COMPOSE_DB_PASS}
     ports:
-      - "8896:3306"
+      - "${DB_PORT}:3306"
     volumes:
-      - ./mysql.cnf:/etc/mysql/my.cnf
       - ./my_first_db.sql.gz:/docker-entrypoint-initdb.d/my_first_db.sql.gz  # Mount init.sql script
+      - ./mysql.cnf:/etc/mysql/my.cnf
