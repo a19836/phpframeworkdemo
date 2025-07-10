@@ -110,12 +110,13 @@ RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/app/config/bean/mysql_dbdriv
 RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers.xml
 RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers_simple.xml
 
-# Ensure tmp folder exists
-RUN mkdir -p /var/www/html/tmp
+# Remove tmp files if exists, otherwise it may contain old and local cache that may cause inconsistencies. This is important for the bloxtor demo and to decrease space of the docker.
+RUN rm -rf /var/www/html/.git
+RUN rm -rf /var/www/html/.github
+RUN rm -rf /var/www/html/tmp
 
-# Remove tmp files if exists, otherwise it may contain old and local cache that may cause inconsistencies. This is important for the bloxtor demo.
-RUN rm -rf /var/www/html/tmp/cache/
-RUN rm -rf /var/www/html/tmp/phpframework.log
+# Recreate tmp folder
+RUN mkdir -p /var/www/html/tmp
 
 # Add the line 'other/authdb/' at the end of the /var/www/html/.gitignore file
 RUN echo "" >> /var/www/html/.gitignore
