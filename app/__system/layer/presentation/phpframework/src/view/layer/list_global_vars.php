@@ -53,7 +53,7 @@ function onSubmitButtonClick(elm) {
 				<th class="var_name">Variable Name</th>
 				<th class="var_value">Variable Value</th>
 				<th class="buttons"></th>
-			</tr>'; foreach ($vars as $name => $value) $main_content .= str_replace("#var_value#", $value, str_replace("#var_name#", $name, $var_html)); $main_content .= '
+			</tr>'; foreach ($vars as $name => $value) $main_content .= str_replace("#var_value#", str_replace('"', '&quot;', $value), str_replace("#var_name#", $name, $var_html)); $main_content .= '
 		</table>
 		
 		<input class="save" type="submit" name="save" value="Save" confirmation="1" />
