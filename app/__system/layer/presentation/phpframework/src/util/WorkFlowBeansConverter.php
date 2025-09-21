@@ -322,7 +322,7 @@ include_once get_lib("org.phpframework.util.xml.MyXML"); include_once get_lib("o
 
 	<!-- DRIVER -->
 	<var name="' . $pb77a7e67 . '_options">
-		<list>'; $v6b274fa9e2 = array("host", "db_name", "username", "password", "schema", "odbc_data_source", "odbc_driver", "extra_dsn"); if (!empty($v7f5911d32d["properties"])) foreach ($v7f5911d32d["properties"] as $pe149db72 => $v1d88a54df5) if (!in_array($pe149db72, array("type", "active"))) $v241205aec6 .= '
+		<list>'; $v6b274fa9e2 = array("host", "db_name", "username", "password", "encoding", "schema", "odbc_data_source", "odbc_driver", "extra_dsn", "extra_settings"); if (!empty($v7f5911d32d["properties"])) foreach ($v7f5911d32d["properties"] as $pe149db72 => $v1d88a54df5) if (!in_array($pe149db72, array("type", "active"))) $v241205aec6 .= '
 			<item name="' . $pe149db72 . '">' . (in_array($pe149db72, $v6b274fa9e2) ? '<![CDATA[' . self::mf73c700ed652($v1d88a54df5) . ']]>' : self::mf73c700ed652($v1d88a54df5)) . '</item>'; $v241205aec6 .= '
 		</list>
 	</var>
