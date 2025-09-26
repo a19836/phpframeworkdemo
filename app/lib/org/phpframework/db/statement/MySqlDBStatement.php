@@ -98,7 +98,6 @@ DROP PROCEDURE IF EXISTS dropTableForeignKey;"; } public static function getAddT
     s.non_unique,
 	 s.seq_in_index,
 	 s.nullable,
-	 s.is_visible,
 	 s.comment
 FROM information_schema.STATISTICS s
 LEFT JOIN information_schema.TABLE_CONSTRAINTS tc

@@ -197,7 +197,6 @@ END;"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383
     CASE WHEN i.is_unique = 1 THEN 0 ELSE 1 END AS non_unique,
     ic.key_ordinal AS seq_in_index,
     CASE WHEN c.is_nullable = 1 THEN 'YES' ELSE 'NO' END AS nullable,
-    ic.is_included_column AS is_visible,
     ep.value AS comment
 FROM sys.indexes i
 JOIN sys.index_columns ic

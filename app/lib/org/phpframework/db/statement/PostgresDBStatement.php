@@ -368,7 +368,6 @@ END $$;"; } public static function getDropTableForeignConstraintStatement($pc661
     NOT ix.indisunique AS non_unique,
     kcu.ordinal_position AS seq_in_index,
     CASE WHEN a.attnotnull THEN 'NO' ELSE 'YES' END AS nullable,
-    NULL AS is_visible,
     d.description AS comment
 FROM pg_class t
 JOIN pg_index ix ON t.oid = ix.indrelid
