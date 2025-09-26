@@ -186,7 +186,38 @@ BEGIN
 END"; } public static function getDropTableForeignConstraintStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $pa51282b5 = isset($pbec62cc6["schema"]) ? $pbec62cc6["schema"] : null; return "IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_CATALOG=DB_NAME()" . ($pa51282b5 ? " AND TABLE_SCHEMA = '$pa51282b5'" : "") . " AND TABLE_NAME='$pc661dc6b' AND TABLE_TYPE='BASE TABLE'))
 BEGIN
   ALTER TABLE $v769bf5da97 DROP CONSTRAINT IF EXISTS [$pa28639ac];
-END;"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = is_array($pfdbbc383) ? $pfdbbc383 : array($pfdbbc383); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v9f683c2c95 = "idx__{$pc661dc6b}__" . implode("_", $pfdbbc383) . "__pf" . rand(); return "CREATE INDEX $v9f683c2c95 ON $v769bf5da97 ([" . implode("], [", $pfdbbc383) . "]) $v77cb07b555"; } public static function getLoadTableDataFromFileStatement($pf3dc0762, $pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $v52fe4649ca = !empty($v5d3813882f["fields_delimiter"]) ? $v5d3813882f["fields_delimiter"] : "\t"; $v78ac4d6619 = !empty($v5d3813882f["lines_delimiter"]) ? $v5d3813882f["lines_delimiter"] : "\r\n"; return "BULK INSERT $v769bf5da97 FROM '$pf3dc0762' WITH (FIELDTERMINATOR = '$v52fe4649ca', ROWTERMINATOR = '$v78ac4d6619' $v77cb07b555)"; } public static function getShowCreateTableStatement($pc661dc6b, $v5d3813882f = false) { $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $pa51282b5 = isset($pbec62cc6["schema"]) ? $pbec62cc6["schema"] : null; return "DECLARE  
+END;"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = is_array($pfdbbc383) ? $pfdbbc383 : array($pfdbbc383); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v9f683c2c95 = "idx__{$pc661dc6b}__" . implode("_", $pfdbbc383) . "__pf" . rand(); return "CREATE INDEX $v9f683c2c95 ON $v769bf5da97 ([" . implode("], [", $pfdbbc383) . "]) $v77cb07b555"; } public static function getDropTableIndexStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "ALTER TABLE $v769bf5da97 DROP CONSTRAINT [$pa28639ac] $v77cb07b555"; } public static function getTableIndexesStatement($pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "SELECT
+    i.name AS constraint_name,
+    CASE 
+        WHEN fk.object_id IS NOT NULL THEN 'FOREIGN KEY'
+        ELSE kc.type_desc
+    END AS constraint_type,
+    c.name AS column_name,
+    i.type_desc AS index_type,
+    CASE WHEN i.is_unique = 1 THEN 0 ELSE 1 END AS non_unique,
+    ic.key_ordinal AS seq_in_index,
+    CASE WHEN c.is_nullable = 1 THEN 'YES' ELSE 'NO' END AS nullable,
+    ic.is_included_column AS is_visible,
+    ep.value AS comment
+FROM sys.indexes i
+JOIN sys.index_columns ic
+    ON i.object_id = ic.object_id AND i.index_id = ic.index_id
+JOIN sys.columns c
+    ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+JOIN sys.objects o
+    ON i.object_id = o.object_id
+LEFT JOIN sys.key_constraints kc
+    ON kc.parent_object_id = i.object_id AND kc.unique_index_id = i.index_id
+LEFT JOIN sys.extended_properties ep
+    ON i.object_id = ep.major_id AND i.index_id = ep.minor_id
+-- join foreign keys
+LEFT JOIN sys.foreign_key_columns fkc
+    ON fkc.parent_object_id = i.object_id 
+   AND fkc.parent_column_id = ic.column_id
+LEFT JOIN sys.foreign_keys fk
+    ON fk.object_id = fkc.constraint_object_id
+WHERE o.name = '$pc661dc6b'
+ORDER BY i.name, ic.key_ordinal $v77cb07b555"; } public static function getLoadTableDataFromFileStatement($pf3dc0762, $pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $v52fe4649ca = !empty($v5d3813882f["fields_delimiter"]) ? $v5d3813882f["fields_delimiter"] : "\t"; $v78ac4d6619 = !empty($v5d3813882f["lines_delimiter"]) ? $v5d3813882f["lines_delimiter"] : "\r\n"; return "BULK INSERT $v769bf5da97 FROM '$pf3dc0762' WITH (FIELDTERMINATOR = '$v52fe4649ca', ROWTERMINATOR = '$v78ac4d6619' $v77cb07b555)"; } public static function getShowCreateTableStatement($pc661dc6b, $v5d3813882f = false) { $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $pa51282b5 = isset($pbec62cc6["schema"]) ? $pbec62cc6["schema"] : null; return "DECLARE  
 	@object_name SYSNAME, 
 	@object_id INT, 
 	@SQL NVARCHAR(MAX);
