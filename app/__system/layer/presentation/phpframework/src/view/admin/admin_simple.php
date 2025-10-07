@@ -5,10 +5,7 @@
  * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
  * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); if (empty($is_admin_ui_simple_allowed)) { echo '<script>
-		alert("You don\'t have permission to access this Workspace!");
-		document.location="' . $project_url_prefix . 'auth/logout";
-	</script>'; die(); } $filter_by_layout = isset($filter_by_layout) ? $filter_by_layout : null; $filter_by_layout_permission = isset($filter_by_layout_permission) ? $filter_by_layout_permission : null; $project = isset($project) ? $project : null; $presentation_projects_by_layer_label_and_folders = isset($presentation_projects_by_layer_label_and_folders) ? $presentation_projects_by_layer_label_and_folders : null; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . (isset($logged_name_initials[1]) ? substr($logged_name_initials[1], 0, 1) : "")); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = ""; $notifications_url = $project_url_prefix . "admin/get_notifications"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); $filter_by_layout = isset($filter_by_layout) ? $filter_by_layout : null; $filter_by_layout_permission = isset($filter_by_layout_permission) ? $filter_by_layout_permission : null; $project = isset($project) ? $project : null; $presentation_projects_by_layer_label_and_folders = isset($presentation_projects_by_layer_label_and_folders) ? $presentation_projects_by_layer_label_and_folders : null; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . (isset($logged_name_initials[1]) ? substr($logged_name_initials[1], 0, 1) : "")); $filter_by_layout_url_query = $filter_by_layout ? "&filter_by_layout=$filter_by_layout&filter_by_layout_permission=$filter_by_layout_permission" : ""; $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $admin_home_projects_page_url = ""; $notifications_url = $project_url_prefix . "admin/get_notifications"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Admin Advanced JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_advanced.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_advanced.js"></script>
@@ -26,23 +23,6 @@ var notifications_url = "' . $notifications_url . '";
 <div id="top_panel">
 	<ul class="left">
 		<li class="logo"><a href="' . $project_url_prefix . '"></a></li>
-		' . (!empty($layers["presentation_layers"]) ? '
-			<!--li class="pages link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=entity&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Pages</li>
-			<li class="sub_menu templates" data-title="Template Options" onClick="openSubmenu(this)">
-				<span>Templates</span>
-				<i class="icon dropdown_arrow"></i>
-				
-				<ul>
-					<div class="triangle_up"></div>
-				
-					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=template&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">List Templates</a></li>
-					<li><a href="javascript:void(0)" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/install_template?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$project/src/template/" . '">Install New Template</a></li>
-				</ul>
-			</li>
-			<li class="blocks link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=block&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Blocks</li>
-			<li class="utils link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=util&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Actions</li>
-			<li class="webroot link" onClick="goTo(this, \'url\', event)" url="' . "{$project_url_prefix}phpframework/presentation/list?element_type=webroot&bean_name=$bean_name&bean_file_name=$bean_file_name$filter_by_layout_url_query&path=$project" . '">Webroot</li-->
-		' : '') . '
 	</ul>
 	<ul class="center">
 		<li class="sub_menu filter_by_layout" data-title="Selected project" current_selected_project="' . $filter_by_layout . '">
@@ -131,19 +111,19 @@ var notifications_url = "' . $notifications_url . '";
 				<li class="question" title="Open Tour Guide"><a onClick="MyTourGuide.restart()"><i class="icon question"></i> Open Tour Guide</a></li>
 				<li class="info" title="About"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/about"><i class="icon info"></i> About</a></li>
 				<li class="feedback" title="Feedback - Send us your questions"><a onClick="goToPopup(this, \'url\', event, \'with_title\')" url="' . $project_url_prefix . 'admin/feedback?popup=1"><i class="icon chat"></i> Feedback</a></li>
-				<li class="framework_update" title="Update to the Latest Version of the Framework"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/framework_update"><i class="icon download"></i> Framework Update</a></li>
+				<!--li class="framework_update" title="Update to the Latest Version of the Framework"><a onClick="goTo(this, \'url\', event)" url="' . $project_url_prefix . 'admin/framework_update"><i class="icon download"></i> Framework Update</a></li-->
 				<li class="separator"></li>
 				<li class="logout" title="Logout"><a onClick="document.location=this.getAttribute(\'logout_url\')" logout_url="' . $project_url_prefix . 'auth/logout"><i class="icon logout"></i> Logout</a></li>
 			</ul>
 		</li>
 	</ul>
 </div>
-<div id="right_panel">'; $iframe_url = !empty($default_page) ? $default_page : ( $project_url_prefix . 'admin/' . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") ); $main_content .= '
+<div id="right_panel">'; $iframe_url = $default_page ? $default_page : ( $project_url_prefix . 'admin/' . ($filter_by_layout ? "admin_home_project?$filter_by_layout_url_query" : "admin_home?selected_layout_project=$filter_by_layout") ); $main_content .= '
 	<iframe src="' . $iframe_url . '"></iframe>
 	<div class="iframe_overlay">
 		<div class="iframe_loading">Loading...</div>
 	</div>
-</div>'; if (!empty($default_page)) { $main_content .= '<script>$("iframe")[0].src = \'' . $default_page . '\';</script>'; } $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix, array("restart_allow" => false)); function getProjectsHtml($v12ed481092, $pb154d332, $v02ea8e5737 = null) { $pf8ed4912 = ""; if (is_array($v12ed481092)) { if (isset($v12ed481092[$v02ea8e5737])) $pf8ed4912 .= '<li class="project project_common' . ($pb154d332 == $v02ea8e5737 ? ' selected' : '') . '">
+</div>'; $main_content .= TourGuideUIHandler::getHtml($entity, $project_url_prefix, $project_common_url_prefix, $online_tutorials_url_prefix, array("restart_allow" => false)); function getProjectsHtml($v12ed481092, $pb154d332, $v02ea8e5737 = null) { $pf8ed4912 = ""; if (is_array($v12ed481092)) { if (isset($v12ed481092[$v02ea8e5737])) $pf8ed4912 .= '<li class="project project_common' . ($pb154d332 == $v02ea8e5737 ? ' selected' : '') . '">
 						<a value="' . $v02ea8e5737 . '" onClick="filterByLayout(this)"><i class="icon project"></i> <span>' . $v12ed481092[$v02ea8e5737] . '</span></a>
 					</li>'; foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<li class="projects_group">
 							<a><i class="icon project_folder"></i> <span>' . $pcfd27d54 . '</span></a>

@@ -110,6 +110,11 @@ RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/app/config/bean/mysql_dbdriv
 RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers.xml
 RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers_simple.xml
 
+# Add correct mysql host
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/app/config/bean/mysql_dbdriver.xml
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers.xml
+RUN /bin/sed -i "s/127.0.0.1/mysql/g" /var/www/html/other/workflow/layer/layers_simple.xml
+
 # Remove tmp files if exists, otherwise it may contain old and local cache that may cause inconsistencies. This is important for the bloxtor demo and to decrease space of the docker.
 RUN rm -rf /var/www/html/.git
 RUN rm -rf /var/www/html/.github

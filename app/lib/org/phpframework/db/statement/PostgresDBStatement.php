@@ -54,7 +54,7 @@ trait PostgresDBStatement { public static function getCreateDBStatement($pb67a26
 		LEFT JOIN (
 			SELECT 
 			  column_name AS cn, 
-			  consrc AS check_constraint_value,
+			  pg_get_expr(pg_constraint.conbin, pg_constraint.conrelid) AS check_constraint_value,
 			  constraint_name AS check_constraint_name
 			FROM information_schema.constraint_column_usage
 			INNER JOIN pg_constraint on conname = constraint_name and contype='c'
@@ -358,16 +358,22 @@ BEGIN
 	   	END IF;
 	END LOOP;
 END $$;"; } public static function getDropTableForeignConstraintStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); return "ALTER TABLE IF EXISTS $v769bf5da97 DROP CONSTRAINT \"$pa28639ac\";"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = is_array($pfdbbc383) ? $pfdbbc383 : array($pfdbbc383); return "CREATE INDEX ON $v769bf5da97 (\"" . implode("\", \"", $pfdbbc383) . "\") $v77cb07b555"; } public static function getDropTableIndexStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "ALTER TABLE $v769bf5da97 DROP CONSTRAINT \"$pa28639ac\" $v77cb07b555"; } public static function getTableIndexesStatement($pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "SELECT
-    i.relname AS constraint_name,
+    i.relname AS index_name,
+    c.conname AS constraint_name,
     CASE 
-        WHEN fk.constraint_name IS NOT NULL THEN 'FOREIGN KEY'
-        ELSE tc.constraint_type
+        WHEN c.contype = 'p' THEN 'PRIMARY'
+        WHEN c.contype = 'u' THEN 'UNIQUE'
+        WHEN c.contype = 'f' THEN 'FOREIGN'
+        ELSE 'INDEX'
     END AS constraint_type,
     a.attname AS column_name,
     am.amname AS index_type,
-    NOT ix.indisunique AS non_unique,
-    kcu.ordinal_position AS seq_in_index,
-    CASE WHEN a.attnotnull THEN 'NO' ELSE 'YES' END AS nullable,
+    CASE 
+        WHEN ix.indisunique = 't' THEN 0
+        ELSE 1
+    END AS non_unique,
+    array_position(ix.indkey, a.attnum) AS seq_in_index,
+    CASE WHEN a.attnotnull THEN '0' ELSE '1' END AS nullable,
     d.description AS comment
 FROM pg_class t
 JOIN pg_index ix ON t.oid = ix.indrelid
@@ -376,23 +382,7 @@ JOIN pg_namespace n ON n.oid = t.relnamespace
 JOIN pg_am am ON i.relam = am.oid
 JOIN pg_attribute a ON a.attrelid = t.oid AND a.attnum = ANY(ix.indkey)
 LEFT JOIN pg_description d ON d.objoid = i.oid
-LEFT JOIN information_schema.table_constraints tc
-       ON tc.table_schema = n.nspname
-      AND tc.table_name = t.relname
-      AND tc.constraint_name = i.relname
-LEFT JOIN (
-    SELECT kcu.table_schema,
-           kcu.table_name,
-           kcu.column_name,
-           kcu.constraint_name
-    FROM information_schema.key_column_usage kcu
-    JOIN information_schema.referential_constraints rc
-      ON kcu.constraint_name = rc.constraint_name
-     AND kcu.table_schema = rc.constraint_schema
-) fk
-    ON fk.table_schema = n.nspname
-   AND fk.table_name = t.relname
-   AND fk.column_name = a.attname
+LEFT JOIN pg_constraint c ON c.conindid = ix.indexrelid
 WHERE n.nspname = current_schema()
   AND t.relname = '$pc661dc6b'
 ORDER BY constraint_name, seq_in_index $v77cb07b555"; } public static function getLoadTableDataFromFileStatement($pf3dc0762, $pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = $v5d3813882f && !empty($v5d3813882f["attributes"]) ? "(" . (is_array($v5d3813882f["attributes"]) ? implode(", ", $v5d3813882f["attributes"]) : $v5d3813882f["attributes"]) . ")" : ""; $v52fe4649ca = !empty($v5d3813882f["fields_delimiter"]) ? $v5d3813882f["fields_delimiter"] : "\t"; return "COPY $v769bf5da97 $pfdbbc383 FROM '$pf3dc0762' WITH DELIMITER '$v52fe4649ca' $v77cb07b555"; } public static function getShowCreateTableStatement($pc661dc6b, $v5d3813882f = false) { return ""; } public static function getShowCreateViewStatement($pa36e00ea, $v5d3813882f = false) { $pbec62cc6 = self::parseTableName($pa36e00ea, $v5d3813882f); $pa36e00ea = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; return "select '$pa36e00ea' as \"View\", pg_get_viewdef('$pa36e00ea') as \"Create View\""; } public static function getShowCreateTriggerStatement($v5ed3bce1d1, $v5d3813882f = false) { $pbec62cc6 = self::parseTableName($v5ed3bce1d1, $v5d3813882f); $v5ed3bce1d1 = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; return "SELECT tgname as \"Trigger\", pg_get_triggerdef(oid) as \"SQL Original Statement\" ". "FROM pg_trigger WHERE tgname='$v5ed3bce1d1'"; } public static function getShowCreateProcedureStatement($pbda8f16d, $v5d3813882f = false) { $pbec62cc6 = self::parseTableName($pbda8f16d, $v5d3813882f); $pbda8f16d = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; return "SELECT proname as \"Procedure\", pg_get_functiondef(f.oid) as \"Create Procedure\"

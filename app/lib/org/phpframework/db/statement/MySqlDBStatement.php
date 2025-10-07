@@ -91,13 +91,22 @@ DELIMITER ;
 
 CALL dropTableForeignKey();
 DROP PROCEDURE IF EXISTS dropTableForeignKey;"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = is_array($pfdbbc383) ? $pfdbbc383 : array($pfdbbc383); return "ALTER TABLE $v769bf5da97 ADD INDEX (`" . implode("`, `", $pfdbbc383) . "`) $v77cb07b555"; } public static function getDropTableIndexStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "ALTER TABLE $v769bf5da97 DROP INDEX `$pa28639ac` $v77cb07b555"; } public static function getTableIndexesStatement($pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "SELECT
-    CASE WHEN fk.referenced_column_name IS NOT NULL THEN fk.constraint_name ELSE s.index_name END AS constraint_name,
-    CASE WHEN fk.referenced_column_name IS NOT NULL THEN 'FOREIGN KEY' ELSE tc.constraint_type END AS constraint_type,
+    CASE 
+        WHEN fk.referenced_column_name IS NOT NULL THEN fk.constraint_name 
+        ELSE s.index_name 
+    END AS constraint_name,
+    CASE 
+        WHEN fk.referenced_column_name IS NOT NULL THEN 'FOREIGN' 
+        WHEN tc.constraint_type = 'PRIMARY KEY' THEN 'PRIMARY'
+        WHEN s.NON_UNIQUE = 0 && tc.constraint_type = 'UNIQUE' THEN 'UNIQUE'
+        WHEN tc.constraint_type IS NULL THEN 'INDEX'
+        ELSE tc.constraint_type 
+    END AS constraint_type,
 	 s.COLUMN_NAME AS column_name,
 	 s.INDEX_TYPE AS index_type,
     s.NON_UNIQUE AS non_unique,
 	 s.SEQ_IN_INDEX AS seq_in_index,
-	 s.NULLABLE AS nullable,
+    CASE WHEN s.NULLABLE THEN '1' ELSE '0' END AS nullable,
 	 s.COMMENT AS comment
 FROM information_schema.STATISTICS s
 LEFT JOIN information_schema.TABLE_CONSTRAINTS tc

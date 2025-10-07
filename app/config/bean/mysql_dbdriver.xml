@@ -11,15 +11,15 @@
 			<item name="db_name"><![CDATA[&lt;?php echo isset($GLOBALS['default_db_name']) ? $GLOBALS['default_db_name'] : ''; ?>]]></item>
 			<item name="username"><![CDATA[&lt;?php echo isset($GLOBALS['default_db_user']) ? $GLOBALS['default_db_user'] : ''; ?>]]></item>
 			<item name="password"><![CDATA[&lt;?php echo isset($GLOBALS['default_db_pass']) ? $GLOBALS['default_db_pass'] : ''; ?>]]></item>
-			<item name="persistent">1</item>
+			<item name="persistent">0</item>
 			<item name="new_link">0</item>
 			<item name="reconnect">0</item>
-			<item name="encoding">utf8</item>
+			<item name="encoding"><![CDATA[utf8]]></item>
 			<item name="schema"><![CDATA[]]></item>
 			<item name="odbc_data_source"><![CDATA[]]></item>
 			<item name="odbc_driver"><![CDATA[]]></item>
 			<item name="extra_dsn"><![CDATA[]]></item>
-			<item name="extra_settings"></item>
+			<item name="extra_settings"><![CDATA[]]></item>
 		</list>
 	</var>
 	<bean name="Mysql" path="lib.org.phpframework.db.driver.MySqlDB" bean_group="dbdriver">

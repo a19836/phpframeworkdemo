@@ -189,14 +189,17 @@ BEGIN
 END;"; } public static function getAddTableIndexStatement($pc661dc6b, $pfdbbc383, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; $pfdbbc383 = is_array($pfdbbc383) ? $pfdbbc383 : array($pfdbbc383); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v9f683c2c95 = "idx__{$pc661dc6b}__" . implode("_", $pfdbbc383) . "__pf" . rand(); return "CREATE INDEX $v9f683c2c95 ON $v769bf5da97 ([" . implode("], [", $pfdbbc383) . "]) $v77cb07b555"; } public static function getDropTableIndexStatement($pc661dc6b, $pa28639ac, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "ALTER TABLE $v769bf5da97 DROP CONSTRAINT [$pa28639ac] $v77cb07b555"; } public static function getTableIndexesStatement($pc661dc6b, $v5d3813882f = false) { $v769bf5da97 = self::getParsedTableEscapedSQL($pc661dc6b, $v5d3813882f); $pbec62cc6 = self::parseTableName($pc661dc6b, $v5d3813882f); $pc661dc6b = isset($pbec62cc6["name"]) ? $pbec62cc6["name"] : null; $v77cb07b555 = $v5d3813882f && !empty($v5d3813882f["suffix"]) ? $v5d3813882f["suffix"] : ""; return "SELECT
     i.name AS constraint_name,
     CASE 
-        WHEN fk.object_id IS NOT NULL THEN 'FOREIGN KEY'
+        WHEN fk.object_id IS NOT NULL THEN 'FOREIGN'
+        WHEN kc.type_desc = 'PRIMARY_KEY_CONSTRAINT' THEN 'PRIMARY'
+        WHEN i.is_unique = 1 THEN 'UNIQUE'
+        WHEN kc.type_desc IS NULL THEN 'INDEX'
         ELSE kc.type_desc
     END AS constraint_type,
     c.name AS column_name,
     i.type_desc AS index_type,
     CASE WHEN i.is_unique = 1 THEN 0 ELSE 1 END AS non_unique,
     ic.key_ordinal AS seq_in_index,
-    CASE WHEN c.is_nullable = 1 THEN 'YES' ELSE 'NO' END AS nullable,
+    CASE WHEN c.is_nullable = 1 THEN '1' ELSE '0' END AS nullable,
     ep.value AS comment
 FROM sys.indexes i
 JOIN sys.index_columns ic
