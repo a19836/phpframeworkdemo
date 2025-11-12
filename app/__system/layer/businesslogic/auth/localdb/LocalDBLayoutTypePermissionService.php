@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-namespace __system\businesslogic; include_once $vars["current_business_logic_module_path"] . "LocalDBAuthService.php"; class LocalDBLayoutTypePermissionService extends LocalDBAuthService { /**
+ namespace __system\businesslogic; include_once $vars["current_business_logic_module_path"] . "LocalDBAuthService.php"; class LocalDBLayoutTypePermissionService extends LocalDBAuthService { /**
 	 * @param (name=data[root_path], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[encryption_key], type=varchar, not_null=1, min_length=1)
 	 * @param (name=data[new_encryption_key], type=varchar, not_null=1, min_length=1)

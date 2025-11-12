@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include $EVC->getViewPath("admin/choose_available_project"); $projects_head = $head; $projects_main_content = $main_content; include $EVC->getViewPath("admin/choose_available_tutorial"); $tutorials_head = $head; $tutorials_main_content = $main_content; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = $projects_head . $tutorials_head . '
+ include $EVC->getViewPath("admin/choose_available_project"); $projects_head = $head; $projects_main_content = $main_content; include $EVC->getViewPath("admin/choose_available_tutorial"); $tutorials_head = $head; $tutorials_main_content = $main_content; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = $projects_head . $tutorials_head . '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/admin_home.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/admin/admin_home.js"></script>

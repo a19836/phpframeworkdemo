@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exists ? "If you added new DataBases in this diagram, you can have some issues in the future, because when you did the installation, there were some tables that were created automatically, which will not be created in the new DataBases, this is, tables from installed Modules and maybe from the CMS authentication system...\\n\\nDo you still wish to continue?" : "We will save this workflow automatically. Do you wish to continue?"; $head .= '
+ include $EVC->getViewPath("/layer/diagram"); $confirm_msg = $diagram_already_exists ? "If you added new DataBases in this diagram, you can have some issues in the future, because when you did the installation, there were some tables that were created automatically, which will not be created in the new DataBases, this is, tables from installed Modules and maybe from the CMS authentication system...\\n\\nDo you still wish to continue?" : "We will save this workflow automatically. Do you wish to continue?"; $head .= '
 <script>
 	function continueSetup(do_not_confirm) {
 		if (do_not_confirm || confirm("' . $confirm_msg . '")) {

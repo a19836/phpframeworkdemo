@@ -1,4 +1,11 @@
 <?php
+/*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
 class UserUI {
 	
 	public static function getUserEnvironmentFieldsHtml($title = "Link this user with the following environments:<br/>This means that if a user has an environment defined, it's username will only correspond to these environments, meaning that it's possible to have multiple users with the same username for different environments.<br/>If no environment defined, the users will be global to all DB and repeat usernames won't be possible.<br/>User environments:", $var_name = "user_environments") {

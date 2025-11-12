@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $add_project_url = $project_url_prefix . "phpframework/presentation/create_project?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSuccessfullAddProject"; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $get_available_projects_props_url = $project_url_prefix . "phpframework/presentation/get_available_projects_props?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&include_empty_project_folders=1"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
+ include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); $admin_home_project_page_url = $project_url_prefix . "admin/admin_home_project?filter_by_layout=#filter_by_layout#"; $add_project_url = $project_url_prefix . "phpframework/presentation/create_project?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&popup=1&on_success_js_func=onSuccessfullAddProject"; $manage_file_url = $project_url_prefix . "phpframework/presentation/manage_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&action=#action#&item_type=presentation&extra=#extra#"; $get_available_projects_props_url = $project_url_prefix . "phpframework/presentation/get_available_projects_props?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&include_empty_project_folders=1"; $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 <!-- Add Local JS and CSS files -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/featured_tutorials.css" type="text/css" charset="utf-8" />
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/admin/choose_available_project.css" type="text/css" charset="utf-8" />

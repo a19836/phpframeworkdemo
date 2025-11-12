@@ -1,9 +1,9 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
  include_once get_lib("org.phpframework.encryption.PublicPrivateKeyHandler"); class CSRFValidator { public static $REQUEST_RESTRICTED_TO_SAME_REFERER_HOST = true; public static $REQUEST_RESTRICTED_TO_SAME_REMOTE_ADDR = false; public static $COOKIES_EXTRA_FLAGS = array("SameSite" => "Strict", "httponly" => true); public static $CLIENT_IP_VARIABLE_NAME = "dad90ad76sad23"; public static $CLIENT_IP_CYPHER_POSITION = 11; public static $CLIENT_IP_CYPHER_LENGTH = 14; public static $CLIENT_IP_ENCRYPTION_KEY = "-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyToww/fIvA8Va

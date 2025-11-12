@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
 $(function () {
 	$(".settings_prop.prop_title, .settings_prop.prop_sub_title, .settings_prop.prop_tags, .settings_prop.prop_description, .settings_prop.prop_address, .settings_prop.prop_zip_id, .settings_prop.prop_locality, .settings_prop.prop_latitude, .settings_prop.prop_longitude").children(".selected_task_properties").children(".form_containers").children(".fields").children(".field").children(".input_settings").children(".input_type").show();
 	

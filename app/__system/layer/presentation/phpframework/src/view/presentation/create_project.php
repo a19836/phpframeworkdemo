@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $top_bar_title = "Create new Project"; $head = ""; $main_content = ""; if (!$creation_step) { $call_edit_project_details = true; if (!empty($refresh_page_without_creation_step)) { $call_edit_project_details = false; $main_content = '<script>
+ $get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $top_bar_title = "Create new Project"; $head = ""; $main_content = ""; if (!$creation_step) { $call_edit_project_details = true; if (!empty($refresh_page_without_creation_step)) { $call_edit_project_details = false; $main_content = '<script>
 			document.location = \'?' . $query_string . '\';
 		</script>'; } else if (!empty($_POST) && !empty($status)) { $call_edit_project_details = false; $msg = !empty($extra_message) ? $extra_message : ""; $on_success_js_func_opts = $on_success_js_func ? array( "layer_bean_folder_name" => $layer_bean_folder_name, "new_filter_by_layout" => $new_filter_by_layout, "new_bean_name" => $bean_name, "new_bean_file_name" => $bean_file_name, "new_project" => $path ) : null; $project_post_data = array( "on_success_js_func" => $on_success_js_func ? $on_success_js_func : "refreshLastNodeParentChilds", "on_success_js_func_opts" => $on_success_js_func_opts, "msg" => $msg ); unset($get_bkp["step"]); $get_bkp["bean_name"] = $bean_name; $get_bkp["bean_file_name"] = $bean_file_name; $get_bkp["path"] = $path; $get_bkp["filter_by_layout"] = $new_filter_by_layout; $query_string = http_build_query($get_bkp); $main_content = '<script>
 			' . ($msg ? 'alert("' . str_replace('"', '', $msg) . '");' : '') . '

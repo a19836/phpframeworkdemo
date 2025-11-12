@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
 $(function () {
 	$(".module_list table thead th.other_action").first().append('<span class="icon add" onClick="addTranslation(this)" title="Add Language"></span>');
 	$(".module_list table tbody td.other_action a.icon").attr("onClick", "return deleteTranslation(this)");

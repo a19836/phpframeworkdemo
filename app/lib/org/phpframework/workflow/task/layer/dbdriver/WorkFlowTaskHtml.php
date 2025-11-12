@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once get_lib("org.phpframework.db.DB"); $extensions = DB::getAllExtensionsByType(); $encodings = DB::getAllDBConnectionEncodingsByType(); $driver_labels = DB::getAllDriverLabelsByType(); $ignore_connection_options = DB::getAllIgnoreConnectionOptionsByType(); $ignore_connection_options_by_extension = DB::getAllIgnoreConnectionOptionsByExtensionAndType(); echo '<script>
+ include_once get_lib("org.phpframework.db.DB"); $extensions = DB::getAllExtensionsByType(); $encodings = DB::getAllDBConnectionEncodingsByType(); $driver_labels = DB::getAllDriverLabelsByType(); $ignore_connection_options = DB::getAllIgnoreConnectionOptionsByType(); $ignore_connection_options_by_extension = DB::getAllIgnoreConnectionOptionsByExtensionAndType(); echo '<script>
 DBDriverTaskPropertyObj.encodings = ' . json_encode($encodings) . ';
 DBDriverTaskPropertyObj.extensions = ' . json_encode($extensions) . ';
 DBDriverTaskPropertyObj.ignore_options = ' . json_encode($ignore_connection_options) . ';

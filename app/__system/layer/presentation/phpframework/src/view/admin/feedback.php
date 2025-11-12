@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$logged_user = $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"]; $max_upload_files_size = 1024 * 1024 * 20; $send_feedback_url = $send_email_action_url; $from_framework = "123987"; $head = '
+ $logged_user = $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"]; $max_upload_files_size = 1024 * 1024 * 20; $send_feedback_url = $send_email_action_url; $from_framework = "123987"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 

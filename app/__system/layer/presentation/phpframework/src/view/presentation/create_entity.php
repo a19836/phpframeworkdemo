@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; $main_content = ''; if (!$creation_step) { $main_content = '
+ include_once $EVC->getUtilPath("HeatMapHandler"); $get_bkp = isset($_GET) ? $_GET : null; unset($get_bkp["creation_step"]); $query_string = http_build_query($get_bkp); $edit_entity_url = $project_url_prefix . "phpframework/presentation/edit_entity?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path"; $top_bar_title = "Create new Page"; $main_content = ''; if (!$creation_step) { $main_content = '
 		<div class="top_bar create_entity_top_bar popup_with_iframe_left_popup_close popup_with_iframe_popup_close_button' . ($popup ? ' in_popup' : '') . '">
 			<header>
 				<div class="title" title="' . $top_bar_title . '">' . $top_bar_title . '</div>

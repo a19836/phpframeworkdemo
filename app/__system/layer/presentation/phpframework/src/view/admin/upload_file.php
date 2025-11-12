@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = !empty($upload_url) ? $upload_url : $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&action=upload&item_type=$item_type"; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $head = '
+ include $EVC->getUtilPath("BreadCrumbsUIHandler"); $upload_url = !empty($upload_url) ? $upload_url : $project_url_prefix . "admin/manage_file?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&action=upload&item_type=$item_type"; $on_success_js_func = $on_success_js_func ? $on_success_js_func : "refreshAndShowLastNodeChilds"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 

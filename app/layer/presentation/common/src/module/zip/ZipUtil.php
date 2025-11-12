@@ -1,4 +1,11 @@
 <?php
+/*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
 include_once get_lib("org.phpframework.encryption.CryptoKeyHandler");
 include_once __DIR__ . "/ZipDBDAOUtil.php"; //this file will be automatically generated on this module installation
 include_once __DIR__ . "/ZoneDBDAOUtil.php"; //this file will be automatically generated on this module installation

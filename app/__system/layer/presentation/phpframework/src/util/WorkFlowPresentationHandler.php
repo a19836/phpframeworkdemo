@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $v8c5b4fe0d4 = false) { $pf8ed4912 = '
+ include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $v8c5b4fe0d4 = false) { $pf8ed4912 = '
 			<!-- Add MyTree main JS and CSS files -->
 			<link rel="stylesheet" href="' . $v37d269c4fa . 'vendor/jquerymytree/css/style.min.css" type="text/css" charset="utf-8" />
 			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/jquerymytree/js/mytree.js"></script>

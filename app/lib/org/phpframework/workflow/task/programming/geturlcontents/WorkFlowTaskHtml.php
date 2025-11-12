@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$dependent_file_path_to_include = !empty($dependent_file_path_to_include) ? $dependent_file_path_to_include : "lib/org/phpframework/util/web/MyCurl.php"; $dependent_file_path_to_include_js = !empty($dependent_file_path_to_include_js) ? $dependent_file_path_to_include_js : "GetUrlContentsTaskPropertyObj.dependent_file_path_to_include"; ?>
+ $dependent_file_path_to_include = !empty($dependent_file_path_to_include) ? $dependent_file_path_to_include : "lib/org/phpframework/util/web/MyCurl.php"; $dependent_file_path_to_include_js = !empty($dependent_file_path_to_include_js) ? $dependent_file_path_to_include_js : "GetUrlContentsTaskPropertyObj.dependent_file_path_to_include"; ?>
 <div class="get_url_contents_task_html">
 	<div class="info">
 		This can be used to connect with <b>webhooks</b> in IPAAS services, like: 

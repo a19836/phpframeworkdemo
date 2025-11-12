@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerJoinPointsUIHandler"); include_once $EVC->getUtilPath("WorkFlowUIHandler"); class CMSPresentationLayerUIHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $v7577b57ccf, $pef9e169d, $v304acc4dcf, $v5aaf0d3496, $v2b1e634696, $peb496cef, $pf1fdc6ee, $pf9d1c559, $v1fb4b254d3, $v2508589a4c, $v62ed6d4992 = false, $v2de4fbd75c = "", $pfb8fca1c = null, $v45e5141563 = null) { $pf8ed4912 = ''; if (strpos($v2de4fbd75c, 'vendor/phpjs/functions/strings/parse_str.js') === false) $pf8ed4912 .= '
+ include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerJoinPointsUIHandler"); include_once $EVC->getUtilPath("WorkFlowUIHandler"); class CMSPresentationLayerUIHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $v7577b57ccf, $pef9e169d, $v304acc4dcf, $v5aaf0d3496, $v2b1e634696, $peb496cef, $pf1fdc6ee, $pf9d1c559, $v1fb4b254d3, $v2508589a4c, $v62ed6d4992 = false, $v2de4fbd75c = "", $pfb8fca1c = null, $v45e5141563 = null) { $pf8ed4912 = ''; if (strpos($v2de4fbd75c, 'vendor/phpjs/functions/strings/parse_str.js') === false) $pf8ed4912 .= '
 			<!-- Add PHPJS functions -->
 			<script type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/parse_str.js"></script>'; if (strpos($v2de4fbd75c, 'vendor/phpjs/functions/strings/stripslashes.js') === false) $pf8ed4912 .= '
 			<script language="javascript" type="text/javascript" src="' . $v37d269c4fa . 'vendor/phpjs/functions/strings/stripslashes.js"></script>

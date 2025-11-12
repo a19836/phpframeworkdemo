@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-trait MSSqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { $pf6d213c3 = null; if (!empty($v5d3813882f["encoding"])) { $pf548ad60 = strtolower($v5d3813882f["encoding"]); $pf6d213c3 = isset(self::$db_connection_encodings_to_collations[$pf548ad60]) ? self::$db_connection_encodings_to_collations[$pf548ad60] : null; $pf6d213c3 = $pf6d213c3 ? " COLLATE " . $pf6d213c3 : ""; } return "IF DB_ID ('" . $pb67a2609 . "') IS NULL CREATE DATABASE " . $pb67a2609 . $pf6d213c3; } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/* DROP DATABASE IF EXISTS [$pb67a2609] */;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DB_NAME() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SELECT name, database_id FROM sys.databases"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $v3c76382d93 ="SELECT 
+ trait MSSqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { $pf6d213c3 = null; if (!empty($v5d3813882f["encoding"])) { $pf548ad60 = strtolower($v5d3813882f["encoding"]); $pf6d213c3 = isset(self::$db_connection_encodings_to_collations[$pf548ad60]) ? self::$db_connection_encodings_to_collations[$pf548ad60] : null; $pf6d213c3 = $pf6d213c3 ? " COLLATE " . $pf6d213c3 : ""; } return "IF DB_ID ('" . $pb67a2609 . "') IS NULL CREATE DATABASE " . $pb67a2609 . $pf6d213c3; } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/* DROP DATABASE IF EXISTS [$pb67a2609] */;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DB_NAME() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SELECT name, database_id FROM sys.databases"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $v3c76382d93 ="SELECT 
 				t.TABLE_NAME AS 'table_name', 
 				t.TABLE_TYPE AS 'table_type',
 				t.TABLE_SCHEMA AS 'table_schema'

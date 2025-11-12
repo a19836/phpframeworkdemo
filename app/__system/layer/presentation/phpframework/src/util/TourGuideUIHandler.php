@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("org.phpframework.util.web.CookieHandler"); include_once $EVC->getUtilPath("VideoTutorialHandler"); class TourGuideUIHandler { public static function getHtml($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $v5d3813882f = null) { $pd68c29a9 = !$v5d3813882f || !array_key_exists("restart_allow", $v5d3813882f) || $v5d3813882f["restart_allow"]; $v67ec30e2c2 = $v5d3813882f && !empty($v5d3813882f["css"]) ? $v5d3813882f["css"] : ""; $v795c44467b = self::getPageTourGuideId($pfefc55de); $v043ed55cc7 = self::getPageTourGuideOptions($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $pab270e65); if ($v043ed55cc7) { $v67ec30e2c2 = "
+ include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("org.phpframework.util.web.CookieHandler"); include_once $EVC->getUtilPath("VideoTutorialHandler"); class TourGuideUIHandler { public static function getHtml($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $v5d3813882f = null) { $pd68c29a9 = !$v5d3813882f || !array_key_exists("restart_allow", $v5d3813882f) || $v5d3813882f["restart_allow"]; $v67ec30e2c2 = $v5d3813882f && !empty($v5d3813882f["css"]) ? $v5d3813882f["css"] : ""; $v795c44467b = self::getPageTourGuideId($pfefc55de); $v043ed55cc7 = self::getPageTourGuideOptions($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $pab270e65); if ($v043ed55cc7) { $v67ec30e2c2 = "
 :host {
 	--tourguide-font-family:var(--main-font-family);
 	--tourguide-bg-color:#2C2D34;

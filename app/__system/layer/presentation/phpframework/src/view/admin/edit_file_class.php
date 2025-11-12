@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $selected_project_id = isset($selected_project_id) ? $selected_project_id : null; $file_path = isset($file_path) ? $file_path : null; $obj = isset($obj) ? $obj : null; $is_class_equal_to_file_name = isset($is_class_equal_to_file_name) ? $is_class_equal_to_file_name : null; $db_brokers = isset($db_brokers) ? $db_brokers : null; $data_access_brokers = isset($data_access_brokers) ? $data_access_brokers : null; $ibatis_brokers = isset($ibatis_brokers) ? $ibatis_brokers : null; $hibernate_brokers = isset($hibernate_brokers) ? $hibernate_brokers : null; $business_logic_brokers = isset($business_logic_brokers) ? $business_logic_brokers : null; $presentation_brokers = isset($presentation_brokers) ? $presentation_brokers : null; $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $is_obj_valid = !empty($obj_data) || !$class_id; $head = '
+ include_once $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $selected_project_id = isset($selected_project_id) ? $selected_project_id : null; $file_path = isset($file_path) ? $file_path : null; $obj = isset($obj) ? $obj : null; $is_class_equal_to_file_name = isset($is_class_equal_to_file_name) ? $is_class_equal_to_file_name : null; $db_brokers = isset($db_brokers) ? $db_brokers : null; $data_access_brokers = isset($data_access_brokers) ? $data_access_brokers : null; $ibatis_brokers = isset($ibatis_brokers) ? $ibatis_brokers : null; $hibernate_brokers = isset($hibernate_brokers) ? $hibernate_brokers : null; $business_logic_brokers = isset($business_logic_brokers) ? $business_logic_brokers : null; $presentation_brokers = isset($presentation_brokers) ? $presentation_brokers : null; $filter_by_layout_url_query = LayoutTypeProjectUIHandler::getFilterByLayoutURLQuery($filter_by_layout); $is_obj_valid = !empty($obj_data) || !$class_id; $head = '
 	<!-- Add MD5 JS File -->
 	<script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>
 

@@ -1,5 +1,12 @@
 <?php
 /*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
+/*
  * Sample test commands:
  * 	curl -v --data "event=insert" --cookie "session_id=<session_id>" "<url>/manage_user_action?object_id=1"
  * 	curl -v --data "time=1445341533&event=update&value=2" --cookie "session_id=<session_id>" "<url>/manage_user_action?object_id=1"

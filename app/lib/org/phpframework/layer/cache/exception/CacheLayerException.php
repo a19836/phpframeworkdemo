@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-class CacheLayerException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "Cache service '{$v67db1bd535}' needs to have the CACHE_HANDLER defined!"; break; case 2: $this->problem = "Cache service constructor doesn't exists: '{$v67db1bd535}'!"; break; case 3: $this->problem = "'$v67db1bd535' variable must be an array"; break; case 4: $this->problem = "'$v67db1bd535' variable cannot be empty"; break; } } } ?>
+ class CacheLayerException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535) { switch($v6de691233b) { case 1: $this->problem = "Cache service '{$v67db1bd535}' needs to have the CACHE_HANDLER defined!"; break; case 2: $this->problem = "Cache service constructor doesn't exists: '{$v67db1bd535}'!"; break; case 3: $this->problem = "'$v67db1bd535' variable must be an array"; break; case 4: $this->problem = "'$v67db1bd535' variable cannot be empty"; break; } } } ?>

@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("BreadCrumbsUIHandler"); $file_path = isset($file_path) ? $file_path : null; $P = isset($P) ? $P : null; $query_string = isset($_SERVER["QUERY_STRING"]) ? str_replace(array("&edit_block_type=advanced", "&edit_block_type=simple"), "", $_SERVER["QUERY_STRING"]) : null; $title = isset($title) ? $title : "Create Block in " . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true); $title_icons = isset($title_icons) ? $title_icons : '<li class="show_advanced_ui" data-title="Switch to Code Workspace"><a class="update" href="' . $project_url_prefix . 'phpframework/presentation/edit_block?' . $query_string . '&edit_block_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Code Workspace</a></li>'; $add_block_url = !empty($add_block_url) ? $add_block_url : $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&module_id=#module_id#"; $head = '
+ include_once $EVC->getUtilPath("BreadCrumbsUIHandler"); $file_path = isset($file_path) ? $file_path : null; $P = isset($P) ? $P : null; $query_string = isset($_SERVER["QUERY_STRING"]) ? str_replace(array("&edit_block_type=advanced", "&edit_block_type=simple"), "", $_SERVER["QUERY_STRING"]) : null; $title = isset($title) ? $title : "Create Block in " . BreadCrumbsUIHandler::getFilePathBreadCrumbsHtml($file_path, $P, true); $title_icons = isset($title_icons) ? $title_icons : '<li class="show_advanced_ui" data-title="Switch to Code Workspace"><a class="update" href="' . $project_url_prefix . 'phpframework/presentation/edit_block?' . $query_string . '&edit_block_type=advanced"><i class="icon show_advanced_ui"></i> Switch to Code Workspace</a></li>'; $add_block_url = !empty($add_block_url) ? $add_block_url : $project_url_prefix . "phpframework/presentation/edit_block?bean_name=$bean_name&bean_file_name=$bean_file_name&filter_by_layout=$filter_by_layout&path=$path&module_id=#module_id#"; $head = '
 <!-- Add Fontawsome Icons CSS -->
 <link rel="stylesheet" href="' . $project_common_url_prefix . 'vendor/fontawesome/css/all.min.css">
 

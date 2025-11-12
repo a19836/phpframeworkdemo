@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-class VideoTutorialHandler { public static function getFeaturedTutorialsSectionHtml($v68927135d0, $v976b9ab224) { $v6c80105873 = self::getFeaturedTutorialsHtml($v68927135d0); if ($v6c80105873) { $pf8ed4912 = '<div class="featured_header">
+ class VideoTutorialHandler { public static function getFeaturedTutorialsSectionHtml($v68927135d0, $v976b9ab224) { $v6c80105873 = self::getFeaturedTutorialsHtml($v68927135d0); if ($v6c80105873) { $pf8ed4912 = '<div class="featured_header">
 							<div class="featured_header_tip">Start here</div>
 							<div class="featured_header_title">Build your app with confidence</div>
 							<div class="featured_header_sub_title">Unlock your potential with these essential tools and guides for beginners.</div>

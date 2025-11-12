@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if (!empty($new_path)) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . implode("_", $task_tag_action) : ""); $head .= '
+ include $EVC->getViewPath("presentation/create_presentation_uis_diagram"); if (!empty($new_path)) { $page_name = $db_table . "_" . $task_tag . ($task_tag_action ? "_" . implode("_", $task_tag_action) : ""); $head .= '
 	<style>
 	.taskflowchart .tasks_menu_hide,
 	  .taskflowchart .workflow_menu {

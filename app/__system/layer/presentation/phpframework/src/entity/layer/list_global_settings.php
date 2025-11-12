@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once $EVC->getUtilPath("PHPVariablesFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $popup = isset($_GET["popup"]) ? $_GET["popup"] : null; $deployment = isset($_GET["deployment"]) ? $_GET["deployment"] : null; if (isset($_POST["data"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $content = '<?php
+ include_once $EVC->getUtilPath("PHPVariablesFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $popup = isset($_GET["popup"]) ? $_GET["popup"] : null; $deployment = isset($_GET["deployment"]) ? $_GET["deployment"] : null; if (isset($_POST["data"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $content = '<?php
 //[GENERAL SETTINGS]
 $default_timezone = "' . (isset($_POST["data"]["default_timezone"]) ? $_POST["data"]["default_timezone"] : "") . '";
 

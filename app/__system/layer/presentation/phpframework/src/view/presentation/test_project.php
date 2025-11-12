@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include $EVC->getUtilPath("BreadCrumbsUIHandler"); function getVarsHtml($v3fb9f41470) { $v761f4d757f = isset($_POST[$v3fb9f41470 . '_vars']) ? $_POST[$v3fb9f41470 . '_vars'] : null; $v6c3cc118c9 = ""; if ($v761f4d757f) foreach ($v761f4d757f as $v43dd7d0051 => $v847e7d0a83) if (!empty($v847e7d0a83["name"]) || !empty($v847e7d0a83["value"])) { $v1cfba8c105 = isset($v847e7d0a83["name"]) ? $v847e7d0a83["name"] : null; $pa6209df1 = isset($v847e7d0a83["value"]) ? $v847e7d0a83["value"] : null; $v6c3cc118c9 .= getVarHtml($v3fb9f41470, $v43dd7d0051, $v1cfba8c105, $pa6209df1); } $pf8ed4912 = '<div class="vars ' . $v3fb9f41470 . '_vars">
+ include $EVC->getUtilPath("BreadCrumbsUIHandler"); function getVarsHtml($v3fb9f41470) { $v761f4d757f = isset($_POST[$v3fb9f41470 . '_vars']) ? $_POST[$v3fb9f41470 . '_vars'] : null; $v6c3cc118c9 = ""; if ($v761f4d757f) foreach ($v761f4d757f as $v43dd7d0051 => $v847e7d0a83) if (!empty($v847e7d0a83["name"]) || !empty($v847e7d0a83["value"])) { $v1cfba8c105 = isset($v847e7d0a83["name"]) ? $v847e7d0a83["name"] : null; $pa6209df1 = isset($v847e7d0a83["value"]) ? $v847e7d0a83["value"] : null; $v6c3cc118c9 .= getVarHtml($v3fb9f41470, $v43dd7d0051, $v1cfba8c105, $pa6209df1); } $pf8ed4912 = '<div class="vars ' . $v3fb9f41470 . '_vars">
 		<label>' . ucfirst($v3fb9f41470) . ' Variables:</label>
 		<table>
 			<thead>

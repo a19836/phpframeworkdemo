@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-class CMSPresentationLayerJoinPointsUIHandler { public static function convertBlockSettingsArrayToObj($pfb662071) { $v972f1a5c2b = array(); if (is_array($pfb662071)) { $v43dd7d0051 = 0; foreach ($pfb662071 as $v342a134247) { if (empty($v342a134247["key"]) && isset($v342a134247["key_type"]) && $v342a134247["key_type"] == "null") { if (isset($v342a134247["items"])) $v972f1a5c2b[$v43dd7d0051] = self::convertBlockSettingsArrayToObj($v342a134247["items"]); else $v972f1a5c2b[$v43dd7d0051] = array( "value" => isset($v342a134247["value"]) ? $v342a134247["value"] : null, "value_type" => isset($v342a134247["value_type"]) ? $v342a134247["value_type"] : null ); $v43dd7d0051++; } else { $pe5c5e2fe = isset($v342a134247["key"]) ? $v342a134247["key"] : null; $v972f1a5c2b[$pe5c5e2fe] = $v342a134247; if (isset($v972f1a5c2b[$pe5c5e2fe]["items"])) $v972f1a5c2b[$pe5c5e2fe]["items"] = self::convertBlockSettingsArrayToObj($v972f1a5c2b[$pe5c5e2fe]["items"]); if (is_numeric($pe5c5e2fe) && (int)$pe5c5e2fe >= $v43dd7d0051) $v43dd7d0051 = (int)$pe5c5e2fe + 1; } } } return $v972f1a5c2b; } public static function getHeader() { return '
+ class CMSPresentationLayerJoinPointsUIHandler { public static function convertBlockSettingsArrayToObj($pfb662071) { $v972f1a5c2b = array(); if (is_array($pfb662071)) { $v43dd7d0051 = 0; foreach ($pfb662071 as $v342a134247) { if (empty($v342a134247["key"]) && isset($v342a134247["key_type"]) && $v342a134247["key_type"] == "null") { if (isset($v342a134247["items"])) $v972f1a5c2b[$v43dd7d0051] = self::convertBlockSettingsArrayToObj($v342a134247["items"]); else $v972f1a5c2b[$v43dd7d0051] = array( "value" => isset($v342a134247["value"]) ? $v342a134247["value"] : null, "value_type" => isset($v342a134247["value_type"]) ? $v342a134247["value_type"] : null ); $v43dd7d0051++; } else { $pe5c5e2fe = isset($v342a134247["key"]) ? $v342a134247["key"] : null; $v972f1a5c2b[$pe5c5e2fe] = $v342a134247; if (isset($v972f1a5c2b[$pe5c5e2fe]["items"])) $v972f1a5c2b[$pe5c5e2fe]["items"] = self::convertBlockSettingsArrayToObj($v972f1a5c2b[$pe5c5e2fe]["items"]); if (is_numeric($pe5c5e2fe) && (int)$pe5c5e2fe >= $v43dd7d0051) $v43dd7d0051 = (int)$pe5c5e2fe + 1; } } } return $v972f1a5c2b; } public static function getHeader() { return '
 		<script>
 			var join_points_html = \'' . addcslashes(str_replace("\n", "", self::getJoinPointMethodHtml()), "\\'") . '\';
 			var input_mapping_from_join_point_to_method_item_html = \'' . addcslashes(str_replace("\n", "", self::getInputMappingFromJoinPointToMethodHtml()), "\\'") . '\';

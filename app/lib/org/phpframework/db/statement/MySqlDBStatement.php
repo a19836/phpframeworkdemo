@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-trait MySqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { return "CREATE DATABASE IF NOT EXISTS `" . $pb67a2609 . "`" . (!empty($v5d3813882f["encoding"]) ? " DEFAULT CHARACTER SET " . $v5d3813882f["encoding"] : ""); } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/*!40000 DROP DATABASE IF EXISTS `$pb67a2609`*/;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DATABASE() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SHOW DATABASES"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $pb67a2609 = $pb67a2609 ? $pb67a2609 : $pa51282b5; $v3c76382d93 = "SELECT 
+ trait MySqlDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { return "CREATE DATABASE IF NOT EXISTS `" . $pb67a2609 . "`" . (!empty($v5d3813882f["encoding"]) ? " DEFAULT CHARACTER SET " . $v5d3813882f["encoding"] : ""); } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/*!40000 DROP DATABASE IF EXISTS `$pb67a2609`*/;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT DATABASE() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SHOW DATABASES"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $pb67a2609 = $pb67a2609 ? $pb67a2609 : $pa51282b5; $v3c76382d93 = "SELECT 
 				TABLE_NAME AS 'table_name', 
 				TABLE_TYPE AS 'table_type',
 				TABLE_SCHEMA AS 'table_schema', 

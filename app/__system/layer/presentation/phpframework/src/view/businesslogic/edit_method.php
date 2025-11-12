@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$ft = str_replace("edit_file_", "", $file_type); $path_extra = hash('crc32b', "$bean_file_name/$bean_name/$path/$class_id/" . ($ft == "class_method" ? $method_id : $function_id) ); $get_workflow_tasks_id = "business_logic_workflow&path_extra=_$path_extra"; $get_tmp_workflow_tasks_id = "business_logic_workflow_tmp&path_extra=_${path_extra}_" . rand(0, 1000); include $EVC->getViewPath("admin/edit_file_class_method"); $head .= '
+ $ft = str_replace("edit_file_", "", $file_type); $path_extra = hash('crc32b', "$bean_file_name/$bean_name/$path/$class_id/" . ($ft == "class_method" ? $method_id : $function_id) ); $get_workflow_tasks_id = "business_logic_workflow&path_extra=_$path_extra"; $get_tmp_workflow_tasks_id = "business_logic_workflow_tmp&path_extra=_${path_extra}_" . rand(0, 1000); include $EVC->getViewPath("admin/edit_file_class_method"); $head .= '
 <link rel="stylesheet" href="' . $project_url_prefix . 'css/businesslogic/edit_method.css" type="text/css" charset="utf-8" />
 <script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'js/businesslogic/edit_method.js"></script>
 <script>

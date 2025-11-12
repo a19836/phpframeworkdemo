@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $peb014cfd, $v9431023a8c = null) { $pd97bc935 = isset($pdf77ee66->auth["user_data"]["username"]) ? $pdf77ee66->auth["user_data"]["username"] : null; return '
+ class UserAuthenticationUIHandler { public static function getMenu($pdf77ee66, $peb014cfd, $v9431023a8c = null) { $pd97bc935 = isset($pdf77ee66->auth["user_data"]["username"]) ? $pdf77ee66->auth["user_data"]["username"] : null; return '
 		<ul>
 			<li class="current_user">Current User: "' . $pd97bc935 . '"</li>
 			<li class="manage_menu_item' . ($v9431023a8c == "user/manage_users" ? ' active' : '') . '"><a href="' . $peb014cfd . 'user/manage_users">Manage Users</a></li>

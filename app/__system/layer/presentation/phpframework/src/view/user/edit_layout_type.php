@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include $EVC->getUtilPath("UserAuthenticationUIHandler"); function getProjectsHtml($v12ed481092, $v1a222c94d4, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $pcfd27d54 . '</option>' . getProjectsHtml($v5c37a7b23d, $v1a222c94d4, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($v1a222c94d4 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } $extra_html = '<select name="choose_project" onChange="onChooseProject(this)">
+ include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include $EVC->getUtilPath("UserAuthenticationUIHandler"); function getProjectsHtml($v12ed481092, $v1a222c94d4, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $pcfd27d54 . '</option>' . getProjectsHtml($v5c37a7b23d, $v1a222c94d4, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($v1a222c94d4 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } $extra_html = '<select name="choose_project" onChange="onChooseProject(this)">
 				<option value="">- Choose a project -</option>'; if (!empty($presentation_projects_by_folders)) foreach ($presentation_projects_by_folders as $layer_label => $projs) { $extra_html .= '<optgroup label="' . $layer_label . '">'; $extra_html .= getProjectsHtml($projs, isset($layout_type_data["name"]) ? $layout_type_data["name"] : null); $extra_html .= '</optgroup>'; } $extra_html .= '</select>'; $head = '
 <!-- Add MD5 JS File -->
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/jquery/js/jquery.md5.js"></script>

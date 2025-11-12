@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
+ * 
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
+ */
+
 $(function() {
 	var properties_html_elm = $(".manage_table_exta_attributes > .table_settings > .selected_task_properties");
 	var task_html_elm = properties_html_elm.children(".db_table_task_html");

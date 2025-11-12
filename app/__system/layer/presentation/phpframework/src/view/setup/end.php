@@ -1,11 +1,11 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$manage_user_url = $user_id ? $project_url_prefix . 'user/edit_user?user_id=' . $user_id : $project_url_prefix . 'user/manage_users'; $manage_openai_key_url = $project_url_prefix . 'user/change_other_settings'; $manage_layers_url = $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1'; $admin_url = $project_url_prefix . 'phpframework/admin/?default_page=' . urlencode($project_url_prefix) . 'admin/admin_home'; $main_content = '<div id="end">
+ $manage_user_url = $user_id ? $project_url_prefix . 'user/edit_user?user_id=' . $user_id : $project_url_prefix . 'user/manage_users'; $manage_openai_key_url = $project_url_prefix . 'user/change_other_settings'; $manage_layers_url = $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1'; $admin_url = $project_url_prefix . 'phpframework/admin/?default_page=' . urlencode($project_url_prefix) . 'admin/admin_home'; $main_content = '<div id="end">
 		<div class="title">
 			<h1>Congratulations. Setup is done!</h1>
 		</div>

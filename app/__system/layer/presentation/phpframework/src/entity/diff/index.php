@@ -1,8 +1,8 @@
 <?php
 /*
- * Copyright (c) 2024 Bloxtor - http://bloxtor.com
+ * Copyright (c) 2025 Bloxtor (http://bloxtor.com) and Joao Pinto (http://jplpinto.com)
  * 
- * Please note that this code belongs to the Bloxtor framework and must comply with the Bloxtor license.
- * If you do not accept these provisions, or if the Bloxtor License is not present or cannot be found, you are not entitled to use this code and must stop and delete it immediately.
+ * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
+ * Choose one license that best fits your needs.
  */
-$UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); if (!empty($layers["presentation_layers"])) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>
+ $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); if (!empty($layers["presentation_layers"])) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>
