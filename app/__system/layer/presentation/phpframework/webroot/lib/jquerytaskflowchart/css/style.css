@@ -3,6 +3,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
 
 /* GENERAL */
@@ -547,7 +551,7 @@
 	margin-top:2.5px;
 	margin-bottom:2.5px;
 	position:relative;
-	z-index:1;
+	z-index:13;
 }
 
 .taskflowchart .tasks_flow .task .task_droppable.task_droppable_over {

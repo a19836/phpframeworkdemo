@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  if ($action == "edit") { include $EVC->getViewPath("admin/edit_raw_file"); } else if ($action == "upload") { $upload_url = "?admin_type=expert&path=$path&action=upload"; include $EVC->getViewPath("admin/upload_file"); } else if ($action == "get_sub_files") { include $EVC->getViewPath("admin/get_sub_files"); } else { include_once $EVC->getUtilPath("AdminMenuUIHandler"); include_once $EVC->getUtilPath("TourGuideUIHandler"); include_once $EVC->getUtilPath("HeatMapHandler"); $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name_initials = explode(" ", $logged_name); $logged_name_initials = strtoupper(substr($logged_name_initials[0], 0, 1) . (isset($logged_name_initials[1]) ? substr($logged_name_initials[1], 0, 1) : "")); $notifications_url = $project_url_prefix . "admin/get_notifications"; $main_layers_properties = getMainLayersProperties(); $head = AdminMenuUIHandler::getHeader($project_url_prefix, $project_common_url_prefix); $head .= '
 	<!-- Add Admin Advanced JS and CSS files -->

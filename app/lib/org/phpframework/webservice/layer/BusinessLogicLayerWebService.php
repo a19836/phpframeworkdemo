@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.webservice.layer.LayerWebService"); class BusinessLogicLayerWebService extends LayerWebService { public function __construct($v2a9b6f4e3b, $v30857f7eca = false) { parent::__construct($v2a9b6f4e3b, $v30857f7eca); $this->web_service_validation_string = "_is_businesslogic_webservice"; $this->broker_server_bean_name = BUSINESS_LOGIC_BROKER_SERVER_BEAN_NAME; } } ?>

@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.layer.presentation.cms.cache.CMSCacheLayer"); class CMSBlockCacheLayer extends CMSCacheLayer { public function __construct($v874d5d2d79, $v30857f7eca) { parent::__construct($v874d5d2d79, $v30857f7eca); $v5a4b472fd0 = array( "presentation_caches_path" => isset($v30857f7eca["presentation_cms_block_caches_path"]) ? $v30857f7eca["presentation_cms_block_caches_path"] : null, "presentations_cache_file_name" => isset($v30857f7eca["presentations_cms_block_cache_file_name"]) ? $v30857f7eca["presentations_cms_block_cache_file_name"] : null, "presentations_cache_path" => isset($v30857f7eca["presentations_cms_block_cache_path"]) ? $v30857f7eca["presentations_cms_block_cache_path"] : null, "presentations_default_cache_ttl" => isset($v30857f7eca["presentations_cms_block_default_cache_ttl"]) ? $v30857f7eca["presentations_cms_block_default_cache_ttl"] : null, "presentations_default_cache_type" => isset($v30857f7eca["presentations_cms_block_default_cache_type"]) ? $v30857f7eca["presentations_cms_block_default_cache_type"] : null, "presentations_module_cache_maximum_size" => isset($v30857f7eca["presentations_cms_block_module_cache_maximum_size"]) ? $v30857f7eca["presentations_cms_block_module_cache_maximum_size"] : null, ); $this->initPresentationCacheLayer($v5a4b472fd0); } } ?>

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include $EVC->getUtilPath("WorkFlowPresentationHandler"); $choose_test_units_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?item_type=test_unit&path=#path#"; $open_test_unit_file_url = $project_url_prefix . "testunit/edit_test?path=#path#"; $execute_tests_url = $project_url_prefix . "testunit/execute_tests"; $manage_file_url = $project_url_prefix . "admin/manage_file?bean_name=test_unit&bean_file_name=&path=#path#&action=#action#&item_type=test_unit&extra=#extra#"; $create_test_url = $project_url_prefix . "phpframework/testunit/create_test?path=#path#&file_name=#extra#"; $head = '
 <!-- Add MyTree main JS and CSS files -->

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include $EVC->getEntityPath("admin/choose_available_project"); include $EVC->getEntityPath("admin/choose_available_tutorial"); $presentation = getPresentation($project_url_prefix); function getPresentation($peb014cfd) { return '<div><img src="' . $peb014cfd . 'img/adminhome/layers_1.png"/></div>
 	<div><img src="' . $peb014cfd . 'img/adminhome/full_page_request_flow.png"/></div>

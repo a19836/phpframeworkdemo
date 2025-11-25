@@ -21,6 +21,4 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - ./my_first_db.sql.gz:/docker-entrypoint-initdb.d/my_first_db.sql.gz  # Mount init.sql script
-      - ./my_first_db.sql.gz:/docker-entrypoint-initdb.d/my_first_db.sql.gz  # Mount init.sql script
-      - ./my_first_db.sql.gz:/docker-entrypoint-initdb.d/my_first_db.sql.gz  # Mount init.sql script
       - ./mysql.cnf:/etc/mysql/my.cnf

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  class PhpMyAdminInstallationHandler { const PHPMYADMIN_ENCRYPTION_KEY = "5735dc60a42d263f84c105b986d53445"; public static function hackPhpMyAdminInstallation($pb0d8d323) { $v5c1c342594 = false; if (!$pb0d8d323 || !is_dir($pb0d8d323)) launch_exception(new Exception("PhpMyAdmin installation doesn't exists!")); $v98a8251725 = self::f9bf676f9ab($pb0d8d323); $v13e76aba2d = $pb0d8d323 . "/config.inc.php"; if (file_exists($v13e76aba2d)) { $v6490ea3a15 = file_get_contents($v13e76aba2d); $v64d618328f = preg_match("/include_once ". preg_quote($v98a8251725, "/") . ";/", $v6490ea3a15); if (!$v64d618328f) { $v6490ea3a15 .= "<?php
 include_once $v98a8251725;

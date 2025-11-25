@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.encryption.PublicPrivateKeyHandler"); class CSRFValidator { public static $REQUEST_RESTRICTED_TO_SAME_REFERER_HOST = true; public static $REQUEST_RESTRICTED_TO_SAME_REMOTE_ADDR = false; public static $COOKIES_EXTRA_FLAGS = array("SameSite" => "Strict", "httponly" => true); public static $CLIENT_IP_VARIABLE_NAME = "dad90ad76sad23"; public static $CLIENT_IP_CYPHER_POSITION = 11; public static $CLIENT_IP_CYPHER_LENGTH = 14; public static $CLIENT_IP_ENCRYPTION_KEY = "-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyToww/fIvA8Va

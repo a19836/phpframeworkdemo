@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
 
 //http://jplpinto.localhost/__system/phpframework/lib/jquerylayoutuieditor/layout_ui_editor.php
@@ -342,7 +346,7 @@ if (!isset($_SERVER["HTTP_HOST"]) || $_SERVER["HTTP_HOST"] != "jplpinto.localhos
 		</ul>
 	</div>
 	
-	<button class="layout-ui-editor-3-button" onClick="addTemplateWidgetsDroppable3()">Add another Template Widgets Droppable</button>
+	<button class="layout-ui-editor-3-button" onClick="addTemplateWidgetsDroppable('.layout-ui-editor-3')">Add another Template Widgets Droppable</button>
 	
 	<div class="layout-ui-editor reverse fixed-properties layout-ui-editor-3">
 		<ul class="menu-widgets hidden">

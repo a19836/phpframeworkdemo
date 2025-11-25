@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once $EVC->getUtilPath("PHPVariablesFileHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $popup = isset($_GET["popup"]) ? $_GET["popup"] : null; $deployment = isset($_GET["deployment"]) ? $_GET["deployment"] : null; if (isset($_POST["data"])) { $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $content = '<?php
 //[GENERAL SETTINGS]

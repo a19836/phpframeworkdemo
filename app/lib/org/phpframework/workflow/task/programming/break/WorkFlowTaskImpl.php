@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  namespace WorkFlowTask\programming\_break; include_once get_lib("org.phpframework.workflow.WorkFlowTask"); class WorkFlowTaskImpl extends \WorkFlowTask { protected $is_break_task = true; public function createTaskPropertiesFromCodeStmt($v5faa4b8a01, $pb16df866, &$v6939304e91 = null, &$v1f377b389c = null) { $pe83cda0c = strtolower($v5faa4b8a01->getType()); if ($pe83cda0c == "stmt_break") { $v67db1bd535 = !empty($v5faa4b8a01->num) && !empty($v5faa4b8a01->num->value) ? $v5faa4b8a01->num->value : ""; $v9073377656 = array( "value" => $v67db1bd535, "label" => "Break " . self::prepareTaskPropertyValueLabelFromCodeStmt($v67db1bd535), "exits" => array( self::DEFAULT_EXIT_ID => array( "color" => "#ff0000", ), ), ); return $v9073377656; } } public function parseProperties(&$v7f5911d32d) { $v3c3af72a1c = isset($v7f5911d32d["raw_data"]) ? $v7f5911d32d["raw_data"] : null; $pef349725 = array( "value" => isset($v3c3af72a1c["childs"]["properties"][0]["childs"]["value"][0]["value"]) ? $v3c3af72a1c["childs"]["properties"][0]["childs"]["value"][0]["value"] : null, ); return $pef349725; } public function printCode($v1d696dbd12, $v56dcda6d50, $v54bb17785b = "", $v5d3813882f = null) { $v539082ff30 = isset($this->data) ? $this->data : null; $pef349725 = isset($v539082ff30["properties"]) ? $v539082ff30["properties"] : null; $v67db1bd535 = isset($pef349725["value"]) && is_numeric($pef349725["value"]) ? " " . $pef349725["value"] : ""; $v067674f4e4 = $v54bb17785b . "break$v67db1bd535;\n"; return $v067674f4e4; } } ?>

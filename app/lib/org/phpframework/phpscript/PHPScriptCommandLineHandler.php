@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  class PHPScriptCommandLineHandler { public static function isCommandLineScript() { return isset($_SERVER['argc']) || (php_sapi_name() == 'cli' && empty($_SERVER["REMOTE_ADDRESS"])) || isset($_ENV['SSH_CLIENT']); } public static function prepareCommandLineScript($v30857f7eca = array()) { $v548e31e03c = $v30857f7eca && !empty($v30857f7eca["default_apache_user"]) ? $v30857f7eca["default_apache_user"] : "www-data"; $v017acbd6fd = realpath(__DIR__ . "/../../../../") . "/"; $v017acbd6fd = basename($v017acbd6fd) == "app" ? $v017acbd6fd : realpath($v017acbd6fd . "../") . "/"; include_once "$v017acbd6fd/lib/vendor/fakeserverconf/src/FakeServerConf.php"; include_once "$v017acbd6fd/lib/vendor/fakeserverconf/src/ApacheCGI.php"; if (self::isCommandLineScript()) { $v87c02aae93 = "h"; $v15c259b692 = array( "url:", "urlpath::", "documentroot:", "scriptname::", "get::", "post::", "cookies::", "env::", "method::", "contenttype::", "serveruser::", "loglevel::", "help", ); $v5d3813882f = getopt($v87c02aae93, $v15c259b692); if (isset($v5d3813882f["h"]) || isset($v5d3813882f["help"])) { echo '
 Available Options:

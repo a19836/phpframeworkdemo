@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  $manage_user_url = $user_id ? $project_url_prefix . 'user/edit_user?user_id=' . $user_id : $project_url_prefix . 'user/manage_users'; $manage_openai_key_url = $project_url_prefix . 'user/change_other_settings'; $manage_layers_url = $project_url_prefix . 'setup?step=3.1&iframe=1&hide_setup=1'; $admin_url = $project_url_prefix . 'phpframework/admin/?default_page=' . urlencode($project_url_prefix) . 'admin/admin_home'; $main_content = '<div id="end">
 		<div class="title">

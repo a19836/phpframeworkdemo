@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.util.text.TextValidator"); include_once get_lib("org.phpframework.util.MimeTypeHandler"); $table_fields = isset($table_fields) ? $table_fields : null; $table_fields_types = isset($table_fields_types) ? $table_fields_types : null; $pks = isset($pks) ? $pks : null; $fks = isset($fks) ? $fks : null; $extra_fks = isset($extra_fks) ? $extra_fks : null; $manage_records_url = $project_url_prefix . "phpframework/db/manage_records?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=#table#&db_type=$db_type"; $manage_record_url = $project_url_prefix . "phpframework/db/manage_record?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table&db_type=$db_type"; $manage_record_action_url = $project_url_prefix . "phpframework/db/manage_record_action?layer_bean_folder_name=$layer_bean_folder_name&bean_name=$bean_name&bean_file_name=$bean_file_name&table=$table"; $head = '
 <!-- TimePicker -->

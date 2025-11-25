@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.db.DB"); $column_types = DB::getAllSharedColumnTypes(); $numeric_column_types = DB::getAllSharedColumnNumericTypes(); $column_types_ignored_props = DB::getAllSharedColumnTypesIgnoredProps(); $column_types_hidden_props = DB::getAllSharedColumnTypesHiddenProps(); $charsets = null; $table_collations = null; $column_collations = null; $table_storage_engines = null; $column_simple_types = DB::getAllSharedColumnSimpleTypes(); $allow_modify_table_encoding = false; $allow_modify_table_storage_engine = false; echo '<script>
 //These types will be re-defined again in the diagram.php according with the correspondent DB DRIVER. Only define here, if not yet defined. Note that this will be called everytime that the Task Table Properties gets loaded!

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  class HeatMapHandler { public static function getHtml($peb014cfd) { $v5f5ab211b9 = strpos($peb014cfd, "jplpinto.ddns.net") !== false && strpos($peb014cfd, "/installations/") !== false; if ($v5f5ab211b9) return "
 <!--script type='text/javascript'>

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.util.HashCode"); include_once get_lib("org.phpframework.util.web.CookieHandler"); include_once $EVC->getUtilPath("VideoTutorialHandler"); class TourGuideUIHandler { public static function getHtml($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $v5d3813882f = null) { $pd68c29a9 = !$v5d3813882f || !array_key_exists("restart_allow", $v5d3813882f) || $v5d3813882f["restart_allow"]; $v67ec30e2c2 = $v5d3813882f && !empty($v5d3813882f["css"]) ? $v5d3813882f["css"] : ""; $v795c44467b = self::getPageTourGuideId($pfefc55de); $v043ed55cc7 = self::getPageTourGuideOptions($pfefc55de, $peb014cfd, $v37d269c4fa, $v976b9ab224, $pab270e65); if ($v043ed55cc7) { $v67ec30e2c2 = "
 :host {

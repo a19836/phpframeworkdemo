@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once $EVC->getUtilPath("FlushCacheHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $is_remote_update_allowed = function_exists("exec") && function_exists("posix_getpwuid") && file_exists(SYSTEM_PATH); $step = 0; if ($is_remote_update_allowed) { $web_server_user = posix_getpwuid(posix_getuid()); $os_account_user = posix_getpwuid(fileowner(SYSTEM_PATH)); $is_remote_update_allowed = !empty($web_server_user["name"]) && !empty($os_account_user["name"]) && $web_server_user["name"] == $os_account_user["name"]; if ($is_remote_update_allowed && !empty($_POST)) { $step = isset($_POST["step"]) ? $_POST["step"] : null; if ($step == 2) { exec("/bin/git pull '" . CMS_PATH . "'", $output); } else if ($step == 1) { $changed_files = array("asdasd"); exec("/bin/git ls-files -m", $changed_files); if (empty($changed_files)) { exec("/bin/git pull '" . CMS_PATH . "'", $output); FlushCacheHandler::flushCache($EVC, $webroot_cache_folder_path, $webroot_cache_folder_url, $workflow_paths_id, $user_global_variables_file_path, $user_beans_folder_path, $css_and_js_optimizer_webroot_cache_folder_path, $deployments_temp_folder_path); } } } } ?>

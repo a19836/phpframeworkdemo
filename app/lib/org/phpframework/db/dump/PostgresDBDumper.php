@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.db.dump.DBDumper"); class PostgresDBDumper extends DBDumper { public $types_without_length = array(); public function __construct($v834e515e94) { $this->DBDumperHandler = $v834e515e94; $this->types_without_length = array(); $v72e5423991 = $this->DBDumperHandler->getDBDriver()->getDBColumnTypesIgnoredProps(); if (is_array($v72e5423991)) foreach ($v72e5423991 as $v3fb9f41470 => $v9073377656) if (is_array($v9073377656) && in_array("length", $v9073377656)) $this->types_without_length[] = $v3fb9f41470; } public function databases($pb67a2609) { $v50890f6f30 = "CREATE DATABASE /*!32312 IF NOT EXISTS*/ \"{$pb67a2609}\"" . PHP_EOL . PHP_EOL . "\\c \"{$pb67a2609}\";" . PHP_EOL . PHP_EOL; return $v50890f6f30; } public function createTable($pba23d78c, $v8c5df8072b, $v11f9d89738 = false) { $v813853251a = ""; $v5faa4b8a01 = str_replace("\t", "", "SELECT 
 			    table_name, 

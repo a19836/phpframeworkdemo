@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.layer.presentation.cms.module.ICMSModuleSimulatorHandler"); abstract class CMSModuleSimulatorHandler implements ICMSModuleSimulatorHandler { private $v7bc2e7898b; public function setCMSModuleHandler($v7bc2e7898b) { $this->v7bc2e7898b = $v7bc2e7898b; } public function getCMSModuleHandler() { return $this->v7bc2e7898b; } public static function getCMSModuleSimulatorHandlerImplFilePath($v4a650a2b36) { return "$v4a650a2b36/CMSModuleSimulatorHandlerImpl.php"; } public function simulate(&$v30857f7eca = false, &$v881367f1c2 = false) { return ""; } public function simulateEditFormFields(&$v30857f7eca = false, &$v881367f1c2 = false) { $v182f7d984b = $v30857f7eca; $v881367f1c2 = array( "elements" => array() ); if ($v182f7d984b && !empty($v182f7d984b["fields"]) && is_array($v182f7d984b["fields"])) foreach ($v182f7d984b["fields"] as $pe5c5e2fe => $v02a69d4e0f) $v881367f1c2["elements"][".module_edit .form_fields > .form_field.$pe5c5e2fe > label"] = "fields/$pe5c5e2fe/field/label/value"; return $this->getCMSModuleHandler()->execute($v182f7d984b); } public function simulateListFormFields(&$v30857f7eca = false, &$v881367f1c2 = false) { $v182f7d984b = $v30857f7eca; $v881367f1c2 = array( "elements" => array() ); if ($v182f7d984b && !empty($v182f7d984b["fields"]) && is_array($v182f7d984b["fields"])) foreach ($v182f7d984b["fields"] as $pe5c5e2fe => $v02a69d4e0f) $v881367f1c2["elements"][".module_list .list_items > .list_container > table.list_table > thead > tr > th.list_column.$pe5c5e2fe > label"] = "fields/$pe5c5e2fe/field/label/value"; return $this->getCMSModuleHandler()->execute($v182f7d984b); } } ?>

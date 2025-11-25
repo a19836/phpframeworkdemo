@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include get_lib("org.phpframework.cms.phpmyadmin.PhpMyAdminInstallationHandler"); include get_lib("org.phpframework.encryption.CryptoKeyHandler"); include get_lib("org.phpframework.util.web.CookieHandler"); $route = isset($_GET["route"]) ? $_GET["route"] : null; $cfg["AllowArbitraryServer"] = true; $cfg["AllowThirdPartyFraming"] = true; $i = isset($i) ? $i : 0; $cfg["Servers"][$i]["auth_type"] = "cookie"; if ($route == "/logout") { $_COOKIE["pma_creds"] = null; CookieHandler::setCurrentDomainEternalRootSafeCookie("pma_creds", "", -1); } else { $cipher_text = isset($_COOKIE["pma_creds"]) ? $_COOKIE["pma_creds"] : null; if ($cipher_text) { $key = CryptoKeyHandler::hexToBin(PhpMyAdminInstallationHandler::PHPMYADMIN_ENCRYPTION_KEY); $cipher_bin = CryptoKeyHandler::hexToBin($cipher_text); $credentials = CryptoKeyHandler::decryptText($cipher_bin, $key); $db_data = json_decode($credentials, true); if ($db_data && !empty($db_data["username"])) { $cfg["Servers"][$i]["auth_type"] = "config"; $cfg["Servers"][$i]["AllowNoPassword"] = false; if (!empty($db_data["host"])) $cfg["Servers"][$i]["host"] = $db_data["host"]; if (!empty($db_data["port"])) $cfg["Servers"][$i]["port"] = $db_data["port"]; $cfg["Servers"][$i]["user"] = $db_data["username"]; $cfg["Servers"][$i]["password"] = isset($db_data["password"]) ? $db_data["password"] : null; } } } function get_lib($pa32be502) { $pa32be502 = strpos($pa32be502, "lib.") === 0 ? substr($pa32be502, strlen("lib.")) : $pa32be502; return dirname(dirname(dirname(dirname(__DIR__)))) . "/" . str_replace(".", "/", $pa32be502) . ".php"; } ?>

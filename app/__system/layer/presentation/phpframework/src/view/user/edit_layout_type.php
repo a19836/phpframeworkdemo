@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.util.web.html.HtmlFormHandler"); include $EVC->getUtilPath("UserAuthenticationUIHandler"); function getProjectsHtml($v12ed481092, $v1a222c94d4, $pdcf670f6 = "") { $pf8ed4912 = ""; if (is_array($v12ed481092)) foreach ($v12ed481092 as $pcfd27d54 => $v5c37a7b23d) { if (is_array($v5c37a7b23d)) $pf8ed4912 .= '<option disabled>' . $pdcf670f6 . $pcfd27d54 . '</option>' . getProjectsHtml($v5c37a7b23d, $v1a222c94d4, $pdcf670f6 . "&nbsp;&nbsp;&nbsp;"); else $pf8ed4912 .= '<option value="' . $pcfd27d54 . '" ' . ($v1a222c94d4 == $pcfd27d54 ? ' selected' : '') . '>' . $pdcf670f6 . $v5c37a7b23d . '</option>'; } return $pf8ed4912; } $extra_html = '<select name="choose_project" onChange="onChooseProject(this)">
 				<option value="">- Choose a project -</option>'; if (!empty($presentation_projects_by_folders)) foreach ($presentation_projects_by_folders as $layer_label => $projs) { $extra_html .= '<optgroup label="' . $layer_label . '">'; $extra_html .= getProjectsHtml($projs, isset($layout_type_data["name"]) ? $layout_type_data["name"] : null); $extra_html .= '</optgroup>'; } $extra_html .= '</select>'; $head = '

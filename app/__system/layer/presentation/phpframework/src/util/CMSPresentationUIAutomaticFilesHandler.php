@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.phpscript.PHPUICodeExpressionHandler"); include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); $common_project_name = $EVC->getCommonProjectName(); $modules_path = $EVC->getModulesPath($common_project_name); $object_module_path = $modules_path . "object/"; $user_module_path = $modules_path . "user/"; if (file_exists($object_module_path)) include_once $EVC->getModulePath("object/ObjectUtil", $common_project_name); if (file_exists($user_module_path)) include_once $EVC->getModulePath("user/UserUtil", $common_project_name); class CMSPresentationUIAutomaticFilesHandler { public static function getTableGroupHtml($v8c5df8072b, $pba9184cd, $v830c74e006, $v64e98269be, $v06d89caf4f, $v09bdc7fd3a, $pec1f6eeb, $v96e120d9d5, $v610214e838, $v3b6d7c67a8 = false) { $v566db8f5a9 = ""; $v31199c28eb = ""; $v6cea3cefa2 = $v3b6d7c67a8 ? WorkFlowDBHandler::getTableFromTables($v3b6d7c67a8, $v8c5df8072b) : null; if ($v3b6d7c67a8 && $v6cea3cefa2) { $v31199c28eb = " with alias: '" . $v6cea3cefa2 . "'"; $v566db8f5a9 = ' table_alias="' . $v6cea3cefa2 . '"'; } $pf8ed4912 = '<div class="table_group" table_name="' . $v8c5df8072b . '"' . $v566db8f5a9 . '>
 			<div class="table_header">

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.phpscript.PHPCodePrintingHandler"); include_once $EVC->getUtilPath("WorkFlowDataAccessHandler"); include_once $EVC->getUtilPath("CMSPresentationFormSettingsUIHandler"); class SequentialLogicalActivityBLResourceCreator { private $pf3dc0762; private $v1335217393; private $pac4bc40a; private $v9d7547e4d6; private $pe13b2783; public function __construct($pf3dc0762, $v1335217393, $pac4bc40a, $v9d7547e4d6) { $this->pf3dc0762 = $pf3dc0762; $this->v1335217393 = $v1335217393; $this->v9d7547e4d6 = $v9d7547e4d6; $this->pac4bc40a = $pac4bc40a; $this->pe13b2783 = WorkFlowDBHandler::getTableFromTables($pac4bc40a, $v9d7547e4d6); } public function createBLResourceServiceFile($v47cef7ac50, $v8ab32450b0, &$pef612b9d = null) { $v7e5f67574c = file_exists($this->pf3dc0762) && PHPCodePrintingHandler::getClassFromFile($this->pf3dc0762, $this->v1335217393); if (!$v7e5f67574c) { $pf232dd5a = PHPCodePrintingHandler::getClassFromFile($v47cef7ac50, $v8ab32450b0); if ($pf232dd5a) { $pf232dd5a["includes"] = PHPCodePrintingHandler::getIncludesFromFile($v47cef7ac50); $v7e5f67574c = PHPCodePrintingHandler::addClassToFile($this->pf3dc0762, array( "name" => $this->v1335217393, "extends" => isset($pf232dd5a["extends"]) ? $pf232dd5a["extends"] : null, "includes" => isset($pf232dd5a["includes"]) ? $pf232dd5a["includes"] : null )); } } return $v7e5f67574c; } public function createInsertMethod($pcd8c70bc, $v547b6994da, &$pef612b9d = null) { if ($this->pe13b2783) { $v325ffa1d87 = array_keys($this->pe13b2783); $pa7c11132 = self::getInsertActionPreviousCode($this->pac4bc40a, $this->v9d7547e4d6, $v325ffa1d87, '$attributes'); $pa7c11132 = str_replace("\n", "\n\t", $pa7c11132); $v067674f4e4 = '$options = isset($data["options"]) ? $data["options"] : null;
 $this->mergeOptionsWithBusinessLogicLayer($options);

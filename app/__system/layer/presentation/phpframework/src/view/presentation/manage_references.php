@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  if (!empty($layout_type_id)) { include $EVC->getUtilPath("WorkFlowPresentationHandler"); include $EVC->getUtilPath("BreadCrumbsUIHandler"); $layer_path = isset($layer_path) ? $layer_path : null; $selected_project_id = isset($selected_project_id) ? $selected_project_id : null; $P = isset($P) ? $P : null; $permissions = isset($permissions) ? $permissions : null; $layers_to_be_referenced = isset($layers_to_be_referenced) ? $layers_to_be_referenced : null; $layers_props = isset($layers_props) ? $layers_props : null; $layers_label = isset($layers_label) ? $layers_label : null; $layers_object_id = isset($layers_object_id) ? $layers_object_id : null; $layer_object_id_prefix = isset($layer_object_id_prefix) ? $layer_object_id_prefix : null; $layer_object_type_id = isset($layer_object_type_id) ? $layer_object_type_id : null; $presentation_brokers = isset($presentation_brokers) ? $presentation_brokers : null; $business_logic_brokers = isset($business_logic_brokers) ? $business_logic_brokers : null; $data_access_brokers = isset($data_access_brokers) ? $data_access_brokers : null; $choose_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/get_sub_files?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $upload_bean_layer_files_from_file_manager_url = $project_url_prefix . "admin/upload_file?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#"; $get_file_properties_url = $project_url_prefix . "phpframework/admin/get_file_properties?bean_name=#bean_name#&bean_file_name=#bean_file_name#&path=#path#&class_name=#class_name#&type=#type#"; $head = '
 	<!-- Add MD5 JS File -->

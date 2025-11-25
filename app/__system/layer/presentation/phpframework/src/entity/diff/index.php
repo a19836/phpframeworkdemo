@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); include_once $EVC->getEntityPath("admin/admin_advanced"); unset($layers["db_layers"]); if (!empty($layers["presentation_layers"])) foreach ($layers["presentation_layers"] as $layer_name => $layer) foreach ($layer as $fn => $f) if ($fn != "properties" && $fn != "aliases") unset($layers["presentation_layers"][$layer_name][$fn]); ?>

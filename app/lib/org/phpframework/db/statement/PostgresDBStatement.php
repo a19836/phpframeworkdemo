@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  trait PostgresDBStatement { public static function getCreateDBStatement($pb67a2609, $v5d3813882f = false) { $v3c76382d93 = "CREATE DATABASE \"" . $pb67a2609 . "\""; if (!empty($v5d3813882f["encoding"]) || !empty($v5d3813882f["collation"])) { $v3c76382d93 .= " WITH"; if (!empty($v5d3813882f["encoding"])) $v3c76382d93 .= " ENCODING '" . strtoupper($v5d3813882f["encoding"]) . "'"; if (!empty($v5d3813882f["collation"])) $v3c76382d93 .= " LC_COLLATE '" . strtoupper($v5d3813882f["collation"]) . "'"; } return $v3c76382d93; } public static function getDropDatabaseStatement($pb67a2609, $v5d3813882f = false) { return "/*!40000 DROP DATABASE IF EXISTS \"$pb67a2609\" */;"; } public static function getSelectedDBStatement($v5d3813882f = false) { return "SELECT current_database() AS db"; } public static function getDBsStatement($v5d3813882f = false) { return "SELECT datname AS name FROM pg_database"; } public static function getTablesStatement($pb67a2609 = false, $v5d3813882f = false) { $pa51282b5 = $v5d3813882f && !empty($v5d3813882f["schema"]) ? $v5d3813882f["schema"] : null; $v3c76382d93 = "SELECT 
 				t.table_name AS \"table_name\",

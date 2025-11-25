@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  class HibernateException extends Exception { public $problem; public function __construct($v6de691233b, $v67db1bd535 = array()) { $v9363d877fd = $pd0c2934c = null; if (is_array($v67db1bd535)) { $v9363d877fd = isset($v67db1bd535[0]) ? $v67db1bd535[0] : null; $pd0c2934c = isset($v67db1bd535[1]) ? $v67db1bd535[1] : null; } switch($v6de691233b) { case 1: $this->problem = "ERROR trying to include '$v9363d877fd' class path: $pd0c2934c"; break; case 2: $this->problem = "Hibernate obj '" . $v67db1bd535 . "' does not exist. Please check your hibernate xml files."; break; case 3: $this->problem = "Undefined id generator '$v9363d877fd'. You must select one of the following generators: [".strtolower(implode(", ", $pd0c2934c))."]"; break; case 4: $this->problem = "Object '".$v67db1bd535."' can only have one parameter map or parameter class. You cannot have multiple parameter types."; break; case 5: $this->problem = "Object '".$v67db1bd535."' can only have one result map or result class. You cannot have multiple result types."; break; case 6: $this->problem = "There is an object with out name in the hibernate xml file: '".$v67db1bd535."'."; break; case 7: $this->problem = "Duplicate class with id '".$v67db1bd535."'."; break; case 8: $this->problem = "There is a Relationship with out a name."; break; case 9: $this->problem = "Relationship '".$v67db1bd535."' can only have a result_class or a result_map."; break; case 10: $this->problem = "Relationship '".$v67db1bd535."' can only have a parameter_class or a parameter_map."; break; } } } ?>

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once $EVC->getUtilPath("LayoutTypeProjectHandler"); class WorkFlowPresentationHandler { public static function getHeader($peb014cfd, $v37d269c4fa, $pcfdeae4e = false, $v8555f2f905 = false, $pbd963c11 = false, $v8c5b4fe0d4 = false) { $pf8ed4912 = '
 			<!-- Add MyTree main JS and CSS files -->

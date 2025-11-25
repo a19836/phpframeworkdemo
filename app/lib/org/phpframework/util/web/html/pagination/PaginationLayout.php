@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.util.web.html.pagination.PaginationHandler"); class PaginationLayout extends PaginationHandler { public static $PAGINATION_CURRENT_PAGE_TITLE = "Page #current_page# of #num_pages#"; public static $PAGINATION_GOTO_PAGE_TITLE = "Page"; public static $PAGINATION_GOTO_PREVIOUS_PAGE_TITLE = "Prev"; public static $PAGINATION_GOTO_NEXT_PAGE_TITLE = "Next"; public static $PAGINATION_GO_BUTTON_TITLE = "GO"; public function design1($v539082ff30) { $pf8ed4912 = ""; $v6f3a2700dd = isset($v539082ff30["url"]) ? $v539082ff30["url"] : null; $v1598b4cc2b = isset($v539082ff30["post"]) ? $v539082ff30["post"] : null; $v72aaf5a611 = isset($v539082ff30["pagination_goto_page_title"]) ? $v539082ff30["pagination_goto_page_title"] : self::$PAGINATION_GOTO_PAGE_TITLE; $pd340ca09 = isset($v539082ff30["pagination_goto_previous_page_title"]) ? $v539082ff30["pagination_goto_previous_page_title"] : self::$PAGINATION_GOTO_PREVIOUS_PAGE_TITLE; $v920681538d = isset($v539082ff30["pagination_goto_next_page_title"]) ? $v539082ff30["pagination_goto_next_page_title"] : self::$PAGINATION_GOTO_NEXT_PAGE_TITLE; $v701073fa4d = isset($v539082ff30["pagination_go_button_title"]) ? $v539082ff30["pagination_go_button_title"] : self::$PAGINATION_GO_BUTTON_TITLE; $pf3e7b0af = isset($this->data['num_pages']) ? $this->data['num_pages'] : null; $v8ed660d4a1 = isset($this->data['page_attr_name']) ? $this->data['page_attr_name'] : null; $v1620249212 = isset($this->data['cur_page']) ? $this->data['cur_page'] : null; if ($pf3e7b0af > 1) { $v90cd343a76 = "form_".md5(rand()); if (!empty($v539082ff30["with_css"])) $pf8ed4912 .= $this->getDesign1Css(); $pf8ed4912 .= '
 			<!-----  Start of Pagination Code ----->

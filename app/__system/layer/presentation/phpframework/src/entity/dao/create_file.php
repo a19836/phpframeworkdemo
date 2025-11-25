@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "write"); $type = isset($_GET["type"]) ? $_GET["type"] : null; $path = isset($_GET["path"]) ? $_GET["path"] : null; $file_name = isset($_GET["file_name"]) ? ucfirst($_GET["file_name"]) : null; $path = str_replace("../", "", $path); $path = DAO_PATH . $path; if (file_exists($path) && $file_name) { $UserAuthenticationHandler->checkInnerFilePermissionAuthentication("vendor/dao/$path", "layer", "access"); $file_path = "$path/$file_name"; $path_info = pathinfo($file_path); $contents = ""; if ($type == "hibernatemodel" || $type == "objtype") { $file_path .= isset($path_info["extension"]) && $path_info["extension"] == "php" ? "" : ".php"; $contents = $type == "hibernatemodel" ? getHibernateModelClassContents($path_info["filename"]) : getObjTypeClassContents($path_info["filename"]); if (!$contents) $file_path = ""; else if (!PHPScriptHandler::isValidPHPContents($contents, $error_message)) { echo !empty($error_message) ? $error_message : "Error creating $type with name: $file_name"; die(); } } $status = $file_path ? file_put_contents($file_path, $contents) !== false : false; } echo isset($status) ? $status : null; die(); function getHibernateModelClassContents($v1335217393) { include_once get_lib("org.phpframework.sqlmap.hibernate.HibernateModel"); if (class_exists($v1335217393)) return false; return '<?php
 include_once get_lib("org.phpframework.sqlmap.hibernate.HibernateModel");

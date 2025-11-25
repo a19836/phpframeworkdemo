@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once $vars["business_logic_modules_service_common_file_path"]; include_once get_lib("org.phpframework.cms.laravel.LaravelProjectHandler"); class private $LaravelProjectHandler; private function initLaravel() { if (!$this->LaravelProjectHandler) { $this->LaravelProjectHandler = new LaravelProjectHandler(__DIR__ . "/"); } } public function callRouter($v539082ff30) { $this->initLaravel(); $pe6469026 = isset($v539082ff30["uri"]) ? $v539082ff30["uri"] : ""; $pe23e0cca = $this->LaravelProjectHandler->callRouter($pe6469026, $v539082ff30, $v5c1c342594); return array( "body" => $pe23e0cca, "status" => $v5c1c342594, ); } public function callController($v539082ff30) { $this->initLaravel(); return $this->LaravelProjectHandler->callController($v539082ff30["class"], $v539082ff30["method"]); } public function callView($v539082ff30) { $this->initLaravel(); $v44801a6b9a = isset($v539082ff30["data"]) ? $v539082ff30["data"] : ""; return $this->LaravelProjectHandler->callView($v539082ff30["view"], $v44801a6b9a); } public function existsView($v539082ff30) { $this->initLaravel(); return $this->LaravelProjectHandler->existsView($v539082ff30["view"]); } public function getSQLResults($v539082ff30) { $this->initLaravel(); $v5c297d4c64 = isset($v539082ff30["model"]) ? $v539082ff30["model"] : ""; return $this->LaravelProjectHandler->getSQLResults($v539082ff30["sql"], $v5c297d4c64); } } ?>

@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once $EVC->getUtilPath("CMSPresentationLayerHandler"); $UserAuthenticationHandler->checkPresentationFileAuthentication($entity_path, "access"); $bean_name = isset($_GET["bean_name"]) ? $_GET["bean_name"] : null; $bean_file_name = isset($_GET["bean_file_name"]) ? $_GET["bean_file_name"] : null; $path = isset($_GET["path"]) ? $_GET["path"] : null; $region = isset($_GET["region"]) ? $_GET["region"] : null; $sample_path = isset($_GET["sample_path"]) ? $_GET["sample_path"] : null; $path = str_replace("../", "", $path); if ($path) { $WorkFlowBeansFileHandler = new WorkFlowBeansFileHandler($user_beans_folder_path . $bean_file_name, $user_global_variables_file_path); $PEVC = $WorkFlowBeansFileHandler->getEVCBeanObject($bean_name, $path); if ($PEVC) { $P = $PEVC->getPresentationLayer(); $layer_path = $P->getLayerPathSetting(); $selected_project_id = $P->getSelectedPresentationId(); $template_file_path = $layer_path . $path; if (file_exists($template_file_path)) { $html = file_get_contents($template_file_path); if ($sample_path) { $sample_file_path = $layer_path . $sample_path; if (!file_exists($sample_file_path)) { launch_exception(new Exception("Sample file '$sample_path' doesn't exists!")); die(); } $available_regions_list = CMSPresentationLayerHandler::getAvailableRegionsList($template_file_path, $selected_project_id, true); if ($available_regions_list) foreach ($available_regions_list as $r) if (strtolower($r) == '"' . strtolower($region) . '"') { $region = substr($r, 1, -1); break; } $html = '<?php 
 					$external_vars = get_defined_vars();

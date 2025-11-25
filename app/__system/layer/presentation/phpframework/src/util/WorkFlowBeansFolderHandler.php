@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.bean.BeanFactory"); include_once $EVC->getUtilPath("PHPVariablesFileHandler"); class WorkFlowBeansFolderHandler { private $pddfc29cd; private $v69bff92632; private $v5039a77f9d; private $v3d55458bcd; private $pc0fc7d17; private $v73fec76b27; private $v39c8cc4726 = array(); public function __construct($v5039a77f9d, $v3d55458bcd, $pc0fc7d17, $v73fec76b27 = array()) { $this->pddfc29cd = new BeanFactory(); $this->v5039a77f9d = $v5039a77f9d; $this->v3d55458bcd = $v3d55458bcd; $this->pc0fc7d17 = $pc0fc7d17; $this->v73fec76b27 = $v73fec76b27; $this->v73fec76b27 = $this->v73fec76b27 ? $this->v73fec76b27 : array(); $this->v73fec76b27["LAYER_CACHE_PATH"] = !empty($this->v73fec76b27["LAYER_CACHE_PATH"]) ? $this->v73fec76b27["LAYER_CACHE_PATH"] : LAYER_CACHE_PATH; $this->v73fec76b27["LAYER_PATH"] = !empty($this->v73fec76b27["LAYER_PATH"]) ? $this->v73fec76b27["LAYER_PATH"] : LAYER_PATH; $this->v73fec76b27["BEAN_PATH"] = !empty($this->v73fec76b27["BEAN_PATH"]) ? $this->v73fec76b27["BEAN_PATH"] : BEAN_PATH; $this->v73fec76b27["SYSTEM_LAYER_PATH"] = !empty($this->v73fec76b27["SYSTEM_LAYER_PATH"]) ? $this->v73fec76b27["SYSTEM_LAYER_PATH"] : SYSTEM_LAYER_PATH; } public function getGlobalPaths() { return $this->v73fec76b27; } public function createDefaultFiles() { $v5c1c342594 = true; $pe8ba831e = '<?php 
 //The contents of these files cannot be "" (empty string), otherwise it will output an empty line and if we set headers in some other files, the headers will not be set, bc it already echoes an empty line. So we must add the open and close php tags.

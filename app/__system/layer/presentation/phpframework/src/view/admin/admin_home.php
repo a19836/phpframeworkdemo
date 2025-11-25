@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include $EVC->getViewPath("admin/choose_available_project"); $projects_head = $head; $projects_main_content = $main_content; include $EVC->getViewPath("admin/choose_available_tutorial"); $tutorials_head = $head; $tutorials_main_content = $main_content; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"] ? $UserAuthenticationHandler->auth["user_data"]["name"] : $UserAuthenticationHandler->auth["user_data"]["username"]; $head = $projects_head . $tutorials_head . '
 <!-- Add Local JS and CSS files -->

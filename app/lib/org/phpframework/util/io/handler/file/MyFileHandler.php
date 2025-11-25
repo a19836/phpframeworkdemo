@@ -4,5 +4,9 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  include_once get_lib("org.phpframework.util.io.handler.MyIOHandler"); class MyFileHandler extends MyIOHandler { public $file_name; public function __construct($v250a1176c9 = false) { $this->file_name = $v250a1176c9; } public function getType($pf3dc0762) { $v4159504aa3 = $this->getFileTypes(); $v250a1176c9 = basename($pf3dc0762); if (is_dir($pf3dc0762)) return isset($v4159504aa3["folder"]) ? $v4159504aa3["folder"] : null; $v3fb9f41470 = self::getFileType($v250a1176c9); return isset($v4159504aa3[$v3fb9f41470]) ? $v4159504aa3[$v3fb9f41470] : null; } public function rename($pe6871e84) { if($this->file_name) { $v0e5a9eeca2 = dirname($this->file_name); $v0e5a9eeca2 .= $v0e5a9eeca2 ? "/" . $pe6871e84 : $pe6871e84; return rename($this->file_name, $v0e5a9eeca2); } return false; } public function exists() { return $this->file_name && file_exists($this->file_name); } public function getInfo() { $v872c4849e0 = array(); if($this->exists()) { $v3fb9f41470 = $this->getType($this->file_name); $v872c4849e0 = array(); $v872c4849e0["path"] = $this->file_name; $v872c4849e0["name"] = basename($this->file_name); $v872c4849e0["type"] = isset($v3fb9f41470["id"]) ? $v3fb9f41470["id"] : null; $v872c4849e0["type_desc"] = isset($v3fb9f41470["desc"]) ? $v3fb9f41470["desc"] : null; if($v872c4849e0["type"] != 1) { $v6bfcc44e7b = pathinfo($this->file_name, PATHINFO_EXTENSION); $v872c4849e0["extension"] = $v6bfcc44e7b; $v872c4849e0["mime_type"] = $this->getFileMimeTypeByExtension($v872c4849e0["extension"]); } } return $v872c4849e0; } } ?>

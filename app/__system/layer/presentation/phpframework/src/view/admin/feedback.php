@@ -4,6 +4,10 @@
  * 
  * Multi-licensed: BSD 3-Clause | Apache 2.0 | GNU LGPL v3 | HLNC License (http://bloxtor.com/LICENSE_HLNC.md)
  * Choose one license that best fits your needs.
+ *
+ * Original Bloxtor Repo: https://github.com/a19836/bloxtor
+ *
+ * YOU ARE NOT AUTHORIZED TO MODIFY OR REMOVE ANY PART OF THIS NOTICE!
  */
  $logged_user = $UserAuthenticationHandler->auth["user_data"]["username"]; $logged_name = $UserAuthenticationHandler->auth["user_data"]["name"]; $max_upload_files_size = 1024 * 1024 * 20; $send_feedback_url = $send_email_action_url; $from_framework = "123987"; $head = '
 <!-- Add Fontawsome Icons CSS -->
