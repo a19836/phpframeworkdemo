@@ -93,23 +93,23 @@ if (!empty($layout_ui_editor_widget_resource_options_js))
 <script language="javascript" type="text/javascript" src="' . $project_common_url_prefix . 'vendor/he/he.js"></script>
 
 <!-- Layout UI Editor - Material-design-iconic-font -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/materialdesigniconicfont/css/material-design-iconic-font.min.css">
 
 <!-- Layout UI Editor - JQuery Nestable2 -->
-<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
+<link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/nestable2/jquery.nestable.min.js"></script>
 
 <!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
-	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
+	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
+	 <script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
 <![endif]-->
 
 <!-- Layout UI Editor - Add Iframe droppable fix -->
-<script type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
+<script type="text/javascript" src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
 
 <!-- Layout UI Editor - Add Iframe droppable fix - IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
+<script src="' . $project_url_prefix . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor -->
 <link rel="stylesheet" href="' . $project_url_prefix . 'lib/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />

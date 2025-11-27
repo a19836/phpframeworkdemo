@@ -78,23 +78,23 @@
 <script language="javascript" type="text/javascript" src="' . $this->v00161f0c07 . 'vendor/he/he.js"></script>
 
 <!-- Layout UI Editor - Material-design-iconic-font -->
-<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/materialdesigniconicfont/css/material-design-iconic-font.min.css">
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/materialdesigniconicfont/css/material-design-iconic-font.min.css">
 
 <!-- Layout UI Editor - JQuery Nestable2 -->
-<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
-<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/nestable2/jquery.nestable.min.js"></script>
+<link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/nestable2/jquery.nestable.min.css" type="text/css" charset="utf-8" />
+<script language="javascript" type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/nestable2/jquery.nestable.min.js"></script>
 
 <!-- Layout UI Editor - HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
-	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
+	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/html5_ie8/html5shiv.min.js"></script>
+	 <script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/html5_ie8/respond.min.js"></script>
 <![endif]-->
 
 <!-- Layout UI Editor - Add Iframe droppable fix -->
-<script type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
+<script type="text/javascript" src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/jquery-ui-droppable-iframe-fix.js"></script>    
 
 <!-- Layout UI Editor - Add Iframe droppable fix - IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/vendor/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
+<script src="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/lib/jqueryuidroppableiframe/js/ie10-viewport-bug-workaround.js"></script>
 
 <!-- Layout UI Editor - Add Layout UI Editor -->
 <link rel="stylesheet" href="' . $this->pcd2aca48 . 'lib/jquerylayoutuieditor/css/some_bootstrap_style.css" type="text/css" charset="utf-8" />

@@ -168,4 +168,7 @@
 	display:none;
 }
 
+.switch_task_html .comments {
+	min-width:auto;
+}
 
